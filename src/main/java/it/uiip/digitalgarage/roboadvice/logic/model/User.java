@@ -1,12 +1,40 @@
 package it.uiip.digitalgarage.roboadvice.logic.model;
 
+import java.sql.Timestamp;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+@Entity
+@Table(name="user")
 public class User {
 	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
-	private String username;
+	@NotNull
+	private String email;
+	@NotNull
 	private String password;
-	private String timestamp;
+	@Column
+	private Timestamp timestamp;
 	
+	public User() {
+		
+	}
+	
+	public User(String email, String password, Timestamp timestamp) {
+		super();
+		this.email = email;
+		this.password = password;
+		this.timestamp = timestamp;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -16,11 +44,11 @@ public class User {
 	}
 	
 	public String getUsername() {
-		return username;
+		return email;
 	}
 	
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUsername(String email) {
+		this.email = email;
 	}
 	
 	public String getPassword() {
@@ -31,11 +59,11 @@ public class User {
 		this.password = password;
 	}
 	
-	public String getTimestamp() {
+	public Timestamp getTimestamp() {
 		return timestamp;
 	}
 	
-	public void setTimestamp(String timestamp) {
+	public void setTimestamp(Timestamp timestamp) {
 		this.timestamp = timestamp;
 	}
 	
