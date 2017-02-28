@@ -49,3 +49,6 @@ README.html
 .idea
 workspace.xml
 .idea
+.mvn
+.mvnw
+*.cmd
