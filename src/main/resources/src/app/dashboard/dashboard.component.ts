@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 
@@ -22,17 +22,26 @@ export class DashboardComponent implements OnInit {
   public brandInfo:string =   '#63c2de';
   public brandWarning:string =  '#f8cb00';
   public brandDanger:string =   '#f86c6b';
+  
+  //ASSET CLASS COLOUR//
+  public assetClassColour:string =  '#20a8d8';
+  public assetClass1Colour:string =  '#4dbd74';
+  public assetClass2Colour:string =   '#63c2de';
+  public assetClass3Colour:string =  '#f8cb00';
+  public assetClass4Colour:string =   '#f86c6b';
 
-  public bonds:number = 1000;
-  public forex:number = 2000;
-  public stocks:number = 3000;
-  public commodities:number = 4000;
+  //ASSET CLASS//
+  public assetClass1:number = 1000;
+  public assetClass2:number = 2000;
+  public assetClass3:number = 3000;
+  public assetClass4:number = 4000;
 
-  public prova:string = '';
+  public assetClass:string = 'assetClass1';
 
-  //CLICK PROVA
-  public clickme(){
-    this.prova = 'ok';
+  //CHANGE ASSET CLASS VIEW
+  public showAsset(value, colour){
+    this.assetClass = value;
+    console.log(this.assetClassColour);
   }
 
   // dropdown buttons
@@ -214,6 +223,46 @@ export class DashboardComponent implements OnInit {
   public lineChart3Legend:boolean = false;
   public lineChart3Type:string = 'line';
 
+  // lineChart4
+  public lineChart4Data:Array<any> = [
+    {
+      data: [78, 81, 80, 45, 34, 12, 40],
+      label: 'Series A'
+    }
+  ];
+  public lineChart4Labels:Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  public lineChart4Options:any = {
+    maintainAspectRatio: false,
+    scales: {
+      xAxes: [{
+        display: false
+      }],
+      yAxes: [{
+        display: false
+      }]
+    },
+    elements: {
+      line: {
+        borderWidth: 2
+      },
+      point: {
+        radius: 0,
+        hitRadius: 10,
+        hoverRadius: 4,
+      },
+    },
+    legend: {
+      display: false
+    }
+  };
+  public lineChart4Colours:Array<any> = [
+    {
+      backgroundColor: 'rgba(255,255,255,.2)',
+      borderColor: 'rgba(255,255,255,.55)',
+    }
+  ];
+  public lineChart4Legend:boolean = false;
+  public lineChart4Type:string = 'line';
 
   // barChart1
   public barChart1Data:Array<any> = [
@@ -246,185 +295,9 @@ export class DashboardComponent implements OnInit {
   ];
   public barChart1Legend:boolean = false;
   public barChart1Type:string = 'bar';
-
-  // mainChart
-
-  public random(min:number, max:number) {
-    return Math.floor(Math.random()*(max-min+1)+min);
-  }
-
-  public mainChartElements:number = 27;
-  public mainChartData1:Array<number> = [];
-  public mainChartData2:Array<number> = [];
-  public mainChartData3:Array<number> = [];
-
-  public mainChartData:Array<any> = [
-    {
-      data: this.mainChartData1,
-      label: 'Current'
-    },
-    {
-      data: this.mainChartData2,
-      label: 'Previous'
-    },
-    {
-      data: this.mainChartData3,
-      label: 'BEP'
-    }
-  ];
-  public mainChartLabels:Array<any> = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday', 'Thursday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-  public mainChartOptions:any = {
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      xAxes: [{
-        gridLines: {
-          drawOnChartArea: false,
-        },
-        ticks: {
-          callback: function(value:any) {
-            return value.charAt(0);
-          }
-        }
-      }],
-      yAxes: [{
-        ticks: {
-          beginAtZero: true,
-          maxTicksLimit: 5,
-          stepSize: Math.ceil(250 / 5),
-          max: 250
-        }
-      }]
-    },
-    elements: {
-      line: {
-        borderWidth: 2
-      },
-      point: {
-        radius: 0,
-        hitRadius: 10,
-        hoverRadius: 4,
-        hoverBorderWidth: 3,
-      }
-    },
-    legend: {
-      display: false
-    }
-  };
-  public mainChartColours:Array<any> = [
-    { //brandInfo
-      backgroundColor: this.convertHex(this.brandInfo,10),
-      borderColor: this.brandInfo,
-      pointHoverBackgroundColor: '#fff'
-    },
-    { //brandSuccess
-      backgroundColor: 'transparent',
-      borderColor: this.brandSuccess,
-      pointHoverBackgroundColor: '#fff'
-    },
-    { //brandDanger
-      backgroundColor: 'transparent',
-      borderColor: this.brandDanger,
-      pointHoverBackgroundColor: '#fff',
-      borderWidth: 1,
-      borderDash: [8, 5]
-    }
-  ];
-  public mainChartLegend:boolean = false;
-  public mainChartType:string = 'line';
-
-
-
-  // sparkline charts
-
-  public sparklineChartData1:Array<any> = [
-    {
-      data: [35, 23, 56, 22, 97, 23, 64],
-      label: 'Clients'
-    }
-  ];
-  public sparklineChartData2:Array<any> = [
-    {
-      data: [65, 59, 84, 84, 51, 55, 40],
-      label: 'Clients'
-    }
-  ];
-
-  public sparklineChartLabels:Array<any> = ['January','February','March','April','May','June','July'];
-  public sparklineChartOptions:any = {
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      xAxes: [{
-        display:false,
-      }],
-      yAxes: [{
-        display:false,
-      }]
-    },
-    elements: {
-      line: {
-        borderWidth: 2
-      },
-      point: {
-        radius: 0,
-        hitRadius: 10,
-        hoverRadius: 4,
-        hoverBorderWidth: 3,
-      }
-    },
-    legend: {
-      display: false
-    }
-  };
-  public sparklineChartDefault:Array<any> = [
-    {
-      backgroundColor: 'transparent',
-      borderColor: '#d1d4d7',
-    }
-  ];
-  public sparklineChartPrimary:Array<any> = [
-    {
-      backgroundColor: 'transparent',
-      borderColor: this.brandPrimary,
-    }
-  ];
-  public sparklineChartInfo:Array<any> = [
-    {
-      backgroundColor: 'transparent',
-      borderColor: this.brandInfo,
-    }
-  ];
-  public sparklineChartDanger:Array<any> = [
-    {
-      backgroundColor: 'transparent',
-      borderColor: this.brandDanger,
-    }
-  ];
-  public sparklineChartWarning:Array<any> = [
-    {
-      backgroundColor: 'transparent',
-      borderColor: this.brandWarning,
-    }
-  ];
-  public sparklineChartSuccess:Array<any> = [
-    {
-      backgroundColor: 'transparent',
-      borderColor: this.brandSuccess,
-    }
-  ];
-
-
-  public sparklineChartLegend:boolean = false;
-  public sparklineChartType:string = 'line';
-
-
+  
   ngOnInit(): void {
-    //generate random values for mainChart
-    for (var i = 0; i <= this.mainChartElements; i++) {
-      this.mainChartData1.push(this.random(50,200));
-      this.mainChartData2.push(this.random(80,100));
-      this.mainChartData3.push(65);
+    
     }
   }
-}
+
