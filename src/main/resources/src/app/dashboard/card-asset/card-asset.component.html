@@ -16,10 +16,10 @@
 				(chartClick)="chartClicked($event)"></canvas>
 		</div>
 		<div class="chart-wrapper" style="height: 38px;">
-			<canvas baseChart class="chart" [datasets]="barChart2Data"
-				[labels]="barChart2Labels" [options]="barChart2Options"
-				[colors]="barChart2Colours" [legend]="barChart2Legend"
-				[chartType]="barChart2Type" (chartHover)="chartHovered($event)"
+			<canvas baseChart class="chart" [datasets]="barChartData"
+				[labels]="barChartLabels" [options]="barChartOptions"
+				[colors]="barChartColours" [legend]="barChartLegend"
+				[chartType]="barChartType" (chartHover)="chartHovered($event)"
 				(chartClick)="chartClicked($event)"></canvas>
 		</div>
 	</div>

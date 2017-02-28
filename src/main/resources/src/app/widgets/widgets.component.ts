@@ -382,5 +382,89 @@ export class WidgetsComponent {
   ];
   public lineChart5Legend:boolean = false;
   public lineChart5Type:string = 'line';
+  
+  // sparkline charts
+
+  public sparklineChartData1:Array<any> = [
+    {
+      data: [35, 23, 56, 22, 97, 23, 64],
+      label: 'Clients'
+    }
+  ];
+  public sparklineChartData2:Array<any> = [
+    {
+      data: [65, 59, 84, 84, 51, 55, 40],
+      label: 'Clients'
+    }
+  ];
+
+  public sparklineChartLabels:Array<any> = ['January','February','March','April','May','June','July'];
+  public sparklineChartOptions:any = {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      xAxes: [{
+        display:false,
+      }],
+      yAxes: [{
+        display:false,
+      }]
+    },
+    elements: {
+      line: {
+        borderWidth: 2
+      },
+      point: {
+        radius: 0,
+        hitRadius: 10,
+        hoverRadius: 4,
+        hoverBorderWidth: 3,
+      }
+    },
+    legend: {
+      display: false
+    }
+  };
+  public sparklineChartDefault:Array<any> = [
+    {
+      backgroundColor: 'transparent',
+      borderColor: '#d1d4d7',
+    }
+  ];
+  public sparklineChartPrimary:Array<any> = [
+    {
+      backgroundColor: 'transparent',
+      borderColor: this.brandPrimary,
+    }
+  ];
+  public sparklineChartInfo:Array<any> = [
+    {
+      backgroundColor: 'transparent',
+      borderColor: this.brandInfo,
+    }
+  ];
+  public sparklineChartDanger:Array<any> = [
+    {
+      backgroundColor: 'transparent',
+      borderColor: this.brandDanger,
+    }
+  ];
+  public sparklineChartWarning:Array<any> = [
+    {
+      backgroundColor: 'transparent',
+      borderColor: this.brandWarning,
+    }
+  ];
+  public sparklineChartSuccess:Array<any> = [
+    {
+      backgroundColor: 'transparent',
+      borderColor: this.brandSuccess,
+    }
+  ];
+
+
+  public sparklineChartLegend:boolean = false;
+  public sparklineChartType:string = 'line';
+  
 
 }

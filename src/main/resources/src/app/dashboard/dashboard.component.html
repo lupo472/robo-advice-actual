@@ -6,120 +6,83 @@
 		<!-- BONDS -->
 		<div class="col-sm-6 col-lg-3">
 			<app-card-asset-class [value]="assetClass1"
-				[lineChartData]="lineChart3Data"
-				[lineChartLabels]="lineChart3Labels"
-				[lineChartOptions]="lineChart3Options"
-				[lineChartColours]="lineChart3Colours"
-				[lineChartLegend]="lineChart3Legend"
-				[lineChartType]="lineChart3Type" (click)="showAsset('assetClass1')">
+				[lineChartData]="lineChart1Data"
+				[lineChartLabels]="lineChart1Labels"
+				[lineChartOptions]="lineChart1Options"
+				[lineChartColours]="lineChart1Colours"
+				[lineChartLegend]="lineChart1Legend"
+				[lineChartType]="lineChart1Type" (click)="showAsset('assetClass1', assetClass1Colour)">
 			</app-card-asset-class>
 		</div>
 
 		<!-- FOREX -->
 		<div class="col-sm-6 col-lg-3">
 			<app-card-asset-class [value]="assetClass2"
-				[lineChartData]="lineChart1Data"
-				[lineChartLabels]="lineChart1Labels"
-				[lineChartOptions]="lineChart1Options"
-				[lineChartColours]="lineChart1Colours"
-				[lineChartLegend]="lineChart1Legend"
-				[lineChartType]="lineChart1Type" (click)="showAsset('assetClass2')">
+				[lineChartData]="lineChart2Data"
+				[lineChartLabels]="lineChart2Labels"
+				[lineChartOptions]="lineChart2Options"
+				[lineChartColours]="lineChart2Colours"
+				[lineChartLegend]="lineChart2Legend"
+				[lineChartType]="lineChart2Type" (click)="showAsset('assetClass2', assetClass2Colour)">
 			</app-card-asset-class>
 		</div>
 
 		<!-- STOCKS -->
 		<div class="col-sm-6 col-lg-3">
 			<app-card-asset-class [value]="assetClass3"
-				[lineChartData]="lineChart2Data"
-				[lineChartLabels]="lineChart2Labels"
-				[lineChartOptions]="lineChart2Options"
-				[lineChartColours]="lineChart2Colours"
-				[lineChartLegend]="lineChart2Legend"
-				[lineChartType]="lineChart2Type" (click)="showAsset('assetClass3')">
+				[lineChartData]="lineChart3Data"
+				[lineChartLabels]="lineChart3Labels"
+				[lineChartOptions]="lineChart3Options"
+				[lineChartColours]="lineChart3Colours"
+				[lineChartLegend]="lineChart3Legend"
+				[lineChartType]="lineChart3Type" (click)="showAsset('assetClass3', assetClass3Colour)">
 			</app-card-asset-class>
 		</div>
 
 		<!-- COMMODITIES -->
 		<div class="col-sm-6 col-lg-3">
 			<app-card-asset-class [value]="assetClass4"
-				[lineChartData]="lineChart1Data"
-				[lineChartLabels]="lineChart1Labels"
-				[lineChartOptions]="lineChart1Options"
-				[lineChartColours]="lineChart1Colours"
-				[lineChartLegend]="lineChart1Legend"
-				[lineChartType]="lineChart1Type" (click)="showAsset('assetClass4')">
+				[lineChartData]="lineChart4Data"
+				[lineChartLabels]="lineChart4Labels"
+				[lineChartOptions]="lineChart4Options"
+				[lineChartColours]="lineChart4Colours"
+				[lineChartLegend]="lineChart4Legend"
+				[lineChartType]="lineChart4Type" (click)="showAsset('assetClass4', assetClass4Colour)">
 			</app-card-asset-class>
 		</div>
 	</div>
 	<!-- END ASSET CLASS ROW-->
 
-	<div class="col-sm-12 col-lg-12" *ngIf="assetClass == 'assetClass1'">
-		<!-- ASSET CLASS 1 ROW -->
-		<div class="row">
 
-			<!-- ASSET 1 -->
-			<div class="col-sm-6 col-lg-3">
-				<app-card-asset></app-card-asset>
-			</div>
+	<!-- ASSET CLASS 1 ROW -->
+	<div class="row" *ngIf="assetClass == 'assetClass1'">
 
-			<!-- ASSET 2 -->
-			<div class="col-sm-6 col-lg-3">
-				<app-card-asset></app-card-asset>
-			</div>
-
+		<!-- ASSET 1 -->
+		<div class="col-sm-6 col-lg-3">
+			<app-card-asset [lineChartData]="lineChart1Data"
+				[lineChartLabels]="lineChart1Labels"
+				[lineChartOptions]="lineChart1Options"
+				[lineChartColours]="lineChart1Colours"
+				[lineChartLegend]="lineChart1Legend"
+				[lineChartType]="lineChart1Type"
+				[barChartData]="barChart1Data"
+   				[barChartLabels]="barChart1Labels"
+   				[barChartOptions]="barChart1Options"
+   				[barChartColours]="barChart1Colours"
+   				[barChartLegend]="barChart1Legend"
+   				[barChartType]="barChart1Type"></app-card-asset>
 		</div>
 
-		<!-- ASSET CLASS 1 GRAPH -->
-		<div class="card">
-			<app-asset-graph></app-asset-graph>
-			<div class="card-footer">
-				<ul>
-					<li>
-						<div class="text-muted">Visits</div> <strong>29.703 Users
-							(40%)</strong>
-						<div class="progress progress-xs mt-h">
-							<div class="progress-bar bg-success" role="progressbar"
-								style="width: 40%" aria-valuenow="40" aria-valuemin="0"
-								aria-valuemax="100"></div>
-						</div>
-					</li>
-					<li class="hidden-sm-down">
-						<div class="text-muted">Unique</div> <strong>24.093 Users
-							(20%)</strong>
-						<div class="progress progress-xs mt-h">
-							<div class="progress-bar bg-info" role="progressbar"
-								style="width: 20%" aria-valuenow="20" aria-valuemin="0"
-								aria-valuemax="100"></div>
-						</div>
-					</li>
-					<li>
-						<div class="text-muted">Pageviews</div> <strong>78.706
-							Views (60%)</strong>
-						<div class="progress progress-xs mt-h">
-							<div class="progress-bar bg-warning" role="progressbar"
-								style="width: 60%" aria-valuenow="60" aria-valuemin="0"
-								aria-valuemax="100"></div>
-						</div>
-					</li>
-					<li class="hidden-sm-down">
-						<div class="text-muted">New Users</div> <strong>22.123
-							Users (80%)</strong>
-						<div class="progress progress-xs mt-h">
-							<div class="progress-bar bg-danger" role="progressbar"
-								style="width: 80%" aria-valuenow="80" aria-valuemin="0"
-								aria-valuemax="100"></div>
-						</div>
-					</li>
-					<li class="hidden-sm-down">
-						<div class="text-muted">Bounce Rate</div> <strong>40.15%</strong>
-						<div class="progress progress-xs mt-h">
-							<div class="progress-bar" role="progressbar" style="width: 40%"
-								aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-						</div>
-					</li>
-				</ul>
-			</div>
+		<!-- ASSET 2 -->
+		<div class="col-sm-6 col-lg-3">
+			<app-card-asset [lineChartData]="lineChart1Data"
+				[lineChartLabels]="lineChart1Labels"
+				[lineChartOptions]="lineChart1Options"
+				[lineChartColours]="lineChart1Colours"
+				[lineChartLegend]="lineChart1Legend"
+				[lineChartType]="lineChart1Type"></app-card-asset>
 		</div>
+
 	</div>
 	<!-- END ASSET CLASS 1-->
 </div>
