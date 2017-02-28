@@ -50,5 +50,5 @@ README.html
 workspace.xml
 .idea
 .mvn
-.mvnw
+mvnw
 *.cmd

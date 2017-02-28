@@ -3,6 +3,8 @@ package it.uiip.digitalgarage.roboadvice.controller;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 
+import it.uiip.digitalgarage.roboadvice.RoboadviceApplication;
+
 public class ServletInitializer extends SpringBootServletInitializer {
 
 	@Override
