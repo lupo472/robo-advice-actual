@@ -6,6 +6,8 @@ import { DashboardComponent } from './dashboard.component';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { CardAssetClassComponent } from './card-asset-class/card-asset-class.component';
 import { HttpModule,JsonpModule } from '@angular/http';
+import { CardAssetComponent } from './card-asset/card-asset.component';
+import { AssetGraphComponent } from './asset-graph/asset-graph.component';
 @NgModule({
   imports: [
     DashboardRoutingModule,
@@ -15,6 +17,6 @@ import { HttpModule,JsonpModule } from '@angular/http';
     HttpModule,
     JsonpModule
   ],
-  declarations: [ DashboardComponent, CardAssetClassComponent ]
+  declarations: [ DashboardComponent, CardAssetClassComponent, CardAssetComponent, AssetGraphComponent ]
 })
 export class DashboardModule { }

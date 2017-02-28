@@ -23,16 +23,17 @@ export class DashboardComponent implements OnInit {
   public brandWarning:string =  '#f8cb00';
   public brandDanger:string =   '#f86c6b';
 
-  public bonds:number = 1000;
-  public forex:number = 2000;
-  public stocks:number = 3000;
-  public commodities:number = 4000;
+  //ASSET CLASS//
+  public assetClass1:number = 1000;
+  public assetClass2:number = 2000;
+  public assetClass3:number = 3000;
+  public assetClass4:number = 4000;
 
-  public prova:string = '';
+  public assetClass:string = 'assetClass1';
 
-  //CLICK PROVA
-  public clickme(){
-    this.prova = 'ok';
+  //CHANGE ASSET CLASS VIEW
+  public showAsset(value){
+    this.assetClass = value;
   }
 
   // dropdown buttons
