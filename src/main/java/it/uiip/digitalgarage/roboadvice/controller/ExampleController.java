@@ -46,7 +46,7 @@ public class ExampleController {
 	   * GET /get-by-email  --> Return the id for the user having the passed
 	   * email.
 	   */
-	  @RequestMapping("/get-by-email")
+	  @RequestMapping("/get")
 	  @ResponseBody
 	  public String getByEmail(String email) {
 	    String userId = "";
