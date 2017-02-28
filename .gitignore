@@ -23,14 +23,11 @@ dist/
 nbdist/
 .nb-gradle/
 
-robo-advice/roboadvice/.settings
-robo-advice/roboadvice/.project
-robo-advice/roboadvice/roboadvice-web/.project
-robo-advice/roboadvice/roboadvice-web/.settings
-robo-advice/roboadvice/roboadvice-web/target
-robo-advice/roboadvice/roboadvice-web/.classpath
-robo-advice/roboadvice/src
-robo-advice/roboadvice/roboadvice-web/.gitignore
+.settings
+.project
+.target
+.classpath
+
 .DS_Store
 
 *.sw?
