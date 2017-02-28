@@ -31,7 +31,11 @@ public class DAOAsset implements IDAOAsset {
 				Long id = resultSet.getLong("id");
 				String dataSource = resultSet.getString("data_source");
 				int remarksIndex = resultSet.getInt("remarks_index");
-				assets.add(new Asset(id, dataSource, remarksIndex));
+				Asset asset = new Asset();
+//				asset.setId(id);
+//				asset.setDataSource(dataSource);
+//				asset.setRemarksIndex(remarksIndex);
+				assets.add(asset);
 			}
 			return assets;
 		} catch(SQLException e) {
