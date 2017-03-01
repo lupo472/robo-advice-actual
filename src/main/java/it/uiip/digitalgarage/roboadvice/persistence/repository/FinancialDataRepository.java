@@ -7,7 +7,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import it.uiip.digitalgarage.roboadvice.logic.entity.AssetEntity;
 import it.uiip.digitalgarage.roboadvice.logic.entity.FinancialDataEntity;
 
 @Repository

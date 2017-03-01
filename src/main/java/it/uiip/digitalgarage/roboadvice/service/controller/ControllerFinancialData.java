@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.uiip.digitalgarage.roboadvice.logic.entity.AssetEntity;
 import it.uiip.digitalgarage.roboadvice.logic.entity.FinancialDataEntity;
+import it.uiip.digitalgarage.roboadvice.persistence.quandl.QuandlDBInitializer;
+import it.uiip.digitalgarage.roboadvice.persistence.quandl.QuandlUpdateScheduler;
+import it.uiip.digitalgarage.roboadvice.persistence.quandl.QuandlUpdateTask;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.AssetRepository;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.FinancialDataRepository;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
@@ -30,6 +33,27 @@ public class ControllerFinancialData {
 	public GenericResponse<?> getFinancialDataSet() {
 		List<FinancialDataEntity> result = (List<FinancialDataEntity>) this.daoFinancialData.findAll();
 		return new GenericResponse<List<FinancialDataEntity>>(1, result);
+	}
+	
+	@RequestMapping("/updateFinancialDataSet")
+	@ResponseBody
+	public GenericResponse<?> updateFinancialDataSet() {
+		List<AssetEntity> assets = (List<AssetEntity>) this.daoAsset.findAll();
+		for (AssetEntity assetEntity : assets) {
+			new QuandlUpdateScheduler().update(assetEntity);
+		}
+		return null;
+	}
+	
+	
+	@RequestMapping("/initializeFinancialDataSet")
+	@ResponseBody
+	public GenericResponse<?> initializeFinancialDataSet() {
+		List<AssetEntity> assets = (List<AssetEntity>) this.daoAsset.findAll();
+		for (AssetEntity assetEntity : assets) {
+			new QuandlDBInitializer().getData(assetEntity);
+		}
+		return null;
 	}
 	
 	@RequestMapping("/prova")
