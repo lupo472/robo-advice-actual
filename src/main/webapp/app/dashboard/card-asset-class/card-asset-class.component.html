@@ -14,7 +14,7 @@
 					<p>{{percent}}</p>
 				</div>
 				<div class="chart-wrapper px-1" style="height: 70px;">
-					<canvas baseChart class="chart" [datasets]="lineChartData"
+					<canvas baseChart class="chart" [data]="lineChartData"
 						[labels]="lineChartLabels" [options]="lineChartOptions"
 						[colors]="lineChartColours" [legend]="lineChartLegend"
 						[chartType]="lineChartType" (chartHover)="chartHovered($event)"
