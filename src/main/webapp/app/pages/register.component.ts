@@ -7,10 +7,16 @@ import { UserService } from '../services/user.service';
 })
 export class RegisterComponent {
 
-  constructor(private service:UserService) {
-    this.service.register().subscribe(
+  constructor(private service:UserService) { }
+  
+  user:any = {};
+  
+  public onSubmit(){
+    
+    this.service.register(this.user).subscribe(
     (res)=>{
     console.log(JSON.stringify(res));
        });
-   }
+  }
+  
 }

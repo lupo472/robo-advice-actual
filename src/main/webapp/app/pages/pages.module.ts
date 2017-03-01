@@ -6,9 +6,11 @@ import { LoginComponent } from './login.component';
 import { RegisterComponent } from './register.component';
 
 import { PagesRoutingModule } from './pages-routing.module';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  imports: [ PagesRoutingModule ],
+  imports: [ PagesRoutingModule, CommonModule, FormsModule ],
   declarations: [
     p404Component,
     p500Component,
