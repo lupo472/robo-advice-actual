@@ -45,12 +45,6 @@ listAssetClass = [
   public assetClass3Colour:string =  '#f8cb00';
   public assetClass4Colour:string =   '#f86c6b';
 
-  //ASSET CLASS//
-  public assetClass1:number = 1000;
-  public assetClass2:number = 2000;
-  public assetClass3:number = 3000;
-  public assetClass4:number = 4000;
-
   public assetClass:string = 'assetClass1';
 
   //CHANGE ASSET CLASS VIEW
@@ -86,17 +80,62 @@ listAssetClass = [
   public chartHovered(e:any):void {
     console.log(e);
   }
-
-  // lineChart1
-  public lineChart1Data:Array<any> = [
-    {
-      data: [65, 59, 84, 84, 51, 55, 40],
-      label: 'Series A'
-    }
+  
+  //ASSET CLASS
+  public assetClasses:Array<any> = [
+    {name: 'Bonds',       data: [65, 59, 84, 84, 51, 55, 40], percentage: 15},
+    {name: 'Forex',       data: [65, 59, 84, 84, 51, 55, 40], percentage: 15},
+    {name: 'Stocks',      data: [65, 59, 84, 84, 51, 55, 40], percentage: 15},
+    {name: 'Commodities', data: [65, 59, 84, 84, 51, 55, 40], percentage: 15}
   ];
-  public lineChart1Labels:Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-  public lineChart1Options:any = {
+  
+  
+  //ASSET CLASS 1
+  public assetClass1:Array<any> = [
+    {name: 'CHRIS/CME_US1', data: [65, 59, 84, 84, 51, 55, 40], percentage: 15},
+    {name: 'CHRIS/CME_UL1', data: [65, 59, 84, 84, 51, 55, 40], percentage: 15}
+  ];
+  
+  //ASSET CLASS 2
+  public assetClass2:Array<any> = [
+    {name: 'CURRFX/USDEUR', data: [65, 59, 84, 84, 51, 55, 40], percentage: 15},
+    {name: 'CURRFX/USDCHF', data: [65, 59, 84, 84, 51, 55, 40], percentage: 15},
+    {name: 'BAVERAGE/USD',  data: [65, 59, 84, 84, 51, 55, 40], percentage: 15}
+  ];
+  
+  //ASSET CLASS 3
+  public assetClass3:Array<any> = [
+    {name: 'WIKI/FB',   data: [65, 59, 84, 84, 51, 55, 40], percentage: 15},
+    {name: 'WIKI/AAPL', data: [65, 59, 84, 84, 51, 55, 40], percentage: 15},
+    {name: 'WIKI/MSFT', data: [65, 59, 84, 84, 51, 55, 40], percentage: 15},
+    {name: 'WIKI/TWTR', data: [65, 59, 84, 84, 51, 55, 40], percentage: 15}
+  ];
+  
+  //ASSET CLASS 4
+  public assetClass4:Array<any> = [
+    {name: 'COM/WLD_GOLD',    data: [65, 59, 84, 84, 51, 55, 40], percentage: 15},
+    {name: 'COM/WLD_SILVER',  data: [65, 59, 84, 84, 51, 55, 40], percentage: 15},
+    {name: 'COM/OIL_BRENT',   data: [65, 59, 84, 84, 51, 55, 40], percentage: 15},
+    {name: 'COM/WLD_RICE_05', data: [65, 59, 84, 84, 51, 55, 40], percentage: 15}
+  ];
+  
+  //ASSET
+  public assets:Array<any> = [this.assetClass1, 
+                              this.assetClass2, 
+                              this.assetClass3, 
+                              this.assetClass4];
+  
+  //LINECHART GENERAL
+  public lineChartLabels:Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  public lineChartOptions:any = {
     maintainAspectRatio: false,
+    tooltips: {
+        callbacks: {
+           label: function(tooltipItem) {
+                  return tooltipItem.yLabel;
+           }
+        }
+    },
     scales: {
       xAxes: [{
         gridLines: {
@@ -132,153 +171,14 @@ listAssetClass = [
       display: false
     }
   };
-  public lineChart1Colours:Array<any> = [
+  public lineChartType:string = 'line';
+  public lineChartColours:Array<any> = [
     { // grey
       backgroundColor: this.brandPrimary,
       borderColor: 'rgba(255,255,255,.55)'
     }
   ];
-  public lineChart1Legend:boolean = false;
-  public lineChart1Type:string = 'line';
-
-  // lineChart2
-  public lineChart2Data:Array<any> = [
-    {
-      data: [1, 18, 9, 17, 34, 22, 11],
-      label: 'Series A'
-    }
-  ];
-  public lineChart2Labels:Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-  public lineChart2Options:any = {
-    maintainAspectRatio: false,
-    scales: {
-      xAxes: [{
-        gridLines: {
-          color: 'transparent',
-          zeroLineColor: 'transparent'
-        },
-        ticks: {
-          fontSize: 2,
-          fontColor: 'transparent',
-        }
-
-      }],
-      yAxes: [{
-        display: false,
-        ticks: {
-          display: false,
-          min: 1 - 5,
-          max: 34 + 5,
-        }
-      }],
-    },
-    elements: {
-      line: {
-        tension: 0.00001,
-        borderWidth: 1
-      },
-      point: {
-        radius: 4,
-        hitRadius: 10,
-        hoverRadius: 4,
-      },
-    },
-    legend: {
-      display: false
-    }
-  };
-  public lineChart2Colours:Array<any> = [
-    { // grey
-      backgroundColor: this.brandInfo,
-      borderColor: 'rgba(255,255,255,.55)'
-    }
-  ];
-  public lineChart2Legend:boolean = false;
-  public lineChart2Type:string = 'line';
-
-
-  // lineChart3
-  public lineChart3Data:Array<any> = [
-    {
-      data: [78, 81, 80, 45, 34, 12, 40],
-      label: 'Series A'
-    }
-  ];
-  public lineChart3Labels:Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-  public lineChart3Options:any = {
-    maintainAspectRatio: false,
-    scales: {
-      xAxes: [{
-        display: false
-      }],
-      yAxes: [{
-        display: false
-      }]
-    },
-    elements: {
-      line: {
-        borderWidth: 2
-      },
-      point: {
-        radius: 0,
-        hitRadius: 10,
-        hoverRadius: 4,
-      },
-    },
-    legend: {
-      display: false
-    }
-  };
-  public lineChart3Colours:Array<any> = [
-    {
-      backgroundColor: 'rgba(255,255,255,.2)',
-      borderColor: 'rgba(255,255,255,.55)',
-    }
-  ];
-  public lineChart3Legend:boolean = false;
-  public lineChart3Type:string = 'line';
-
-  // lineChart4
-  public lineChart4Data:Array<any> = [
-    {
-      data: [78, 81, 80, 45, 34, 12, 40],
-      label: 'Series A'
-    }
-  ];
-  public lineChart4Labels:Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-  public lineChart4Options:any = {
-    maintainAspectRatio: false,
-    scales: {
-      xAxes: [{
-        display: false
-      }],
-      yAxes: [{
-        display: false
-      }]
-    },
-    elements: {
-      line: {
-        borderWidth: 2
-      },
-      point: {
-        radius: 0,
-        hitRadius: 10,
-        hoverRadius: 4,
-      },
-    },
-    legend: {
-      display: false
-    }
-  };
-  public lineChart4Colours:Array<any> = [
-    {
-      backgroundColor: 'rgba(255,255,255,.2)',
-      borderColor: 'rgba(255,255,255,.55)',
-    }
-  ];
-  public lineChart4Legend:boolean = false;
-  public lineChart4Type:string = 'line';
-
+  
   // barChart1
   public barChart1Data:Array<any> = [
     {
