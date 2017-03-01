@@ -9,5 +9,7 @@ import it.uiip.digitalgarage.roboadvice.logic.entity.AssetEntity;
 @Repository
 @Transactional
 public interface AssetRepository extends PagingAndSortingRepository<AssetEntity, Long>{
+	
+	public AssetEntity findById(Long id);
 
 }
