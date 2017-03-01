@@ -1,6 +1,6 @@
 package it.uiip.digitalgarage.roboadvice.logic.model;
 
-import java.sql.Timestamp;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,6 +25,6 @@ public @Data class User {
 	@NotNull
 	private String password;
 	@Column
-	private Timestamp timestamp;
+	private LocalDate date;
 		
 }
