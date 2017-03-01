@@ -8,9 +8,7 @@ public @Data class DefaultStrategy {
 	
     private Long id;
     private String name;
-    private BigDecimal bonds;
-    private BigDecimal stoks;
-    private BigDecimal forex;
-    private BigDecimal commodities;
+    private Long idAssetClass;
+    private BigDecimal percentage;
 
 }
