@@ -9,13 +9,9 @@ export class RegisterComponent {
 
   constructor(private service:UserService) { }
   
-  email:string;
-  password:string;
-  user:any;
+  user:any = {};
   
-  public register(){
-    
-    this.user={"email": this.email, "password": this.password};
+  public onSubmit(){
     
     this.service.register(this.user).subscribe(
     (res)=>{
