@@ -13,7 +13,6 @@ import it.uiip.digitalgarage.roboadvice.logic.entity.AssetEntity;
 import it.uiip.digitalgarage.roboadvice.logic.entity.FinancialDataEntity;
 import it.uiip.digitalgarage.roboadvice.logic.quandl.QuandlOperator;
 import it.uiip.digitalgarage.roboadvice.persistence.quandl.QuandlDBInitializer;
-import it.uiip.digitalgarage.roboadvice.persistence.quandl.QuandlUpdateScheduler;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.AssetRepository;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.FinancialDataRepository;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
@@ -54,7 +53,6 @@ public class ControllerFinancialData {
 	@ResponseBody
 	public GenericResponse<?> prova() {
 		AssetEntity asset = this.daoAsset.findById(new Long(1));
-		//return new GenericResponse<LocalDate>(1, LocalDate.of(2017, 01, 01));
 		List<FinancialDataEntity> data = this.daoFinancialData.findByAssetIdAndDate(asset.getId(), LocalDate.of(2017, 02, 01));
 		return new GenericResponse<List<FinancialDataEntity>>(1, data);
 	}
