@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { AssetClass } from '../assetclass';
 
 @Component({
   selector: 'app-card-asset-class',
@@ -6,25 +7,29 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./card-asset-class.component.scss']
 })
 export class CardAssetClassComponent implements OnInit {
-  
+    // @Input() listAssetClass:any;
     @Input() value;
+    @Input() percent;
     @Input() lineChartData;
     @Input() lineChartLabels;
     @Input() lineChartOptions;
     @Input() lineChartColours;
     @Input() lineChartLegend;
     @Input() lineChartType;
-  
 
-  constructor() {}
-  
+
+  constructor() {
+  }
+
   public brandPrimary:string =  '#20a8d8';
   public brandSuccess:string =  '#4dbd74';
   public brandInfo:string =   '#63c2de';
   public brandWarning:string =  '#f8cb00';
   public brandDanger:string =   '#f86c6b';
-  
+
   ngOnInit() {
+    // console.log("card-asset-class");
+    // console.log(this.listAssetClass);
   }
 
 }
