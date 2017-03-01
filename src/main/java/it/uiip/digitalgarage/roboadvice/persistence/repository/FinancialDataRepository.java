@@ -4,12 +4,10 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import it.uiip.digitalgarage.roboadvice.logic.entity.UserEntity;
+import it.uiip.digitalgarage.roboadvice.logic.entity.FinancialDataEntity;
 
 @Repository
 @Transactional
-public interface UserRepository extends PagingAndSortingRepository<UserEntity, Long> {
-	
-	public UserEntity findByEmail(String email);
-	
+public interface FinancialDataRepository extends PagingAndSortingRepository<FinancialDataEntity, Long> {
+
 }
