@@ -11,7 +11,7 @@
 						</div>
 					</div>
 					<h4 class="mb-0">{{value}}</h4>
-					<p>Members online</p>
+					<p>{{percent}}</p>
 				</div>
 				<div class="chart-wrapper px-1" style="height: 70px;">
 					<canvas baseChart class="chart" [datasets]="lineChartData"
@@ -21,4 +21,3 @@
 						(chartClick)="chartClicked($event)"></canvas>
 				</div>
 			</div>
-	
