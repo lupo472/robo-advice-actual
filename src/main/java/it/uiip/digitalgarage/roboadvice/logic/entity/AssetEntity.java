@@ -1,10 +1,10 @@
-package it.uiip.digitalgarage.roboadvice.logic;
+package it.uiip.digitalgarage.roboadvice.logic.entity;
 
 import java.math.BigDecimal;
 
 import lombok.Data;
 
-public @Data class Asset {
+public @Data class AssetEntity {
 	
 	private Long id;
 	private Long idAssetClass;
