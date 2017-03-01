@@ -1,4 +1,4 @@
-package it.uiip.digitalgarage.roboadvice.controller;
+package it.uiip.digitalgarage.roboadvice.service.controller;
 
 import java.time.LocalDate;
 
@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.uiip.digitalgarage.roboadvice.logic.model.User;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.UserRepository;
+import it.uiip.digitalgarage.roboadvice.service.model.GenericResponse;
 
 @RestController
 public class ControllerUser {
@@ -18,13 +19,16 @@ public class ControllerUser {
 	
 	@RequestMapping("/registerUser")
 	@ResponseBody
-	public String registerUser(String email, String password) {
-	    User user = new User();
-	    user.setEmail(email);
-	    user.setPassword(password);
-	    user.setDate(LocalDate.now());
-		daoUser.save(user);
-		return "registrazione";
+	public GenericResponse<?> registerUser(String email, String password) {
+	    if(daoUser.findByEmail(email) == null) {
+			User user = new User();
+		    user.setEmail(email);
+		    user.setPassword(password);
+		    user.setDate(LocalDate.now());
+			user = daoUser.save(user);
+			return new GenericResponse<User>(1, user);
+	    }
+		return new GenericResponse<String>(0, "User Already Registered");
 	}
 	
 	@RequestMapping("/loginUser")

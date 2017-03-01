@@ -11,5 +11,5 @@ import it.uiip.digitalgarage.roboadvice.logic.model.User;
 public interface UserRepository extends PagingAndSortingRepository<User, Long> {
 	
 	public User findByEmail(String email);
-
+	
 }

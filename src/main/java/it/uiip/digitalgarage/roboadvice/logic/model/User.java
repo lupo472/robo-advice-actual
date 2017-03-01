@@ -20,11 +20,9 @@ public @Data class User {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	
-	@NotNull
 	@Column(name = "email", nullable = false, unique = true)
 	private String email;
 	
-	@NotNull
 	@Column(name = "password", nullable = false)
 	private String password;
 	
