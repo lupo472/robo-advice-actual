@@ -1,4 +1,4 @@
-package it.uiip.digitalgarage.roboadvice.persistence.idao;
+package it.uiip.digitalgarage.roboadvice.persistence.repository;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
