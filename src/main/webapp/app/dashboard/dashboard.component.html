@@ -4,8 +4,8 @@
 	<div class="row">
 
 		<!-- BONDS -->
-		<div class="col-sm-6 col-lg-3">
-			<app-card-asset-class [value]="assetClass1"
+		<div class="col-sm-6 col-lg-3" *ngFor="let asset of listAssetClass">
+			<app-card-asset-class [value]="asset.name" [percent]="asset.percentage"
 				[lineChartData]="lineChart1Data"
 				[lineChartLabels]="lineChart1Labels"
 				[lineChartOptions]="lineChart1Options"
@@ -16,7 +16,7 @@
 		</div>
 
 		<!-- FOREX -->
-		<div class="col-sm-6 col-lg-3">
+		<!-- <div class="col-sm-6 col-lg-3">
 			<app-card-asset-class [value]="assetClass2"
 				[lineChartData]="lineChart2Data"
 				[lineChartLabels]="lineChart2Labels"
@@ -25,10 +25,10 @@
 				[lineChartLegend]="lineChart2Legend"
 				[lineChartType]="lineChart2Type" (click)="showAsset('assetClass2', assetClass2Colour)">
 			</app-card-asset-class>
-		</div>
+		</div> -->
 
 		<!-- STOCKS -->
-		<div class="col-sm-6 col-lg-3">
+		<!-- <div class="col-sm-6 col-lg-3">
 			<app-card-asset-class [value]="assetClass3"
 				[lineChartData]="lineChart3Data"
 				[lineChartLabels]="lineChart3Labels"
@@ -37,10 +37,10 @@
 				[lineChartLegend]="lineChart3Legend"
 				[lineChartType]="lineChart3Type" (click)="showAsset('assetClass3', assetClass3Colour)">
 			</app-card-asset-class>
-		</div>
+		</div> -->
 
 		<!-- COMMODITIES -->
-		<div class="col-sm-6 col-lg-3">
+		<!-- <div class="col-sm-6 col-lg-3">
 			<app-card-asset-class [value]="assetClass4"
 				[lineChartData]="lineChart4Data"
 				[lineChartLabels]="lineChart4Labels"
@@ -50,15 +50,15 @@
 				[lineChartType]="lineChart4Type" (click)="showAsset('assetClass4', assetClass4Colour)">
 			</app-card-asset-class>
 		</div>
-	</div>
+	</div> -->
 	<!-- END ASSET CLASS ROW-->
 
 
 	<!-- ASSET CLASS 1 ROW -->
-	<div class="row" *ngIf="assetClass == 'assetClass1'">
+	<!-- <div class="row" *ngIf="assetClass == 'assetClass1'"> -->
 
 		<!-- ASSET 1 -->
-		<div class="col-sm-6 col-lg-3">
+		<!-- <div class="col-sm-6 col-lg-3">
 			<app-card-asset [lineChartData]="lineChart1Data"
 				[lineChartLabels]="lineChart1Labels"
 				[lineChartOptions]="lineChart1Options"
@@ -71,10 +71,10 @@
    				[barChartColours]="barChart1Colours"
    				[barChartLegend]="barChart1Legend"
    				[barChartType]="barChart1Type"></app-card-asset>
-		</div>
+		</div> -->
 
 		<!-- ASSET 2 -->
-		<div class="col-sm-6 col-lg-3">
+		<!-- <div class="col-sm-6 col-lg-3">
 			<app-card-asset [lineChartData]="lineChart1Data"
 				[lineChartLabels]="lineChart1Labels"
 				[lineChartOptions]="lineChart1Options"
@@ -82,10 +82,7 @@
 				[lineChartLegend]="lineChart1Legend"
 				[lineChartType]="lineChart1Type"></app-card-asset>
 		</div>
-
+-->
 	</div>
 	<!-- END ASSET CLASS 1-->
 </div>
-
-
-

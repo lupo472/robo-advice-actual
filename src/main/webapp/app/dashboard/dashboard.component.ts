@@ -1,24 +1,43 @@
 import { Component, OnInit, Renderer } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
+import { AssetClass } from './assetclass';
 
 @Component({
   templateUrl: 'dashboard.component.html',
   providers:[UserService]
 })
 export class DashboardComponent implements OnInit {
-
+// listAssetClass:AssetClass[];
+listAssetClass = [
+  {
+    name:"Bonds",
+    percentage:"65%"
+  },
+  {
+    name:"Forex",
+    percentage:"10%"
+  },
+  {
+    name:"Stocks",
+    percentage:"15%"
+  },
+  {
+    name:"Comodities",
+    percentage:"10%"
+  }
+];
   constructor()
   {
 
   }
-  
+
   public brandPrimary:string =  '#20a8d8';
   public brandSuccess:string =  '#4dbd74';
   public brandInfo:string =   '#63c2de';
   public brandWarning:string =  '#f8cb00';
   public brandDanger:string =   '#f86c6b';
-  
+
   //ASSET CLASS COLOUR//
   public assetClassColour:string =  '#20a8d8';
   public assetClass1Colour:string =  '#4dbd74';
@@ -291,9 +310,8 @@ export class DashboardComponent implements OnInit {
   ];
   public barChart1Legend:boolean = false;
   public barChart1Type:string = 'bar';
-  
+
   ngOnInit(): void {
-    
+
     }
   }
-
