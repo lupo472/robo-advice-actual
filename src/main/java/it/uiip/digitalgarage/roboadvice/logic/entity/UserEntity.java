@@ -25,7 +25,7 @@ public @Data class UserEntity {
 	@Column(name = "password", nullable = false)
 	private String password;
 	
-	@Column
+	@Column(name = "date")
 	private LocalDate date;
 		
 }
