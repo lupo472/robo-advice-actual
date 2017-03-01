@@ -9,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -23,7 +22,7 @@ public @Data class AssetEntity {
 	private Long id;
 	
 	@ManyToOne()
-	@JoinColumn(name = "id_asset_class")
+	@JoinColumn(name = "id_asset_class", nullable = false)
 	private AssetClassEntity assetClass;
 
 	@Column(name = "name", nullable = false, unique = true)
