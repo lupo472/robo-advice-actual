@@ -1,24 +1,20 @@
-import { Injectable } from '@angular/core';
-import { GeneralService } from './general.service';
+import { Injectable, Inject } from '@angular/core';
+import { AppConfig } from './app.config';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
 
 @Injectable()
 export class UserService {
   
-  public url:GeneralService;
-  
-  constructor(private http:Http, public GeneralUrl: GeneralService) {
-    this.url = GeneralUrl;
-  }
+  constructor(private http:Http) { }
 
-  login() {
-    return this.http.post(this.url + 'login',{"email": "peter@klaven","password": "cityslicka"})
+  login(user) {
+    return this.http.post(AppConfig.url + 'login', user)
       .map(response => response.json());
   }
   
-  register(){
-    return this.http.post(this.url + 'register',{"email":"sydney@fife","password":"pistol"})
+  register(user){
+    return this.http.post(AppConfig.url + 'register', user)
       .map(response => response.json());
   }
 }
