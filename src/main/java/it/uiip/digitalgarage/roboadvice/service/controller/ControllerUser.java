@@ -4,7 +4,6 @@ import java.time.LocalDate;
 
 import javax.validation.Valid;
 
-import org.apache.catalina.mapper.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,13 +34,20 @@ public class ControllerUser {
 			user = daoUser.save(user);
 			return new GenericResponse<UserEntity>(1, user);
 	    }
-		return new GenericResponse<String>(0, "User Already Registered");
+		return new GenericResponse<String>(0, "Email Already Registered");
 	}
 	
 	@RequestMapping("/loginUser")
 	@ResponseBody
-	public String loginUser(String email, String password) {
-	    return "login";
+	public GenericResponse<?> loginUser(@Valid @RequestBody UserDTO userDTO) {
+		UserEntity user = daoUser.findByEmail(userDTO.getEmail());
+		if(user == null) {
+			return new GenericResponse<String>(0, "Email not registered");
+		}
+		if(user.getPassword().equals(userDTO.getPassword())) {
+			return new GenericResponse<UserEntity>(1, user);
+		}
+		return new GenericResponse<String>(0, "Wrong Password"); 
 	}
 	
 }
