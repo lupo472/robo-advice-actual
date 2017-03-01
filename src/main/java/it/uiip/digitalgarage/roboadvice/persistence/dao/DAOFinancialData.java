@@ -15,21 +15,21 @@ public class DAOFinancialData implements IDAOFinancialData {
 
 	@Override
 	public void insertFinancialData(FinancialData financialData) throws DAOException {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		try {
-			connection = DataSource.getConnection();
-			preparedStatement = connection.prepareStatement(INSERT_FINANCIAL_DATA);
-			preparedStatement.setLong(1, financialData.getIdAsset());
-			preparedStatement.setBigDecimal(2, financialData.getValue());
-			preparedStatement.setString(3, financialData.getDate());
-			preparedStatement.executeUpdate();
-		} catch(SQLException e) {
-			throw new DAOException(e);
-		} finally {
-			DataSource.close(connection);
-			DataSource.close(preparedStatement);
-		}
+//		Connection connection = null;
+//		PreparedStatement preparedStatement = null;
+//		try {
+//			connection = DataSource.getConnection();
+//			preparedStatement = connection.prepareStatement(INSERT_FINANCIAL_DATA);
+//			preparedStatement.setLong(1, financialData.getIdAsset());
+//			preparedStatement.setBigDecimal(2, financialData.getValue());
+//			preparedStatement.setString(3, financialData.getDate());
+//			preparedStatement.executeUpdate();
+//		} catch(SQLException e) {
+//			throw new DAOException(e);
+//		} finally {
+//			DataSource.close(connection);
+//			DataSource.close(preparedStatement);
+//		}
 	}
 
 }
