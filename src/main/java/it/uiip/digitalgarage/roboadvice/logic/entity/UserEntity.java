@@ -1,4 +1,4 @@
-package it.uiip.digitalgarage.roboadvice.logic.model;
+package it.uiip.digitalgarage.roboadvice.logic.entity;
 
 import java.time.LocalDate;
 
@@ -8,13 +8,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 
 @Entity
 @Table(name="user")
-public @Data class User {
+public @Data class UserEntity {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)

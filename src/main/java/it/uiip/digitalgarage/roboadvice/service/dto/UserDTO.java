@@ -1,4 +1,4 @@
-package it.uiip.digitalgarage.roboadvice.service.model.dto;
+package it.uiip.digitalgarage.roboadvice.service.dto;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -10,11 +10,11 @@ import lombok.Data;
 public @Data class UserDTO {
 	
 	@NotNull
-	@Email
+	//@Email
 	private String email;
 	
 	@NotNull
-	@Size(min = 5)
+	//@Size(min = 5)
 	private String password;
 	
 }

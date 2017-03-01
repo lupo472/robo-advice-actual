@@ -1,4 +1,4 @@
-package it.uiip.digitalgarage.roboadvice.logic.model;
+package it.uiip.digitalgarage.roboadvice.logic;
 
 import java.math.BigDecimal;
 

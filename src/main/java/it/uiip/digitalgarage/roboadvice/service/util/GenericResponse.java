@@ -1,4 +1,4 @@
-package it.uiip.digitalgarage.roboadvice.service.model;
+package it.uiip.digitalgarage.roboadvice.service.util;
 
 public class GenericResponse<T> {
 
