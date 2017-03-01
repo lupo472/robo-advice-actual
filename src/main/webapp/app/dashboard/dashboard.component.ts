@@ -8,15 +8,11 @@ import { UserService } from '../services/user.service';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor(private service:UserService)
+  constructor()
   {
-  console.log("++dashboard component");
-  this.service.loginUser().subscribe(
-    (res)=>{
-    console.log(JSON.stringify(res));
-  });
 
   }
+  
   public brandPrimary:string =  '#20a8d8';
   public brandSuccess:string =  '#4dbd74';
   public brandInfo:string =   '#63c2de';
