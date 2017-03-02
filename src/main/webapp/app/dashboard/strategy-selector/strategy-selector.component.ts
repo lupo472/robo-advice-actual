@@ -1,27 +1,49 @@
-import { Component, OnInit } from '@angular/core';
+import { AppConfig } from '../../services/app.config';
+import { Component, OnInit, Input } from '@angular/core';
+
+import { StrategyService } from '../../services/strategy.service';
 
 @Component({
   selector: 'app-strategy-selector',
   templateUrl: './strategy-selector.component.html',
-  styleUrls: ['./strategy-selector.component.scss']
+  styleUrls: ['./strategy-selector.component.scss'],
+  providers:[StrategyService]
 })
 export class StrategySelectorComponent implements OnInit {
+  
+  public strategySet = [];
+  public strategies =  [];
 
-  constructor() { }
+  constructor(private service:StrategyService) {
+    this.service.getDefaultStrategySet().subscribe((result) => this.getStrategy(result));
+   }
   
-  //STRATEGIES
-  public strategies:Array<any> =  [
-                                   {name: 'Bonds',    data: [95, 0, 0, 5]   },
-                                   {name: 'Income',   data: [65, 15, 10, 10]},
-                                   {name: 'Balanced', data: [30, 20, 30, 20]},
-                                   {name: 'Growth',   data: [20, 10, 60, 10]},
-                                   {name: 'Stocks',   data: [0, 0, 100, 0]},
-                                   {name: 'Custom',   data: [0, 0, 0, 0]    }
-                                 ];
+  //ASSIGN STRATEGIES
+  getStrategy(result){
+    this.strategySet = result.data;
+    
+    var arrayPercentage = [];
+    var arrayNull = [];
+    var arrayLabels = [];
+    
+    this.strategySet.forEach((item, index) => {
+      
+      item.list.forEach((element, i) =>{
+       arrayPercentage[i] = element.percentage;
+       arrayNull[i] = 0;
+       arrayLabels[i] = element.name;
+        });
+      
+      this.strategies[index] = {name:  item.name, data: arrayPercentage, labels: arrayLabels}
+      arrayPercentage = [];
+      arrayLabels = [];
+    })
   
+    this.strategies[this.strategySet.length]={name: 'custom', data: arrayNull}
+  }
   
   //GENERAL SETTINGS
-  public strategyLabels:Array<any> = ['Bonds', 'Forex', 'Stocks', 'Commodities'];
+  
   public strategyOptions:any = {
     maintainAspectRatio: false,
     cutoutPercentage: 20,
