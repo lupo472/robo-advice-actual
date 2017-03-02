@@ -18,6 +18,17 @@ export class StrategySelectorComponent implements OnInit {
     this.service.getDefaultStrategySet().subscribe((result) => this.getStrategy(result));
    }
   
+  //ASSIGN COLOUR
+  assignColour(id){
+  
+    switch(id){
+        case 1: return "#4dbd74";
+        case 2: return "#63c2de";
+        case 3: return "#f8cb00";
+        case 4: return "#f86c6b";
+        }
+  }
+  
   //ASSIGN STRATEGIES
   getStrategy(result){
     this.strategySet = result.data;
@@ -25,6 +36,7 @@ export class StrategySelectorComponent implements OnInit {
     var arrayPercentage = [];
     var arrayNull = [];
     var arrayLabels = [];
+    var arrayColours = [];
     
     this.strategySet.forEach((item, index) => {
       
@@ -32,18 +44,26 @@ export class StrategySelectorComponent implements OnInit {
        arrayPercentage[i] = element.percentage;
        arrayNull[i] = 0;
        arrayLabels[i] = element.name;
+       arrayColours[i] = this.assignColour(element.id);
         });
       
-      this.strategies[index] = {name:  item.name, data: arrayPercentage, labels: arrayLabels}
+      this.strategies[index] = {
+                                name:  item.name, 
+                                data: arrayPercentage, 
+                                labels: arrayLabels, 
+                                colours: [{backgroundColor: arrayColours, borderWidth: 3}]
+                                }
+      
+      console.log(this.strategies[index].colours);
       arrayPercentage = [];
       arrayLabels = [];
+      arrayColours = [];
     })
   
     this.strategies[this.strategySet.length]={name: 'custom', data: arrayNull}
   }
   
   //GENERAL SETTINGS
-  
   public strategyOptions:any = {
     maintainAspectRatio: false,
     cutoutPercentage: 20,
@@ -52,17 +72,6 @@ export class StrategySelectorComponent implements OnInit {
     }
   };
   public strategyType:string = 'pie';
-  public strategyColours:Array<any> = [
-    {
-      backgroundColor: [
-                "#4dbd74",
-                "#63c2de",
-                "#f8cb00",
-                "#f86c6b"
-            ],
-      borderWidth: 5
-    }
-  ];
   
   ngOnInit() {
   }
