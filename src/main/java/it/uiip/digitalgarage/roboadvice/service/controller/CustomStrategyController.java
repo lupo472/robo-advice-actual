@@ -2,8 +2,7 @@ package it.uiip.digitalgarage.roboadvice.service.controller;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.CustomStrategyEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
-import it.uiip.digitalgarage.roboadvice.service.dto.UserRequestDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.UserResponseDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,9 +22,12 @@ import java.util.List;
 public class CustomStrategyController extends GenericController{
 
     @RequestMapping("/userCustomStrategySet")
-    public GenericResponse<?> getUserCustomStrategySet(@RequestBody UserResponseDTO user){
+    public GenericResponse<?> getUserCustomStrategySet(@RequestBody UserLoggedDTO user){
         try{
-            List<CustomStrategyEntity> customStrategies = customStrategyRep.findByUserId(user.getId());
+            List<CustomStrategyEntity> customStrategies = this.customStrategyOp.getUserCustomStrategies(user.getId());
+
+            if(customStrategies == null) return new GenericResponse<String>(0,"Failure");
+
             return new GenericResponse<List<CustomStrategyEntity>>(1,customStrategies);
 
         } catch(Exception e){
@@ -33,12 +35,15 @@ public class CustomStrategyController extends GenericController{
         }
     }
 
-    @RequestMapping("/addCustomStrategy")
-    public GenericResponse addCustomStrategy(@RequestBody CustomStrategyEntity customStrategy){
+    @RequestMapping("/setCustomStrategy")
+    public GenericResponse setCustomStrategy(@RequestBody CustomStrategyEntity customStrategy){
         try{
-            return null;
+            CustomStrategyEntity createdStrategy = this.customStrategyOp.setCustomStrategy(customStrategy);
+
+            if(customStrategy == null) return new GenericResponse<String>(0, "Failure");
+            return new GenericResponse<CustomStrategyEntity>(1, createdStrategy);
         } catch(Exception e){
-            return new GenericResponse<String>(0,"Exception");
+            return new GenericResponse<String>(0, "Exception");
         }
     }
 

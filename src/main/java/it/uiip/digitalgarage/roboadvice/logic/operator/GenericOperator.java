@@ -1,10 +1,6 @@
 package it.uiip.digitalgarage.roboadvice.logic.operator;
 
-import it.uiip.digitalgarage.roboadvice.persistence.repository.AssetClassRepository;
-import it.uiip.digitalgarage.roboadvice.persistence.repository.AssetRepository;
-import it.uiip.digitalgarage.roboadvice.persistence.repository.DefaultStrategyRepository;
-import it.uiip.digitalgarage.roboadvice.persistence.repository.FinancialDataRepository;
-import it.uiip.digitalgarage.roboadvice.persistence.repository.UserRepository;
+import it.uiip.digitalgarage.roboadvice.persistence.repository.*;
 
 public abstract class GenericOperator {
 	
@@ -17,5 +13,7 @@ public abstract class GenericOperator {
 	protected UserRepository userRep;
 	
 	protected DefaultStrategyRepository defaultStrategyRep;
+
+	protected CustomStrategyRepository customStrategyRep;
 
 }
