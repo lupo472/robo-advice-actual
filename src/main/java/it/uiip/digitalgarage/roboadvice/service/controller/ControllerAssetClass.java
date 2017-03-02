@@ -17,7 +17,7 @@ public class ControllerAssetClass extends GenericController {
 	@RequestMapping("/getAssetClassSet")
 	@ResponseBody
 	public GenericResponse<?> getAssetClassSet() {
-		List<AssetClassEntity> result = this.daoAssetClass.findAll();
+		List<AssetClassEntity> result = this.assetClassRep.findAll();
 		return new GenericResponse<List<AssetClassEntity>>(1, result);
 	}
 	

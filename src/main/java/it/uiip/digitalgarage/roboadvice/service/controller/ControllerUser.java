@@ -21,7 +21,7 @@ public class ControllerUser extends GenericController {
 	@RequestMapping("/registerUser")
 	@ResponseBody
 	public GenericResponse<?> registerUser(@Valid @RequestBody UserDTO userDTO) {
-		if (daoUser.findByEmail(userDTO.getEmail()) == null) {
+		if (userRep.findByEmail(userDTO.getEmail()) == null) {
 			UserEntity user = new UserEntity();
 			user.setEmail(userDTO.getEmail());
 			String password = userDTO.getPassword();
@@ -29,7 +29,7 @@ public class ControllerUser extends GenericController {
 			//password = HashFunction.hashStringSHA256(password);
 			user.setPassword(password);
 			user.setDate(LocalDate.now());
-			user = daoUser.save(user);
+			user = userRep.save(user);
 			return new GenericResponse<UserEntity>(1, user);
 		}
 		return new GenericResponse<String>(0, "Email Already Registered");
@@ -38,7 +38,7 @@ public class ControllerUser extends GenericController {
 	@RequestMapping("/loginUser")
 	@ResponseBody
 	public GenericResponse<?> loginUser(@Valid @RequestBody UserDTO userDTO) {
-		UserEntity user = daoUser.findByEmail(userDTO.getEmail());
+		UserEntity user = userRep.findByEmail(userDTO.getEmail());
 		if(user == null) {
 			return new GenericResponse<String>(0, "Email not registered");
 		}

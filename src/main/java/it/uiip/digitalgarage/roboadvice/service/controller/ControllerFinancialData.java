@@ -18,21 +18,21 @@ public class ControllerFinancialData extends GenericController {
 	@RequestMapping("/getFinancialDataSet")
 	@ResponseBody
 	public GenericResponse<?> getFinancialDataSet() {
-		List<FinancialDataEntity> result = this.daoFinancialData.findAll();
+		List<FinancialDataEntity> result = this.financialDataRep.findAll();
 		return new GenericResponse<List<FinancialDataEntity>>(1, result);
 	}
 	
 	@RequestMapping("/updateFinancialDataSet")
 	@ResponseBody
 	public GenericResponse<?> updateFinancialDataSet() {
-		new QuandlOperator(daoFinancialData, daoAsset).updateFinancialDataSet();;
+		new QuandlOperator(financialDataRep, assetRep).updateFinancialDataSet();;
 		return null;
 	}
 	
 	@RequestMapping("/initializeFinancialDataSet")
 	@ResponseBody
 	public GenericResponse<?> initializeFinancialDataSet() {
-		new QuandlOperator(daoFinancialData, daoAsset).initializeFinancialDataSet();
+		new QuandlOperator(financialDataRep, assetRep).initializeFinancialDataSet();
 		return null;
 	}
 
