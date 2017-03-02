@@ -4,8 +4,10 @@ import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 
 import { AppComponent } from './app.component';
 import { DropdownModule } from 'ng2-bootstrap/dropdown';
+import { AlertModule } from 'ng2-bootstrap/alert';
 import { TabsModule } from 'ng2-bootstrap/tabs';
 import { NAV_DROPDOWN_DIRECTIVES } from './shared/nav-dropdown.directive';
+import { Cookie } from 'ng2-cookies';
 
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { SIDEBAR_TOGGLE_DIRECTIVES } from './shared/sidebar.directive';
@@ -17,11 +19,11 @@ import { BreadcrumbsComponent } from './shared/breadcrumb.component';
 import { AppRoutingModule } from './app.routing';
 
 
+
 // Layouts
 import { FullLayoutComponent } from './layouts/full-layout.component';
 import { SimpleLayoutComponent } from './layouts/simple-layout.component';
 import { HttpModule } from '@angular/http';
-import { AlertComponent } from './tools/alert/alert.component';
 @NgModule({
   imports: [
     BrowserModule,
@@ -29,7 +31,9 @@ import { AlertComponent } from './tools/alert/alert.component';
     DropdownModule.forRoot(),
     TabsModule.forRoot(),
     ChartsModule,
-    HttpModule
+    HttpModule,
+    AlertModule
+
   ],
   declarations: [
     AppComponent,
@@ -43,7 +47,12 @@ import { AlertComponent } from './tools/alert/alert.component';
   providers: [{
     provide: LocationStrategy,
     useClass: HashLocationStrategy
-  }],
+  },
+    Cookie],
+
   bootstrap: [ AppComponent ]
 })
-export class AppModule { }
+export class AppModule {
+
+
+}

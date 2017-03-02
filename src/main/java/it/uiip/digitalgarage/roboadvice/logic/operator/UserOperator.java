@@ -5,32 +5,31 @@ import java.time.LocalDate;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.UserRepository;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.HashFunction;
 
-public class UserOperator extends GenericOperator {
+public class UserOperator extends AbstractOperator {
 		
 	public UserOperator(UserRepository userRep) {
 		this.userRep = userRep;
 	}
 	
-	public UserDTO registerUser(UserDTO userDTO) {
-		UserEntity userEntity = new UserEntity();
-		userEntity.setEmail(userDTO.getEmail());
-		String password = userDTO.getPassword();
-		password = HashFunction.hashStringSHA256(password);
+	public UserLoggedDTO registerUser(UserDTO userDTO) {
+		UserEntity userEntity = this.userConverter.convertToEntity(userDTO);
+		String password = HashFunction.hashStringSHA256(userDTO.getPassword());
 		userEntity.setPassword(password);
 		userEntity.setDate(LocalDate.now());
 		userEntity = userRep.save(userEntity);
-		userDTO.setPassword(userEntity.getPassword());
-		return userDTO;
+		UserLoggedDTO userLoggedDTO = this.userLoggedConverter.convertToDTO(userEntity);
+		return userLoggedDTO;
 	}
 	
-	public UserDTO loginUser(UserDTO userDTO) {
+	public UserLoggedDTO loginUser(UserDTO userDTO) {
 		UserEntity userEntity = this.userRep.findByEmail(userDTO.getEmail());
 		String hashedPassword = HashFunction.hashStringSHA256(userDTO.getPassword());
 		if(userEntity.getPassword().equals(hashedPassword)) {
-			userDTO.setPassword(userEntity.getPassword());
-			return userDTO;
+			UserLoggedDTO userLoggedDTO = this.userLoggedConverter.convertToDTO(userEntity);
+			return userLoggedDTO;
 		}
 		return null;
 	}

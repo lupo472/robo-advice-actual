@@ -10,11 +10,6 @@ import { AssetClass } from './assetclass';
 })
 export class DashboardComponent implements OnInit {
   public isCustom:boolean;
-  // public pippo: Pippo[]
-  //   {
-  //     per: number,
-  //     id_asset: number
-  //   }[]
   public assetClassSet = [];
   public assetClasses = [];
   public assetSet = [];
@@ -23,11 +18,7 @@ export class DashboardComponent implements OnInit {
   strategies:Map<number, string>;
   constructor(private service:AssetService){
     this.isCustom = true;
-    //this.strategies = [];
     this.strategies = new Map<number, string>();
-    //this.strategies.set(strategy.id_asset, startegy.percentage);
-    //this.strategies.set(5, "eee");
-    //console.log(x);
   }
 
   onStrategy(strategy:any){
