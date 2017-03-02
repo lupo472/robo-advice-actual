@@ -5,6 +5,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin("*")
 @RestController
-public class CapitalController extends GenericController {
+public class CapitalController extends AbstractController {
 
 }

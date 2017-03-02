@@ -14,7 +14,7 @@ import java.util.List;
 
 @CrossOrigin("*")
 @RestController
-public class CustomStrategyController extends GenericController{
+public class CustomStrategyController extends AbstractController{
 
     @RequestMapping("/userCustomStrategySet")
     public GenericResponse<?> getUserCustomStrategySet(@RequestBody UserLoggedDTO user){

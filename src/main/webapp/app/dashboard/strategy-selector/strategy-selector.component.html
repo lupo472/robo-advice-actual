@@ -2,11 +2,12 @@
 	<div class="col-md-2 col-sm-4" *ngFor="let strategy of strategies; let i = index">
 		<div class="card">
 			<div class="card-block text-center" >
+			
 				<div class="text-muted small text-uppercase font-weight-bold">Title</div>
 				<div class="h3 py-1">{{strategy.name}}</div>
 				<div class="chart-wrapper ">
 					<canvas baseChart class="chart" [data]="strategy.data"
-						[labels]="strategyLabels" [options]="strategyOptions"
+						[labels]="strategy.labels" [options]="strategyOptions"
 						[colors]="strategyColours" [legend]="strategyLegend"
 						[chartType]="strategyType" (chartHover)="chartHovered($event)"
 						(chartClick)="chartClicked($event)"></canvas>

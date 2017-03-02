@@ -8,19 +8,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.uiip.digitalgarage.roboadvice.logic.operator.AssetOperator;
-import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetEntity;
+import it.uiip.digitalgarage.roboadvice.service.dto.AssetDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 
 @CrossOrigin("*")
 @RestController
-public class AssetController extends GenericController {
+public class AssetController extends AbstractController {
 
 	@RequestMapping("/getAssetSet")
 	@ResponseBody
 	public GenericResponse<?> getAssetSet() {
 		this.assetOp = new AssetOperator(this.assetRep);
-		List<AssetEntity> result = this.assetOp.getAssetSet();
-		return new GenericResponse<List<AssetEntity>>(1, result);
+		List<AssetDTO> result = this.assetOp.getAssetSet();
+		return new GenericResponse<List<AssetDTO>>(1, result);
 	}
 	
 }
