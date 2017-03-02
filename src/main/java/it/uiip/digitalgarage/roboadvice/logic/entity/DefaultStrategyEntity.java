@@ -1,4 +1,4 @@
-package it.uiip.digitalgarage.roboadvice.logic;
+package it.uiip.digitalgarage.roboadvice.logic.entity;
 
 import java.math.BigDecimal;
 
@@ -16,7 +16,7 @@ import lombok.Data;
 
 @Entity
 @Table(name = "default_strategy")
-public @Data class DefaultStrategy {
+public @Data class DefaultStrategyEntity {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
