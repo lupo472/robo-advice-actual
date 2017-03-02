@@ -1,4 +1,4 @@
-package it.uiip.digitalgarage.roboadvice.logic.quandl;
+package it.uiip.digitalgarage.roboadvice.logic;
 
 import java.util.List;
 
@@ -11,16 +11,22 @@ import it.uiip.digitalgarage.roboadvice.persistence.repository.FinancialDataRepo
 
 public class QuandlOperator {
 	
-	private FinancialDataRepository daoFinancialData;
-	private AssetRepository daoAsset; 
+	private FinancialDataRepository financialDataRep;
+	private AssetRepository assetRep; 
 	
-	public QuandlOperator(FinancialDataRepository daoFinancialData, AssetRepository daoAsset) {
-		this.daoFinancialData = daoFinancialData;
-		this.daoAsset = daoAsset;
+	public QuandlOperator(FinancialDataRepository financialDataRep, AssetRepository assetRep) {
+		this.financialDataRep = financialDataRep;
+		this.assetRep = assetRep;
+	}
+	
+	public List<FinancialDataEntity> getFinancialDataSet() {
+		List<FinancialDataEntity> list =  this.financialDataRep.findAll();
+		System.out.println(list.size());
+		return list;
 	}
 	
 	public void updateFinancialDataSet() {
-		List<AssetEntity> assets = (List<AssetEntity>) this.daoAsset.findAll();
+		List<AssetEntity> assets = (List<AssetEntity>) this.assetRep.findAll();
 		QuandlDBUpdater q = new QuandlDBUpdater();
 		for (AssetEntity assetEntity : assets) {
 			List<FinancialDataEntity> list = q.getData(assetEntity);
@@ -29,7 +35,7 @@ public class QuandlOperator {
 	}
 	
 	public void initializeFinancialDataSet() {
-		List<AssetEntity> assets = (List<AssetEntity>) this.daoAsset.findAll();
+		List<AssetEntity> assets = (List<AssetEntity>) this.assetRep.findAll();
 		QuandlDBInitializer q = new QuandlDBInitializer();
 		for (AssetEntity assetEntity : assets) {
 				List<FinancialDataEntity> list = q.getData(assetEntity);
@@ -39,9 +45,9 @@ public class QuandlOperator {
 	
 	private void saveList(List<FinancialDataEntity> list) {
 		for (FinancialDataEntity financialData : list) {
-			if(daoFinancialData.findByAssetIdAndDate(financialData.getAsset().getId(), financialData.getDate()).size() == 0) {
+			if(financialDataRep.findByAssetIdAndDate(financialData.getAsset().getId(), financialData.getDate()).size() == 0) {
 				System.out.println(financialData.toString());
-				daoFinancialData.save(financialData);
+				financialDataRep.save(financialData);
 			} else {
 				System.out.println("Già presente");
 			}
