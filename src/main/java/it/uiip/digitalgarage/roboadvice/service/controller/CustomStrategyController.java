@@ -23,7 +23,7 @@ public class CustomStrategyController extends GenericController{
     @RequestMapping("/userCustomStrategySet")
     public GenericResponse getUserCustomStrategySet(@RequestBody UserEntity user){
         try{
-            ArrayList<CustomStrategyEntity> customStrategies = (ArrayList<CustomStrategyEntity>) customStrategyRep.findByUserEntity(user);
+            ArrayList<CustomStrategyEntity> customStrategies = (ArrayList<CustomStrategyEntity>) customStrategyRep.findByUser(user);
             return new GenericResponse(1,customStrategies);
 
         } catch(Exception e){

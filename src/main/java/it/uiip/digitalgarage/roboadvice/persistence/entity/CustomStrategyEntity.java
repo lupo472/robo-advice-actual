@@ -17,11 +17,11 @@ public @Data class CustomStrategyEntity {
 
     @ManyToOne
     @JoinColumn(name = "id_user", nullable = false)
-    private UserEntity userClass;
+    private UserEntity user;
 
     @ManyToOne
     @JoinColumn(name = "id_asset_class",nullable = false)
-    private AssetClassEntity assetClass;
+    private AssetClassEntity asset;
 
     @Column(name = "percentage", nullable = false, precision = 5, scale = 2)
     private BigDecimal percentage;

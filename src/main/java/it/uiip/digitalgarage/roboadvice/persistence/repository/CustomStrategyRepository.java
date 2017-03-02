@@ -21,7 +21,7 @@ public interface CustomStrategyRepository extends PagingAndSortingRepository<Cus
 
     public List<CustomStrategyEntity> findAll();
 
-    public List<CustomStrategyEntity> findByUserEntity(UserEntity user);
+    public List<CustomStrategyEntity> findByUser(UserEntity user);
 
     public CustomStrategyEntity save(CustomStrategyEntity customStrategyEntity);
 
