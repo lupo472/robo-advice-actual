@@ -13,6 +13,9 @@ public class AssetConverter implements GenericConverter<AssetEntity, AssetDTO> {
 		AssetEntity entity = new AssetEntity();
 		entity.setId(dto.getId());
 		entity.setName(dto.getName());
+		entity.setAssetClass(dto.getAssetClass());
+		entity.setDataSource(dto.getDataSource());
+		entity.setPercentage(dto.getPercentage());
 		return entity;
 	}
 
@@ -21,6 +24,9 @@ public class AssetConverter implements GenericConverter<AssetEntity, AssetDTO> {
 		AssetDTO dto = new AssetDTO();
 		dto.setId(entity.getId());
 		dto.setName(entity.getName());
+		dto.setAssetClass(entity.getAssetClass());
+		dto.setDataSource(entity.getDataSource());
+		dto.setPercentage(entity.getPercentage());
 		return dto;
 	}
 

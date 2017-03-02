@@ -24,7 +24,4 @@ public @Data class AssetDTO {
 	@NotNull
 	private BigDecimal percentage;
 	
-	@NotNull
-	private int remarksIndex;
-	
 }
