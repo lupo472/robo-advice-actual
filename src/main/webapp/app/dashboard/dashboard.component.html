@@ -13,7 +13,11 @@
 				[lineChartLegend]="lineChart1Legend"
 				[lineChartType]="lineChart1Type" (click)="showAsset('assetClass1', assetClass1Colour)">
 			</app-card-asset-class>
+			<app-card-filter [name]="asset.name">
+			</app-card-filter>
 		</div>
+		
+
 
 		<!-- FOREX -->
 		<!-- <div class="col-sm-6 col-lg-3">
@@ -85,4 +89,5 @@
 -->
 	</div>
 	<!-- END ASSET CLASS 1-->
+
 </div>

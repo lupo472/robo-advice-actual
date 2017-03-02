@@ -7,6 +7,11 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 import { CardAssetClassComponent } from './card-asset-class/card-asset-class.component';
 import { HttpModule,JsonpModule } from '@angular/http';
 import { CardAssetComponent } from './card-asset/card-asset.component';
+import { CardFilterComponent } from './card-filter/card-filter.component';
+import {SliderModule} from 'primeng/primeng';
+import {AccordionModule} from 'primeng/primeng';     //accordion and accordion tab
+import { FormsModule } from '@angular/forms';
+
 
 @NgModule({
   imports: [
@@ -15,8 +20,16 @@ import { CardAssetComponent } from './card-asset/card-asset.component';
     DropdownModule,
     CommonModule,
     HttpModule,
-    JsonpModule
+    JsonpModule,
+    SliderModule,
+    AccordionModule,
+    FormsModule
   ],
-  declarations: [ DashboardComponent, CardAssetClassComponent, CardAssetComponent ]
+  declarations: [
+    DashboardComponent,
+    CardAssetClassComponent,
+    CardAssetComponent,
+    CardFilterComponent
+  ]
 })
 export class DashboardModule { }

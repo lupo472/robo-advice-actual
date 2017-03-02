@@ -18,7 +18,6 @@ export class UserService {
 
   register(user){
     return this.http.post(AppConfig.url + 'register', user)
-
       .map(response => response.json());
   }
 }

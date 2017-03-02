@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { AssetClass } from './assetclass';
 
+
 @Component({
   templateUrl: 'dashboard.component.html',
   providers:[UserService]
