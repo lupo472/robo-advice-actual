@@ -11,14 +11,14 @@
 						</div>
 					</div>
 					<h4 class="mb-0">{{value}}</h4>
-					<p>{{percent}}</p>
+					<p>{{percent}}%</p>
 				</div>
 				<div class="chart-wrapper px-1" style="height: 70px;">
-					<canvas baseChart class="chart" [data]="lineChartData"
+					<canvas *ngIf="!isCustom" baseChart class="chart" [data]="lineChartData"
 						[labels]="lineChartLabels" [options]="lineChartOptions"
 						[colors]="lineChartColours" [legend]="lineChartLegend"
 						[chartType]="lineChartType" (chartHover)="chartHovered($event)"
 						(chartClick)="chartClicked($event)"></canvas>
-						<!-- <p-slider [min]="0" [max]="100"></p-slider> -->
+						<p-slider *ngIf="isCustom" [(ngModel)]="percent" [min]="0" [max]="100"></p-slider>
 				</div>
 			</div>
