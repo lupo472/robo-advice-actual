@@ -2,9 +2,9 @@ package it.uiip.digitalgarage.roboadvice.service.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import it.uiip.digitalgarage.roboadvice.logic.AssetClassOperator;
-import it.uiip.digitalgarage.roboadvice.logic.QuandlOperator;
-import it.uiip.digitalgarage.roboadvice.logic.UserOperator;
+import it.uiip.digitalgarage.roboadvice.logic.operator.AssetClassOperator;
+import it.uiip.digitalgarage.roboadvice.logic.operator.QuandlOperator;
+import it.uiip.digitalgarage.roboadvice.logic.operator.UserOperator;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.AssetClassRepository;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.AssetRepository;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.DefaultStrategyRepository;

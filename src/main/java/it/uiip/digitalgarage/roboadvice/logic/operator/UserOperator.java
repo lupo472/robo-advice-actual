@@ -1,4 +1,4 @@
-package it.uiip.digitalgarage.roboadvice.logic;
+package it.uiip.digitalgarage.roboadvice.logic.operator;
 
 import java.time.LocalDate;
 
