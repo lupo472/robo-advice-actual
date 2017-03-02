@@ -16,6 +16,7 @@ import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 public class FinancialDataController extends GenericController {
 	
 	private QuandlOperator quandlOperator;
+	
 	@RequestMapping("/getFinancialDataSet")
 	@ResponseBody
 	public GenericResponse<?> getFinancialDataSet() {
