@@ -9,50 +9,69 @@ import { AssetClass } from './assetclass';
   providers:[AssetService]
 })
 export class DashboardComponent implements OnInit {
-    
+  public isCustom:boolean;
+  // public pippo: Pippo[]
+  //   {
+  //     per: number,
+  //     id_asset: number
+  //   }[]
   public assetClassSet = [];
   public assetClasses = [];
   public assetSet = [];
   public assets = [];
   public selectedAsset = [];
-    
-  constructor(private service:AssetService){ }
-  
-  ngOnInit(): void { 
+  strategies:Map<number, string>;
+  constructor(private service:AssetService){
+    this.isCustom = true;
+    //this.strategies = [];
+    this.strategies = new Map<number, string>();
+    //this.strategies.set(strategy.id_asset, startegy.percentage);
+    //this.strategies.set(5, "eee");
+    //console.log(x);
+  }
+
+  onStrategy(strategy:any){
+    console.log("++onStrategy");
+    this.strategies.set(strategy.id_asset, strategy.percentage);
+    // this.strategies.push(strategy);
+    console.log(this.strategies);
+  }
+
+  ngOnInit(): void {
     this.service.getAssetClassSet().subscribe((result) => this.getAssetClass(result));
     this.service.getAssetSet().subscribe((result) => this.getAsset(result));
   }
-  
+
   //ASSIGN ASSET CLASS
   public getAssetClass(result){
     this.assetClassSet = result.data;
-    
+
     this.assetClassSet.forEach((item, index) => {
     this.assetClasses[index] = {id: item.id, name:  item.name, data: [65, 59, 84, 84, 51, 55, 40], percentage: 15}
     })
-    
+
     console.log(this.assetClassSet[0].name);
   }
-    
-  //ASSIGN ASSET  
+
+  //ASSIGN ASSET
   public getAsset(result){
     this.assetSet = result.data;
-    
+
     this.assetSet.forEach((item, index) => {
     this.assets[index] = {name:  item.name, assetClass: item.assetClass, data: [65, 59, 84, 84, 51, 55, 40], percentage: 15}
     })
-    
+
     var i = 0;
-    
+
     this.assets.forEach((item, index) => {
       if(item.assetClass.id == 1){
         this.selectedAsset[i] = item;
         i++;
       }
-        
+
     });
   }
-  
+
   //ASSET CLASS COLOUR//
   public assetClassColour:string =  '#20a8d8';
   public assetClass1Colour:string =  '#4dbd74';
@@ -64,21 +83,21 @@ export class DashboardComponent implements OnInit {
 
   //CHANGE ASSET CLASS VIEW
   public showAsset(value){
-    
+
     this.selectedAsset = [];
-    
+
     console.log(value);
-    
-    var i = 0;  
-   
+
+    var i = 0;
+
     this.assets.forEach((item, index) => {
       if(item.assetClass.id == value){
         this.selectedAsset[i] = item;
         i++;
       }
-        
+
     });
-    
+
   }
 
   // dropdown buttons
@@ -108,7 +127,7 @@ export class DashboardComponent implements OnInit {
   public chartHovered(e:any):void {
     console.log(e);
   }
-     
+
   //LINECHART GENERAL
   public lineChartLabels:Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
   public lineChartOptions:any = {
@@ -162,7 +181,7 @@ export class DashboardComponent implements OnInit {
       borderColor: 'rgba(255,255,255,.55)'
     }
   ];
-  
+
   // barChart1
   public barChart1Data:Array<any> = [
     {
@@ -196,4 +215,3 @@ export class DashboardComponent implements OnInit {
   public barChart1Type:string = 'bar';
 
 }
-
