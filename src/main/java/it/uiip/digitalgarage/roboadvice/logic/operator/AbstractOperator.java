@@ -2,11 +2,13 @@ package it.uiip.digitalgarage.roboadvice.logic.operator;
 
 import it.uiip.digitalgarage.roboadvice.logic.converter.AssetClassConverter;
 import it.uiip.digitalgarage.roboadvice.logic.converter.AssetConverter;
+import it.uiip.digitalgarage.roboadvice.logic.converter.FinancialDataConverter;
 import it.uiip.digitalgarage.roboadvice.logic.converter.GenericConverter;
 import it.uiip.digitalgarage.roboadvice.logic.converter.UserConverter;
 import it.uiip.digitalgarage.roboadvice.logic.converter.UserLoggedConverter;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetClassEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetEntity;
+import it.uiip.digitalgarage.roboadvice.persistence.entity.FinancialDataEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.AssetClassRepository;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.AssetRepository;
@@ -15,6 +17,7 @@ import it.uiip.digitalgarage.roboadvice.persistence.repository.FinancialDataRepo
 import it.uiip.digitalgarage.roboadvice.persistence.repository.UserRepository;
 import it.uiip.digitalgarage.roboadvice.service.dto.AssetClassDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.AssetDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
 
@@ -37,5 +40,7 @@ public abstract class AbstractOperator {
 	protected GenericConverter<AssetClassEntity, AssetClassDTO> assetClassConv = new AssetClassConverter();
 	
 	protected GenericConverter<AssetEntity, AssetDTO> assetConv = new AssetConverter();
+	
+	protected GenericConverter<FinancialDataEntity, FinancialDataDTO> financialDataConv = new FinancialDataConverter();
 	
 }

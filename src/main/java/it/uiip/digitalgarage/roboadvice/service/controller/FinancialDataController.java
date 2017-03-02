@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.uiip.digitalgarage.roboadvice.logic.operator.QuandlOperator;
-import it.uiip.digitalgarage.roboadvice.persistence.entity.FinancialDataEntity;
+import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 
 @CrossOrigin("*")
@@ -19,8 +19,8 @@ public class FinancialDataController extends AbstractController {
 	@ResponseBody
 	public GenericResponse<?> getFinancialDataSet() {
 		this.quandlOp = new QuandlOperator(this.financialDataRep, this.assetRep);
-		List<FinancialDataEntity> result = this.quandlOp.getFinancialDataSet();
-		return new GenericResponse<List<FinancialDataEntity>>(1, result);
+		List<FinancialDataDTO> result = this.quandlOp.getFinancialDataSet();
+		return new GenericResponse<List<FinancialDataDTO>>(1, result);
 	}
 	
 	@RequestMapping("/updateFinancialDataSet")
