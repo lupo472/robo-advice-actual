@@ -2,8 +2,8 @@ package it.uiip.digitalgarage.roboadvice.logic.quandl;
 
 import java.util.List;
 
-import it.uiip.digitalgarage.roboadvice.logic.entity.AssetEntity;
-import it.uiip.digitalgarage.roboadvice.logic.entity.FinancialDataEntity;
+import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetEntity;
+import it.uiip.digitalgarage.roboadvice.persistence.entity.FinancialDataEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.quandl.QuandlDBInitializer;
 import it.uiip.digitalgarage.roboadvice.persistence.quandl.QuandlDBUpdater;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.AssetRepository;

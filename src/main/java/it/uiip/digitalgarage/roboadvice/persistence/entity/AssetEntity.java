@@ -1,4 +1,4 @@
-package it.uiip.digitalgarage.roboadvice.logic.entity;
+package it.uiip.digitalgarage.roboadvice.persistence.entity;
 
 import java.math.BigDecimal;
 
@@ -11,25 +11,30 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import it.uiip.digitalgarage.roboadvice.logic.entity.AssetClassEntity;
 import lombok.Data;
 
 @Entity
-@Table(name = "default_strategy")
-public @Data class DefaultStrategyEntity {
+@Table(name = "asset")
+public @Data class AssetEntity {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-    private Long id;
-	
-	@Column(name = "name", nullable = false, unique = true)
-    private String name;
+	private Long id;
 	
 	@ManyToOne()
 	@JoinColumn(name = "id_asset_class", nullable = false)
 	private AssetClassEntity assetClass;
+
+	@Column(name = "name", nullable = false, unique = true)
+	private String name;
+	
+	@Column(name = "data_source", nullable = false, unique = true)
+	private String dataSource;
 	
 	@Column(name = "percentage", nullable = false)
-    private BigDecimal percentage;
-
+	private BigDecimal percentage;
+	
+	@Column(name = "remarks_index", nullable = false)
+	private int remarksIndex;
+	
 }

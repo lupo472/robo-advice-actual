@@ -1,6 +1,5 @@
 package it.uiip.digitalgarage.roboadvice.service.controller;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -8,9 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import it.uiip.digitalgarage.roboadvice.logic.entity.AssetEntity;
-import it.uiip.digitalgarage.roboadvice.logic.entity.FinancialDataEntity;
 import it.uiip.digitalgarage.roboadvice.logic.quandl.QuandlOperator;
+import it.uiip.digitalgarage.roboadvice.persistence.entity.FinancialDataEntity;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 
 @CrossOrigin("*")
@@ -31,20 +29,11 @@ public class ControllerFinancialData extends GenericController {
 		return null;
 	}
 	
-	
 	@RequestMapping("/initializeFinancialDataSet")
 	@ResponseBody
 	public GenericResponse<?> initializeFinancialDataSet() {
 		new QuandlOperator(daoFinancialData, daoAsset).initializeFinancialDataSet();
 		return null;
-	}
-	
-	@RequestMapping("/prova")
-	@ResponseBody
-	public GenericResponse<?> prova() {
-		AssetEntity asset = this.daoAsset.findById(new Long(1));
-		List<FinancialDataEntity> data = this.daoFinancialData.findByAssetIdAndDate(asset.getId(), LocalDate.of(2017, 02, 01));
-		return new GenericResponse<List<FinancialDataEntity>>(1, data);
 	}
 
 }

@@ -1,4 +1,4 @@
-package it.uiip.digitalgarage.roboadvice.logic.entity;
+package it.uiip.digitalgarage.roboadvice.persistence.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
