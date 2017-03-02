@@ -1,9 +1,13 @@
 package it.uiip.digitalgarage.roboadvice.service.controller;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.time.LocalDate;
 
 import javax.validation.Valid;
 
+import it.uiip.digitalgarage.roboadvice.service.util.HashFunction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,15 +30,24 @@ public class ControllerUser {
 	@RequestMapping("/registerUser")
 	@ResponseBody
 	public GenericResponse<?> registerUser(@Valid @RequestBody UserDTO userDTO) {
-	    if(daoUser.findByEmail(userDTO.getEmail()) == null) {
-			UserEntity user = new UserEntity();
-		    user.setEmail(userDTO.getEmail());
-		    user.setPassword(userDTO.getPassword());
-		    user.setDate(LocalDate.now());
-			user = daoUser.save(user);
-			return new GenericResponse<UserEntity>(1, user);
-	    }
-		return new GenericResponse<String>(0, "Email Already Registered");
+
+
+			if (daoUser.findByEmail(userDTO.getEmail()) == null) {
+				UserEntity user = new UserEntity();
+				user.setEmail(userDTO.getEmail());
+
+				String password = userDTO.getPassword();
+
+				//TODO Remove comment in production phase
+				//password = HashFunction.hashStringSHA256(password);
+
+				user.setPassword(password);
+				user.setDate(LocalDate.now());
+				user = daoUser.save(user);
+				return new GenericResponse<UserEntity>(1, user);
+			}
+			return new GenericResponse<String>(0, "Email Already Registered");
+
 	}
 	
 	@RequestMapping("/loginUser")
@@ -44,7 +57,13 @@ public class ControllerUser {
 		if(user == null) {
 			return new GenericResponse<String>(0, "Email not registered");
 		}
-		if(user.getPassword().equals(userDTO.getPassword())) {
+
+		//TODO Remove comment in production phase
+		//String userDTOPassword = HashFunction.hashStringSHA256(userDTO.getPassword());
+		//TODO Comment in production
+		String userDTOPassword = userDTO.getPassword();
+
+		if(user.getPassword().equals(userDTOPassword)) {
 			return new GenericResponse<UserEntity>(1, user);
 		}
 		return new GenericResponse<String>(0, "Wrong Password"); 
