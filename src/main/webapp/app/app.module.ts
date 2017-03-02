@@ -24,7 +24,6 @@ import { AppRoutingModule } from './app.routing';
 import { FullLayoutComponent } from './layouts/full-layout.component';
 import { SimpleLayoutComponent } from './layouts/simple-layout.component';
 import { HttpModule } from '@angular/http';
-import { AlertComponent } from './tools/alert/alert.component';
 @NgModule({
   imports: [
     BrowserModule,
