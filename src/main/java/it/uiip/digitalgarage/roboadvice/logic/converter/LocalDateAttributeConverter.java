@@ -1,4 +1,4 @@
-package it.uiip.digitalgarage.roboadvice.config;
+package it.uiip.digitalgarage.roboadvice.logic.converter;
 
 import java.sql.Date;
 import java.time.LocalDate;

@@ -24,7 +24,7 @@ public @Data class CapitalEntity {
 	
 	@ManyToOne()
 	@JoinColumn(name = "id_user", nullable = false)
-    private Long idUser;
+    private UserEntity user;
 	
 	@Column(name = "amount", nullable = false, precision = 14, scale = 4)
 	private BigDecimal amount;
