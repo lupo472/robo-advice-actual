@@ -26,14 +26,14 @@ public class ControllerFinancialData extends GenericController {
 	@ResponseBody
 	public GenericResponse<?> updateFinancialDataSet() {
 		new QuandlOperator(financialDataRep, assetRep).updateFinancialDataSet();;
-		return null;
+		return new GenericResponse<String>(1, "Done");
 	}
 	
 	@RequestMapping("/initializeFinancialDataSet")
 	@ResponseBody
 	public GenericResponse<?> initializeFinancialDataSet() {
 		new QuandlOperator(financialDataRep, assetRep).initializeFinancialDataSet();
-		return null;
+		return new GenericResponse<String>(1, "Done");
 	}
 
 }

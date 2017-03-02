@@ -21,14 +21,14 @@ public @Data class DefaultStrategyEntity {
 	@GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 	
-	@Column(name = "name", nullable = false, unique = true)
+	@Column(name = "name", nullable = false)
     private String name;
 	
 	@ManyToOne()
 	@JoinColumn(name = "id_asset_class", nullable = false)
 	private AssetClassEntity assetClass;
 	
-	@Column(name = "percentage", nullable = false)
+	@Column(name = "percentage", nullable = false, precision = 5, scale = 2)
     private BigDecimal percentage;
 
 }

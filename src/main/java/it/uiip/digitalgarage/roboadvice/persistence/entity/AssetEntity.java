@@ -31,7 +31,7 @@ public @Data class AssetEntity {
 	@Column(name = "data_source", nullable = false, unique = true)
 	private String dataSource;
 	
-	@Column(name = "percentage", nullable = false)
+	@Column(name = "percentage", nullable = false, precision = 5, scale = 2)
 	private BigDecimal percentage;
 	
 	@Column(name = "remarks_index", nullable = false)

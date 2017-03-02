@@ -26,7 +26,7 @@ public @Data class FinancialDataEntity {
 	@JoinColumn(name = "id_asset", nullable = false)
     private AssetEntity asset;
 	
-	@Column(name = "value", nullable = false)
+	@Column(name = "value", nullable = false, precision = 14, scale = 4)
     private BigDecimal value;
 	
 	@Column(name = "date", nullable = false)
