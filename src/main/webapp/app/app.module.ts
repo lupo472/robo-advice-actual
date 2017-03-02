@@ -14,6 +14,7 @@ import { SIDEBAR_TOGGLE_DIRECTIVES } from './shared/sidebar.directive';
 import { AsideToggleDirective } from './shared/aside.directive';
 import { BreadcrumbsComponent } from './shared/breadcrumb.component';
 
+
 // Routing Module
 import { AppRoutingModule } from './app.routing';
 
@@ -42,7 +43,7 @@ import { AlertComponent } from './tools/alert/alert.component';
     NAV_DROPDOWN_DIRECTIVES,
     BreadcrumbsComponent,
     SIDEBAR_TOGGLE_DIRECTIVES,
-    AsideToggleDirective,
+    AsideToggleDirective
   ],
   providers: [{
     provide: LocationStrategy,

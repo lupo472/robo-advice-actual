@@ -1,4 +1,4 @@
-package it.uiip.digitalgarage.roboadvice.logic.entity;
+package it.uiip.digitalgarage.roboadvice.persistence.entity;
 
 import java.math.BigDecimal;
 
@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name="asset")
+@Table(name = "asset")
 public @Data class AssetEntity {
 	
 	@Id
@@ -31,7 +31,7 @@ public @Data class AssetEntity {
 	@Column(name = "data_source", nullable = false, unique = true)
 	private String dataSource;
 	
-	@Column(name = "percentage", nullable = false)
+	@Column(name = "percentage", nullable = false, precision = 5, scale = 2)
 	private BigDecimal percentage;
 	
 	@Column(name = "remarks_index", nullable = false)

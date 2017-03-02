@@ -5,7 +5,7 @@
 	<!-- ASSET CLASS ROW -->
 	<div class="row">
 
-		<div class="col-sm-6 col-lg-3" *ngFor="let assetClass of assetClasses">
+		<div class="col-sm-6 col-lg-3" *ngFor="let assetClass of assetClasses; let i = index;">
 			<app-card-asset-class [value]="assetClass.name"
 				[percent]="assetClass.percentage + '%'"
 				[lineChartData]="assetClass.data"
@@ -13,30 +13,32 @@
 				[lineChartOptions]="lineChartOptions"
 				[lineChartColours]="lineChartColours"
 				[lineChartType]="lineChartType"
-				(click)="showAsset('assetClass1', assetClass1Colour)">
+				(click)="showAsset(assetClass.id)">
 			</app-card-asset-class>
 		</div>
 
+
+
 	</div>
 
 
-	<!-- ASSET CLASS 1 ROW -->
-	<div class="row">
+		<!-- ASSET CLASS 1 ROW -->
+		<div class="row" *ngIf="selectedAsset">
 
-		<!-- ASSET 1 -->
-		<div class="col-sm-6 col-lg-3" *ngFor="let asset of assets.assetClass1">
-			<app-card-asset 
-				[lineChartData]="asset.data"
-				[lineChartLabels]="lineChart1Labels"
-				[lineChartOptions]="lineChart1Options"
-				[lineChartColours]="lineChart1Colours"
-				[lineChartLegend]="lineChart1Legend"
-				[lineChartType]="lineChart1Type" [barChartData]="barChart1Data"
-				[barChartLabels]="barChart1Labels"
-				[barChartOptions]="barChart1Options"
-				[barChartColours]="barChart1Colours"
-				[barChartLegend]="barChart1Legend" [barChartType]="barChart1Type"></app-card-asset>
+
+			<!-- ASSET 1 -->
+			<div class="col-sm-6 col-lg-3" *ngFor="let asset of selectedAsset">
+				<app-card-asset [lineChartData]="asset.data"
+					[lineChartLabels]="lineChartLabels"
+					[lineChartOptions]="lineChartOptions"
+					[lineChartColours]="lineChartColours"
+					[lineChartType]="lineChartType" [barChartData]="barChart1Data"
+					[barChartLabels]="barChart1Labels"
+					[barChartOptions]="barChart1Options"
+					[barChartColours]="barChart1Colours"
+					[barChartLegend]="barChart1Legend" [barChartType]="barChart1Type"></app-card-asset>
+			</div>
 		</div>
-	</div>
-	<!-- END ASSET CLASS 1-->
+		<!-- END ASSET CLASS 1-->
+
 </div>

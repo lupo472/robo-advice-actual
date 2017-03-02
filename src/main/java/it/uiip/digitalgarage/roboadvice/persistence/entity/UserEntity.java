@@ -1,4 +1,4 @@
-package it.uiip.digitalgarage.roboadvice.logic.entity;
+package it.uiip.digitalgarage.roboadvice.persistence.entity;
 
 import java.time.LocalDate;
 
@@ -12,7 +12,7 @@ import javax.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name="user")
+@Table(name = "user")
 public @Data class UserEntity {
 	
 	@Id

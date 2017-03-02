@@ -11,10 +11,10 @@ public @Data class UserDTO {
 	
 	@NotNull
 	@Email
-	private String email;
+	protected String email;
 	
 	@NotNull
 	@Size(min = 5)
-	private String password;
+	protected String password;
 	
 }

@@ -1,9 +1,11 @@
 package it.uiip.digitalgarage.roboadvice.persistence.quandl;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+
+import java.time.LocalDate;
 
 import com.jimmoores.quandl.DataSetRequest;
 import com.jimmoores.quandl.QuandlSession;
@@ -13,14 +15,17 @@ import com.jimmoores.quandl.TabularResult;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.FinancialDataEntity;
 
-public class QuandlDBInitializer {
-	
+public class QuandlDBUpdater {
+
 	public List<FinancialDataEntity> getData(AssetEntity asset) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DAY_OF_MONTH, -5);
+				
 		QuandlSession session = QuandlSession.create();
-		
+
 		TabularResult tabularResult = session.getDataSet(
 				DataSetRequest.Builder.of(asset.getDataSource())
-				.withStartDate(org.threeten.bp.LocalDate.of(2010, 01, 01))
+				.withStartDate(org.threeten.bp.LocalDate.of(calendar.get(Calendar.YEAR), (calendar.get(Calendar.MONTH) + 1), calendar.get(Calendar.DAY_OF_MONTH)))
 				.withColumn(asset.getRemarksIndex())
 				.build());
 		
@@ -39,5 +44,5 @@ public class QuandlDBInitializer {
 		}
 		return list;
 	}
-
+	
 }
