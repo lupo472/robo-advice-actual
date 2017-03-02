@@ -24,14 +24,13 @@
 	<div class="row">
 
 		<!-- ASSET 1 -->
-		<div class="col-sm-6 col-lg-3" *ngFor="let asset of assets.assetClass1">
+		<div class="col-sm-6 col-lg-3" *ngFor="let asset of assetClass1">
 			<app-card-asset 
 				[lineChartData]="asset.data"
-				[lineChartLabels]="lineChart1Labels"
-				[lineChartOptions]="lineChart1Options"
-				[lineChartColours]="lineChart1Colours"
-				[lineChartLegend]="lineChart1Legend"
-				[lineChartType]="lineChart1Type" [barChartData]="barChart1Data"
+				[lineChartLabels]="lineChartLabels"
+				[lineChartOptions]="lineChartOptions"
+				[lineChartColours]="lineChartColours"
+				[lineChartType]="lineChartType" [barChartData]="barChart1Data"
 				[barChartLabels]="barChart1Labels"
 				[barChartOptions]="barChart1Options"
 				[barChartColours]="barChart1Colours"
