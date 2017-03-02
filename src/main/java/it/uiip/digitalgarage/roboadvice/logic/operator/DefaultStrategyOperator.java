@@ -10,7 +10,7 @@ import it.uiip.digitalgarage.roboadvice.persistence.repository.DefaultStrategyRe
 import it.uiip.digitalgarage.roboadvice.service.dto.AssetClassStrategyDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.DefaultStrategyDTO;
 
-public class DefaultStrategyOperator extends GenericOperator {
+public class DefaultStrategyOperator extends AbstractOperator {
 
 	public DefaultStrategyOperator(DefaultStrategyRepository defaultStrategyRep) {
 		this.defaultStrategyRep = defaultStrategyRep;

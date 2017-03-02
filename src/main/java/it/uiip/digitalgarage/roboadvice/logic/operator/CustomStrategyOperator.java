@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by Luca on 02/03/2017.
  */
-public class CustomStrategyOperator extends GenericOperator{
+public class CustomStrategyOperator extends AbstractOperator{
 
     public CustomStrategyOperator(CustomStrategyRepository customStrategyRep){
         this.customStrategyRep = customStrategyRep;
@@ -21,7 +21,8 @@ public class CustomStrategyOperator extends GenericOperator{
     }
 
     public CustomStrategyEntity setCustomStrategy(CustomStrategyDTO customStrategy){
-        customStrategy = this.customStrategyRep.save(customStrategy);
-        return customStrategy;
+        //customStrategy = this.customStrategyRep.save(customStrategy);
+       // return customStrategy;
+        return null;
     }
 }

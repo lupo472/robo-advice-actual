@@ -5,7 +5,7 @@ import java.util.List;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.AssetRepository;
 
-public class AssetOperator extends GenericOperator {
+public class AssetOperator extends AbstractOperator {
 
 	public AssetOperator(AssetRepository assetRep) {
 		this.assetRep = assetRep;
