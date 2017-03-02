@@ -16,9 +16,10 @@ export class CardAssetClassComponent implements OnInit {
     @Input() lineChartColours;
     @Input() lineChartLegend;
     @Input() lineChartType;
-
+    @Input() isCustom;
 
   constructor() {
+    console.log(this.percent);
   }
 
   public brandPrimary:string =  '#20a8d8';
@@ -28,8 +29,7 @@ export class CardAssetClassComponent implements OnInit {
   public brandDanger:string =   '#f86c6b';
 
   ngOnInit() {
-    // console.log("card-asset-class");
-    // console.log(this.listAssetClass);
+
   }
 
 }

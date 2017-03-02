@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AssetService } from '../services/asset.service';
 import { AssetClass } from './assetclass';
 
+
 @Component({
   templateUrl: 'dashboard.component.html',
   providers:[AssetService]
