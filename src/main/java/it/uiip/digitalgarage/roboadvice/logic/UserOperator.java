@@ -41,14 +41,5 @@ public class UserOperator {
 	public boolean isRegistered(String email) {
 		return !(this.userRep.findByEmail(email) == null);
 	}
-	
-//	public boolean isPasswordCorrect(UserDTO userDTO) {
-//		UserEntity userEntity = this.userRep.findByEmail(userDTO.getEmail());
-//		String hashedPassword = HashFunction.hashStringSHA256(userDTO.getPassword());
-//		if(userEntity.getPassword().equals(hashedPassword)) {
-//			return true;
-//		}
-//		return false;
-//	}
 
 }
