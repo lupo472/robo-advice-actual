@@ -11,7 +11,7 @@ export class UserService {
   constructor(private http:Http) { }
 
   login(user) {
-    return this.http.post(AppConfig.url + 'loginUsersss', user)
+    return this.http.post(AppConfig.url + 'loginUser', user)
       .map(response => response.json());
   }
 
