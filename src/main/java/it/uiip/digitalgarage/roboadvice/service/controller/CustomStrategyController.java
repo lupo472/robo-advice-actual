@@ -2,6 +2,7 @@ package it.uiip.digitalgarage.roboadvice.service.controller;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.CustomStrategyEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
+import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -31,11 +32,12 @@ public class CustomStrategyController extends GenericController{
     }
 
     @RequestMapping("/setCustomStrategy")
-    public GenericResponse setCustomStrategy(@RequestBody CustomStrategyEntity customStrategy){
+    public GenericResponse setCustomStrategy(@RequestBody CustomStrategyDTO customStrategy){
         try{
             CustomStrategyEntity createdStrategy = this.customStrategyOp.setCustomStrategy(customStrategy);
 
             if(customStrategy == null) return new GenericResponse<String>(0, "Failure");
+
             return new GenericResponse<CustomStrategyEntity>(1, createdStrategy);
         } catch(Exception e){
             return new GenericResponse<String>(0, "Exception");

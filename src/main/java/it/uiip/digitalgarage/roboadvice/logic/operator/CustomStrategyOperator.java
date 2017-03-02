@@ -2,6 +2,7 @@ package it.uiip.digitalgarage.roboadvice.logic.operator;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.CustomStrategyEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.CustomStrategyRepository;
+import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyDTO;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class CustomStrategyOperator extends GenericOperator{
 
     }
 
-    public CustomStrategyEntity setCustomStrategy(CustomStrategyEntity customStrategy){
+    public CustomStrategyEntity setCustomStrategy(CustomStrategyDTO customStrategy){
         customStrategy = this.customStrategyRep.save(customStrategy);
         return customStrategy;
     }
