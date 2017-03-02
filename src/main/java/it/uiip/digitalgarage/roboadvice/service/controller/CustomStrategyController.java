@@ -2,6 +2,8 @@ package it.uiip.digitalgarage.roboadvice.service.controller;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.CustomStrategyEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
+import it.uiip.digitalgarage.roboadvice.service.dto.UserRequestDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.UserResponseDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,13 +18,13 @@ import java.util.List;
 public class CustomStrategyController extends GenericController{
 
     @RequestMapping("/userCustomStrategySet")
-    public GenericResponse getUserCustomStrategySet(@RequestBody UserEntity user){
+    public GenericResponse<?> getUserCustomStrategySet(@RequestBody UserResponseDTO user){
         try{
-            ArrayList<CustomStrategyEntity> customStrategies = (ArrayList<CustomStrategyEntity>) customStrategyRep.findByUser(user);
-            return new GenericResponse(1,customStrategies);
+            List<CustomStrategyEntity> customStrategies = customStrategyRep.findByUserId(user.getId());
+            return new GenericResponse<List<CustomStrategyEntity>>(1,customStrategies);
 
         } catch(Exception e){
-            return new GenericResponse(0,"Exception");
+            return new GenericResponse<String>(0,"Exception");
         }
     }
 
@@ -31,7 +33,7 @@ public class CustomStrategyController extends GenericController{
         try{
             return null;
         } catch(Exception e){
-            return new GenericResponse(0,"Exception");
+            return new GenericResponse<String>(0,"Exception");
         }
     }
 
