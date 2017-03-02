@@ -7,7 +7,7 @@ import org.hibernate.validator.constraints.Email;
 
 import lombok.Data;
 
-public @Data class UserDTO {
+public @Data class UserRequestDTO {
 	
 	@NotNull
 	@Email

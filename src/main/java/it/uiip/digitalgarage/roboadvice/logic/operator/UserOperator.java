@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.UserRepository;
-import it.uiip.digitalgarage.roboadvice.service.dto.UserDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.UserRequestDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.HashFunction;
 
 public class UserOperator extends GenericOperator {
@@ -13,7 +13,7 @@ public class UserOperator extends GenericOperator {
 		this.userRep = userRep;
 	}
 	
-	public UserDTO registerUser(UserDTO userDTO) {
+	public UserRequestDTO registerUser(UserRequestDTO userDTO) {
 		UserEntity userEntity = new UserEntity();
 		userEntity.setEmail(userDTO.getEmail());
 		String password = userDTO.getPassword();
@@ -25,7 +25,7 @@ public class UserOperator extends GenericOperator {
 		return userDTO;
 	}
 	
-	public UserDTO loginUser(UserDTO userDTO) {
+	public UserRequestDTO loginUser(UserRequestDTO userDTO) {
 		UserEntity userEntity = this.userRep.findByEmail(userDTO.getEmail());
 		String hashedPassword = HashFunction.hashStringSHA256(userDTO.getPassword());
 		if(userEntity.getPassword().equals(hashedPassword)) {
