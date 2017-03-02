@@ -4,6 +4,7 @@ import java.util.List;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.AssetRepository;
+import it.uiip.digitalgarage.roboadvice.service.dto.AssetDTO;
 
 public class AssetOperator extends AbstractOperator {
 
@@ -11,8 +12,9 @@ public class AssetOperator extends AbstractOperator {
 		this.assetRep = assetRep;
 	}
 	
-	public List<AssetEntity> getAssetSet() {
-		return this.assetRep.findAll();
+	public List<AssetDTO> getAssetSet() {
+		List<AssetEntity> list = this.assetRep.findAll();
+		return this.assetConv.convertToDTO(list);
 	}
 	
 }

@@ -20,7 +20,7 @@ public class UserOperator extends AbstractOperator {
 		userEntity.setPassword(password);
 		userEntity.setDate(LocalDate.now());
 		userEntity = userRep.save(userEntity);
-		UserLoggedDTO userLoggedDTO = this.userLoggedConverter.convertToDTO(userEntity);
+		UserLoggedDTO userLoggedDTO = this.userLoggedConv.convertToDTO(userEntity);
 		return userLoggedDTO;
 	}
 	
@@ -28,7 +28,7 @@ public class UserOperator extends AbstractOperator {
 		UserEntity userEntity = this.userRep.findByEmail(userDTO.getEmail());
 		String hashedPassword = HashFunction.hashStringSHA256(userDTO.getPassword());
 		if(userEntity.getPassword().equals(hashedPassword)) {
-			UserLoggedDTO userLoggedDTO = this.userLoggedConverter.convertToDTO(userEntity);
+			UserLoggedDTO userLoggedDTO = this.userLoggedConv.convertToDTO(userEntity);
 			return userLoggedDTO;
 		}
 		return null;

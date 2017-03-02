@@ -6,14 +6,15 @@
 	<div class="row">
 
 		<div class="col-sm-6 col-lg-3" *ngFor="let assetClass of assetClasses; let i = index;">
-			<app-card-asset-class [value]="assetClass.name"
+			<app-card-asset-class [value]="assetClass.name" [isCustom]="isCustom" [id]="assetClass.id"
 				[percent]="assetClass.percentage + '%'"
 				[lineChartData]="assetClass.data"
 				[lineChartLabels]="lineChartLabels"
 				[lineChartOptions]="lineChartOptions"
 				[lineChartColours]="lineChartColours"
 				[lineChartType]="lineChartType"
-				(click)="showAsset(assetClass.id)">
+				(click)="showAsset(assetClass.id)"
+				(onStrategy)="onStrategy($event)">
 			</app-card-asset-class>
 		</div>
 
