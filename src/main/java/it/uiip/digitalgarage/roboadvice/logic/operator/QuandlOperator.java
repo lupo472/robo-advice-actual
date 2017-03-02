@@ -9,7 +9,7 @@ import it.uiip.digitalgarage.roboadvice.persistence.quandl.QuandlDBUpdater;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.AssetRepository;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.FinancialDataRepository;
 
-public class QuandlOperator extends GenericOperator {
+public class QuandlOperator extends AbstractOperator {
 	
 	public QuandlOperator(FinancialDataRepository financialDataRep, AssetRepository assetRep) {
 		this.financialDataRep = financialDataRep;

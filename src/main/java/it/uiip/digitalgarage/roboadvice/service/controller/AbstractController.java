@@ -15,7 +15,7 @@ import it.uiip.digitalgarage.roboadvice.persistence.repository.DefaultStrategyRe
 import it.uiip.digitalgarage.roboadvice.persistence.repository.FinancialDataRepository;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.UserRepository;
 
-public abstract class GenericController {
+public abstract class AbstractController {
 
 	@Autowired
 	protected AssetRepository assetRep;
