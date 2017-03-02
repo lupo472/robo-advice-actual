@@ -13,18 +13,21 @@
 				[lineChartOptions]="lineChartOptions"
 				[lineChartColours]="lineChartColours"
 				[lineChartType]="lineChartType"
-				(click)="showAsset(i)">
+				(click)="showAsset(assetClass.id)">
 			</app-card-asset-class>
 		</div>
 
+
+
 	</div>
 
-	<div [ngSwitch]="assetClass">
+
 		<!-- ASSET CLASS 1 ROW -->
-		<div class="row" *ngSwitchCase="0">
+		<div class="row" *ngIf="selectedAsset">
+
 
 			<!-- ASSET 1 -->
-			<div class="col-sm-6 col-lg-3" *ngFor="let asset of assetClass1">
+			<div class="col-sm-6 col-lg-3" *ngFor="let asset of selectedAsset">
 				<app-card-asset [lineChartData]="asset.data"
 					[lineChartLabels]="lineChartLabels"
 					[lineChartOptions]="lineChartOptions"
@@ -38,58 +41,4 @@
 		</div>
 		<!-- END ASSET CLASS 1-->
 
-		<!-- ASSET CLASS 2 ROW -->
-		<div class="row" *ngSwitchCase="1">
-
-			<!-- ASSET 2 -->
-			<div class="col-sm-6 col-lg-3" *ngFor="let asset of assetClass2">
-				<app-card-asset [lineChartData]="asset.data"
-					[lineChartLabels]="lineChartLabels"
-					[lineChartOptions]="lineChartOptions"
-					[lineChartColours]="lineChartColours"
-					[lineChartType]="lineChartType" [barChartData]="barChart1Data"
-					[barChartLabels]="barChart1Labels"
-					[barChartOptions]="barChart1Options"
-					[barChartColours]="barChart1Colours"
-					[barChartLegend]="barChart1Legend" [barChartType]="barChart1Type"></app-card-asset>
-			</div>
-		</div>
-		<!-- END ASSET CLASS 2-->
-
-		<!-- ASSET CLASS 3 ROW -->
-		<div class="row" *ngSwitchCase="2">
-
-			<!-- ASSET 3 -->
-			<div class="col-sm-6 col-lg-3" *ngFor="let asset of assetClass3">
-				<app-card-asset [lineChartData]="asset.data"
-					[lineChartLabels]="lineChartLabels"
-					[lineChartOptions]="lineChartOptions"
-					[lineChartColours]="lineChartColours"
-					[lineChartType]="lineChartType" [barChartData]="barChart1Data"
-					[barChartLabels]="barChart1Labels"
-					[barChartOptions]="barChart1Options"
-					[barChartColours]="barChart1Colours"
-					[barChartLegend]="barChart1Legend" [barChartType]="barChart1Type"></app-card-asset>
-			</div>
-		</div>
-		<!-- END ASSET CLASS 3-->
-
-		<!-- ASSET CLASS 4 ROW -->
-		<div class="row" *ngSwitchCase="3">
-
-			<!-- ASSET 4 -->
-			<div class="col-sm-6 col-lg-3" *ngFor="let asset of assetClass4">
-				<app-card-asset [lineChartData]="asset.data"
-					[lineChartLabels]="lineChartLabels"
-					[lineChartOptions]="lineChartOptions"
-					[lineChartColours]="lineChartColours"
-					[lineChartType]="lineChartType" [barChartData]="barChart1Data"
-					[barChartLabels]="barChart1Labels"
-					[barChartOptions]="barChart1Options"
-					[barChartColours]="barChart1Colours"
-					[barChartLegend]="barChart1Legend" [barChartType]="barChart1Type"></app-card-asset>
-			</div>
-		</div>
-		<!-- END ASSET CLASS 4-->
-	</div>
 </div>

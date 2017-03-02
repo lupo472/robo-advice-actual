@@ -1,6 +1,8 @@
 package it.uiip.digitalgarage.roboadvice.service.controller;
 
+import it.uiip.digitalgarage.roboadvice.persistence.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+
 
 import it.uiip.digitalgarage.roboadvice.logic.operator.AssetClassOperator;
 import it.uiip.digitalgarage.roboadvice.logic.operator.AssetOperator;
@@ -29,6 +31,10 @@ public abstract class GenericController {
 	
 	@Autowired
 	protected DefaultStrategyRepository defaultStrategyRep;
+
+	@Autowired
+	protected CustomStrategyRepository customStrategyRep;
+
 	
 	protected UserOperator userOp;
 	
