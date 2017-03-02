@@ -10,7 +10,7 @@ import javax.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name="asset_class")
+@Table(name = "asset_class")
 public @Data class AssetClassEntity {
 
 	@Id

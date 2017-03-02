@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name="asset")
+@Table(name = "asset")
 public @Data class AssetEntity {
 	
 	@Id
