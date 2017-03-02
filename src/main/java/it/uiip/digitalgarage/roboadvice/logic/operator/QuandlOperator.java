@@ -25,9 +25,10 @@ public class QuandlOperator extends AbstractOperator {
 	public void updateFinancialDataSet() {
 		List<AssetEntity> assets = (List<AssetEntity>) this.assetRep.findAll();
 		QuandlDBUpdater q = new QuandlDBUpdater();
-		for (AssetEntity assetEntity : assets) {
-			List<FinancialDataEntity> list = q.getData(assetEntity);
-			this.saveList(list);
+		for (AssetEntity asset : assets) {
+			List<FinancialDataDTO> list = q.getData(asset);
+			List<FinancialDataEntity> entities = this.financialDataConv.convertToEntity(list);
+			this.saveList(entities);
 		}
 	}
 	
@@ -35,8 +36,9 @@ public class QuandlOperator extends AbstractOperator {
 		List<AssetEntity> assets = (List<AssetEntity>) this.assetRep.findAll();
 		QuandlDBInitializer q = new QuandlDBInitializer();
 		for (AssetEntity assetEntity : assets) {
-				List<FinancialDataEntity> list = q.getData(assetEntity);
-				this.saveList(list);
+				List<FinancialDataDTO> list = q.getData(assetEntity);
+				List<FinancialDataEntity> entities = this.financialDataConv.convertToEntity(list);
+				this.saveList(entities);
 		}
 	}
 	
