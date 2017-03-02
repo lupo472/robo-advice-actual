@@ -1,4 +1,4 @@
-package it.uiip.digitalgarage.roboadvice.logic;
+package it.uiip.digitalgarage.roboadvice.logic.operator;
 
 import java.util.List;
 
@@ -9,10 +9,7 @@ import it.uiip.digitalgarage.roboadvice.persistence.quandl.QuandlDBUpdater;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.AssetRepository;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.FinancialDataRepository;
 
-public class QuandlOperator {
-	
-	private FinancialDataRepository financialDataRep;
-	private AssetRepository assetRep; 
+public class QuandlOperator extends GenericOperator {
 	
 	public QuandlOperator(FinancialDataRepository financialDataRep, AssetRepository assetRep) {
 		this.financialDataRep = financialDataRep;
