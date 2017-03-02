@@ -8,35 +8,8 @@ import { AssetClass } from './assetclass';
   providers:[UserService]
 })
 export class DashboardComponent implements OnInit {
-// listAssetClass:AssetClass[];
-listAssetClass = [
-  {
-    name:"Bonds",
-    percentage:"65%"
-  },
-  {
-    name:"Forex",
-    percentage:"10%"
-  },
-  {
-    name:"Stocks",
-    percentage:"15%"
-  },
-  {
-    name:"Comodities",
-    percentage:"10%"
-  }
-];
-  constructor()
-  {
-
-  }
-
-  public brandPrimary:string =  '#20a8d8';
-  public brandSuccess:string =  '#4dbd74';
-  public brandInfo:string =   '#63c2de';
-  public brandWarning:string =  '#f8cb00';
-  public brandDanger:string =   '#f86c6b';
+    
+  constructor(){ }
 
   //ASSET CLASS COLOUR//
   public assetClassColour:string =  '#20a8d8';
@@ -45,12 +18,12 @@ listAssetClass = [
   public assetClass3Colour:string =  '#f8cb00';
   public assetClass4Colour:string =   '#f86c6b';
 
-  public assetClass:string = 'assetClass1';
+  public assetClass:number = 0;
 
   //CHANGE ASSET CLASS VIEW
-  public showAsset(value, colour){
+  public showAsset(value){
     this.assetClass = value;
-    console.log(this.assetClassColour);
+    console.log("assetClass = " + this.assetClass);
   }
 
   // dropdown buttons
@@ -119,12 +92,6 @@ listAssetClass = [
     {name: 'COM/WLD_RICE_05', data: [65, 59, 84, 84, 51, 55, 40], percentage: 15}
   ];
   
-  //ASSET
-  public assets:Array<any> = [this.assetClass1, 
-                              this.assetClass2, 
-                              this.assetClass3, 
-                              this.assetClass4];
-  
   //LINECHART GENERAL
   public lineChartLabels:Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
   public lineChartOptions:any = {
@@ -174,7 +141,7 @@ listAssetClass = [
   public lineChartType:string = 'line';
   public lineChartColours:Array<any> = [
     { // grey
-      backgroundColor: this.brandPrimary,
+      backgroundColor: this.assetClassColour,
       borderColor: 'rgba(255,255,255,.55)'
     }
   ];
