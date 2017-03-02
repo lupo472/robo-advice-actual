@@ -22,7 +22,7 @@ public class ControllerAsset {
 	@RequestMapping("/getAssetSet")
 	@ResponseBody
 	public GenericResponse<?> getAssetSet() {
-		List<AssetEntity> result = (List<AssetEntity>) this.daoAsset.findAll();
+		List<AssetEntity> result = this.daoAsset.findAll();
 		return new GenericResponse<List<AssetEntity>>(1, result);
 	}
 	
