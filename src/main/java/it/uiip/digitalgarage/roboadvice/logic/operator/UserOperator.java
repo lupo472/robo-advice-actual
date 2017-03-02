@@ -4,7 +4,8 @@ import java.time.LocalDate;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.UserRepository;
-import it.uiip.digitalgarage.roboadvice.service.dto.UserRequestDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.UserDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.HashFunction;
 
 public class UserOperator extends GenericOperator {
@@ -13,24 +14,30 @@ public class UserOperator extends GenericOperator {
 		this.userRep = userRep;
 	}
 	
-	public UserRequestDTO registerUser(UserRequestDTO userDTO) {
+	public UserLoggedDTO registerUser(UserDTO userRequestDTO) {
 		UserEntity userEntity = new UserEntity();
-		userEntity.setEmail(userDTO.getEmail());
-		String password = userDTO.getPassword();
+		userEntity.setEmail(userRequestDTO.getEmail());
+		String password = userRequestDTO.getPassword();
 		password = HashFunction.hashStringSHA256(password);
 		userEntity.setPassword(password);
 		userEntity.setDate(LocalDate.now());
 		userEntity = userRep.save(userEntity);
-		userDTO.setPassword(userEntity.getPassword());
-		return userDTO;
+		UserLoggedDTO userLoggedDTO = new UserLoggedDTO();
+		userLoggedDTO.setEmail(userEntity.getEmail());
+		userLoggedDTO.setPassword(userEntity.getPassword());
+		userLoggedDTO.setId(userEntity.getId());
+		return userLoggedDTO;
 	}
 	
-	public UserRequestDTO loginUser(UserRequestDTO userDTO) {
-		UserEntity userEntity = this.userRep.findByEmail(userDTO.getEmail());
-		String hashedPassword = HashFunction.hashStringSHA256(userDTO.getPassword());
+	public UserLoggedDTO loginUser(UserDTO userRequestDTO) {
+		UserEntity userEntity = this.userRep.findByEmail(userRequestDTO.getEmail());
+		String hashedPassword = HashFunction.hashStringSHA256(userRequestDTO.getPassword());
 		if(userEntity.getPassword().equals(hashedPassword)) {
-			userDTO.setPassword(userEntity.getPassword());
-			return userDTO;
+			UserLoggedDTO userLoggedDTO = new UserLoggedDTO();
+			userLoggedDTO.setEmail(userEntity.getEmail());
+			userLoggedDTO.setPassword(userEntity.getPassword());
+			userLoggedDTO.setId(userEntity.getId());
+			return userLoggedDTO;
 		}
 		return null;
 	}
