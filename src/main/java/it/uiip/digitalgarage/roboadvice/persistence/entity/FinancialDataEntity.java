@@ -1,4 +1,4 @@
-package it.uiip.digitalgarage.roboadvice.logic.entity;
+package it.uiip.digitalgarage.roboadvice.persistence.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -15,7 +15,7 @@ import javax.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name="financial_data")
+@Table(name = "financial_data")
 public @Data class FinancialDataEntity {
 
 	@Id
@@ -26,7 +26,7 @@ public @Data class FinancialDataEntity {
 	@JoinColumn(name = "id_asset", nullable = false)
     private AssetEntity asset;
 	
-	@Column(name = "value", nullable = false)
+	@Column(name = "value", nullable = false, precision = 14, scale = 4)
     private BigDecimal value;
 	
 	@Column(name = "date", nullable = false)

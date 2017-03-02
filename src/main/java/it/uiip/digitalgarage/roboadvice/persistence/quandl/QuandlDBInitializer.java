@@ -10,8 +10,8 @@ import com.jimmoores.quandl.QuandlSession;
 import com.jimmoores.quandl.Row;
 import com.jimmoores.quandl.TabularResult;
 
-import it.uiip.digitalgarage.roboadvice.logic.entity.AssetEntity;
-import it.uiip.digitalgarage.roboadvice.logic.entity.FinancialDataEntity;
+import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetEntity;
+import it.uiip.digitalgarage.roboadvice.persistence.entity.FinancialDataEntity;
 
 public class QuandlDBInitializer {
 	
