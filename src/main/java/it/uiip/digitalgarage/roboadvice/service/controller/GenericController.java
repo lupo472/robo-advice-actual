@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import it.uiip.digitalgarage.roboadvice.logic.operator.AssetClassOperator;
 import it.uiip.digitalgarage.roboadvice.logic.operator.AssetOperator;
+import it.uiip.digitalgarage.roboadvice.logic.operator.DefaultStrategyOperator;
 import it.uiip.digitalgarage.roboadvice.logic.operator.QuandlOperator;
 import it.uiip.digitalgarage.roboadvice.logic.operator.UserOperator;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.AssetClassRepository;
@@ -36,5 +37,7 @@ public abstract class GenericController {
 	protected AssetClassOperator assetClassOp;
 	
 	protected AssetOperator assetOp;
+	
+	protected DefaultStrategyOperator defaultStrategyOp;
 	
 }
