@@ -1,44 +1,58 @@
 import { Component, OnInit, Renderer } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserService } from '../services/user.service';
+import { AssetService } from '../services/asset.service';
 import { AssetClass } from './assetclass';
 
 
 @Component({
   templateUrl: 'dashboard.component.html',
-  providers:[UserService]
+  providers:[AssetService]
 })
 export class DashboardComponent implements OnInit {
-// listAssetClass:AssetClass[];
-listAssetClass = [
-  {
-    name:"Bonds",
-    percentage:"65%"
-  },
-  {
-    name:"Forex",
-    percentage:"10%"
-  },
-  {
-    name:"Stocks",
-    percentage:"15%"
-  },
-  {
-    name:"Comodities",
-    percentage:"10%"
+    
+  public assetClassSet = [];
+  public assetClasses = [];
+  public assetSet = [];
+  public assets = [];
+  public selectedAsset = [];
+    
+  constructor(private service:AssetService){ }
+  
+  ngOnInit(): void { 
+    this.service.getAssetClassSet().subscribe((result) => this.getAssetClass(result));
+    this.service.getAssetSet().subscribe((result) => this.getAsset(result));
   }
-];
-  constructor()
-  {
-
+  
+  //ASSIGN ASSET CLASS
+  public getAssetClass(result){
+    this.assetClassSet = result.data;
+    
+    this.assetClassSet.forEach((item, index) => {
+    this.assetClasses[index] = {id: item.id, name:  item.name, data: [65, 59, 84, 84, 51, 55, 40], percentage: 15}
+    })
+    
+    console.log(this.assetClassSet[0].name);
   }
-
-  public brandPrimary:string =  '#20a8d8';
-  public brandSuccess:string =  '#4dbd74';
-  public brandInfo:string =   '#63c2de';
-  public brandWarning:string =  '#f8cb00';
-  public brandDanger:string =   '#f86c6b';
-
+    
+  //ASSIGN ASSET  
+  public getAsset(result){
+    this.assetSet = result.data;
+    
+    this.assetSet.forEach((item, index) => {
+    this.assets[index] = {name:  item.name, assetClass: item.assetClass, data: [65, 59, 84, 84, 51, 55, 40], percentage: 15}
+    })
+    
+    var i = 0;
+    
+    this.assets.forEach((item, index) => {
+      if(item.assetClass.id == 1){
+        this.selectedAsset[i] = item;
+        i++;
+      }
+        
+    });
+  }
+  
   //ASSET CLASS COLOUR//
   public assetClassColour:string =  '#20a8d8';
   public assetClass1Colour:string =  '#4dbd74';
@@ -46,12 +60,25 @@ listAssetClass = [
   public assetClass3Colour:string =  '#f8cb00';
   public assetClass4Colour:string =   '#f86c6b';
 
-  public assetClass:string = 'assetClass1';
+  public assetClass:number = 0;
 
   //CHANGE ASSET CLASS VIEW
-  public showAsset(value, colour){
-    this.assetClass = value;
-    console.log(this.assetClassColour);
+  public showAsset(value){
+    
+    this.selectedAsset = [];
+    
+    console.log(value);
+    
+    var i = 0;  
+   
+    this.assets.forEach((item, index) => {
+      if(item.assetClass.id == value){
+        this.selectedAsset[i] = item;
+        i++;
+      }
+        
+    });
+    
   }
 
   // dropdown buttons
@@ -81,51 +108,7 @@ listAssetClass = [
   public chartHovered(e:any):void {
     console.log(e);
   }
-  
-  //ASSET CLASS
-  public assetClasses:Array<any> = [
-    {name: 'Bonds',       data: [65, 59, 84, 84, 51, 55, 40], percentage: 15},
-    {name: 'Forex',       data: [65, 59, 84, 84, 51, 55, 40], percentage: 15},
-    {name: 'Stocks',      data: [65, 59, 84, 84, 51, 55, 40], percentage: 15},
-    {name: 'Commodities', data: [65, 59, 84, 84, 51, 55, 40], percentage: 15}
-  ];
-  
-  
-  //ASSET CLASS 1
-  public assetClass1:Array<any> = [
-    {name: 'CHRIS/CME_US1', data: [65, 59, 84, 84, 51, 55, 40], percentage: 15},
-    {name: 'CHRIS/CME_UL1', data: [65, 59, 84, 84, 51, 55, 40], percentage: 15}
-  ];
-  
-  //ASSET CLASS 2
-  public assetClass2:Array<any> = [
-    {name: 'CURRFX/USDEUR', data: [65, 59, 84, 84, 51, 55, 40], percentage: 15},
-    {name: 'CURRFX/USDCHF', data: [65, 59, 84, 84, 51, 55, 40], percentage: 15},
-    {name: 'BAVERAGE/USD',  data: [65, 59, 84, 84, 51, 55, 40], percentage: 15}
-  ];
-  
-  //ASSET CLASS 3
-  public assetClass3:Array<any> = [
-    {name: 'WIKI/FB',   data: [65, 59, 84, 84, 51, 55, 40], percentage: 15},
-    {name: 'WIKI/AAPL', data: [65, 59, 84, 84, 51, 55, 40], percentage: 15},
-    {name: 'WIKI/MSFT', data: [65, 59, 84, 84, 51, 55, 40], percentage: 15},
-    {name: 'WIKI/TWTR', data: [65, 59, 84, 84, 51, 55, 40], percentage: 15}
-  ];
-  
-  //ASSET CLASS 4
-  public assetClass4:Array<any> = [
-    {name: 'COM/WLD_GOLD',    data: [65, 59, 84, 84, 51, 55, 40], percentage: 15},
-    {name: 'COM/WLD_SILVER',  data: [65, 59, 84, 84, 51, 55, 40], percentage: 15},
-    {name: 'COM/OIL_BRENT',   data: [65, 59, 84, 84, 51, 55, 40], percentage: 15},
-    {name: 'COM/WLD_RICE_05', data: [65, 59, 84, 84, 51, 55, 40], percentage: 15}
-  ];
-  
-  //ASSET
-  public assets:Array<any> = [this.assetClass1, 
-                              this.assetClass2, 
-                              this.assetClass3, 
-                              this.assetClass4];
-  
+     
   //LINECHART GENERAL
   public lineChartLabels:Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
   public lineChartOptions:any = {
@@ -175,7 +158,7 @@ listAssetClass = [
   public lineChartType:string = 'line';
   public lineChartColours:Array<any> = [
     { // grey
-      backgroundColor: this.brandPrimary,
+      backgroundColor: this.assetClassColour,
       borderColor: 'rgba(255,255,255,.55)'
     }
   ];
@@ -212,7 +195,5 @@ listAssetClass = [
   public barChart1Legend:boolean = false;
   public barChart1Type:string = 'bar';
 
-  ngOnInit(): void {
+}
 
-    }
-  }

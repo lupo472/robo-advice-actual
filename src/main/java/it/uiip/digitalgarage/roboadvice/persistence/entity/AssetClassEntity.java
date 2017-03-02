@@ -1,4 +1,4 @@
-package it.uiip.digitalgarage.roboadvice.logic.entity;
+package it.uiip.digitalgarage.roboadvice.persistence.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +10,7 @@ import javax.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name="asset_class")
+@Table(name = "asset_class")
 public @Data class AssetClassEntity {
 
 	@Id

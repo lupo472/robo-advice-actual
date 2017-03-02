@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
 import java.time.LocalDate;
 
 import com.jimmoores.quandl.DataSetRequest;
@@ -13,10 +12,9 @@ import com.jimmoores.quandl.QuandlSession;
 import com.jimmoores.quandl.Row;
 import com.jimmoores.quandl.TabularResult;
 
-import it.uiip.digitalgarage.roboadvice.logic.entity.AssetEntity;
-import it.uiip.digitalgarage.roboadvice.logic.entity.FinancialDataEntity;
+import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetEntity;
+import it.uiip.digitalgarage.roboadvice.persistence.entity.FinancialDataEntity;
 
-@RestClientTest
 public class QuandlDBUpdater {
 
 	public List<FinancialDataEntity> getData(AssetEntity asset) {
