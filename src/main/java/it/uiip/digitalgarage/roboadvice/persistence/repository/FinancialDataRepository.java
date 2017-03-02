@@ -13,6 +13,8 @@ import it.uiip.digitalgarage.roboadvice.logic.entity.FinancialDataEntity;
 @Transactional
 public interface FinancialDataRepository extends PagingAndSortingRepository<FinancialDataEntity, Long> {
 
+	public List<FinancialDataEntity> findAll();
+	
 	public List<FinancialDataEntity> findByAssetIdAndDate(Long assetId, LocalDate date);
 	
 }
