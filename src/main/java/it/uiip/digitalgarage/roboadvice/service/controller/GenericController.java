@@ -2,6 +2,7 @@ package it.uiip.digitalgarage.roboadvice.service.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import it.uiip.digitalgarage.roboadvice.logic.AssetClassOperator;
 import it.uiip.digitalgarage.roboadvice.logic.QuandlOperator;
 import it.uiip.digitalgarage.roboadvice.logic.UserOperator;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.AssetClassRepository;
@@ -30,5 +31,7 @@ public abstract class GenericController {
 	protected UserOperator userOp;
 	
 	protected QuandlOperator quandlOp;
+	
+	protected AssetClassOperator assetClassOp;
 	
 }
