@@ -7,10 +7,12 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 import { CardAssetClassComponent } from './card-asset-class/card-asset-class.component';
 import { HttpModule,JsonpModule } from '@angular/http';
 import { CardAssetComponent } from './card-asset/card-asset.component';
+
 import { CardFilterComponent } from './card-filter/card-filter.component';
 import {SliderModule} from 'primeng/primeng';
 import {AccordionModule} from 'primeng/primeng';     //accordion and accordion tab
-import { FormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms'
+import { StrategySelectorComponent } from './strategy-selector/strategy-selector.component';
 
 
 @NgModule({
@@ -29,7 +31,8 @@ import { FormsModule } from '@angular/forms';
     DashboardComponent,
     CardAssetClassComponent,
     CardAssetComponent,
-    CardFilterComponent
+    CardFilterComponent,
+    StrategySelectorComponent
   ]
 })
 export class DashboardModule { }
