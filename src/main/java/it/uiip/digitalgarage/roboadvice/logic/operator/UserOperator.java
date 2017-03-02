@@ -16,16 +16,11 @@ public class UserOperator extends AbstractOperator {
 	
 	public UserLoggedDTO registerUser(UserDTO userDTO) {
 		UserEntity userEntity = this.userConverter.convertToEntity(userDTO);
-		//userEntity.setEmail(userDTO.getEmail());
-		//String password = userDTO.getPassword();
-		//password = HashFunction.hashStringSHA256(password);
-		//userEntity.setPassword(password);
+		String password = HashFunction.hashStringSHA256(userDTO.getPassword());
+		userEntity.setPassword(password);
 		userEntity.setDate(LocalDate.now());
 		userEntity = userRep.save(userEntity);
-		UserLoggedDTO userLoggedDTO = new UserLoggedDTO();
-		userLoggedDTO.setEmail(userEntity.getEmail());
-		userLoggedDTO.setPassword(userEntity.getPassword());
-		userLoggedDTO.setId(userEntity.getId());
+		UserLoggedDTO userLoggedDTO = this.userLoggedConverter.convertToDTO(userEntity);
 		return userLoggedDTO;
 	}
 	
@@ -33,10 +28,7 @@ public class UserOperator extends AbstractOperator {
 		UserEntity userEntity = this.userRep.findByEmail(userDTO.getEmail());
 		String hashedPassword = HashFunction.hashStringSHA256(userDTO.getPassword());
 		if(userEntity.getPassword().equals(hashedPassword)) {
-			UserLoggedDTO userLoggedDTO = new UserLoggedDTO();
-			userLoggedDTO.setEmail(userEntity.getEmail());
-			userLoggedDTO.setPassword(userEntity.getPassword());
-			userLoggedDTO.setId(userEntity.getId());
+			UserLoggedDTO userLoggedDTO = this.userLoggedConverter.convertToDTO(userEntity);
 			return userLoggedDTO;
 		}
 		return null;
