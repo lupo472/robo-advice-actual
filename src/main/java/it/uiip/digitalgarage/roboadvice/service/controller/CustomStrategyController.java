@@ -12,11 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
- * Created by Luca on 02/03/2017.
- */
-
-
 @CrossOrigin("*")
 @RestController
 public class CustomStrategyController extends GenericController{
