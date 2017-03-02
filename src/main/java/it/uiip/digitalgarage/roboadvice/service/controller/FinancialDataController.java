@@ -13,31 +13,29 @@ import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 
 @CrossOrigin("*")
 @RestController
-public class FinancialDataController extends GenericController {
-	
-	private QuandlOperator quandlOperator;
+public class FinancialDataController extends GenericController { 
 	
 	@RequestMapping("/getFinancialDataSet")
 	@ResponseBody
 	public GenericResponse<?> getFinancialDataSet() {
-		this.quandlOperator = new QuandlOperator(this.financialDataRep, this.assetRep);
-		List<FinancialDataEntity> result = this.quandlOperator.getFinancialDataSet();
+		this.quandlOp = new QuandlOperator(this.financialDataRep, this.assetRep);
+		List<FinancialDataEntity> result = this.quandlOp.getFinancialDataSet();
 		return new GenericResponse<List<FinancialDataEntity>>(1, result);
 	}
 	
 	@RequestMapping("/updateFinancialDataSet")
 	@ResponseBody
 	public GenericResponse<?> updateFinancialDataSet() {
-		this.quandlOperator = new QuandlOperator(this.financialDataRep, this.assetRep);
-		this.quandlOperator.updateFinancialDataSet();;
+		this.quandlOp = new QuandlOperator(this.financialDataRep, this.assetRep);
+		this.quandlOp.updateFinancialDataSet();;
 		return new GenericResponse<String>(1, "Done");
 	}
 	
 	@RequestMapping("/initializeFinancialDataSet")
 	@ResponseBody
 	public GenericResponse<?> initializeFinancialDataSet() {
-		this.quandlOperator = new QuandlOperator(this.financialDataRep, this.assetRep);
-		this.quandlOperator.initializeFinancialDataSet();
+		this.quandlOp = new QuandlOperator(this.financialDataRep, this.assetRep);
+		this.quandlOp.initializeFinancialDataSet();
 		return new GenericResponse<String>(1, "Done");
 	}
 

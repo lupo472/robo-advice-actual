@@ -16,14 +16,12 @@ import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 @RestController
 public class UserController extends GenericController {
 	
-	private UserOperator userOperator;
-	
 	@RequestMapping("/registerUser")
 	@ResponseBody
 	public GenericResponse<?> registerUser(@Valid @RequestBody UserDTO userDTO) {
-		this.userOperator = new UserOperator(this.userRep);
-		if(!this.userOperator.isRegistered(userDTO.getEmail())) {
-			UserDTO registered = this.userOperator.registerUser(userDTO);
+		this.userOp = new UserOperator(this.userRep);
+		if(!this.userOp.isRegistered(userDTO.getEmail())) {
+			UserDTO registered = this.userOp.registerUser(userDTO);
 			return new GenericResponse<UserDTO>(1, registered);
 		}
 		return new GenericResponse<String>(0, "Email Already Registered");		
@@ -32,11 +30,11 @@ public class UserController extends GenericController {
 	@RequestMapping("/loginUser")
 	@ResponseBody
 	public GenericResponse<?> loginUser(@Valid @RequestBody UserDTO userDTO) {
-		this.userOperator = new UserOperator(this.userRep);
-		if(!this.userOperator.isRegistered(userDTO.getEmail())) {
+		this.userOp = new UserOperator(this.userRep);
+		if(!this.userOp.isRegistered(userDTO.getEmail())) {
 			return new GenericResponse<String>(0, "Email not registered");
 		}
-		UserDTO logged = this.userOperator.loginUser(userDTO);
+		UserDTO logged = this.userOp.loginUser(userDTO);
 		if(logged == null) {
 			return new GenericResponse<String>(0, "Wrong Password");
 		}
