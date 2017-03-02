@@ -195,5 +195,5 @@ export class DashboardComponent implements OnInit {
   public barChart1Legend:boolean = false;
   public barChart1Type:string = 'bar';
 
-}
 
+}
