@@ -7,18 +7,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetClassEntity;
+import it.uiip.digitalgarage.roboadvice.persistence.entity.DefaultStrategyEntity;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 
 @CrossOrigin("*")
 @RestController
-public class ControllerAssetClass extends GenericController {
+public class DefaultStrategyController extends GenericController {
 	
-	@RequestMapping("/getAssetClassSet")
+	@RequestMapping("/getDefaultStrategySet")
 	@ResponseBody
-	public GenericResponse<?> getAssetClassSet() {
-		List<AssetClassEntity> result = this.assetClassRep.findAll();
-		return new GenericResponse<List<AssetClassEntity>>(1, result);
+	public GenericResponse<?> getDefaultStrategySet() {
+		List<DefaultStrategyEntity> list = this.defaultStrategyRep.findAll();
+		return new GenericResponse<List<DefaultStrategyEntity>>(1, list);
 	}
-	
+
 }

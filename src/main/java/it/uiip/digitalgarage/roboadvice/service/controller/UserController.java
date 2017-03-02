@@ -16,7 +16,7 @@ import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 
 @CrossOrigin("*")
 @RestController
-public class ControllerUser extends GenericController {
+public class UserController extends GenericController {
 	
 	@RequestMapping("/registerUser")
 	@ResponseBody

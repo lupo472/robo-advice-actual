@@ -13,7 +13,7 @@ import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 
 @CrossOrigin("*")
 @RestController
-public class ControllerFinancialData extends GenericController {
+public class FinancialDataController extends GenericController {
 	
 	private QuandlOperator quandlOperator;
 	@RequestMapping("/getFinancialDataSet")
