@@ -15,10 +15,10 @@
 				[lineChartType]="lineChartType"
 				(click)="showAsset('assetClass1', assetClass1Colour)">
 			</app-card-asset-class>
-			<app-card-filter [name]="asset.name">
+			<app-card-filter [name]="assetClass.name">
 			</app-card-filter>
 		</div>
-		
+
 
 
 	</div>
@@ -29,7 +29,7 @@
 
 		<!-- ASSET 1 -->
 		<div class="col-sm-6 col-lg-3" *ngFor="let asset of assets.assetClass1">
-			<app-card-asset 
+			<app-card-asset
 				[lineChartData]="asset.data"
 				[lineChartLabels]="lineChart1Labels"
 				[lineChartOptions]="lineChart1Options"
