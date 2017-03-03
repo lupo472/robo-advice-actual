@@ -15,4 +15,5 @@ public interface CustomStrategyRepository extends PagingAndSortingRepository<Cus
 
     public List<CustomStrategyEntity> findByUserId(Long idUser);
 
+
 }
