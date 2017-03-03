@@ -26,7 +26,7 @@ public class FinancialDataOperator extends AbstractOperator {
 		if(request.getPeriod() == 0) {
 			list = this.financialDataRep.findByAssetId(request.getIdAsset());
 		} else {
-			calendar.add(Calendar.DAY_OF_MONTH, -(request.getPeriod()));
+			calendar.add(Calendar.DATE, -(request.getPeriod()));
 			LocalDate date = LocalDate.of(calendar.get(Calendar.YEAR), (calendar.get(Calendar.MONTH) + 1), calendar.get(Calendar.DAY_OF_MONTH));		
 			list =  this.financialDataRep.findByAssetIdForPeriod(request.getIdAsset(), date.toString());
 		}

@@ -18,7 +18,7 @@ public class QuandlDBUpdater {
 
 	public List<FinancialDataDTO> getData(AssetEntity asset) {
 		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.DAY_OF_MONTH, -5);
+		calendar.add(Calendar.DATE, -5);
 				
 		QuandlSession session = QuandlSession.create();
 
