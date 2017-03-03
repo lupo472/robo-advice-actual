@@ -25,6 +25,8 @@ public abstract class AbstractOperator {
 
 	protected CustomStrategyRepository customStrategyRep;
 
+	protected PortfolioRepository portfolioRep;
+
 	protected GenericConverter<UserEntity, UserDTO> userConverter = new UserConverter();
 	
 	protected GenericConverter<UserEntity, UserLoggedDTO> userLoggedConv = new UserLoggedConverter();
@@ -35,6 +37,8 @@ public abstract class AbstractOperator {
 	
 	protected GenericConverter<FinancialDataEntity, FinancialDataDTO> financialDataConv = new FinancialDataConverter();
 
-	protected GenericConverter<CustomStrategyEntity,CustomStrategyDTO> customStrategyConv = new CustomStrategyConverter();
+	protected GenericConverter<CustomStrategyEntity, CustomStrategyDTO> customStrategyConv = new CustomStrategyConverter();
+
+	protected GenericConverter<PortfolioEntity, PortfolioDTO> portfolioConv = new PortfolioConverter();
 	
 }
