@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {NgModule, OnInit} from '@angular/core';
 
 import { p404Component } from './404.component';
 import { p500Component } from './500.component';
@@ -18,4 +18,4 @@ import { FormsModule } from '@angular/forms';
     RegisterComponent,
   ]
 })
-export class PagesModule { }
+export class PagesModule{ }
