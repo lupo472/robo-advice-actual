@@ -15,6 +15,7 @@
 *.launch
 .settings/
 *.sublime-workspace
+.tern-project
 
 # IDE - VSCode
 .vscode/*
