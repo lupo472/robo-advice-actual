@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {Cookie} from "ng2-cookies";
 
 @Component({
   selector: 'app-dashboard',
@@ -13,6 +14,10 @@ export class FullLayoutComponent implements OnInit {
 
   public toggled(open:boolean):void {
     console.log('Dropdown is now: ', open);
+  }
+
+  public logout():void{
+    Cookie.deleteAll();
   }
 
   public toggleDropdown($event:MouseEvent):void {
