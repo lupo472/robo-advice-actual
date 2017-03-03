@@ -23,10 +23,7 @@ public class CustomStrategyController extends AbstractController {
     @RequestMapping("/getUserCustomStrategySet")
     @ResponseBody
     public GenericResponse<?> getUserCustomStrategySet(@Valid @RequestBody UserLoggedDTO user){
-    	/*List<CustomStrategyEntity> customStrategies = customStrategyRep.findByUserId(user.getId());
-        if(customStrategies == null) return new GenericResponse<String>(0,"Failure");
-        return new GenericResponse<List<CustomStrategyEntity>>(1,customStrategies);
-*/
+
         this.customStrategyOp = new CustomStrategyOperator(this.customStrategyRep);
     	List<CustomStrategyDTO> customStrategies = this.customStrategyOp.getUserCustomStrategies(user);
 
@@ -37,16 +34,15 @@ public class CustomStrategyController extends AbstractController {
 
     //TODO Control this method
     @RequestMapping("/setCustomStrategy")
-    public GenericResponse setCustomStrategy(@RequestBody CustomStrategyDTO customStrategy){
-        try{
-            CustomStrategyEntity createdStrategy = this.customStrategyOp.setCustomStrategy(customStrategy);
+    public GenericResponse setCustomStrategy(@Valid @RequestBody List<CustomStrategyDTO> customStrategies){
 
-            if(customStrategy == null) return new GenericResponse<String>(0, "Failure");
+            this.customStrategyOp = new CustomStrategyOperator(this.customStrategyRep);
+            List<CustomStrategyDTO> createdStrategiesSaved = this.customStrategyOp.setCustomStrategy(customStrategies);
 
-            return new GenericResponse<CustomStrategyEntity>(1, createdStrategy);
-        } catch(Exception e){
-            return new GenericResponse<String>(0, "Exception");
-        }
+            if(customStrategies == null) return new GenericResponse<String>(0, "Failure");
+
+            return new GenericResponse<String>(1, "Success");
+
     }
 
 

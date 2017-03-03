@@ -1,7 +1,10 @@
 package it.uiip.digitalgarage.roboadvice.logic.converter;
 
+import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetClassEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.CustomStrategyEntity;
+import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyDTO;
+import org.apache.catalina.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +17,8 @@ public class CustomStrategyConverter implements GenericConverter<CustomStrategyE
    @Override
     public CustomStrategyDTO convertToDTO(CustomStrategyEntity customerStrategyEntity){
        CustomStrategyDTO customerStrategyDTO = new CustomStrategyDTO();
+       customerStrategyDTO.setId(customerStrategyEntity.getId());
+       customerStrategyDTO.setIdUser(customerStrategyEntity.getUser().getId());
        customerStrategyDTO.setIdAssetClass(customerStrategyEntity.getAssetClass().getId());
        customerStrategyDTO.setPercentage(customerStrategyEntity.getPercentage());
        customerStrategyDTO.setActive(customerStrategyEntity.isActive());
@@ -45,6 +50,17 @@ public class CustomStrategyConverter implements GenericConverter<CustomStrategyE
     @Override
     public CustomStrategyEntity convertToEntity(CustomStrategyDTO customStrategyDTO){
         CustomStrategyEntity customStrategyEntity = new CustomStrategyEntity();
+        UserEntity user = new UserEntity();
+        AssetClassEntity assetClass = new AssetClassEntity();
+
+        user.setId(customStrategyDTO.getIdUser());
+        assetClass.setId(customStrategyDTO.getIdAssetClass());
+
+        customStrategyEntity.setUser(user);
+        customStrategyEntity.setAssetClass(assetClass);
+        customStrategyEntity.setPercentage(customStrategyDTO.getPercentage());
+        customStrategyEntity.setActive(customStrategyDTO.isActive());
+
         return customStrategyEntity;
    }
 

@@ -13,6 +13,11 @@ import java.time.LocalDate;
 
 public @Data class  CustomStrategyDTO {
 
+    private Long id;
+
+    @NotNull
+    private Long idUser;
+
     @NotNull
     private Long idAssetClass;
 
@@ -22,7 +27,6 @@ public @Data class  CustomStrategyDTO {
     @NotNull
     private boolean active;
 
-    @NotNull
     private String date;
 
 }
