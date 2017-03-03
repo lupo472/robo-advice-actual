@@ -2,6 +2,8 @@ import { Component, OnInit, Renderer } from '@angular/core';
 import { Router } from '@angular/router';
 import { AssetService } from '../services/asset.service';
 import { AssetClass } from './assetclass';
+import { Cookie } from 'ng2-cookies';
+
 
 
 @Component({
@@ -19,10 +21,11 @@ export class DashboardComponent implements OnInit {
   public assets = [];
   public selectedAsset = [];
 
+
   strategies:Map<number, number>;
   sumPercentage:number;
   maxPercentage:number;
-  constructor(private service:AssetService){
+  constructor(private service:AssetService,private router:Router){
 
     this.isCustom = true;
     this.strategies = new Map<number, number>();
@@ -45,6 +48,10 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.service.getAssetClassSet().subscribe((result) => this.getAssetClass(result));
     this.service.getAssetSet().subscribe((result) => this.getAsset(result));
+    if(!Cookie.check('email')){
+      console.log("non loggato");
+      this.router.navigate(['pages/login']);
+    }
   }
 
   //ASSIGN ASSET CLASS
