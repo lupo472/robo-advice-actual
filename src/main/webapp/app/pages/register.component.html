@@ -23,6 +23,12 @@
 							</div>
 							<div [hidden]="password.valid || password.pristine"
 								class="alert alert-danger">Password is required</div>
+							<div class="input-group mb-1">
+								<span class="input-group-addon"><i class="icon-lock"></i>
+								</span> <input type="password" class="form-control"
+								   placeholder="Confirm Password" [(ngModel)]="user.password2"
+								   name="password2" #password2="ngModel" pattern=".{5,10}" required>
+							</div>
 
 							<button type="submit" class="btn btn-block btn-success"
 								[disabled]="!registerForm.form.valid">Create Account</button>
