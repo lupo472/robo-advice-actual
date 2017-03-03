@@ -22,10 +22,14 @@ public class FinancialDataOperator extends AbstractOperator {
 	
 	public List<FinancialDataDTO> getFinancialDataSet(DataForAssetRequestDTO request) {
 		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.DAY_OF_MONTH, -(request.getPeriod()));
-		LocalDate date = LocalDate.of(calendar.get(Calendar.YEAR), (calendar.get(Calendar.MONTH) + 1), calendar.get(Calendar.DAY_OF_MONTH));		
-		System.out.println("++++++++ " + date.toString());
-		List<FinancialDataEntity> list =  this.financialDataRep.findByAssetForPeriod(request.getIdAsset(), date.toString());
+		List<FinancialDataEntity> list;
+		if(request.getPeriod() == 0) {
+			list = this.financialDataRep.findByAssetId(request.getIdAsset());
+		} else {
+			calendar.add(Calendar.DAY_OF_MONTH, -(request.getPeriod()));
+			LocalDate date = LocalDate.of(calendar.get(Calendar.YEAR), (calendar.get(Calendar.MONTH) + 1), calendar.get(Calendar.DAY_OF_MONTH));		
+			list =  this.financialDataRep.findByAssetIdForPeriod(request.getIdAsset(), date.toString());
+		}
 		return this.financialDataConv.convertToDTO(list);
 	}
 	

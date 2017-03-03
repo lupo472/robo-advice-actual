@@ -8,6 +8,7 @@ import lombok.Data;
 public @Data class DataForAssetRequestDTO {
 
 	@NotNull
+	@Min(1)
 	private Long idAsset;
 	
 	@Min(0)
