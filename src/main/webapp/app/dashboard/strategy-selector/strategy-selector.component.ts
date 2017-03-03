@@ -53,8 +53,7 @@ export class StrategySelectorComponent implements OnInit {
                                 labels: arrayLabels, 
                                 colours: [{backgroundColor: arrayColours, borderWidth: 3}]
                                 }
-      
-      console.log(this.strategies[index].colours);
+
       arrayPercentage = [];
       arrayLabels = [];
       arrayColours = [];
