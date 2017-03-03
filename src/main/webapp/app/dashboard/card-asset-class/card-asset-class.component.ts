@@ -8,9 +8,7 @@ import { AssetClass } from '../assetclass';
 })
 
 export class CardAssetClassComponent implements OnInit {
-    // @Input() listAssetClass:any;
     strategy:any;
-    //strategies:any;
     @Input() value;
     @Input() percent;
     @Input() lineChartData;
