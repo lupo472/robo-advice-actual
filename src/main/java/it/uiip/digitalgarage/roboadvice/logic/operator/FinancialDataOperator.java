@@ -22,8 +22,8 @@ public class FinancialDataOperator extends AbstractOperator {
 	}
 	
 	public FinancialDataDTO findLast(AssetDTO asset) {
-		
-		return null;
+		FinancialDataEntity entity = this.financialDataRep.findLastForAnAsset(asset.getId());
+		return this.financialDataConv.convertToDTO(entity);
 	}
 	
 	public List<FinancialDataDTO> getFinancialDataSet(DataForAssetRequestDTO request) {
