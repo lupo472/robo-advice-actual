@@ -10,7 +10,6 @@ import java.math.BigDecimal;
 
 public @Data class  CustomStrategyDTO {
 
-    private Long id;
     private Long idUser;
     private Long idAssetClass;
     private BigDecimal percentage;

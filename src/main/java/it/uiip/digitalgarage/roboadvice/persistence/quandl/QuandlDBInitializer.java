@@ -11,11 +11,11 @@ import com.jimmoores.quandl.Row;
 import com.jimmoores.quandl.TabularResult;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetEntity;
-import it.uiip.digitalgarage.roboadvice.persistence.entity.FinancialDataEntity;
+import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataDTO;
 
 public class QuandlDBInitializer {
 	
-	public List<FinancialDataEntity> getData(AssetEntity asset) {
+	public List<FinancialDataDTO> getData(AssetEntity asset) {
 		QuandlSession session = QuandlSession.create();
 		
 		TabularResult tabularResult = session.getDataSet(
@@ -24,14 +24,14 @@ public class QuandlDBInitializer {
 				.withColumn(asset.getRemarksIndex())
 				.build());
 		
-		List<FinancialDataEntity> list = new ArrayList<>();
+		List<FinancialDataDTO> list = new ArrayList<>();
 		for(int i = 0; i < tabularResult.size(); i++) {
 			Row row = tabularResult.get(i);
 			Double valueDouble = row.getDouble(1);
 			BigDecimal value = new BigDecimal(valueDouble);
 			String dateString = row.getString(0);
 			LocalDate date = LocalDate.parse(dateString);
-			FinancialDataEntity financialData = new FinancialDataEntity();
+			FinancialDataDTO financialData = new FinancialDataDTO();
 			financialData.setAsset(asset);
 			financialData.setDate(date);
 			financialData.setValue(value);

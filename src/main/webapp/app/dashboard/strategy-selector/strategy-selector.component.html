@@ -8,7 +8,7 @@
 				<div class="chart-wrapper ">
 					<canvas baseChart class="chart" [data]="strategy.data"
 						[labels]="strategy.labels" [options]="strategyOptions"
-						[colors]="strategyColours" [legend]="strategyLegend"
+						[colors]="strategy.colours" [legend]="strategyLegend"
 						[chartType]="strategyType" (chartHover)="chartHovered($event)"
 						(chartClick)="chartClicked($event)"></canvas>
 				</div>

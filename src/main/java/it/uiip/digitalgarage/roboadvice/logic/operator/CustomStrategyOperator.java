@@ -21,8 +21,9 @@ public class CustomStrategyOperator extends AbstractOperator{
     }
 
     public CustomStrategyEntity setCustomStrategy(CustomStrategyDTO customStrategy){
-        //customStrategy = this.customStrategyRep.save(customStrategy);
-       // return customStrategy;
-        return null;
+
+        CustomStrategyEntity customStrategyEntityConv = this.customStrategyConv.convertToEntity(customStrategy);
+        CustomStrategyEntity customStrategyEntityFinal = this.customStrategyRep.save(customStrategyEntityConv);
+        return customStrategyEntityFinal;
     }
 }

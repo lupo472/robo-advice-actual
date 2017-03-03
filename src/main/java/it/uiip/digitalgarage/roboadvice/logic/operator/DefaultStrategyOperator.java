@@ -16,10 +16,6 @@ public class DefaultStrategyOperator extends AbstractOperator {
 		this.defaultStrategyRep = defaultStrategyRep;
 	}
 	
-//	public List<DefaultStrategyEntity> getDefaultStrategySet() {
-//		return this.defaultStrategyRep.findAll();
-//	}
-	
 	public List<DefaultStrategyDTO> getDefaultStrategySet() {
 		List<DefaultStrategyEntity> defaultStrategySet = this.defaultStrategyRep.findAll();
 		Map<String, List<AssetClassStrategyDTO>> map = new HashMap<>();
@@ -41,7 +37,6 @@ public class DefaultStrategyOperator extends AbstractOperator {
 			result.add(dSDTO);
 		}
 		return result;
-		//return map;
 	}
 	
 }
