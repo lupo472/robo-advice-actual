@@ -17,11 +17,6 @@ public class QuandlOperator extends AbstractOperator {
 		this.assetRep = assetRep;
 	}
 	
-	public List<FinancialDataDTO> getFinancialDataSet() {
-		List<FinancialDataEntity> list =  this.financialDataRep.findAll();
-		return this.financialDataConv.convertToDTO(list);
-	}
-	
 	public void updateFinancialDataSet() {
 		List<AssetEntity> assets = (List<AssetEntity>) this.assetRep.findAll();
 		QuandlDBUpdater q = new QuandlDBUpdater();
