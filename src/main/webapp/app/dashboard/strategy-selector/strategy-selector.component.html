@@ -1,8 +1,8 @@
 <div class="row">
 	<div class="col-md-2 col-sm-4"
 		*ngFor="let strategy of strategies; let i = index">
-		<div class="card">
-			
+		<div class="card btn-strategy">
+
 			<div class="card-block text-center">
 			<div class="text-uppercase font-weight-bold">{{strategy.name}}</div>
 				<div class="chart-wrapper ">
@@ -12,7 +12,7 @@
 						[chartType]="strategyType" (chartHover)="chartHovered($event)"
 						(chartClick)="chartClicked($event)"></canvas>
 				</div>
-				
+
 			</div>
 		</div>
 	</div>

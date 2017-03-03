@@ -25,7 +25,9 @@ public class CustomStrategyOperator extends AbstractOperator{
         return listCustomStrategyDTO;
     }
 
-    public List<CustomStrategyDTO> setCustomStrategy(List<CustomStrategyDTO> customStrategy){
+    public List<CustomStrategyDTO> setCustomStrategy(List<CustomStrategyDTO> customStrategy, Long userId){
+
+        this.customStrategyRep.setNewActiveForCustomStrategy(userId);
 
         List<CustomStrategyEntity> customStrategyEntityConv = this.customStrategyConv.convertToEntity(customStrategy);
         List<CustomStrategyEntity> customStrategyEntities = new ArrayList<CustomStrategyEntity>();
@@ -39,4 +41,5 @@ public class CustomStrategyOperator extends AbstractOperator{
 
         return customStrategyDTO;
     }
+
 }
