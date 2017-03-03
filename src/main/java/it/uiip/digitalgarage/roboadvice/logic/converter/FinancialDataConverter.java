@@ -1,5 +1,6 @@
 package it.uiip.digitalgarage.roboadvice.logic.converter;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,22 +9,22 @@ import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataDTO;
 
 public class FinancialDataConverter implements GenericConverter<FinancialDataEntity, FinancialDataDTO> {
 
+	private AssetConverter assetConv = new AssetConverter();
+	
 	@Override
 	public FinancialDataEntity convertToEntity(FinancialDataDTO dto) {
 		FinancialDataEntity entity = new FinancialDataEntity();
-		entity.setId(dto.getId());
 		entity.setValue(dto.getValue());
-		entity.setDate(dto.getDate());
-		entity.setAsset(dto.getAsset());
+		entity.setDate(LocalDate.parse(dto.getDate()));
+		entity.setAsset(this.assetConv.convertToEntity(dto.getAsset()));
 		return entity;
 	}
 
 	@Override
 	public FinancialDataDTO convertToDTO(FinancialDataEntity entity) {
 		FinancialDataDTO dto = new FinancialDataDTO();
-		dto.setId(entity.getId());
-		dto.setAsset(entity.getAsset());
-		dto.setDate(entity.getDate());
+		dto.setAsset(this.assetConv.convertToDTO(entity.getAsset()));
+		dto.setDate(entity.getDate().toString());
 		dto.setValue(entity.getValue());
 		return dto;
 	}

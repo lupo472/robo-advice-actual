@@ -1,7 +1,6 @@
 package it.uiip.digitalgarage.roboadvice.persistence.quandl;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +9,7 @@ import com.jimmoores.quandl.QuandlSession;
 import com.jimmoores.quandl.Row;
 import com.jimmoores.quandl.TabularResult;
 
+import it.uiip.digitalgarage.roboadvice.logic.converter.AssetConverter;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetEntity;
 import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataDTO;
 
@@ -29,10 +29,9 @@ public class QuandlDBInitializer {
 			Row row = tabularResult.get(i);
 			Double valueDouble = row.getDouble(1);
 			BigDecimal value = new BigDecimal(valueDouble);
-			String dateString = row.getString(0);
-			LocalDate date = LocalDate.parse(dateString);
+			String date = row.getString(0);
 			FinancialDataDTO financialData = new FinancialDataDTO();
-			financialData.setAsset(asset);
+			financialData.setAsset(new AssetConverter().convertToDTO(asset));
 			financialData.setDate(date);
 			financialData.setValue(value);
 			list.add(financialData);

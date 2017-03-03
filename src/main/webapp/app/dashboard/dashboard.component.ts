@@ -9,23 +9,37 @@ import { AssetClass } from './assetclass';
   providers: [AssetService]
 })
 export class DashboardComponent implements OnInit {
-  public isCustom: boolean;
+
+  public strategy:any;
+  public isCustom:boolean;
+
   public assetClassSet = [];
   public assetClasses = [];
   public assetSet = [];
   public assets = [];
   public selectedAsset = [];
-  strategies: Map<number, string>;
-  constructor(private service: AssetService) {
+
+  strategies:Map<number, number>;
+  sumPercentage:number;
+  maxPercentage:number;
+  constructor(private service:AssetService){
+
     this.isCustom = true;
-    this.strategies = new Map<number, string>();
+    this.strategies = new Map<number, number>();
+    this.strategy = {};
+    this.sumPercentage = 0;
+    this.maxPercentage = 0;
   }
 
   onStrategy(strategy: any) {
     console.log("++onStrategy");
-    this.strategies.set(strategy.id_asset, strategy.percentage);
-    // this.strategies.push(strategy);
-    console.log(this.strategies);
+    if (this.maxPercentage <= 100) {
+      this.strategies.set(strategy.id_asset, strategy.percentage);
+    }
+    this.sumPercentage += strategy.percentage;
+    this.maxPercentage = 100 - this.sumPercentage;
+    console.log(this.sumPercentage);
+    console.log(this.maxPercentage);
   }
 
   ngOnInit(): void {
@@ -36,12 +50,13 @@ export class DashboardComponent implements OnInit {
   //ASSIGN ASSET CLASS
   public getAssetClass(result) {
     this.assetClassSet = result.data;
-
     this.assetClassSet.forEach((item, index) => {
-      this.assetClasses[index] = { id: item.id, name: item.name, data: [65, 59, 84, 84, 51, 55, 40], percentage: 15 }
-    })
 
-    console.log(this.assetClassSet[0].name);
+    this.assetClasses[index] = {id: item.id, name:  item.name, data: [65, 59, 84, 84, 51, 55, 40], percentage: 15}
+    this.strategies.set(item.id, 0);
+
+    })
+    console.log(this.strategies);
   }
 
   //ASSIGN ASSET
