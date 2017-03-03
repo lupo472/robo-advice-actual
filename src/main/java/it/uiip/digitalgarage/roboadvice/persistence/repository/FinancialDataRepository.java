@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,8 +16,8 @@ public interface FinancialDataRepository extends PagingAndSortingRepository<Fina
 
 	public List<FinancialDataEntity> findAll();
 	
-	@Query(value = "SELECT * FROM financial_data WHERE id_asset = ?1", nativeQuery = true)
-	public List<FinancialDataEntity> boh(Long assetId);
+	@Query(value = "SELECT * FROM financial_data WHERE id_asset = ?1 AND date BETWEEN ?2 AND NOW()", nativeQuery = true)
+	public List<FinancialDataEntity> findByAssetForPeriod(Long assetId, String date);
 	
 	public List<FinancialDataEntity> findByAssetIdAndDate(Long assetId, LocalDate date);
 	
