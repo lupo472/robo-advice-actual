@@ -1,7 +1,31 @@
-// Here you can add other styles
+// CUSTOM SCSS
+
+// Validity check
 .ng-valid[required], .ng-valid.required  {
-  border-right: 5px solid #42A948; /* green */
+  border-right: 5px solid $brand-success; /* green */
 }
 .ng-invalid:not(form)  {
-  border-right: 5px solid #a94442; /* red */
+  border-right: 5px solid $brand-danger; /* red */
+}
+
+// Strategy Card
+.btn-strategy {
+  color: $general;
+  background-color: #fff;
+  border-radius: 3px;
+}
+
+.btn-strategy:hover {
+    color: #fff;
+    background-color: rgba($general,0.5) ;
+}
+
+.btn-strategy:active {
+    color: #fff;
+    background-color: $general;
+}
+
+.btn-strategy:disabled,
+.btn-strategy.is-disabled {
+  opacity: .5;
 }
