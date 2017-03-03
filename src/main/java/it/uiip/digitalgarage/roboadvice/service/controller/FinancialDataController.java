@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.uiip.digitalgarage.roboadvice.logic.operator.FinancialDataOperator;
 import it.uiip.digitalgarage.roboadvice.logic.operator.QuandlOperator;
+import it.uiip.digitalgarage.roboadvice.service.dto.AssetDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.DataForAssetRequestDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
@@ -34,6 +35,14 @@ public class FinancialDataController extends AbstractController {
 		this.financialDataOp = new FinancialDataOperator(this.financialDataRep);
 		List<FinancialDataDTO> result = this.financialDataOp.getFinancialDataSet(request);
 		return new GenericResponse<List<FinancialDataDTO>>(1, result);
+	}
+	
+	@RequestMapping("/findLastFinancialDataForAsset")
+	@ResponseBody
+	public GenericResponse<?> findLastFinancialDataForAsset(@Valid @RequestBody AssetDTO asset) {
+		this.financialDataOp = new FinancialDataOperator(this.financialDataRep);
+		FinancialDataDTO result = null;//this.financialDataOp.findLast(AssetDTO asset);
+		return new GenericResponse<FinancialDataDTO>(1, result);
 	}
 	
 	@RequestMapping("/updateFinancialDataSet")

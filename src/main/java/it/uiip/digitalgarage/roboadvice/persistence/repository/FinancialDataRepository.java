@@ -19,8 +19,6 @@ public interface FinancialDataRepository extends PagingAndSortingRepository<Fina
 	@Query(value = "SELECT * FROM financial_data WHERE id_asset = ?1 ORDER BY date DESC", nativeQuery = true)
 	public List<FinancialDataEntity> findByAssetId(Long assetId);
 	
-//	public FinancialDataEntity findTopByAssetId(Long asssetId);
-	
 	@Query(value = "SELECT * FROM financial_data WHERE id_asset = ?1 AND date BETWEEN ?2 AND NOW() ORDER BY date DESC", nativeQuery = true)
 	public List<FinancialDataEntity> findByAssetIdForPeriod(Long assetId, String date);
 
