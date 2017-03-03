@@ -16,6 +16,7 @@ export class LoginComponent{
       }
   };
   user:any = {};
+
   public onSubmit(){
     this.service.login(this.user).subscribe(
         (res)=>{
@@ -28,8 +29,10 @@ export class LoginComponent{
                 this.router.navigate(['dashboard']);
             }
             else{
-                alert("Incorrect credentials: "+res.data);
+                //alert("Incorrect credentials: "+res.data);
                 console.log("Incorrect credentials: ",res);
+                document.getElementById('alertLogin').style.display="block";
+
             }
         },
     (error) => {
