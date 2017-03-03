@@ -20,6 +20,53 @@ export class FullLayoutComponent implements OnInit {
     $event.stopPropagation();
     this.status.isopen = !this.status.isopen;
   }
+  
+  // social box charts
+
+  public socialChartData1:Array<any> = [
+    {
+      data: [65, 59, 84, 84, 51, 55, 40],
+      label: 'Facebook'
+    }
+  ];
+  
+  public socialChartLabels:Array<any> = ['January','February','March','April','May','June','July'];
+  public socialChartOptions:any = {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      xAxes: [{
+        display:false,
+      }],
+      yAxes: [{
+        display:false,
+      }]
+    },
+    elements: {
+      line: {
+        borderWidth: 2
+      },
+      point: {
+        radius: 0,
+        hitRadius: 10,
+        hoverRadius: 4,
+        hoverBorderWidth: 3,
+      }
+    },
+    legend: {
+      display: false
+    }
+  };
+  public socialChartColours:Array<any> = [
+    {
+      backgroundColor: 'rgba(148,159,177,0.2)',
+      borderColor: 'rgba(148,159,177,1)',
+      pointHoverBackgroundColor: '#fff'
+    }
+  ];
+  public socialChartLegend:boolean = false;
+  public socialChartType:string = 'line';
+  
 
   ngOnInit(): void {}
 }

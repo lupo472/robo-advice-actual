@@ -3,6 +3,7 @@ package it.uiip.digitalgarage.roboadvice.logic.operator;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.CustomStrategyEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.CustomStrategyRepository;
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
 
 import java.util.List;
 
@@ -15,8 +16,10 @@ public class CustomStrategyOperator extends AbstractOperator{
         this.customStrategyRep = customStrategyRep;
     }
 
-    public List<CustomStrategyEntity> getUserCustomStrategies(Long userId){
-        return  this.customStrategyRep.findByUserId(userId);
+    public List<CustomStrategyDTO> getUserCustomStrategies(UserLoggedDTO user){
+        List<CustomStrategyEntity> listCustomStrategyEntity = this.customStrategyRep.findByUserId(user.getId());
+        List<CustomStrategyDTO> listCustomStrategyDTO = this.customStrategyConv.convertToDTO(listCustomStrategyEntity);
+        return listCustomStrategyDTO;
 
     }
 

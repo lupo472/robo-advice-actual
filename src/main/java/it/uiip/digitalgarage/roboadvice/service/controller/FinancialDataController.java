@@ -23,6 +23,13 @@ public class FinancialDataController extends AbstractController {
 		return new GenericResponse<List<FinancialDataDTO>>(1, result);
 	}
 	
+//	@RequestMapping("/getFinancialDataForAsset")
+//	@ResponseBody
+//	public GenericResponse<?> getFinancialDataForAsset(String period) {
+//		
+//		return null;
+//	}
+	
 	@RequestMapping("/updateFinancialDataSet")
 	@ResponseBody
 	public GenericResponse<?> updateFinancialDataSet() {

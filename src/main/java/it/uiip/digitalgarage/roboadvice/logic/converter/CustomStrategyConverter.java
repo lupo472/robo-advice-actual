@@ -3,6 +3,7 @@ package it.uiip.digitalgarage.roboadvice.logic.converter;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.CustomStrategyEntity;
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,21 +14,32 @@ public class CustomStrategyConverter implements GenericConverter<CustomStrategyE
    @Override
     public CustomStrategyDTO convertToDTO(CustomStrategyEntity customerStrategyEntity){
        CustomStrategyDTO customerStrategyDTO = new CustomStrategyDTO();
-       customerStrategyDTO.setIdUser(customerStrategyEntity.getUser().getId());
        customerStrategyDTO.setIdAssetClass(customerStrategyEntity.getAssetClass().getId());
        customerStrategyDTO.setPercentage(customerStrategyEntity.getPercentage());
        customerStrategyDTO.setActive(customerStrategyEntity.isActive());
+       customerStrategyDTO.setDate(customerStrategyEntity.getDate().toString());
        return customerStrategyDTO;
    }
 
     @Override
     public List<CustomStrategyEntity> convertToEntity(List<CustomStrategyDTO> dto) {
-        return null;
+        List<CustomStrategyEntity> listCustomStrategiesEntities = new ArrayList<CustomStrategyEntity>();
+
+        for(CustomStrategyDTO customDTO : dto){
+            listCustomStrategiesEntities.add(this.convertToEntity(customDTO));
+        }
+
+        return listCustomStrategiesEntities;
     }
 
     @Override
     public List<CustomStrategyDTO> convertToDTO(List<CustomStrategyEntity> entity) {
-        return null;
+        List<CustomStrategyDTO> listCustomStrategiesDTO = new ArrayList<CustomStrategyDTO>();
+
+        for(CustomStrategyEntity customEntity : entity){
+            listCustomStrategiesDTO.add(this.convertToDTO(customEntity));
+        }
+        return listCustomStrategiesDTO;
     }
 
     @Override
@@ -35,6 +47,5 @@ public class CustomStrategyConverter implements GenericConverter<CustomStrategyE
         CustomStrategyEntity customStrategyEntity = new CustomStrategyEntity();
         return customStrategyEntity;
    }
-
 
 }
