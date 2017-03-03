@@ -32,12 +32,14 @@ public class CustomStrategyController extends AbstractController {
         return new GenericResponse<List<CustomStrategyDTO>>(1,customStrategies);
     }
 
-    //TODO Control this method
     @RequestMapping("/setCustomStrategy")
     public GenericResponse setCustomStrategy(@Valid @RequestBody List<CustomStrategyDTO> customStrategies){
 
             this.customStrategyOp = new CustomStrategyOperator(this.customStrategyRep);
-            List<CustomStrategyDTO> createdStrategiesSaved = this.customStrategyOp.setCustomStrategy(customStrategies);
+
+            List<CustomStrategyDTO> createdStrategiesSaved = this.customStrategyOp.setCustomStrategy(customStrategies, new Long(customStrategies.get(0).getIdUser()));
+
+
 
             if(customStrategies == null) return new GenericResponse<String>(0, "Failure");
 
