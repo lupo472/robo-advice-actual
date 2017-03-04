@@ -35,11 +35,21 @@ public class FinancialDataOperator extends AbstractOperator {
 		return this.financialDataConv.convertToDTO(list);
 	}
 	
-	public FinancialDataDTO findLast(AssetDTO asset) {
-		FinancialDataEntity entity = this.financialDataRep.findLastForAnAsset(asset.getId());
+	public FinancialDataDTO findLast(DataRequestDTO request) {
+		FinancialDataEntity entity = null;
+		if(request.getPeriod() == 0) {
+			entity = this.financialDataRep.findLastForAnAsset(request.getId());
+		} else {
+			Calendar calendar = Calendar.getInstance();
+			calendar.add(Calendar.DATE, -(request.getPeriod()));
+			LocalDate date = LocalDate.of(calendar.get(Calendar.YEAR), (calendar.get(Calendar.MONTH) + 1), calendar.get(Calendar.DAY_OF_MONTH));
+			entity = this.financialDataRep.findLastForAnAssetBefore(request.getId(), date.toString());
+		}
 		return this.financialDataConv.convertToDTO(entity);
 	}
 	
+	//TODO Manage the case when period = 0
+	//TODO improve scalability
 	public List<FinancialDataClassDTO> getFinancialDataSetForAssetClass(DataRequestDTO request) {
 		List<AssetEntity> assets = this.assetRep.findByAssetClassId(request.getId());
 		
