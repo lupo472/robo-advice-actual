@@ -59,11 +59,32 @@ public class FinancialDataOperator extends AbstractOperator {
 		
 		if(request.getPeriod() == 0) {
 			for(AssetEntity assetEntity : assets) {
-				FinancialDataEntity entity = null;
-				do {
-					
-				} while(entity != null);
+				FinancialDataDTO f = null;
+				int n = 1;
+				DataRequestDTO r = new DataRequestDTO();
+				r.setId(assetEntity.getId());
+				while(true) {
+					r.setPeriod(n);
+					f = this.findLast(r);
+					if(f == null) {
+						break;
+					}
+					if(map.get(f.getDate()) == null) {
+						map.put(f.getDate(), new BigDecimal(0));
+					}
+					map.put(f.getDate(), map.get(f.getDate()).add(f.getValue()));
+					n++;
+				}
 			}
+			List<FinancialDataClassDTO> result = new ArrayList<>();
+			for (String date : map.keySet()) {
+				FinancialDataClassDTO f = new FinancialDataClassDTO();
+				f.setAssetClass(this.assetClassConv.convertToDTO(this.assetClassRep.findById(request.getId())));
+				f.setDate(date);
+				f.setValue(map.get(date));
+				result.add(f);
+			}
+			return result;
 		}
 		
 		
@@ -74,7 +95,6 @@ public class FinancialDataOperator extends AbstractOperator {
 				r.setId(assetEntity.getId());
 				r.setPeriod(days);
 				FinancialDataDTO f = this.findLast(r);
-				
 				if(map.get(f.getDate()) == null) {
 					map.put(f.getDate(), new BigDecimal(0));
 				}
