@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.uiip.digitalgarage.roboadvice.logic.operator.FinancialDataOperator;
 import it.uiip.digitalgarage.roboadvice.logic.operator.QuandlOperator;
-import it.uiip.digitalgarage.roboadvice.service.dto.AssetDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.DataRequestDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataClassDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataDTO;

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,6 +85,7 @@ public class FinancialDataOperator extends AbstractOperator {
 				f.setValue(map.get(date));
 				result.add(f);
 			}
+			Collections.sort(result);
 			return result;
 		}
 		
@@ -118,6 +120,7 @@ public class FinancialDataOperator extends AbstractOperator {
 //			financialDataSet = this.financialDataConv.convertToEntity(this.getFinancialDataSetForAsset(request));
 //			System.out.println(assetEntity.getName() + ": " + financialDataSet.size());
 //		}
+		Collections.sort(result);
 		return result;
 	}
 	

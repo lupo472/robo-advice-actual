@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 
-public @Data class FinancialDataClassDTO {
+public @Data class FinancialDataClassDTO implements Comparable<FinancialDataClassDTO> {
 	
 	@NotNull
 	private AssetClassDTO assetClass;
@@ -16,5 +16,10 @@ public @Data class FinancialDataClassDTO {
 	
 	@NotNull
 	private String date;
+
+	@Override
+	public int compareTo(FinancialDataClassDTO o) {
+		return this.date.compareTo(o.date);
+	}
 
 }
