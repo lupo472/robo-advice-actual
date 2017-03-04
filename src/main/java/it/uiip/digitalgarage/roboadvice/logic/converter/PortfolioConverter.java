@@ -9,9 +9,6 @@ import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioDTO;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Luca on 03/03/2017.
- */
 public class PortfolioConverter implements GenericConverter<PortfolioEntity,PortfolioDTO>{
 
     @Override

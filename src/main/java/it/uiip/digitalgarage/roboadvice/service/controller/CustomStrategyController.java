@@ -1,7 +1,6 @@
 package it.uiip.digitalgarage.roboadvice.service.controller;
 
 import it.uiip.digitalgarage.roboadvice.logic.operator.CustomStrategyOperator;
-import it.uiip.digitalgarage.roboadvice.persistence.entity.CustomStrategyEntity;
 
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
@@ -33,7 +32,7 @@ public class CustomStrategyController extends AbstractController {
     }
 
     @RequestMapping("/setCustomStrategy")
-    public GenericResponse setCustomStrategy(@Valid @RequestBody List<CustomStrategyDTO> customStrategies){
+    public GenericResponse<?> setCustomStrategy(@Valid @RequestBody List<CustomStrategyDTO> customStrategies){
 
             this.customStrategyOp = new CustomStrategyOperator(this.customStrategyRep);
 

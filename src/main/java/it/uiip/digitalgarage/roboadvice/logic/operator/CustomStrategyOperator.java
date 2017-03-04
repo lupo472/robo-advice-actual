@@ -9,9 +9,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Luca on 02/03/2017.
- */
 public class CustomStrategyOperator extends AbstractOperator{
 
     public CustomStrategyOperator(CustomStrategyRepository customStrategyRep){
