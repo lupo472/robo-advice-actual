@@ -51,7 +51,6 @@ public class FinancialDataOperator extends AbstractOperator {
 		return this.financialDataConv.convertToDTO(entity);
 	}
 	
-	//TODO Manage the case when period = 0
 	//TODO improve scalability
 	public List<FinancialDataClassDTO> getFinancialDataSetForAssetClass(DataRequestDTO request) {
 		List<AssetEntity> assets = this.assetRep.findByAssetClassId(request.getId());

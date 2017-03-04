@@ -25,10 +25,10 @@ public interface FinancialDataRepository extends PagingAndSortingRepository<Fina
 													+ 			  "WHERE id_asset = ?1 "
 													+ 			  "AND date < ?2)";
 	
-	static final String FIND_BY_ASSET_ID = "SELECT * FROM financial_data WHERE id_asset = ?1 ORDER BY date DESC";
+	static final String FIND_BY_ASSET_ID = "SELECT * FROM financial_data WHERE id_asset = ?1 ORDER BY date ASC";
 	
 	static final String FIND_BY_ASSET_ID_FOR_PERIOD = "SELECT * FROM financial_data WHERE id_asset = ?1 "
-													+ "AND date BETWEEN ?2 AND NOW() ORDER BY date DESC";
+													+ "AND date BETWEEN ?2 AND NOW() ORDER BY date ASC";
 	
 	public List<FinancialDataEntity> findAll();
 	
