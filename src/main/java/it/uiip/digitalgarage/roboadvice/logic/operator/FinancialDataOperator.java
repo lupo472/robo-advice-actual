@@ -4,7 +4,9 @@ import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.List;
 
+import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.FinancialDataEntity;
+import it.uiip.digitalgarage.roboadvice.persistence.repository.AssetRepository;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.FinancialDataRepository;
 import it.uiip.digitalgarage.roboadvice.service.dto.AssetDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.DataRequestDTO;
@@ -14,6 +16,11 @@ public class FinancialDataOperator extends AbstractOperator {
 
 	public FinancialDataOperator(FinancialDataRepository financialDataRep) {
 		this.financialDataRep = financialDataRep;
+	}
+	
+	public FinancialDataOperator(FinancialDataRepository financialDataRep, AssetRepository assetRep) {
+		this.financialDataRep = financialDataRep;
+		this.assetRep = assetRep;
 	}
 	
 	public List<FinancialDataDTO> getFinancialDataSet() {
@@ -27,6 +34,10 @@ public class FinancialDataOperator extends AbstractOperator {
 	}
 	
 	public List<FinancialDataDTO> getFinancialDataSetForAssetClass(DataRequestDTO request) {
+		List<AssetEntity> assets = this.assetRep.findByAssetClassId(request.getIdAsset());
+		for (AssetEntity assetEntity : assets) {
+			System.out.println(assetEntity.getName());
+		}
 		return null;
 	}
 	

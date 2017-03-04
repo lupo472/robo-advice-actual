@@ -40,7 +40,7 @@ public class FinancialDataController extends AbstractController {
 	@RequestMapping("/getFinancialDataForAssetClass")
 	@ResponseBody
 	public GenericResponse<?> getFinancialDataForAssetClass(@Valid @RequestBody DataRequestDTO request) {
-		this.financialDataOp = new FinancialDataOperator(this.financialDataRep);
+		this.financialDataOp = new FinancialDataOperator(this.financialDataRep, this.assetRep);
 		List<FinancialDataDTO> result = this.financialDataOp.getFinancialDataSetForAssetClass(request);
 		return new GenericResponse<List<FinancialDataDTO>>(1, result);
 	}
