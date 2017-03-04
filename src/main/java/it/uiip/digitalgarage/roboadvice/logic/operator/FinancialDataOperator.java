@@ -34,9 +34,12 @@ public class FinancialDataOperator extends AbstractOperator {
 	}
 	
 	public List<FinancialDataDTO> getFinancialDataSetForAssetClass(DataRequestDTO request) {
-		List<AssetEntity> assets = this.assetRep.findByAssetClassId(request.getIdAsset());
+		List<AssetEntity> assets = this.assetRep.findByAssetClassId(request.getId());
+		List<FinancialDataEntity> financialDataSet = null;
 		for (AssetEntity assetEntity : assets) {
-			System.out.println(assetEntity.getName());
+			request.setId(assetEntity.getId());
+			financialDataSet = this.financialDataConv.convertToEntity(this.getFinancialDataSetForAsset(request));
+			System.out.println(assetEntity.getName() + ": " + financialDataSet.size());
 		}
 		return null;
 	}
@@ -45,11 +48,11 @@ public class FinancialDataOperator extends AbstractOperator {
 		Calendar calendar = Calendar.getInstance();
 		List<FinancialDataEntity> list;
 		if(request.getPeriod() == 0) {
-			list = this.financialDataRep.findByAssetId(request.getIdAsset());
+			list = this.financialDataRep.findByAssetId(request.getId());
 		} else {
 			calendar.add(Calendar.DATE, -(request.getPeriod()));
 			LocalDate date = LocalDate.of(calendar.get(Calendar.YEAR), (calendar.get(Calendar.MONTH) + 1), calendar.get(Calendar.DAY_OF_MONTH));		
-			list =  this.financialDataRep.findByAssetIdForPeriod(request.getIdAsset(), date.toString());
+			list =  this.financialDataRep.findByAssetIdForPeriod(request.getId(), date.toString());
 		}
 		return this.financialDataConv.convertToDTO(list);
 	}
