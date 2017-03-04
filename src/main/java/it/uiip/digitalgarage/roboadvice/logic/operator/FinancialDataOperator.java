@@ -45,6 +45,9 @@ public class FinancialDataOperator extends AbstractOperator {
 			LocalDate date = LocalDate.of(calendar.get(Calendar.YEAR), (calendar.get(Calendar.MONTH) + 1), calendar.get(Calendar.DAY_OF_MONTH));
 			entity = this.financialDataRep.findLastForAnAssetBefore(request.getId(), date.toString());
 		}
+		if(entity == null) {
+			return null;
+		}
 		return this.financialDataConv.convertToDTO(entity);
 	}
 	
@@ -57,7 +60,10 @@ public class FinancialDataOperator extends AbstractOperator {
 		
 		if(request.getPeriod() == 0) {
 			for(AssetEntity assetEntity : assets) {
-				
+				FinancialDataEntity entity = null;
+				do {
+					
+				} while(entity != null);
 			}
 		}
 		

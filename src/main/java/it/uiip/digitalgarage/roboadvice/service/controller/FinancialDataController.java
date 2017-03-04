@@ -51,6 +51,9 @@ public class FinancialDataController extends AbstractController {
 	public GenericResponse<?> findLastFinancialDataForAsset(@Valid @RequestBody DataRequestDTO request) {
 		this.financialDataOp = new FinancialDataOperator(this.financialDataRep);
 		FinancialDataDTO result = this.financialDataOp.findLast(request);
+		if(result == null) {
+			return new GenericResponse<String>(0, "No results");
+		}
 		return new GenericResponse<FinancialDataDTO>(1, result);
 	}
 	
