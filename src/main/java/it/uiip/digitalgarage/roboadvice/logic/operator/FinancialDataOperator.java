@@ -59,20 +59,20 @@ public class FinancialDataOperator extends AbstractOperator {
 		
 		if(request.getPeriod() == 0) {
 			for(AssetEntity assetEntity : assets) {
-				FinancialDataDTO f = null;
+				FinancialDataEntity entity = null;
 				int n = 1;
-				DataRequestDTO r = new DataRequestDTO();
-				r.setId(assetEntity.getId());
 				while(true) {
-					r.setPeriod(n);
-					f = this.findLast(r);
-					if(f == null) {
+					Calendar calendar = Calendar.getInstance();
+					calendar.add(Calendar.DATE, -n);
+					LocalDate date = LocalDate.of(calendar.get(Calendar.YEAR), (calendar.get(Calendar.MONTH) + 1), calendar.get(Calendar.DAY_OF_MONTH));
+					entity = this.financialDataRep.findLastForAnAssetBefore(assetEntity.getId(), date.toString());
+					if(entity == null) {
 						break;
 					}
-					if(map.get(f.getDate()) == null) {
-						map.put(f.getDate(), new BigDecimal(0));
+					if(map.get(date.toString()) == null) {
+						map.put(date.toString(), new BigDecimal(0));
 					}
-					map.put(f.getDate(), map.get(f.getDate()).add(f.getValue()));
+					map.put(date.toString(), map.get(date.toString()).add(entity.getValue()));
 					n++;
 				}
 			}
@@ -91,10 +91,6 @@ public class FinancialDataOperator extends AbstractOperator {
 		int days = request.getPeriod();
 		while(days > 0) {
 			for (AssetEntity assetEntity : assets) {
-//				DataRequestDTO r = new DataRequestDTO();
-//				r.setId(assetEntity.getId());
-//				r.setPeriod(days);
-//				FinancialDataDTO f = this.findLast(r);
 				Calendar calendar = Calendar.getInstance();
 				calendar.add(Calendar.DATE, -days);
 				LocalDate date = LocalDate.of(calendar.get(Calendar.YEAR), (calendar.get(Calendar.MONTH) + 1), calendar.get(Calendar.DAY_OF_MONTH));
