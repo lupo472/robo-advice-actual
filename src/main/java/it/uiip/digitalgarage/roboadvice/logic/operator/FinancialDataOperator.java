@@ -13,7 +13,6 @@ import it.uiip.digitalgarage.roboadvice.persistence.entity.FinancialDataEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.AssetClassRepository;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.AssetRepository;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.FinancialDataRepository;
-import it.uiip.digitalgarage.roboadvice.service.dto.AssetDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.DataRequestDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataClassDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataDTO;
@@ -71,14 +70,15 @@ public class FinancialDataOperator extends AbstractOperator {
 		int days = request.getPeriod();
 		while(days > 0) {
 			for (AssetEntity assetEntity : assets) {
-				Calendar calendar = Calendar.getInstance();
-				calendar.add(Calendar.DATE, -(days));
-				LocalDate date = LocalDate.of(calendar.get(Calendar.YEAR), (calendar.get(Calendar.MONTH) + 1), calendar.get(Calendar.DAY_OF_MONTH));
-				FinancialDataEntity entity = this.financialDataRep.findLastForAnAssetBefore(assetEntity.getId(), date.toString());
-				if(map.get(date.toString()) == null) {
-					map.put(date.toString(), new BigDecimal(0));
+				DataRequestDTO r = new DataRequestDTO();
+				r.setId(assetEntity.getId());
+				r.setPeriod(days);
+				FinancialDataDTO f = this.findLast(r);
+				
+				if(map.get(f.getDate()) == null) {
+					map.put(f.getDate(), new BigDecimal(0));
 				}
-				map.put(date.toString(), map.get(date.toString()).add(entity.getValue()));
+				map.put(f.getDate(), map.get(f.getDate()).add(f.getValue()));
 			}
 			days--;
 		}
