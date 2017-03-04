@@ -4,14 +4,10 @@ import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetClassEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.CustomStrategyEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyDTO;
-import org.apache.catalina.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Luca on 02/03/2017.
- */
 public class CustomStrategyConverter implements GenericConverter<CustomStrategyEntity,CustomStrategyDTO> {
 
    @Override
