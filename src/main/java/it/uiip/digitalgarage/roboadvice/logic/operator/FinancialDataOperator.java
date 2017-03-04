@@ -54,8 +54,16 @@ public class FinancialDataOperator extends AbstractOperator {
 		List<AssetEntity> assets = this.assetRep.findByAssetClassId(request.getId());
 		
 		Map<String, BigDecimal> map = new HashMap<>();
+		
+		if(request.getPeriod() == 0) {
+			for(AssetEntity assetEntity : assets) {
+				
+			}
+		}
+		
+		
 		int days = request.getPeriod();
-		while(days >= 0) {
+		while(days > 0) {
 			for (AssetEntity assetEntity : assets) {
 				Calendar calendar = Calendar.getInstance();
 				calendar.add(Calendar.DATE, -(days));
