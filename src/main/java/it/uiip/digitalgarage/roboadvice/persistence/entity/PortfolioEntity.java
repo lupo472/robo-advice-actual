@@ -29,7 +29,7 @@ public @Data class PortfolioEntity {
     @Column(name = "units", nullable = false, precision = 14, scale = 4)
     private BigDecimal units;
 
-    @Column(name = "percentage", nullable = false, precision = 5, scale = 2)
+    @Column(name = "value", nullable = false, precision = 5, scale = 2)
     private BigDecimal value;
 
     @Column(name = "date", nullable = false)
