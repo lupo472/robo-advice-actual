@@ -6,7 +6,8 @@ import java.util.List;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.FinancialDataEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.FinancialDataRepository;
-import it.uiip.digitalgarage.roboadvice.service.dto.DataForAssetRequestDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.AssetDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.DataRequestDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataDTO;
 
 public class FinancialDataOperator extends AbstractOperator {
@@ -20,7 +21,16 @@ public class FinancialDataOperator extends AbstractOperator {
 		return this.financialDataConv.convertToDTO(list);
 	}
 	
-	public List<FinancialDataDTO> getFinancialDataSet(DataForAssetRequestDTO request) {
+	public FinancialDataDTO findLast(AssetDTO asset) {
+		FinancialDataEntity entity = this.financialDataRep.findLastForAnAsset(asset.getId());
+		return this.financialDataConv.convertToDTO(entity);
+	}
+	
+	public List<FinancialDataDTO> getFinancialDataSetForAssetClass(DataRequestDTO request) {
+		return null;
+	}
+	
+	public List<FinancialDataDTO> getFinancialDataSetForAsset(DataRequestDTO request) {
 		Calendar calendar = Calendar.getInstance();
 		List<FinancialDataEntity> list;
 		if(request.getPeriod() == 0) {
