@@ -13,7 +13,6 @@ public class CustomStrategyConverter implements GenericConverter<CustomStrategyE
    @Override
     public CustomStrategyDTO convertToDTO(CustomStrategyEntity customerStrategyEntity){
        CustomStrategyDTO customerStrategyDTO = new CustomStrategyDTO();
-       customerStrategyDTO.setId(customerStrategyEntity.getId());
        customerStrategyDTO.setIdUser(customerStrategyEntity.getUser().getId());
        customerStrategyDTO.setIdAssetClass(customerStrategyEntity.getAssetClass().getId());
        customerStrategyDTO.setPercentage(customerStrategyEntity.getPercentage());

@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { AssetClass } from '../assetclass';
+import { StrategyService } from '../../services/strategy.service';
 
 @Component({
   selector: 'app-card-asset-class',
@@ -8,9 +9,7 @@ import { AssetClass } from '../assetclass';
 })
 
 export class CardAssetClassComponent implements OnInit {
-    strategy:any;
     @Input() value;
-    @Input() percent;
     @Input() lineChartData;
     @Input() lineChartLabels;
     @Input() lineChartOptions;
@@ -19,11 +18,11 @@ export class CardAssetClassComponent implements OnInit {
     @Input() lineChartType;
     @Input() isCustom;
     @Input() id;
-    @Output() onStrategy;
+    strategy:any;
 
-  constructor() {
+  constructor(public StrategyService:StrategyService) {
     this.strategy = {};
-    this.onStrategy = new EventEmitter<any>();
+    this.strategy.percentage = 0;
   }
 
   public brandPrimary:string =  '#20a8d8';
@@ -33,12 +32,15 @@ export class CardAssetClassComponent implements OnInit {
   public brandDanger:string =   '#f86c6b';
 
   ngOnInit() {
-
   }
 
-  public showPercentage(){
+  handleSlide(e) {
     this.strategy.id_asset = this.id;
-    this.onStrategy.emit(this.strategy);
+    this.StrategyService.onStrategy(this.strategy);
+    console.log(this.StrategyService.strategies);
   }
+  // handleChange(e) {
+  // }
+
 
 }

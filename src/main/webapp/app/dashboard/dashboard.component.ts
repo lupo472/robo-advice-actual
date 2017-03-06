@@ -1,9 +1,9 @@
 import { Component, OnInit, Renderer } from '@angular/core';
 import { Router } from '@angular/router';
 import { AssetService } from '../services/asset.service';
+import { StrategyService } from '../services/strategy.service';
 import { AssetClass } from './assetclass';
 import { Cookie } from 'ng2-cookies';
-
 
 
 @Component({
@@ -21,29 +21,22 @@ export class DashboardComponent implements OnInit {
   public assets = [];
   public selectedAsset = [];
 
-
-  strategies:Map<number, number>;
-  sumPercentage:number;
-  maxPercentage:number;
-  constructor(private service:AssetService,private router:Router){
+  constructor(private service:AssetService,private router:Router,public StrategyService:StrategyService){
 
     this.isCustom = true;
-    this.strategies = new Map<number, number>();
-    this.strategy = {};
-    this.sumPercentage = 0;
-    this.maxPercentage = 0;
+
   }
 
-  onStrategy(strategy: any) {
-    console.log("++onStrategy");
-    if (this.maxPercentage <= 100) {
-      this.strategies.set(strategy.id_asset, strategy.percentage);
-    }
-    this.sumPercentage += strategy.percentage;
-    this.maxPercentage = 100 - this.sumPercentage;
-    console.log(this.sumPercentage);
-    console.log(this.maxPercentage);
-  }
+  // onStrategy(strategy: any) {
+  //   console.log("++onStrategy");
+  //   if (this.maxPercentage <= 100) {
+  //     this.strategies.set(strategy.id_asset, strategy.percentage);
+  //   }
+  //   this.sumPercentage += strategy.percentage;
+  //   this.maxPercentage = 100 - this.sumPercentage;
+  //   console.log(this.sumPercentage);
+  //   console.log(this.maxPercentage);
+  // }
 
   ngOnInit(): void {
     this.service.getAssetClassSet().subscribe((result) => this.getAssetClass(result));
@@ -60,16 +53,14 @@ export class DashboardComponent implements OnInit {
     this.assetClassSet.forEach((item, index) => {
 
     this.assetClasses[index] = {id: item.id, name:  item.name, data: [65, 59, 84, 84, 51, 55, 40], percentage: 15}
-    this.strategies.set(item.id, 0);
+    this.StrategyService.strategies.set(item.id, 0);
 
     })
-    console.log(this.strategies);
   }
 
   //ASSIGN ASSET
   public getAsset(result) {
     this.assetSet = result.data;
-
     this.assetSet.forEach((item, index) => {
       this.assets[index] = { name: item.name, assetClass: item.assetClass, data: [65, 59, 84, 84, 51, 55, 40], percentage: 15 }
     })

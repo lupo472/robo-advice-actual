@@ -14,7 +14,6 @@ import {AccordionModule} from 'primeng/primeng';     //accordion and accordion t
 import { FormsModule } from '@angular/forms'
 import { StrategySelectorComponent } from './strategy-selector/strategy-selector.component';
 
-
 @NgModule({
   imports: [
     DashboardRoutingModule,
