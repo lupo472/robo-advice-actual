@@ -3,6 +3,7 @@ package it.uiip.digitalgarage.roboadvice.logic.operator;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.CustomStrategyEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.CustomStrategyRepository;
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyRequestDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
 
 import java.time.LocalDate;
@@ -23,11 +24,12 @@ public class CustomStrategyOperator extends AbstractOperator{
         return listCustomStrategyDTO;
     }
 
-    public List<CustomStrategyDTO> setCustomStrategy(List<CustomStrategyDTO> customStrategy, Long userId){
+    public List<CustomStrategyDTO> setCustomStrategy(CustomStrategyRequestDTO request ){
+/*
 
-        this.customStrategyRep.setNewActiveForCustomStrategy(userId);
+        this.customStrategyRep.setNewActiveForCustomStrategy(request.getIdUser());
 
-        List<CustomStrategyEntity> customStrategyEntityConv = this.customStrategyConv.convertToEntity(customStrategy);
+        List<CustomStrategyEntity> customStrategyEntityConv = this.customStrategyConv.convertToEntity(request);
         List<CustomStrategyEntity> customStrategyEntities = new ArrayList<CustomStrategyEntity>();
 
         for(CustomStrategyEntity entity : customStrategyEntityConv) {
@@ -36,8 +38,11 @@ public class CustomStrategyOperator extends AbstractOperator{
         }
 
         List<CustomStrategyDTO> customStrategyDTO = this.customStrategyConv.convertToDTO((List<CustomStrategyEntity>) this.customStrategyRep.save(customStrategyEntities));
+*/
 
-        return customStrategyDTO;
+       // return customStrategyDTO;
+
+        return null;
     }
 
     public List<CustomStrategyDTO> getUserCustomStrategyActive(UserLoggedDTO user){
