@@ -13,7 +13,11 @@ import java.util.List;
 
 public class CustomStrategyOperator extends AbstractOperator{
 
-    public CustomStrategyOperator(CustomStrategyRepository customStrategyRep, UserRepository userRep){
+	public CustomStrategyOperator(CustomStrategyRepository customStrategyRep){
+        this.customStrategyRep = customStrategyRep;
+    }
+	
+	public CustomStrategyOperator(CustomStrategyRepository customStrategyRep, UserRepository userRep){
         this.customStrategyRep = customStrategyRep;
         this.userRep = userRep;
     }
@@ -27,29 +31,11 @@ public class CustomStrategyOperator extends AbstractOperator{
 			entity.setActive(true);
 			entity.setDate(LocalDate.now());
 		}
-    	this.customStrategyRep.save(entityList);
-    	
-    	/*
+    	this.customStrategyRep.save(entityList);	    
+    }
 
-    	        this.customStrategyRep.setNewActiveForCustomStrategy(request.getIdUser());
-
-    	        List<CustomStrategyEntity> customStrategyEntityConv = this.customStrategyConv.convertToEntity(request);
-    	        List<CustomStrategyEntity> customStrategyEntities = new ArrayList<CustomStrategyEntity>();
-
-    	        for(CustomStrategyEntity entity : customStrategyEntityConv) {
-    	            entity.setDate(LocalDate.now());
-    	            customStrategyEntities.add(entity);
-    	        }
-
-    	        List<CustomStrategyDTO> customStrategyDTO = this.customStrategyConv.convertToDTO((List<CustomStrategyEntity>) this.customStrategyRep.save(customStrategyEntities));
-    	*/
-
-    	       // return customStrategyDTO;
-
-    	    }
-
-    public List<CustomStrategyDTO> getUserCustomStrategies(UserLoggedDTO user){
-
+    public CustomStrategyDTO getUserCustomStrategySet(UserLoggedDTO user){
+    	List<CustomStrategyEntity> entityList = this.customStrategyRep.findByUserId(user.getId());
         //List<CustomStrategyEntity> listCustomStrategyEntity = this.customStrategyRep.findByUserId(user.getId());
         //List<CustomStrategyDTO> listCustomStrategyDTO = this.customStrategyConv.convertToDTO(listCustomStrategyEntity);
 
@@ -57,13 +43,17 @@ public class CustomStrategyOperator extends AbstractOperator{
     	return null;
     }
 
-    public List<CustomStrategyDTO> getUserCustomStrategyActive(UserLoggedDTO user){
-
+    public CustomStrategyDTO getActiveUserCustomStrategy(UserLoggedDTO user){
+    	List<CustomStrategyEntity> entityList = this.customStrategyRep.findByUserIdAndActive(user.getId(), true);
+    	if(entityList.size() == 0) {
+    		return null;
+    	}
+    	CustomStrategyDTO result = this.customStrategyConv.convertToDTO(entityList);
 //        List<CustomStrategyEntity> customStrategyEntityList = this.customStrategyRep.findByUserIdAndActive(user.getId(), true);
 //        List<CustomStrategyDTO> customStrategyDTOList = this.customStrategyConv.convertToDTO(customStrategyEntityList);
 //
 //        return customStrategyDTOList;
-    	return null;
+    	return result;
     	
     }
 

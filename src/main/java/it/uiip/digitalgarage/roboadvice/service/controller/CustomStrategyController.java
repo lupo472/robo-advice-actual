@@ -1,7 +1,7 @@
 package it.uiip.digitalgarage.roboadvice.service.controller;
 
 import it.uiip.digitalgarage.roboadvice.logic.operator.CustomStrategyOperator;
-
+import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyRequestDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
@@ -27,23 +27,17 @@ public class CustomStrategyController extends AbstractController {
     @RequestMapping("/getUserCustomStrategySet")
     @ResponseBody
     public GenericResponse<?> getUserCustomStrategySet(@Valid @RequestBody UserLoggedDTO user){
-//    	this.customStrategyOp = new CustomStrategyOperator(this.customStrategyRep);
-//    	List<CustomStrategyDTO> customStrategies = this.customStrategyOp.getUserCustomStrategies(user);
-
-        //return new GenericResponse<List<CustomStrategyDTO>>(1,customStrategies);
-    	return null;
+    	this.customStrategyOp = new CustomStrategyOperator(this.customStrategyRep);
+    	CustomStrategyDTO result = this.customStrategyOp.getUserCustomStrategySet(user);
+        return new GenericResponse<CustomStrategyDTO>(1, result);
     }
 
-    @RequestMapping("/getUserCustomStrategyActive")
+    @RequestMapping("/getActiveUserCustomStrategy")
     @ResponseBody
     public GenericResponse<?> getUserCustomStrategyActive(@Valid @RequestBody UserLoggedDTO user){
-
-//        this.customStrategyOp = new CustomStrategyOperator(this.customStrategyRep);
-//
-//        List<CustomStrategyDTO> customStrategyActive = this.customStrategyOp.getUserCustomStrategyActive(user);
-//
-//        return new GenericResponse<List<CustomStrategyDTO>>(1, customStrategyActive);
-    	return null;
+    	this.customStrategyOp = new CustomStrategyOperator(this.customStrategyRep);
+    	CustomStrategyDTO result = this.customStrategyOp.getActiveUserCustomStrategy(user);
+    	return new GenericResponse<CustomStrategyDTO>(1, result);
     }
 
 
