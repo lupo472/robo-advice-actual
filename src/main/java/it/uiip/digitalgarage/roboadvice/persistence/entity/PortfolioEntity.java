@@ -16,20 +16,20 @@ public @Data class PortfolioEntity {
 
     @ManyToOne
     @JoinColumn(name = "id_user", nullable = false)
-    private UserEntity idUser;
+    private UserEntity user;
 
     @ManyToOne
     @JoinColumn(name = "id_asset", nullable = false)
-    private AssetEntity idAsset;
+    private AssetEntity asset;
 
     @ManyToOne
     @JoinColumn(name = "id_asset_class", nullable = false)
-    private AssetClassEntity idAssetClass;
+    private AssetClassEntity assetClass;
 
     @Column(name = "units", nullable = false, precision = 14, scale = 4)
     private BigDecimal units;
 
-    @Column(name = "value", nullable = false, precision = 5, scale = 2)
+    @Column(name = "value", nullable = false, precision = 14, scale = 4)
     private BigDecimal value;
 
     @Column(name = "date", nullable = false)

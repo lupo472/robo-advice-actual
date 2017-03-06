@@ -6,6 +6,7 @@ import it.uiip.digitalgarage.roboadvice.persistence.entity.PortfolioEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PortfolioConverter implements GenericConverter<PortfolioEntity,PortfolioDTO>{
@@ -22,9 +23,9 @@ public class PortfolioConverter implements GenericConverter<PortfolioEntity,Port
         asset.setId(dto.getIdAsset());
         assetClass.setId(dto.getIdAssetClass());
 
-        portfolioEntity.setIdUser(user);
-        portfolioEntity.setIdAsset(asset);
-        portfolioEntity.setIdAssetClass(assetClass);
+        portfolioEntity.setUser(user);
+        portfolioEntity.setAsset(asset);
+        portfolioEntity.setAssetClass(assetClass);
         portfolioEntity.setUnits(dto.getUnits());
         portfolioEntity.setValue(dto.getValue());
         portfolioEntity.setDate(dto.getDate().toString());
@@ -35,17 +36,37 @@ public class PortfolioConverter implements GenericConverter<PortfolioEntity,Port
 
     @Override
     public PortfolioDTO convertToDTO(PortfolioEntity entity) {
-        return null;
+
+        PortfolioDTO portfolioDTO = new PortfolioDTO();
+
+        portfolioDTO.setIdUser(entity.getUser().getId());
+        portfolioDTO.setIdAsset(entity.getAsset().getId());
+        portfolioDTO.setIdAssetClass(entity.getAssetClass().getId());
+        portfolioDTO.setUnits(entity.getUnits());
+        portfolioDTO.setValue(entity.getValue());
+        portfolioDTO.setDate(entity.getDate());
+
+        return portfolioDTO;
     }
 
     @Override
     public List<PortfolioEntity> convertToEntity(List<PortfolioDTO> dto) {
-        return null;
+        List<PortfolioEntity> entityList = new ArrayList<PortfolioEntity>();
+
+        for(PortfolioDTO portfolioDTO : dto )
+            entityList.add(this.convertToEntity(portfolioDTO));
+
+        return entityList;
     }
 
     @Override
     public List<PortfolioDTO> convertToDTO(List<PortfolioEntity> entity) {
-        return null;
+        List<PortfolioDTO> entityDTOList = new ArrayList<PortfolioDTO>();
+
+        for(PortfolioEntity portfolioEntity : entity)
+            entityDTOList.add(this.convertToDTO(portfolioEntity));
+
+        return entityDTOList;
     }
 
 }
