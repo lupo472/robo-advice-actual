@@ -13,6 +13,7 @@ public class PortfolioOperator extends AbstractOperator {
     public PortfolioOperator(PortfolioRepository portfolioRepository){
         this.portfolioRep = portfolioRepository;
     }
+
     public PortfolioDTO getUserCurrentPortfolio(UserLoggedDTO dto) {
         LocalDate currentDate = LocalDate.now();
         List<PortfolioEntity> portfolioList = this.portfolioRep.findByUserIdAndDate(dto.getId(), currentDate);
@@ -21,5 +22,7 @@ public class PortfolioOperator extends AbstractOperator {
         response.setDate(currentDate.toString());
         return response;
     }
+
+
 
 }
