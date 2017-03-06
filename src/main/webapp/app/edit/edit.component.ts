@@ -2,14 +2,15 @@ import { Component, OnInit, Renderer } from '@angular/core';
 import { Router } from '@angular/router';
 import { AssetService } from '../services/asset.service';
 import { StrategyService } from '../services/strategy.service';
+import { AssetClass } from './assetclass';
 import { Cookie } from 'ng2-cookies';
 
 
 @Component({
-  templateUrl: 'dashboard.component.html',
+  templateUrl: 'edit.component.html',
   providers: [AssetService]
 })
-export class DashboardComponent implements OnInit {
+export class EditComponent implements OnInit {
 
   public strategy:any;
   public isCustom:boolean;
