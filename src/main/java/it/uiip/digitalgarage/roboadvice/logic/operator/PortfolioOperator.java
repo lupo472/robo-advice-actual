@@ -13,6 +13,7 @@ public class PortfolioOperator extends AbstractOperator {
     public PortfolioOperator(PortfolioRepository portfolioRepository){
         this.portfolioRep = portfolioRepository;
     }
+
     public PortfolioDTO getUserCurrentPortfolio(UserLoggedDTO dto) {
         LocalDate date = LocalDate.now();
         List<PortfolioEntity> entityList = this.portfolioRep.findByUserIdAndDate(dto.getId(), date);
@@ -22,5 +23,7 @@ public class PortfolioOperator extends AbstractOperator {
         PortfolioDTO response = this.portfolioWrap.wrapToDTO(entityList);
         return response;
     }
+
+
 
 }
