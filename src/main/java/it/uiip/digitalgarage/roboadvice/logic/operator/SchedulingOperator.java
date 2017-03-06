@@ -16,7 +16,7 @@ public class SchedulingOperator {
 	@Autowired
 	private AssetRepository assetRep;
 	
-	@Scheduled(cron = "0 * * * * *")
+	@Scheduled(cron = "0 0 12 * * *")
 	public void scheduleTask() {
 		QuandlOperator quandlOp = new QuandlOperator(FinancialDataRep, assetRep);
 		quandlOp.updateFinancialDataSet();
