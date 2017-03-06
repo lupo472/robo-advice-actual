@@ -3,7 +3,6 @@ package it.uiip.digitalgarage.roboadvice.logic.operator;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.CapitalEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.CustomStrategyEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.PortfolioEntity;
-import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.AssetRepository;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.CapitalRepository;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.CustomStrategyRepository;
@@ -87,7 +86,7 @@ public class PortfolioOperator extends AbstractOperator {
     
     private BigDecimal getUnitsForAsset(AssetDTO asset, BigDecimal amount) {
     	FinancialDataDTO financialData = this.financialDataConv.convertToDTO(this.financialDataRep.findLastForAnAsset(asset.getId()));
-    	BigDecimal units = financialData.getValue().divide(amount, 4);
+    	BigDecimal units = amount.divide(financialData.getValue(), 4);//financialData.getValue().divide(amount, 4);
     	return units;
     }
 
