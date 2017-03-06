@@ -43,7 +43,7 @@ import { StrategyService } from './services/strategy.service';
     NAV_DROPDOWN_DIRECTIVES,
     BreadcrumbsComponent,
     SIDEBAR_TOGGLE_DIRECTIVES,
-    AsideToggleDirective
+    AsideToggleDirective,
   ],
   providers: [
     StrategyService,

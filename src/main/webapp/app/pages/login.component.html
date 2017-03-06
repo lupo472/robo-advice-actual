@@ -10,9 +10,9 @@
                             <form (ngSubmit)="onSubmit(registerForm)" #registerForm="ngForm">
                                 <div class="input-group mb-1">
                                     <span class="input-group-addon">@</span> <input type="email"
-                                                                                    class="form-control" placeholder="Email"
-                                                                                    [(ngModel)]="user.email" name="email" #email="ngModel"
-                                                                                    required>
+                                                class="form-control" placeholder="Email"
+                                                [(ngModel)]="user.email" name="email" #email="ngModel"
+                                                required>
                                 </div>
                                 <div [hidden]="email.valid || email.pristine"
                                      class="alert alert-danger">Email is required</div>
@@ -20,7 +20,8 @@
                                     <span class="input-group-addon"><i class="icon-lock"></i>
                                     </span> <input type="password" class="form-control"
                                                    placeholder="Password" [(ngModel)]="user.password"
-                                                   name="password" #password="ngModel" pattern=".{5,10}" maxlength="10" required>
+                                                   name="password" #password="ngModel" pattern=".{5,10}"
+                                                   maxlength="10" required>
                                 </div>
                                 <div [hidden]="password.valid || password.pristine"
                                      class="alert alert-danger">Password is required</div>
@@ -47,9 +48,9 @@
                 </div>
             </div>
         </div>
-        <!--<div #childModal class="alert alert-danger" data-dismiss="alert" role="alert">
+        <div style="display: none" id="alertLogin" class="alert alert-danger" data-dismiss="alert" role="alert">
             <strong>Oh snap!</strong> Change a few things up and try submitting again.
-        </div>-->
+        </div>
     </div>
 </div>
 

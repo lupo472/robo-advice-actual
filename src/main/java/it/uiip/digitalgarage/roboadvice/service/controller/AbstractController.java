@@ -31,10 +31,14 @@ public abstract class AbstractController {
 	@Autowired
 	protected CustomStrategyRepository customStrategyRep;
 
-	
+	@Autowired
+	protected PortfolioRepository portfolioRep;
+
 	protected UserOperator userOp;
 	
 	protected QuandlOperator quandlOp;
+	
+	protected FinancialDataOperator financialDataOp;
 	
 	protected AssetClassOperator assetClassOp;
 	
@@ -43,5 +47,8 @@ public abstract class AbstractController {
 	protected DefaultStrategyOperator defaultStrategyOp;
 
 	protected CustomStrategyOperator customStrategyOp;
+
+	protected PortfolioOperator portfolioOp;
+
 	
 }

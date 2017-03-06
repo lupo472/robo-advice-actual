@@ -1,10 +1,10 @@
 <div class="row">
-	<div class="col-md-2 col-sm-4" *ngFor="let strategy of strategies; let i = index">
-		<div class="card">
-			<div class="card-block text-center" >
-			
-				<div class="text-muted small text-uppercase font-weight-bold">Title</div>
-				<div class="h3 py-1">{{strategy.name}}</div>
+	<div class="col-md-2 col-sm-4"
+		*ngFor="let strategy of strategies; let i = index">
+		<div class="card btn-strategy">
+
+			<div class="card-block text-center">
+			<div class="text-uppercase font-weight-bold">{{strategy.name}}</div>
 				<div class="chart-wrapper ">
 					<canvas baseChart class="chart" [data]="strategy.data"
 						[labels]="strategy.labels" [options]="strategyOptions"
@@ -12,6 +12,7 @@
 						[chartType]="strategyType" (chartHover)="chartHovered($event)"
 						(chartClick)="chartClicked($event)"></canvas>
 				</div>
+
 			</div>
 		</div>
 	</div>

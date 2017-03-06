@@ -1,7 +1,8 @@
 package it.uiip.digitalgarage.roboadvice.service.controller;
 
-import it.uiip.digitalgarage.roboadvice.persistence.entity.CustomStrategyEntity;
+import it.uiip.digitalgarage.roboadvice.logic.operator.CustomStrategyOperator;
 
+import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,24 +22,42 @@ public class CustomStrategyController extends AbstractController {
     @RequestMapping("/getUserCustomStrategySet")
     @ResponseBody
     public GenericResponse<?> getUserCustomStrategySet(@Valid @RequestBody UserLoggedDTO user){
-    	List<CustomStrategyEntity> customStrategies = customStrategyRep.findByUserId(user.getId());
+    	this.customStrategyOp = new CustomStrategyOperator(this.customStrategyRep);
+    	List<CustomStrategyDTO> customStrategies = this.customStrategyOp.getUserCustomStrategies(user);
+
         if(customStrategies == null) return new GenericResponse<String>(0,"Failure");
-        return new GenericResponse<List<CustomStrategyEntity>>(1,customStrategies);
+
+        return new GenericResponse<List<CustomStrategyDTO>>(1,customStrategies);
     }
-/*
-    //TODO Control this method
+
     @RequestMapping("/setCustomStrategy")
-    public GenericResponse setCustomStrategy(@RequestBody CustomStrategyDTO customStrategy){
-        try{
-            CustomStrategyEntity createdStrategy = this.customStrategyOp.setCustomStrategy(customStrategy);
+    public GenericResponse<?> setCustomStrategy(@Valid @RequestBody List<CustomStrategyDTO> customStrategies){
 
-            if(customStrategy == null) return new GenericResponse<String>(0, "Failure");
+            this.customStrategyOp = new CustomStrategyOperator(this.customStrategyRep);
 
-            return new GenericResponse<CustomStrategyEntity>(1, createdStrategy);
-        } catch(Exception e){
-            return new GenericResponse<String>(0, "Exception");
-        }
-    }*/
+            List<CustomStrategyDTO> createdStrategiesSaved = this.customStrategyOp.setCustomStrategy(customStrategies, new Long(customStrategies.get(0).getIdUser()));
+
+            if(customStrategies == null)
+                return new GenericResponse<String>(0, "Failure");
+
+            return new GenericResponse<String>(1, "Success");
+
+    }
+
+    @RequestMapping("/getUserCustomStrategyActive")
+    @ResponseBody
+    public GenericResponse<?> getUserCustomStrategyActive(@Valid @RequestBody UserLoggedDTO user){
+
+        this.customStrategyOp = new CustomStrategyOperator(this.customStrategyRep);
+
+        List<CustomStrategyDTO> customStrategyActive = this.customStrategyOp.getUserCustomStrategyActive(user);
+
+        if(customStrategyActive == null )
+            return new GenericResponse<String>(0,"Failure");
+
+        return new GenericResponse<List<CustomStrategyDTO>>(1, customStrategyActive);
+
+    }
 
 
 }

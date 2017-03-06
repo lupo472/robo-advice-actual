@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 
 import javax.validation.constraints.NotNull;
 
-import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetClassEntity;
 import lombok.Data;
 
 public @Data class AssetDTO {
@@ -13,7 +12,7 @@ public @Data class AssetDTO {
 	private Long id;
 	
 	@NotNull
-	private AssetClassEntity assetClass;
+	private AssetClassDTO assetClass;
 	
 	@NotNull
 	private String name;
