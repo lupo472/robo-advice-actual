@@ -3,6 +3,7 @@ package it.uiip.digitalgarage.roboadvice.service.controller;
 import it.uiip.digitalgarage.roboadvice.logic.operator.CustomStrategyOperator;
 
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyRequestDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -25,22 +26,16 @@ public class CustomStrategyController extends AbstractController {
     	this.customStrategyOp = new CustomStrategyOperator(this.customStrategyRep);
     	List<CustomStrategyDTO> customStrategies = this.customStrategyOp.getUserCustomStrategies(user);
 
-        if(customStrategies == null) return new GenericResponse<String>(0,"Failure");
-
         return new GenericResponse<List<CustomStrategyDTO>>(1,customStrategies);
     }
 
     @RequestMapping("/setCustomStrategy")
-    public GenericResponse<?> setCustomStrategy(@Valid @RequestBody List<CustomStrategyDTO> customStrategies){
+    public GenericResponse<?> setCustomStrategy(@Valid @RequestBody CustomStrategyRequestDTO request){
 
             this.customStrategyOp = new CustomStrategyOperator(this.customStrategyRep);
+            this.customStrategyOp.setCustomStrategy(request);
 
-            List<CustomStrategyDTO> createdStrategiesSaved = this.customStrategyOp.setCustomStrategy(customStrategies, new Long(customStrategies.get(0).getIdUser()));
-
-            if(customStrategies == null)
-                return new GenericResponse<String>(0, "Failure");
-
-            return new GenericResponse<String>(1, "Success");
+            return new GenericResponse<String>(1, "Done");
 
     }
 
@@ -51,9 +46,6 @@ public class CustomStrategyController extends AbstractController {
         this.customStrategyOp = new CustomStrategyOperator(this.customStrategyRep);
 
         List<CustomStrategyDTO> customStrategyActive = this.customStrategyOp.getUserCustomStrategyActive(user);
-
-        if(customStrategyActive == null )
-            return new GenericResponse<String>(0,"Failure");
 
         return new GenericResponse<List<CustomStrategyDTO>>(1, customStrategyActive);
 
