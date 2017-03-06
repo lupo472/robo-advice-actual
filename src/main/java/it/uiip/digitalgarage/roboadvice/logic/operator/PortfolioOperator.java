@@ -10,8 +10,8 @@ import java.util.List;
 
 public class PortfolioOperator extends AbstractOperator {
 
-    public PortfolioOperator(PortfolioRepository portfolioRepository){
-        this.portfolioRep = portfolioRepository;
+    public PortfolioOperator(PortfolioRepository portfolioRep){
+        this.portfolioRep = portfolioRep;
     }
 
     public PortfolioDTO getUserCurrentPortfolio(UserLoggedDTO dto) {

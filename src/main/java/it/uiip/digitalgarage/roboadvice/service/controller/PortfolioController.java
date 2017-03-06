@@ -22,5 +22,12 @@ public class PortfolioController extends AbstractController {
     	}
         return new GenericResponse<PortfolioDTO>(1, result);
     }
+    
+    @RequestMapping("/createUserPortfolio")
+    @ResponseBody
+    public GenericResponse<?> createUserPortfolio(@Valid @RequestBody UserLoggedDTO user) {
+    	this.portfolioOp = new PortfolioOperator(this.portfolioRep);
+    	return new GenericResponse<String>(1, "done");
+    }
 
 }
