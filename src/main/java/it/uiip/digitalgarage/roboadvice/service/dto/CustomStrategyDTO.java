@@ -7,13 +7,11 @@ import java.math.BigDecimal;
 
 public @Data class  CustomStrategyDTO {
 
-    private Long id;
-
     @NotNull
     private Long idUser;
 
     @NotNull
-    private Long idAssetClass;
+    private AssetClassDTO asset;
 
     @NotNull
     private BigDecimal percentage;

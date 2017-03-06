@@ -24,4 +24,5 @@ public @Data class PortfolioDTO {
 
     @NotNull
     private String date;
+    
 }

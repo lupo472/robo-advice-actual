@@ -22,8 +22,7 @@ public class CustomStrategyController extends AbstractController {
     @RequestMapping("/getUserCustomStrategySet")
     @ResponseBody
     public GenericResponse<?> getUserCustomStrategySet(@Valid @RequestBody UserLoggedDTO user){
-
-        this.customStrategyOp = new CustomStrategyOperator(this.customStrategyRep);
+    	this.customStrategyOp = new CustomStrategyOperator(this.customStrategyRep);
     	List<CustomStrategyDTO> customStrategies = this.customStrategyOp.getUserCustomStrategies(user);
 
         if(customStrategies == null) return new GenericResponse<String>(0,"Failure");
