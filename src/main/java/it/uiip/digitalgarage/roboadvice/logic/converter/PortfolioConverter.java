@@ -28,7 +28,7 @@ public class PortfolioConverter implements GenericConverter<PortfolioEntity,Port
         portfolioEntity.setAssetClass(assetClass);
         portfolioEntity.setUnits(dto.getUnits());
         portfolioEntity.setValue(dto.getValue());
-        portfolioEntity.setDate(dto.getDate().toString());
+        //portfolioEntity.setDate(dto.getDate().toString());
 
 
         return portfolioEntity;
@@ -44,7 +44,7 @@ public class PortfolioConverter implements GenericConverter<PortfolioEntity,Port
         portfolioDTO.setIdAssetClass(entity.getAssetClass().getId());
         portfolioDTO.setUnits(entity.getUnits());
         portfolioDTO.setValue(entity.getValue());
-        portfolioDTO.setDate(entity.getDate());
+        //portfolioDTO.setDate(entity.getDate());
 
         return portfolioDTO;
     }
