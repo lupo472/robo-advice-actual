@@ -1,35 +1,30 @@
 package it.uiip.digitalgarage.roboadvice.logic.wrapper;
 
+import it.uiip.digitalgarage.roboadvice.logic.converter.AssetClassConverter;
 import it.uiip.digitalgarage.roboadvice.logic.converter.AssetConverter;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.PortfolioEntity;
+import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioElementsDTO;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PortfolioWrapper implements GenericWrapper<PortfolioEntity, PortfolioDTO> {
 
     private AssetConverter assetConv = new AssetConverter();
+    private AssetClassConverter assetClassConv = new AssetClassConverter();
 
     @Override
     public List<PortfolioEntity> unwrapToEntity(PortfolioDTO dto) {
         List<PortfolioEntity> portfolioEntityList = new ArrayList<PortfolioEntity>();
-
-        for(PortfolioElementsDTO element : dto.getElements()){
+        for(PortfolioElementsDTO element : dto.getList()){
             PortfolioEntity entity = new PortfolioEntity();
             UserEntity user = new UserEntity();
-            AssetEntity asset = new AssetEntity();
-            AssetClassEntity assetClass = new AssetClassEntity();
-
             user.setId(dto.getIdUser());
-            asset.setId(element.getAsset().getId());
-            assetClass.setId(element.getAsset().getAssetClass().getId());
-
             entity.setUser(user);
-            entity.setAsset(asset);
-            entity.setAssetClass(assetClass);
+            entity.setAsset(this.assetConv.convertToEntity(element.getAsset()));
+            entity.setAssetClass(this.assetClassConv.convertToEntity(element.getAsset().getAssetClass()));
             entity.setUnits(element.getUnits());
             entity.setValue(element.getValue());
         }
@@ -52,8 +47,5 @@ public class PortfolioWrapper implements GenericWrapper<PortfolioEntity, Portfol
         }
         return dto;
     }
-
-
-
 
 }
