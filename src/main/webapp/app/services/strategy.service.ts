@@ -1,33 +1,38 @@
 
 import { Injectable, Inject } from '@angular/core';
 import { AppConfig } from './app.config';
+import { Strategy } from '../model/strategy';
 
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
 
 @Injectable()
 export class StrategyService {
-  strategies:Map<number, number> = new Map<number, number>();;
+  strategies:Map<number, Strategy> = new Map<number, Strategy>();
   sumPercentage:number;
   maxPercentage:number;
   prova:any;
   oldValue:number;
+  isCustom:boolean;
   constructor(private http:Http) {
     this.sumPercentage = 0;
     this.maxPercentage = 100;
-    this.strategies.set(1,0);
-    this.strategies.set(2,0);
-    this.strategies.set(3,0);
-    this.strategies.set(4,0);
+    this.strategies.set(1,null);
+    this.strategies.set(2,null);
+    this.strategies.set(3,null);
+    this.strategies.set(4,null);
     this.oldValue = 0;
+    this.isCustom = false;
   }
   // getStrategy(){
   //   return this.strategies;
   // }
-
-  onStrategy(strategy:any){
+  // setIsCustom(isCustom:boolean) {
+  //   this.isCustom = isCustom;
+  // }
+  onStrategy(strategy:Strategy) {
     console.log("++onStrategy");
-      this.oldValue = this.strategies.get(strategy.id_asset);
+      this.oldValue = this.strategies.get(strategy.assetClass.id).percentage;
       console.log("oldValue " + this.oldValue);
       if (strategy.percentage - this.oldValue + this.sumPercentage > 100) {
         if (this.maxPercentage !=0) {
@@ -42,10 +47,10 @@ export class StrategyService {
             }
         }
       }
-      this.strategies.set(strategy.id_asset,strategy.percentage);
+      this.strategies.set(strategy.assetClass.id,strategy);
       var sum = 0;
       this.strategies.forEach( (k,v) => [
-        sum += k
+        sum += k.percentage
       ]);
       this.sumPercentage = sum;
       this.maxPercentage = 100 - this.sumPercentage;
@@ -59,4 +64,7 @@ export class StrategyService {
     return this.http.post(AppConfig.url + 'getDefaultStrategySet', {})
       .map(response => response.json());
   }
+  // getAssetClassSet(){
+  //
+  // }
 }
