@@ -7,6 +7,7 @@ import java.util.Map;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.DefaultStrategyEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.DefaultStrategyRepository;
+import it.uiip.digitalgarage.roboadvice.service.dto.AssetClassDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.AssetClassStrategyDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.DefaultStrategyDTO;
 
@@ -21,8 +22,10 @@ public class DefaultStrategyOperator extends AbstractOperator {
 		Map<String, List<AssetClassStrategyDTO>> map = new HashMap<>();
 		for (DefaultStrategyEntity defaultStrategyEntity : defaultStrategySet) {
 			AssetClassStrategyDTO aCSB = new AssetClassStrategyDTO();
-			aCSB.setId(defaultStrategyEntity.getAssetClass().getId());
-			aCSB.setName(defaultStrategyEntity.getAssetClass().getName());
+			AssetClassDTO assetClass = new AssetClassDTO();
+			assetClass.setId(defaultStrategyEntity.getAssetClass().getId());
+			assetClass.setName(defaultStrategyEntity.getAssetClass().getName());
+			aCSB.setAssetClass(assetClass);
 			aCSB.setPercentage(defaultStrategyEntity.getPercentage());
 			if(map.get(defaultStrategyEntity.getName()) == null) {
 				map.put(defaultStrategyEntity.getName(), new ArrayList<>());
