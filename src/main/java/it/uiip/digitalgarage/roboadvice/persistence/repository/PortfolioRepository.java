@@ -7,5 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @Transactional
-public interface PortfolioRepository extends PagingAndSortingRepository<PortfolioEntity,Long> {
+public interface PortfolioRepository extends PagingAndSortingRepository<PortfolioEntity, Long> {
+	
 }
