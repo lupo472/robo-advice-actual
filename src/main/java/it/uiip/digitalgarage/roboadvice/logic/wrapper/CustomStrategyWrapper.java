@@ -1,4 +1,4 @@
-package it.uiip.digitalgarage.roboadvice.logic.converter;
+package it.uiip.digitalgarage.roboadvice.logic.wrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,9 +9,9 @@ import it.uiip.digitalgarage.roboadvice.service.dto.AssetClassStrategyDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyRequestDTO;
 
-public class CustomStrategyConverter {
+public class CustomStrategyWrapper implements GenericWrapper<CustomStrategyEntity, CustomStrategyRequestDTO>{
 
-	public List<CustomStrategyEntity> convertToEntity(CustomStrategyRequestDTO dto) {
+	public List<CustomStrategyEntity> unwrapToEntity(CustomStrategyRequestDTO dto) {
 		List<CustomStrategyEntity> entityList = new ArrayList<>();
 		for (AssetClassStrategyDTO element : dto.getList()) {
 			CustomStrategyEntity entity = new CustomStrategyEntity();
@@ -26,7 +26,7 @@ public class CustomStrategyConverter {
 		return entityList;
 	}
 	
-	public CustomStrategyDTO convertToDTO(List<CustomStrategyEntity> entityList) {
+	public CustomStrategyDTO wrapToDTO(List<CustomStrategyEntity> entityList) {
 		CustomStrategyDTO dto = new CustomStrategyDTO();
 		dto.setActive(entityList.get(0).isActive());
 		dto.setDate(entityList.get(0).getDate().toString());

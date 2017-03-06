@@ -32,7 +32,7 @@ public class CustomStrategyOperator extends AbstractOperator{
     		this.customStrategyRep.delete(todayStrategySet);
     	}
     	UserEntity userEntity = this.userRep.findById(request.getIdUser());
-    	List<CustomStrategyEntity> entityList = this.customStrategyConv.convertToEntity(request);
+    	List<CustomStrategyEntity> entityList = this.customStrategyWrap.unwrapToEntity(request);
     	for (CustomStrategyEntity entity : entityList) {
 			entity.setUser(userEntity);
 			entity.setActive(true);
@@ -52,7 +52,7 @@ public class CustomStrategyOperator extends AbstractOperator{
 		}
         List<CustomStrategyDTO> list = new ArrayList<>();
         for (String date : map.keySet()) {
-			CustomStrategyDTO dto = this.customStrategyConv.convertToDTO(map.get(date));
+			CustomStrategyDTO dto = (CustomStrategyDTO) this.customStrategyWrap.wrapToDTO(map.get(date));
 			list.add(dto);
 		}
     	return list;
@@ -63,7 +63,7 @@ public class CustomStrategyOperator extends AbstractOperator{
     	if(entityList.size() == 0) {
     		return null;
     	}
-    	CustomStrategyDTO result = this.customStrategyConv.convertToDTO(entityList);
+    	CustomStrategyDTO result = (CustomStrategyDTO) this.customStrategyWrap.wrapToDTO(entityList);
     	return result;
     	
     }
