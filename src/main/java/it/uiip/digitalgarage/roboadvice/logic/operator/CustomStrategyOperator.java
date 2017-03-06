@@ -9,7 +9,10 @@ import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyRequestDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CustomStrategyOperator extends AbstractOperator{
 
@@ -34,13 +37,21 @@ public class CustomStrategyOperator extends AbstractOperator{
     	this.customStrategyRep.save(entityList);	    
     }
 
-    public CustomStrategyDTO getUserCustomStrategySet(UserLoggedDTO user){
+    public List<CustomStrategyDTO> getUserCustomStrategySet(UserLoggedDTO user){
     	List<CustomStrategyEntity> entityList = this.customStrategyRep.findByUserId(user.getId());
-        //List<CustomStrategyEntity> listCustomStrategyEntity = this.customStrategyRep.findByUserId(user.getId());
-        //List<CustomStrategyDTO> listCustomStrategyDTO = this.customStrategyConv.convertToDTO(listCustomStrategyEntity);
-
-        //return listCustomStrategyDTO;
-    	return null;
+        Map<String, List<CustomStrategyEntity>> map = new HashMap<>();
+        for (CustomStrategyEntity entity : entityList) {
+			if(map.get(entity.getDate().toString()) == null) {
+				map.put(entity.getDate().toString(), new ArrayList<>());
+			}
+			map.get(entity.getDate().toString()).add(entity);
+		}
+        List<CustomStrategyDTO> list = new ArrayList<>();
+        for (String date : map.keySet()) {
+			CustomStrategyDTO dto = this.customStrategyConv.convertToDTO(map.get(date));
+			list.add(dto);
+		}
+    	return list;
     }
 
     public CustomStrategyDTO getActiveUserCustomStrategy(UserLoggedDTO user){
@@ -49,10 +60,6 @@ public class CustomStrategyOperator extends AbstractOperator{
     		return null;
     	}
     	CustomStrategyDTO result = this.customStrategyConv.convertToDTO(entityList);
-//        List<CustomStrategyEntity> customStrategyEntityList = this.customStrategyRep.findByUserIdAndActive(user.getId(), true);
-//        List<CustomStrategyDTO> customStrategyDTOList = this.customStrategyConv.convertToDTO(customStrategyEntityList);
-//
-//        return customStrategyDTOList;
     	return result;
     	
     }

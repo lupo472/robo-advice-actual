@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 @CrossOrigin("*")
@@ -28,8 +30,11 @@ public class CustomStrategyController extends AbstractController {
     @ResponseBody
     public GenericResponse<?> getUserCustomStrategySet(@Valid @RequestBody UserLoggedDTO user){
     	this.customStrategyOp = new CustomStrategyOperator(this.customStrategyRep);
-    	CustomStrategyDTO result = this.customStrategyOp.getUserCustomStrategySet(user);
-        return new GenericResponse<CustomStrategyDTO>(1, result);
+    	List<CustomStrategyDTO> result = this.customStrategyOp.getUserCustomStrategySet(user);
+    	if(result == null) {
+    		return new GenericResponse<String>(0, "This user doesn't have any strategy");
+    	}
+        return new GenericResponse<List<CustomStrategyDTO>>(1, result);
     }
 
     @RequestMapping("/getActiveUserCustomStrategy")
@@ -37,6 +42,9 @@ public class CustomStrategyController extends AbstractController {
     public GenericResponse<?> getUserCustomStrategyActive(@Valid @RequestBody UserLoggedDTO user){
     	this.customStrategyOp = new CustomStrategyOperator(this.customStrategyRep);
     	CustomStrategyDTO result = this.customStrategyOp.getActiveUserCustomStrategy(user);
+    	if(result == null) {
+    		return new GenericResponse<String>(0, "This user doesn't have any active strategy");
+    	}
     	return new GenericResponse<CustomStrategyDTO>(1, result);
     }
 
