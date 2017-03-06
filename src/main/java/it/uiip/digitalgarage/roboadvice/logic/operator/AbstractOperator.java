@@ -27,10 +27,8 @@ public abstract class AbstractOperator {
 
 	protected PortfolioRepository portfolioRep;
 
-	protected GenericConverter<UserEntity, UserDTO> userConverter = new UserConverter();
-	
-	protected GenericConverter<UserEntity, UserLoggedDTO> userLoggedConv = new UserLoggedConverter();
-	
+	protected GenericConverter<UserEntity, UserDTO> userConv = new UserConverter();
+		
 	protected GenericConverter<AssetClassEntity, AssetClassDTO> assetClassConv = new AssetClassConverter();
 	
 	protected GenericConverter<AssetEntity, AssetDTO> assetConv = new AssetConverter();

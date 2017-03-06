@@ -4,15 +4,11 @@ import { DropdownModule } from 'ng2-bootstrap/dropdown';
 import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './dashboard.component';
 import { DashboardRoutingModule } from './dashboard-routing.module';
-import { CardAssetClassComponent } from './card-asset-class/card-asset-class.component';
-import { HttpModule,JsonpModule } from '@angular/http';
-import { CardAssetComponent } from './card-asset/card-asset.component';
 
-import { CardFilterComponent } from './card-filter/card-filter.component';
-import {SliderModule} from 'primeng/primeng';
+import { HttpModule,JsonpModule } from '@angular/http';
+
 import {AccordionModule} from 'primeng/primeng';     //accordion and accordion tab
 import { FormsModule } from '@angular/forms'
-import { StrategySelectorComponent } from './strategy-selector/strategy-selector.component';
 
 
 @NgModule({
@@ -23,16 +19,11 @@ import { StrategySelectorComponent } from './strategy-selector/strategy-selector
     CommonModule,
     HttpModule,
     JsonpModule,
-    SliderModule,
     AccordionModule,
     FormsModule
   ],
   declarations: [
-    DashboardComponent,
-    CardAssetClassComponent,
-    CardAssetComponent,
-    CardFilterComponent,
-    StrategySelectorComponent
+    DashboardComponent
   ]
 })
 export class DashboardModule { }

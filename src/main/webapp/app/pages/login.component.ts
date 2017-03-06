@@ -12,7 +12,7 @@ export class LoginComponent{
       if(Cookie.check('email')){
           console.log("già loggato");
           console.log(Cookie.get('email'));
-          this.router.navigate(['dashboard']);
+          this.router.navigate(['edit']);
       }
   };
   user:any = {};
@@ -26,7 +26,7 @@ export class LoginComponent{
                 Cookie.set('password',res.data.password);
                 Cookie.set('id',res.data.id);
                 console.log(Cookie.getAll());
-                this.router.navigate(['dashboard']);
+                this.router.navigate(['edit']);
             }
             else{
                 //alert("Incorrect credentials: "+res.data);

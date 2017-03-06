@@ -1,6 +1,7 @@
 package it.uiip.digitalgarage.roboadvice.persistence.entity;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import lombok.Data;
 
@@ -33,6 +34,6 @@ public @Data class PortfolioEntity {
     private BigDecimal value;
 
     @Column(name = "date", nullable = false)
-    private String date;
+    private LocalDate date;
 
 }
