@@ -13,6 +13,7 @@ import javax.validation.Valid;
 public class PortfolioController extends AbstractController {
 
     @RequestMapping("/getUserCurrentPortfolio")
+    @ResponseBody
     public GenericResponse<?> getUserCurrentPortfolio(@Valid @RequestBody UserLoggedDTO user) {
         this.portfolioOp = new PortfolioOperator(this.portfolioRep);
         PortfolioDTO result = this.portfolioOp.getUserCurrentPortfolio(user);

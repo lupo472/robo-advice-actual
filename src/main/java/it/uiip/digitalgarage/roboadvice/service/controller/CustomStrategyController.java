@@ -20,6 +20,7 @@ import javax.validation.Valid;
 public class CustomStrategyController extends AbstractController {
 
 	@RequestMapping("/setCustomStrategy")
+	@ResponseBody
     public GenericResponse<?> setCustomStrategy(@Valid @RequestBody CustomStrategyRequestDTO request){
 		this.customStrategyOp = new CustomStrategyOperator(this.customStrategyRep, this.userRep);
 		this.customStrategyOp.setCustomStrategy(request);

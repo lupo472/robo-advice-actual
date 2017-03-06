@@ -1,6 +1,19 @@
 package it.uiip.digitalgarage.roboadvice.service.dto;
 
-public class CapitalDTO {
+import java.math.BigDecimal;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
+import lombok.Data;
+
+public @Data class CapitalDTO {
+
+	@NotNull
+	private Long idUser;
+	
+	@NotNull
+	@Min(1)
+	private BigDecimal amount;
 
 }
