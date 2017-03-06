@@ -3,15 +3,16 @@ package it.uiip.digitalgarage.roboadvice.logic.operator;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.CapitalEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.CustomStrategyEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.PortfolioEntity;
+import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.AssetRepository;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.CapitalRepository;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.CustomStrategyRepository;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.FinancialDataRepository;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.PortfolioRepository;
+import it.uiip.digitalgarage.roboadvice.persistence.repository.UserRepository;
 import it.uiip.digitalgarage.roboadvice.service.dto.AssetClassDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.AssetClassStrategyDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.AssetDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.CapitalDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioDTO;
@@ -28,12 +29,13 @@ public class PortfolioOperator extends AbstractOperator {
     }
     
     public PortfolioOperator(PortfolioRepository portfolioRep, CapitalRepository capitalRep, CustomStrategyRepository customStrategyRep, 
-    		AssetRepository assetRep, FinancialDataRepository financialDataRep) {
+    		AssetRepository assetRep, FinancialDataRepository financialDataRep, UserRepository userRep) {
         this.portfolioRep = portfolioRep;
         this.capitalRep = capitalRep;
         this.customStrategyRep = customStrategyRep;
         this.assetRep = assetRep;
         this.financialDataRep = financialDataRep;
+        this.userRep = userRep;
     }
 
     public PortfolioDTO getUserCurrentPortfolio(UserLoggedDTO dto) {
@@ -58,7 +60,7 @@ public class PortfolioOperator extends AbstractOperator {
     	}
     	CustomStrategyDTO strategy = this.customStrategyWrap.wrapToDTO(strategyEntity);
     	for (AssetClassStrategyDTO element : strategy.getList()) {
-    		BigDecimal amountPerClass = amount.divide(new BigDecimal(100.00)).multiply(element.getPercentage());
+    		BigDecimal amountPerClass = amount.divide(new BigDecimal(100.00), 4).multiply(element.getPercentage());
     		this.savePortfolioForClass(element.getAssetClass(), amountPerClass, user);
 		}
     	return true;
@@ -67,7 +69,7 @@ public class PortfolioOperator extends AbstractOperator {
     private void savePortfolioForClass(AssetClassDTO assetClass, BigDecimal amount, UserLoggedDTO user) {
     	List<AssetDTO> assets = this.assetConv.convertToDTO(this.assetRep.findByAssetClassId(assetClass.getId()));
     	for (AssetDTO asset : assets) {
-			BigDecimal amountPerAsset = amount.divide(new BigDecimal(100.00)).multiply(asset.getPercentage());
+			BigDecimal amountPerAsset = amount.divide(new BigDecimal(100.00), 4).multiply(asset.getPercentage());
 			this.savePortfolioRow(asset, amountPerAsset, user);
 		}
     }
@@ -76,7 +78,7 @@ public class PortfolioOperator extends AbstractOperator {
     	PortfolioEntity entity = new PortfolioEntity();
     	entity.setAsset(this.assetConv.convertToEntity(asset));
     	entity.setAssetClass(this.assetClassConv.convertToEntity(asset.getAssetClass()));
-    	entity.setUser(this.userConv.convertToEntity(user));
+    	entity.setUser(this.userRep.findById(user.getId()));
     	entity.setValue(amount);
     	entity.setUnits(this.getUnitsForAsset(asset, amount));
     	entity.setDate(LocalDate.now());
@@ -85,7 +87,7 @@ public class PortfolioOperator extends AbstractOperator {
     
     private BigDecimal getUnitsForAsset(AssetDTO asset, BigDecimal amount) {
     	FinancialDataDTO financialData = this.financialDataConv.convertToDTO(this.financialDataRep.findLastForAnAsset(asset.getId()));
-    	BigDecimal units = financialData.getValue().divide(amount);
+    	BigDecimal units = financialData.getValue().divide(amount, 4);
     	return units;
     }
 
