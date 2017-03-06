@@ -2,7 +2,6 @@ import { Component, OnInit, Renderer } from '@angular/core';
 import { Router } from '@angular/router';
 import { AssetService } from '../services/asset.service';
 import { StrategyService } from '../services/strategy.service';
-import { AssetClass } from './assetclass';
 import { Cookie } from 'ng2-cookies';
 
 
@@ -11,10 +10,7 @@ import { Cookie } from 'ng2-cookies';
   providers: [AssetService]
 })
 export class EditComponent implements OnInit {
-
-  public strategy:any;
   public isCustom:boolean;
-
   public assetClassSet = [];
   public assetClasses = [];
   public assetSet = [];
@@ -22,21 +18,8 @@ export class EditComponent implements OnInit {
   public selectedAsset = [];
 
   constructor(private service:AssetService,private router:Router,public StrategyService:StrategyService){
-
-    this.isCustom = true;
-
+    this.isCustom = this.StrategyService.isCustom;
   }
-
-  // onStrategy(strategy: any) {
-  //   console.log("++onStrategy");
-  //   if (this.maxPercentage <= 100) {
-  //     this.strategies.set(strategy.id_asset, strategy.percentage);
-  //   }
-  //   this.sumPercentage += strategy.percentage;
-  //   this.maxPercentage = 100 - this.sumPercentage;
-  //   console.log(this.sumPercentage);
-  //   console.log(this.maxPercentage);
-  // }
 
   ngOnInit(): void {
     this.service.getAssetClassSet().subscribe((result) => this.getAssetClass(result));
@@ -47,13 +30,17 @@ export class EditComponent implements OnInit {
     }
   }
 
+  showDetails() {
+    console.log("clicked");
+  }
+
   //ASSIGN ASSET CLASS
   public getAssetClass(result) {
     this.assetClassSet = result.data;
     this.assetClassSet.forEach((item, index) => {
 
     this.assetClasses[index] = {id: item.id, name:  item.name, data: [65, 59, 84, 84, 51, 55, 40], percentage: 15}
-    this.StrategyService.strategies.set(item.id, 0);
+    //this.StrategyService.strategies.set(item.id, 0);
 
     })
   }
