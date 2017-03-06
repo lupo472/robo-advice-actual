@@ -15,5 +15,7 @@ public interface AssetRepository extends PagingAndSortingRepository<AssetEntity,
 	public List<AssetEntity> findAll();
 	
 	public AssetEntity findById(Long id);
+	
+	public List<AssetEntity> findByAssetClassId(Long assetId);
 
 }

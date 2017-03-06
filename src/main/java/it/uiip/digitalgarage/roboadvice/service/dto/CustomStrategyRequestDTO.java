@@ -7,13 +7,13 @@ import javax.validation.constraints.Size;
 
 import lombok.Data;
 
-public @Data class DefaultStrategyDTO {
+public @Data class CustomStrategyRequestDTO {
 	
-	@NotNull
-	private String name;
+	 @NotNull
+	 private Long idUser;
+	 
+	 @NotNull
+	 @Size(min = 1)
+	 private List<AssetClassStrategyDTO> list;
 	
-	@NotNull
-	@Size(min = 1)
-	private List<AssetClassStrategyDTO> list;
-
 }

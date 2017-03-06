@@ -5,21 +5,24 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
-public @Data class  CustomStrategyDTO {
+public @Data class PortfolioDTO {
 
     @NotNull
     private Long idUser;
 
     @NotNull
-    private AssetClassDTO asset;
+    private Long idAsset;
 
     @NotNull
-    private BigDecimal percentage;
+    private Long idAssetClass;
 
     @NotNull
-    private boolean active;
+    private BigDecimal units;
+
+    @NotNull
+    private BigDecimal value;
 
     @NotNull
     private String date;
-
+    
 }
