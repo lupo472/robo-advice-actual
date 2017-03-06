@@ -44,6 +44,6 @@ public abstract class AbstractOperator {
 	
 	protected PortfolioWrapper portfolioWrap = new PortfolioWrapper();
 
-	protected GenericWrapper<CustomStrategyEntity, CustomStrategyRequestDTO> customStrategyWrap = new CustomStrategyWrapper();
+	protected GenericWrapper<CustomStrategyEntity, CustomStrategyDTO> customStrategyWrap = new CustomStrategyWrapper();
 	
 }

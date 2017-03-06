@@ -4,8 +4,8 @@ import it.uiip.digitalgarage.roboadvice.persistence.entity.CustomStrategyEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.CustomStrategyRepository;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.UserRepository;
+import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyResponseDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyRequestDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
 
 import java.time.LocalDate;
@@ -25,7 +25,7 @@ public class CustomStrategyOperator extends AbstractOperator{
         this.userRep = userRep;
     }
     
-    public void setCustomStrategy(CustomStrategyRequestDTO request) {
+    public void setCustomStrategy(CustomStrategyDTO request) {
     	this.customStrategyRep.setStrategyInactive(request.getIdUser());
     	List<CustomStrategyEntity> todayStrategySet = this.customStrategyRep.findByDate(LocalDate.now());
     	if(todayStrategySet.size() > 0) {
@@ -41,7 +41,7 @@ public class CustomStrategyOperator extends AbstractOperator{
     	this.customStrategyRep.save(entityList);	    
     }
 
-    public List<CustomStrategyDTO> getUserCustomStrategySet(UserLoggedDTO user){
+    public List<CustomStrategyResponseDTO> getUserCustomStrategySet(UserLoggedDTO user){
     	List<CustomStrategyEntity> entityList = this.customStrategyRep.findByUserId(user.getId());
         Map<String, List<CustomStrategyEntity>> map = new HashMap<>();
         for (CustomStrategyEntity entity : entityList) {
@@ -50,23 +50,23 @@ public class CustomStrategyOperator extends AbstractOperator{
 			}
 			map.get(entity.getDate().toString()).add(entity);
 		}
-        List<CustomStrategyDTO> list = new ArrayList<>();
+        List<CustomStrategyResponseDTO> list = new ArrayList<>();
         if(list.isEmpty()) {
         	return null;
         }
         for (String date : map.keySet()) {
-			CustomStrategyDTO dto = (CustomStrategyDTO) this.customStrategyWrap.wrapToDTO(map.get(date));
+			CustomStrategyResponseDTO dto = (CustomStrategyResponseDTO) this.customStrategyWrap.wrapToDTO(map.get(date));
 			list.add(dto);
 		}
     	return list;
     }
 
-    public CustomStrategyDTO getActiveUserCustomStrategy(UserLoggedDTO user){
+    public CustomStrategyResponseDTO getActiveUserCustomStrategy(UserLoggedDTO user){
     	List<CustomStrategyEntity> entityList = this.customStrategyRep.findByUserIdAndActive(user.getId(), true);
     	if(entityList.isEmpty()) {
     		return null;
     	}
-    	CustomStrategyDTO result = (CustomStrategyDTO) this.customStrategyWrap.wrapToDTO(entityList);
+    	CustomStrategyResponseDTO result = (CustomStrategyResponseDTO) this.customStrategyWrap.wrapToDTO(entityList);
     	return result;
     	
     }
