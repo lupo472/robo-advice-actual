@@ -3,18 +3,8 @@ package it.uiip.digitalgarage.roboadvice.service.dto;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
 
-public @Data class  CustomStrategyDTO {
-
-    @NotNull
-    private Long idUser;
-
-    @NotNull
-    private Long idAssetClass;
-
-    @NotNull
-    private BigDecimal percentage;
+public @Data class  CustomStrategyDTO extends CustomStrategyRequestDTO {
 
     @NotNull
     private boolean active;

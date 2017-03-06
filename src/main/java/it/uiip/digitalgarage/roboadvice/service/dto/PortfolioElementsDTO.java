@@ -3,17 +3,16 @@ package it.uiip.digitalgarage.roboadvice.service.dto;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
-import java.util.List;
+import java.math.BigDecimal;
 
-public @Data class PortfolioDTO {
-
-    @NotNull
-    private Long idUser;
+public @Data class PortfolioElementsDTO {
 
     @NotNull
-    private List<PortfolioElementsDTO> list;
+    private AssetDTO asset;
 
     @NotNull
-    private String date;
-    
+    private BigDecimal units;
+
+    @NotNull
+    private BigDecimal value;
 }
