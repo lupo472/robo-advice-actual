@@ -1,6 +1,7 @@
 package it.uiip.digitalgarage.roboadvice.logic.operator;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.PortfolioEntity;
+import it.uiip.digitalgarage.roboadvice.persistence.repository.CapitalRepository;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.PortfolioRepository;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
@@ -13,6 +14,11 @@ public class PortfolioOperator extends AbstractOperator {
     public PortfolioOperator(PortfolioRepository portfolioRep){
         this.portfolioRep = portfolioRep;
     }
+    
+    public PortfolioOperator(PortfolioRepository portfolioRep, CapitalRepository capitalRep) {
+        this.portfolioRep = portfolioRep;
+        this.capitalRep = capitalRep;
+    }
 
     public PortfolioDTO getUserCurrentPortfolio(UserLoggedDTO dto) {
         LocalDate date = LocalDate.now();
@@ -24,6 +30,8 @@ public class PortfolioOperator extends AbstractOperator {
         return response;
     }
 
-
+    public void createUserPortfolio(UserLoggedDTO user) {
+    	
+    }
 
 }
