@@ -7,6 +7,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -20,6 +21,8 @@ public interface CustomStrategyRepository extends PagingAndSortingRepository<Cus
     @Modifying
     @Query("UPDATE CustomStrategyEntity ce SET ce.active = false WHERE ce.user.id = ?1 AND ce.active = true")
     public void setStrategyInactive(Long userId);
+    
+    public List<CustomStrategyEntity> findByDate(LocalDate date);
 
     public List<CustomStrategyEntity> findByUserIdAndActive(Long idUser, boolean active);
     
