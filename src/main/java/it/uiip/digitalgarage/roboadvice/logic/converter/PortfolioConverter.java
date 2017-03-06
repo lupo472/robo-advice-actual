@@ -19,7 +19,7 @@ public class PortfolioConverter{
         PortfolioDTO dto = new PortfolioDTO();
         List<PortfolioElementsDTO> dtoList = new ArrayList<PortfolioElementsDTO>();
 
-        for(PortfolioEntity entity : entityList){
+        for (PortfolioEntity entity : entityList) {
             PortfolioElementsDTO element = new PortfolioElementsDTO();
             element.setAsset(this.assetConverter.convertToDTO(entity.getAsset()));
             element.setUnits(entity.getUnits());
@@ -30,5 +30,6 @@ public class PortfolioConverter{
 
         return dto;
     }
+
 
 }

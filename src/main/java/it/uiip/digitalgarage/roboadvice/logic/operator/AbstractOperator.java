@@ -2,6 +2,8 @@ package it.uiip.digitalgarage.roboadvice.logic.operator;
 
 
 import it.uiip.digitalgarage.roboadvice.logic.converter.*;
+import it.uiip.digitalgarage.roboadvice.logic.wrapper.CustomStrategyWrapper;
+import it.uiip.digitalgarage.roboadvice.logic.wrapper.GenericWrapper;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.*;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.*;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.AssetClassRepository;
@@ -35,7 +37,8 @@ public abstract class AbstractOperator {
 	
 	protected GenericConverter<FinancialDataEntity, FinancialDataDTO> financialDataConv = new FinancialDataConverter();
 
-	protected GenericConverter<CustomStrategyEntity, CustomStrategyDTO> customStrategyConv = new CustomStrategyConverter();
-
 	protected PortfolioConverter portfolioConv = new PortfolioConverter();
+
+	protected GenericWrapper<CustomStrategyEntity, CustomStrategyRequestDTO> customStrategyWrap = new CustomStrategyWrapper();
+	
 }
