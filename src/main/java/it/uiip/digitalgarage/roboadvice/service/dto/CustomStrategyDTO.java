@@ -11,7 +11,7 @@ public @Data class  CustomStrategyDTO {
     private Long idUser;
 
     @NotNull
-    private AssetClassDTO asset;
+    private Long idAssetClass;
 
     @NotNull
     private BigDecimal percentage;
