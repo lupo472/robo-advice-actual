@@ -4,17 +4,18 @@ import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.List;
 
-public @Data class PortfolioDTO {
-
-    @NotNull
-    private Long idUser;
-
-    @NotNull
-    private List<PortfolioElementsDTO> elements;
+/**
+ * Created by Luca on 06/03/2017.
+ */
+public @Data class PortfolioElementsDTO {
 
     @NotNull
-    private String date;
-    
+    private AssetDTO asset;
+
+    @NotNull
+    private BigDecimal units;
+
+    @NotNull
+    private BigDecimal value;
 }

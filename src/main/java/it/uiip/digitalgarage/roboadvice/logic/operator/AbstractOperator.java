@@ -37,6 +37,5 @@ public abstract class AbstractOperator {
 
 	protected GenericConverter<CustomStrategyEntity, CustomStrategyDTO> customStrategyConv = new CustomStrategyConverter();
 
-	protected GenericConverter<PortfolioEntity, PortfolioDTO> portfolioConv = new PortfolioConverter();
-	
+	protected PortfolioConverter portfolioConv = new PortfolioConverter();
 }
