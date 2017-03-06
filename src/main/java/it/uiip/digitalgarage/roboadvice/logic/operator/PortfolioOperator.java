@@ -16,7 +16,7 @@ public class PortfolioOperator extends AbstractOperator {
     public PortfolioDTO getUserCurrentPortfolio(UserLoggedDTO dto) {
         LocalDate currentDate = LocalDate.now();
         List<PortfolioEntity> portfolioList = this.portfolioRep.findByUserIdAndDate(dto.getId(), currentDate);
-        PortfolioDTO response = this.portfolioConv.convertToDTO(portfolioList);
+        PortfolioDTO response = this.portfolioWrap.wrapToDTO(portfolioList);
         response.setIdUser(dto.getId());
         response.setDate(currentDate.toString());
         return response;

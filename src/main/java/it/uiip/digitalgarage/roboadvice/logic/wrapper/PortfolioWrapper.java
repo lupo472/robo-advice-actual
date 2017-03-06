@@ -1,5 +1,7 @@
-package it.uiip.digitalgarage.roboadvice.logic.converter;
+package it.uiip.digitalgarage.roboadvice.logic.wrapper;
 
+import it.uiip.digitalgarage.roboadvice.logic.converter.AssetClassConverter;
+import it.uiip.digitalgarage.roboadvice.logic.converter.AssetConverter;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetClassEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.PortfolioEntity;
@@ -10,12 +12,19 @@ import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioElementsDTO;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PortfolioConverter{
+public class PortfolioWrapper implements GenericWrapper<PortfolioEntity, PortfolioDTO> {
 
     private AssetConverter assetConverter = new AssetConverter();
     private AssetClassConverter assetClassConverter = new AssetClassConverter();
 
-    public PortfolioDTO convertToDTO(List<PortfolioEntity> entityList) {
+    @Override
+    public List<PortfolioEntity> unwrapToEntity(PortfolioDTO portfolioDTO) {
+
+        return null;
+    }
+
+    @Override
+    public PortfolioDTO wrapToDTO(List<PortfolioEntity> entityList) {
         PortfolioDTO dto = new PortfolioDTO();
         List<PortfolioElementsDTO> dtoList = new ArrayList<PortfolioElementsDTO>();
 
@@ -30,6 +39,8 @@ public class PortfolioConverter{
 
         return dto;
     }
+
+
 
 
 }
