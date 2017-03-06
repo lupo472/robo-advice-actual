@@ -6,11 +6,21 @@ import java.time.LocalDate;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.CapitalEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.CapitalRepository;
 import it.uiip.digitalgarage.roboadvice.service.dto.CapitalDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.CapitalResponseDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
 
 public class CapitalOperator extends AbstractOperator {
 	
 	public CapitalOperator(CapitalRepository capitalRep) {
 		this.capitalRep = capitalRep;
+	}
+	
+	public CapitalResponseDTO getCurrentCapital(UserLoggedDTO user) {
+		CapitalEntity entity = this.capitalRep.findLast(user.getId());
+		if(entity == null) {
+			return null;
+		}
+		return (CapitalResponseDTO) this.capitalConv.convertToDTO(entity);
 	}
 	
 	public void addCapital(CapitalDTO capital) {

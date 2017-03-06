@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.uiip.digitalgarage.roboadvice.logic.operator.CapitalOperator;
 import it.uiip.digitalgarage.roboadvice.service.dto.CapitalDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.CapitalResponseDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 
@@ -28,8 +29,12 @@ public class CapitalController extends AbstractController {
 	@RequestMapping("/getCurrentCapital")
     @ResponseBody
 	public GenericResponse<?> getCurrentCapital(@Valid @RequestBody UserLoggedDTO user){
-		
-		return null;
+		this.capitalOp = new CapitalOperator(this.capitalRep);
+		CapitalResponseDTO result = this.capitalOp.getCurrentCapital(user);
+		if(result == null) {
+			return new GenericResponse<String>(0, "This user doesn't have any capital");
+		}
+		return new GenericResponse<CapitalResponseDTO>(1, result);
 	}
 
 }
