@@ -14,7 +14,6 @@ import { SIDEBAR_TOGGLE_DIRECTIVES } from './shared/sidebar.directive';
 import { AsideToggleDirective } from './shared/aside.directive';
 import { BreadcrumbsComponent } from './shared/breadcrumb.component';
 
-
 // Routing Module
 import { AppRoutingModule } from './app.routing';
 
@@ -22,6 +21,10 @@ import { AppRoutingModule } from './app.routing';
 import { FullLayoutComponent } from './layouts/full-layout.component';
 import { SimpleLayoutComponent } from './layouts/simple-layout.component';
 import { HttpModule } from '@angular/http';
+
+//Services
+import { StrategyService } from './services/strategy.service';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -42,7 +45,9 @@ import { HttpModule } from '@angular/http';
     SIDEBAR_TOGGLE_DIRECTIVES,
     AsideToggleDirective
   ],
-  providers: [{
+  providers: [
+    StrategyService,
+    {
     provide: LocationStrategy,
     useClass: HashLocationStrategy
   },

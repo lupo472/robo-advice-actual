@@ -1,8 +1,8 @@
 import { Component, OnInit, Renderer } from '@angular/core';
 import { Router } from '@angular/router';
 import { AssetService } from '../services/asset.service';
+import { StrategyService } from '../services/strategy.service';
 import { AssetClass } from './assetclass';
-
 
 @Component({
   templateUrl: 'dashboard.component.html',
@@ -16,47 +16,29 @@ export class DashboardComponent implements OnInit {
   public assetSet = [];
   public assets = [];
   public selectedAsset = [];
-  strategies:Map<number, number>;
-  sumPercentage:number;
-  maxPercentage:number;
-  constructor(private service:AssetService){
-    this.isCustom = true;
-    this.strategies = new Map<number, number>();
-    this.strategy = {};
-    this.sumPercentage = 0;
-    this.maxPercentage = 0;
-  }
+  // strategies:Map<number, number>;
 
-  onStrategy(strategy:any){
-    console.log("++onStrategy");
-    if (this.maxPercentage <= 100) {
-      this.strategies.set(strategy.id_asset, strategy.percentage);
-    }
-    this.sumPercentage += strategy.percentage;
-    this.maxPercentage = 100 - this.sumPercentage;
-    console.log(this.sumPercentage);
-    console.log(this.maxPercentage);
+  constructor(private service:AssetService, public StrategyService:StrategyService){
+    this.isCustom = true;
   }
 
   ngOnInit(): void {
-    this.service.getAssetClassSet().subscribe((result) => this.getAssetClass(result));
-    this.service.getAssetSet().subscribe((result) => this.getAsset(result));
+    this.getAssetClass();
+    //this.service.getAssetClassSet().subscribe((result) => this.getAssetClass(result));
+    //this.service.getAssetSet().subscribe((result) => this.getAsset(result));
   }
 
   //ASSIGN ASSET CLASS
-  public getAssetClass(result){
+  public getAssetClass(){
     this.assetClassSet = result.data;
     this.assetClassSet.forEach((item, index) => {
-    this.assetClasses[index] = {id: item.id, name:  item.name, data: [65, 59, 84, 84, 51, 55, 40], percentage: 15}
-    this.strategies.set(item.id, 0);
+    this.assetClasses[index] = {id: item.id, name:  "prova", data: [65, 59, 84, 84, 51, 55, 40], percentage: 15}
     })
-    console.log(this.strategies);
   }
 
   //ASSIGN ASSET
   public getAsset(result){
     this.assetSet = result.data;
-
     this.assetSet.forEach((item, index) => {
     this.assets[index] = {name:  item.name, assetClass: item.assetClass, data: [65, 59, 84, 84, 51, 55, 40], percentage: 15}
     })
