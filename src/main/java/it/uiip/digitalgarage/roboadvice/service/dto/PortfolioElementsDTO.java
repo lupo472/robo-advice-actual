@@ -5,9 +5,6 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
-/**
- * Created by Luca on 06/03/2017.
- */
 public @Data class PortfolioElementsDTO {
 
     @NotNull

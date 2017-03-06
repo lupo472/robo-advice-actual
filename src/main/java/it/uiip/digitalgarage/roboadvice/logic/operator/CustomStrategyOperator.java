@@ -51,6 +51,9 @@ public class CustomStrategyOperator extends AbstractOperator{
 			map.get(entity.getDate().toString()).add(entity);
 		}
         List<CustomStrategyDTO> list = new ArrayList<>();
+        if(list.isEmpty()) {
+        	return null;
+        }
         for (String date : map.keySet()) {
 			CustomStrategyDTO dto = (CustomStrategyDTO) this.customStrategyWrap.wrapToDTO(map.get(date));
 			list.add(dto);
@@ -60,7 +63,7 @@ public class CustomStrategyOperator extends AbstractOperator{
 
     public CustomStrategyDTO getActiveUserCustomStrategy(UserLoggedDTO user){
     	List<CustomStrategyEntity> entityList = this.customStrategyRep.findByUserIdAndActive(user.getId(), true);
-    	if(entityList.size() == 0) {
+    	if(entityList.isEmpty()) {
     		return null;
     	}
     	CustomStrategyDTO result = (CustomStrategyDTO) this.customStrategyWrap.wrapToDTO(entityList);

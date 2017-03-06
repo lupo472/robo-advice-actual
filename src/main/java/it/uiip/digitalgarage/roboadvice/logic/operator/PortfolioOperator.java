@@ -14,11 +14,12 @@ public class PortfolioOperator extends AbstractOperator {
         this.portfolioRep = portfolioRepository;
     }
     public PortfolioDTO getUserCurrentPortfolio(UserLoggedDTO dto) {
-        LocalDate currentDate = LocalDate.now();
-        List<PortfolioEntity> portfolioList = this.portfolioRep.findByUserIdAndDate(dto.getId(), currentDate);
-        PortfolioDTO response = this.portfolioWrap.wrapToDTO(portfolioList);
-        response.setIdUser(dto.getId());
-        response.setDate(currentDate.toString());
+        LocalDate date = LocalDate.now();
+        List<PortfolioEntity> entityList = this.portfolioRep.findByUserIdAndDate(dto.getId(), date);
+        if(entityList.isEmpty()) {
+        	return null;
+        }
+        PortfolioDTO response = this.portfolioWrap.wrapToDTO(entityList);
         return response;
     }
 
