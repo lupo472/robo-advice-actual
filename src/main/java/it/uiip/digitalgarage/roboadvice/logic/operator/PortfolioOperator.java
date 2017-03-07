@@ -150,7 +150,6 @@ public class PortfolioOperator extends AbstractOperator {
     
     public void savePortfolio(List<PortfolioEntity> entities) {
     	for (PortfolioEntity entity : entities) {
-    		System.out.println("Sto salvando entity");
 			this.portfolioRep.save(entity);
 		}
     }
