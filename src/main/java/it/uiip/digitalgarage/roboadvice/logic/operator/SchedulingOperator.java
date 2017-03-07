@@ -37,7 +37,7 @@ public class SchedulingOperator {
 	private CustomStrategyRepository customStrategyRep;
 	
 //	@Scheduled(cron = "0 0 12 * * *")
-	@Scheduled(cron = "0 0 18 * * *")
+	@Scheduled(cron = "0 0 15 * * *")
 	public void scheduleTask() {
 		QuandlOperator quandlOp = new QuandlOperator(this.financialDataRep, this.assetRep);
 		UserOperator userOp = new UserOperator(this.userRep);
