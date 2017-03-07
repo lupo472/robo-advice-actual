@@ -7,7 +7,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -23,16 +22,8 @@ public interface PortfolioRepository extends PagingAndSortingRepository<Portfoli
 													 + "WHERE id_user = ?1 "
 													 + "AND date = (SELECT max(date) FROM portfolio "
 													 + 			  "WHERE id_user = ?1)";
-    
-    static final String EVALUATE_CURRENT_PORTFOLIO = "SELECT sum(value) FROM portfolio WHERE id_user = ?1 "
-    												+ "AND date = (SELECT max(date) FROM portfolio "
-    												+ "WHERE id_user = ?1)";
-	
 
     @Query(value = FIND_LAST_PORTFOLIO_FOR_USER, nativeQuery = true)
     public List<PortfolioEntity> findLastPortfolioForUser(Long idUser);
 	
-	@Query(value = EVALUATE_CURRENT_PORTFOLIO, nativeQuery = true)
-	public BigDecimal evaluateCurrentPortfolio(Long id);
-
 }

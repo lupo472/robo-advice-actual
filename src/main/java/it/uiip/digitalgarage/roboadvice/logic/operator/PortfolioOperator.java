@@ -13,6 +13,7 @@ import it.uiip.digitalgarage.roboadvice.persistence.repository.UserRepository;
 import it.uiip.digitalgarage.roboadvice.service.dto.*;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.Period;
@@ -25,6 +26,11 @@ public class PortfolioOperator extends AbstractOperator {
 
     public PortfolioOperator(PortfolioRepository portfolioRep){
         this.portfolioRep = portfolioRep;
+    }
+    
+    public PortfolioOperator(PortfolioRepository portfolioRep, FinancialDataRepository financialDataRep) {
+    	this.portfolioRep = portfolioRep;
+    	this.financialDataRep = financialDataRep;
     }
     
     public PortfolioOperator(PortfolioRepository portfolioRep, CapitalRepository capitalRep, CustomStrategyRepository customStrategyRep, 
@@ -140,27 +146,21 @@ public class PortfolioOperator extends AbstractOperator {
     	return true;
     }
     
-    public boolean recreatePortfolio(UserLoggedDTO user) {
-    	PortfolioDTO currentPorfolio = this.getUserCurrentPortfolio(user);
-    	if(currentPorfolio == null) {
-    		return false;
+    public BigDecimal evaluatePortfolio(UserLoggedDTO user) {
+    	PortfolioDTO currentPortfolio = this.getUserCurrentPortfolio(user);
+    	if(currentPortfolio == null) {
+    		return null;
     	}
-    	BigDecimal value = this.evaluatePortfolio(user);
-    	List<CustomStrategyEntity> strategyEntity = this.customStrategyRep.findByUserIdAndActive(user.getId(), true);
-    	if(strategyEntity.isEmpty()) {
-    		return false;
+    	BigDecimal amount = new BigDecimal(0);
+    	for(PortfolioElementDTO element : currentPortfolio.getList()) {
+    		FinancialDataEntity data = this.financialDataRep.findLastForAnAsset(element.getAsset().getId());
+    		BigDecimal amountPerAsset = element.getUnits().multiply(data.getValue());
+    		amount.add(amountPerAsset);
+    		amount = amount.add(amountPerAsset);
+    		System.out.println("Amount totale: " + amount);
     	}
-    	CustomStrategyDTO strategy = this.customStrategyWrap.wrapToDTO(strategyEntity);
-    	for (AssetClassStrategyDTO element : strategy.getList()) {
-    		BigDecimal amountPerClass = value.divide(new BigDecimal(100.00), 4, RoundingMode.HALF_UP).multiply(element.getPercentage());
-    		this.savePortfolioForAssetClass(element.getAssetClass(), amountPerClass, user);
-		}
-    	return true;
-    }
-    
-    private BigDecimal evaluatePortfolio(UserLoggedDTO user) {
-    	BigDecimal value = this.portfolioRep.evaluateCurrentPortfolio(user.getId());
-    	return value;
+    	System.out.println("Amount totale: " + amount);
+    	return amount;
     }
     
     public void savePortfolio(List<PortfolioEntity> entities) {

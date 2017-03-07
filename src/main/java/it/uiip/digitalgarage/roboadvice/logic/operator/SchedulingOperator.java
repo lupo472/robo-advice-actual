@@ -47,7 +47,7 @@ public class SchedulingOperator {
 		UserOperator userOp = new UserOperator(this.userRep);
 		PortfolioOperator portfolioOp = new PortfolioOperator(this.portfolioRep, this.capitalRep, this.customStrategyRep, assetRep, financialDataRep, userRep);
 		CustomStrategyOperator customStrategyOp = new CustomStrategyOperator(this.customStrategyRep);
-		CapitalOperator capitalOp = new CapitalOperator(this.capitalRep, this.portfolioRep);
+		CapitalOperator capitalOp = new CapitalOperator(this.capitalRep, this.portfolioRep, this.financialDataRep);
 		
 		quandlOp.updateFinancialDataSet();
 		List<UserLoggedDTO> users = userOp.getAllUsers();
