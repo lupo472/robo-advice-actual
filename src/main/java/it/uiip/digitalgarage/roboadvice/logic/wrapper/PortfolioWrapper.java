@@ -5,7 +5,7 @@ import it.uiip.digitalgarage.roboadvice.logic.converter.AssetConverter;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.PortfolioEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioElementsDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioElementDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ public class PortfolioWrapper implements GenericWrapper<PortfolioEntity, Portfol
     @Override
     public List<PortfolioEntity> unwrapToEntity(PortfolioDTO dto) {
         List<PortfolioEntity> portfolioEntityList = new ArrayList<PortfolioEntity>();
-        for(PortfolioElementsDTO element : dto.getList()){
+        for(PortfolioElementDTO element : dto.getList()){
             PortfolioEntity entity = new PortfolioEntity();
             UserEntity user = new UserEntity();
             user.setId(dto.getIdUser());
@@ -39,7 +39,7 @@ public class PortfolioWrapper implements GenericWrapper<PortfolioEntity, Portfol
         dto.setIdUser(entityList.get(0).getId());
         dto.setDate(entityList.get(0).getDate().toString());
         for (PortfolioEntity entity : entityList) {
-            PortfolioElementsDTO element = new PortfolioElementsDTO();
+            PortfolioElementDTO element = new PortfolioElementDTO();
             element.setAsset(this.assetConv.convertToDTO(entity.getAsset()));
             element.setUnits(entity.getUnits());
             element.setValue(entity.getValue());

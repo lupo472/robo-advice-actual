@@ -15,6 +15,7 @@ import it.uiip.digitalgarage.roboadvice.service.dto.AssetDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioElementDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
 
 import java.math.BigDecimal;
@@ -25,6 +26,11 @@ public class PortfolioOperator extends AbstractOperator {
 
     public PortfolioOperator(PortfolioRepository portfolioRep){
         this.portfolioRep = portfolioRep;
+    }
+    
+    public PortfolioOperator(PortfolioRepository portfolioRep, FinancialDataRepository financialDataRep){
+        this.portfolioRep = portfolioRep;
+        this.financialDataRep = financialDataRep;
     }
     
     public PortfolioOperator(PortfolioRepository portfolioRep, CapitalRepository capitalRep, CustomStrategyRepository customStrategyRep, 
@@ -90,4 +96,19 @@ public class PortfolioOperator extends AbstractOperator {
     	return units;
     }
 
+    public boolean computeUserPortfolio(UserLoggedDTO user) {
+    	PortfolioDTO currentPorfolio = this.getUserCurrentPortfolio(user);
+    	List<PortfolioElementDTO> elements = currentPorfolio.getList();
+    	for (PortfolioElementDTO element : elements) {
+    		BigDecimal units = element.getUnits();
+    		BigDecimal newValue = this.computeValue(units);
+		}
+    	return true;
+    }
+    
+    private BigDecimal computeValue(BigDecimal units) {
+    	
+    	return null;
+    }
+    
 }
