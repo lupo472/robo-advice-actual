@@ -46,15 +46,12 @@ public class PortfolioOperator extends AbstractOperator {
     }
 
     public List<PortfolioDTO> getUserPortfolioPeriod(PortfolioRequestDTO request){
-
         LocalDate initialDate = LocalDate.now();
         LocalDate finalDate = initialDate.minus(Period.ofDays(request.getPeriod()));
         List<PortfolioEntity> entityList = this.portfolioRep.findByUserIdAndDateBetween(request.getIdUser(), finalDate, initialDate);
-
         if(entityList.isEmpty()){
             return null;
         }
-
 		Map<String, List<PortfolioEntity>> map = new HashMap<>();
 		for (PortfolioEntity entity : entityList) {
 			System.out.println("All'interno del primo for");
@@ -63,14 +60,11 @@ public class PortfolioOperator extends AbstractOperator {
 			}
 			map.get(entity.getDate().toString()).add(entity);
 		}
-
 		List<PortfolioDTO> list = new ArrayList<>();
-
 		for (String date : map.keySet()) {
 			PortfolioDTO dto = (PortfolioDTO) this.portfolioWrap.wrapToDTO(map.get(date));
 			list.add(dto);
 		}
-
         return list;
     }
 
