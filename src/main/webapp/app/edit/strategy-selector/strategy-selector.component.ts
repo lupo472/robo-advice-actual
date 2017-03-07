@@ -13,55 +13,13 @@ export class StrategySelectorComponent implements OnInit {
   public strategySet = [];
   public strategies =  [];
 
-  constructor(private service:StrategyService) {
-    this.service.getDefaultStrategySet().subscribe((result) => this.getStrategy(result));
+  constructor(private StrategyService:StrategyService) {
+      this.StrategyService.getDefaultStrategySet().subscribe(res=> this.getStrategy(res));
    }
 
-  //ASSIGN COLOUR
-  assignColour(id){
-
-    switch(id){
-        case 1: return "#4dbd74";
-        case 2: return "#63c2de";
-        case 3: return "#f8cb00";
-        case 4: return "#f86c6b";
-        }
-  }
-
   //ASSIGN STRATEGIES
-  getStrategy(result){
-    this.strategySet = result.data;
-
-    var arrayPercentage = [];
-    var arrayNull = [];
-    var arrayLabels = [];
-    var arrayColours = [];
-
-    this.strategySet.forEach((item, index) => {
-
-      item.list.forEach((element, i) =>{
-       arrayPercentage[i] = 0;
-       arrayNull[i] = 0;
-       arrayLabels[i] = element.assetClass.name;
-       arrayColours[i] = this.assignColour(element.assetClass.id);
-        });
-
-      this.strategies[index] = {
-                                name:  item.name,
-                                data: arrayPercentage,
-                                labels: arrayLabels,
-                                colours: [{backgroundColor: arrayColours, borderWidth: 3}]
-                                }
-
-
-      console.log(this.strategies[index].colours);
-
-      arrayPercentage = [];
-      arrayLabels = [];
-      arrayColours = [];
-    })
-
-    this.strategies[this.strategySet.length]={name: 'custom', data: arrayNull}
+  getStrategy(res){
+    this.strategies = res;
   }
 
   //GENERAL SETTINGS
@@ -75,6 +33,7 @@ export class StrategySelectorComponent implements OnInit {
   public strategyType:string = 'pie';
 
   ngOnInit() {
+    
   }
 
 }

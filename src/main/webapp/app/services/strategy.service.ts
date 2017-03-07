@@ -1,6 +1,7 @@
 
 import { Injectable, Inject } from '@angular/core';
 import { AppConfig } from './app.config';
+import { AppService } from './app.service';
 import { Strategy } from '../model/strategy';
 import { AssetClass } from '../model/asset-class';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
@@ -8,14 +9,19 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class StrategyService {
+  
   strategies:Map<number, Strategy> = new Map<number, Strategy>();
   sumPercentage:number;
   maxPercentage:number;
   prova:any;
   oldValue:number;
   oldStrategy:any;
+  result:any;
+  
+  public strategySet = [];
+  
   //isCustom:boolean;
-  constructor(private http:Http) {
+  constructor(private AppService:AppService) {
 
     this.sumPercentage = 0;
     this.maxPercentage = 100;
@@ -27,12 +33,8 @@ export class StrategyService {
     //this.isCustom = true;
 
   }
-  // getStrategy(){
-  //   return this.strategies;
-  // }
-  // setIsCustom(isCustom:boolean) {
-  //   this.isCustom = isCustom;
-  // }
+  
+  //SLIDER MAPPING
   onStrategy(strategy:Strategy) {
     console.log("++onStrategy");
       this.oldStrategy = this.strategies.get(strategy.assetClass.id);
@@ -63,12 +65,58 @@ export class StrategyService {
       console.log("maxPercentage" + this.maxPercentage);
   }
 
-
+  // STRATEGY JSON REMAPPING
   getDefaultStrategySet() {
-    return this.http.post(AppConfig.url + 'getDefaultStrategySet', {})
-      .map(response => response.json());
+    
+    return this.AppService.getDefaultStrategySet().map(res => this.assignStrategy(res));
+  
   }
-  // getAssetClassSet(){
-  //
-  // }
+  
+  assignStrategy(res){
+
+    var arrayPercentage = [];
+    var arrayNull = [];
+    var arrayLabels = [];
+    var arrayColours = [];
+
+    res.data.forEach((item, index) => {
+
+      item.list.forEach((element, i) =>{
+       arrayPercentage[i] = element.percentage;
+       arrayNull[i] = 0;
+       arrayLabels[i] = element.assetClass.name;
+       arrayColours[i] = this.assignColour(element.assetClass.id);
+        });
+
+      this.strategySet[index] = {
+                                name:  item.name,
+                                data: arrayPercentage,
+                                labels: arrayLabels,
+                                colours: [{backgroundColor: arrayColours, borderWidth: 3}]
+                                }
+
+
+      console.log(this.strategySet[index].colours);
+
+      arrayPercentage = [];
+      arrayLabels = [];
+      arrayColours = [];
+    })
+
+    this.strategySet[res.data.length]={name: 'custom', data: arrayNull}
+       
+    return this.strategySet;
+  }
+  
+  //ASSIGN COLOUR
+  assignColour(id){
+
+    switch(id){
+        case 1: return "#4dbd74";
+        case 2: return "#63c2de";
+        case 3: return "#f8cb00";
+        case 4: return "#f86c6b";
+        }
+  }
+  
 }
