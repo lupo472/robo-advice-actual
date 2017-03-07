@@ -1,6 +1,14 @@
 <div class="animated fadeIn">
 
-<app-strategy-selector></app-strategy-selector>
+	<!-- STRATEGIES ROW -->
+	<div class="row">
+		<div class="col-md-2 col-sm-4"
+			*ngFor="let strategy of strategies; let i = index">
+				<app-strategy-selector [name]="strategy.name" [data]="strategy.data"
+					[labels]="strategy.labels" [colors]="strategy.colours"
+					></app-strategy-selector>
+			</div>
+		</div>
 
 	<!-- ASSET CLASS ROW -->
 	<div class="row">
