@@ -13,6 +13,7 @@ import it.uiip.digitalgarage.roboadvice.persistence.repository.UserRepository;
 import it.uiip.digitalgarage.roboadvice.service.dto.*;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
@@ -100,7 +101,7 @@ public class PortfolioOperator extends AbstractOperator {
     private void savePortfolioForClass(AssetClassDTO assetClass, BigDecimal amount, UserLoggedDTO user) {
     	List<AssetDTO> assets = this.assetConv.convertToDTO(this.assetRep.findByAssetClassId(assetClass.getId()));
     	for (AssetDTO asset : assets) {
-			BigDecimal amountPerAsset = amount.divide(new BigDecimal(100.00), 4).multiply(asset.getPercentage());
+			BigDecimal amountPerAsset = amount.divide(new BigDecimal(100.00), 4, RoundingMode.HALF_UP).multiply(asset.getPercentage());
 			this.savePortfolioRow(asset, amountPerAsset, user);
 		}
     }
@@ -118,7 +119,7 @@ public class PortfolioOperator extends AbstractOperator {
     
     private BigDecimal getUnitsForAsset(AssetDTO asset, BigDecimal amount) {
     	FinancialDataDTO financialData = this.financialDataConv.convertToDTO(this.financialDataRep.findLastForAnAsset(asset.getId()));
-    	BigDecimal units = amount.divide(financialData.getValue(), 4);//financialData.getValue().divide(amount, 4);
+    	BigDecimal units = amount.divide(financialData.getValue(), 4, RoundingMode.HALF_UP);
     	return units;
     }
 
@@ -163,9 +164,6 @@ public class PortfolioOperator extends AbstractOperator {
     	FinancialDataDTO financialData = this.financialDataConv.convertToDTO(financialDataEntity);
     	BigDecimal result = units.multiply(financialData.getValue());
     	return result;
-
-
-
     }
     
 }
