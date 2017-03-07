@@ -26,7 +26,6 @@ export class AssetService {
   }
   
   assignAssetClass(res){
-    console.log("ASSET CLASS: " + JSON.stringify(res.data));
     return res.data;
   }
 
@@ -36,7 +35,6 @@ export class AssetService {
   }
   
   assignAsset(res){
-    console.log("ASSET: " + JSON.stringify(res.data));
     return res.data;
   }
   
@@ -46,8 +44,6 @@ export class AssetService {
   }
   
   assignPortfolio(res){
-    console.log("PORTFOLIO: " + JSON.stringify(res.data));
-    
     return res.data.list;
   }
 }

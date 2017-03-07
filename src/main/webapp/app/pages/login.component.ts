@@ -11,7 +11,6 @@ export class LoginComponent{
   constructor(private UserService:UserService, private router:Router) {
       if(Cookie.check('email')){
           console.log("Already Logged");
-          console.log(Cookie.get('email'));
           this.router.navigate(['edit']);
       }
   };
@@ -31,7 +30,6 @@ export class LoginComponent{
       Cookie.set('email',user.email);
       Cookie.set('password',user.password);
       Cookie.set('id',user.id);
-      console.log(Cookie.getAll());
       this.router.navigate(['dashboard']);
   }
 

@@ -6,8 +6,7 @@ import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-dashboard',
-  templateUrl: './full-layout.component.html',
-  providers: [ UserService ]
+  templateUrl: './full-layout.component.html'
 })
 export class FullLayoutComponent implements OnInit {
   
@@ -15,15 +14,14 @@ export class FullLayoutComponent implements OnInit {
 
   constructor(private UserService:UserService) { }
   
-  ngOnInit(): void {
-    console.log("try to get user " + this.UserService.getUser());
-  }
+  ngOnInit(): void { }
 
   public disabled:boolean = false;
   public status:{isopen:boolean} = {isopen: false};
 
   public toggled(open:boolean):void {
     console.log('Dropdown is now: ', open);
+    console.log("try to get user " + this.UserService.getUser());
   }
 
   public logout():void{

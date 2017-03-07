@@ -17,12 +17,10 @@ export class StrategyAssetsTableComponent implements OnInit {
    }
   
   getAssetClass(res){
-    console.log("ASSET CLASS SUB: " + JSON.stringify(res));
+    
   }
   
   getCurrentPortfolio(res){
-    console.log("PORTFOLIO SUB: " + JSON.stringify(res));
-    
     this.assetList = res;
   }
 

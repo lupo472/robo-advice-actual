@@ -20,7 +20,7 @@ export class UserService {
   //SET AND GET USER
   setUser(res){
     if(res.response == 1){
-      this.user = res.data;
+      this.user = new User(res.data);
     }
       return res;
   }
@@ -49,7 +49,6 @@ export class UserService {
   
   setCapital(res){
     this.user.capital = res.data.amount;
-    console.log("try amount: " + JSON.stringify(this.user));
   }
     
 }
