@@ -1,27 +1,26 @@
-import { AssetClass } from './asset-class';
+import { AssetClassStrategy } from './asset-class-strategy';
 
 export class Strategy {
-  assetClass:AssetClass;
-  percentage:number;
+  idUser:number;
+  list:AssetClassStrategy[];
 
-  constructor(percentage,assetClass) {
-    this.percentage = percentage;
-    this.assetClass = assetClass;
+  constructor() {
+    // this.idUser = 1;
   }
 
-  setAssetClass(assetClass) {
-    this.assetClass = assetClass;
+  setStrategyArray(strategyArray){
+    this.list = strategyArray;
   }
 
-  setPercentage(percentage){
-    this.percentage = percentage;
+  getStrategyArray(){
+    return this.list;
   }
 
-  getAssetClass() {
-    return this.assetClass;
+  setUserId(id) {
+    this.idUser = id;
   }
 
-  getPercentage() {
-    return this.percentage;
+  getUserId() {
+    return this.idUser;
   }
 }

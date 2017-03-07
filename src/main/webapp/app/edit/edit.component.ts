@@ -34,6 +34,13 @@ export class EditComponent implements OnInit {
     console.log("clicked");
   }
 
+  setCustomStrategy() {
+    this.StrategyService.setCustomStrategy().subscribe(
+      (error) => {
+        console.log("errore " + error);
+      });
+  }
+
   //ASSIGN ASSET CLASS
   public getAssetClass(result) {
     this.assetClassSet = result.data;

@@ -28,7 +28,8 @@ public interface PortfolioRepository extends PagingAndSortingRepository<Portfoli
     												+ "AND date = (SELECT max(date) FROM portfolio "
     												+ "WHERE id_user = ?1)";
 	
-	@Query(value = FIND_LAST_PORTFOLIO_FOR_USER, nativeQuery = true)
+
+    @Query(value = FIND_LAST_PORTFOLIO_FOR_USER, nativeQuery = true)
     public List<PortfolioEntity> findLastPortfolioForUser(Long idUser);
 	
 	@Query(value = EVALUATE_CURRENT_PORTFOLIO, nativeQuery = true)

@@ -56,7 +56,6 @@ public class PortfolioOperator extends AbstractOperator {
         }
 		Map<String, List<PortfolioEntity>> map = new HashMap<>();
 		for (PortfolioEntity entity : entityList) {
-			System.out.println("All'interno del primo for");
 			if(map.get(entity.getDate().toString()) == null) {
 				map.put(entity.getDate().toString(), new ArrayList<>());
 			}
