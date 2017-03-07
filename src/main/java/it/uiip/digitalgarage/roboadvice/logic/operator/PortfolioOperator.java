@@ -71,7 +71,7 @@ public class PortfolioOperator extends AbstractOperator {
 
     public PortfolioDTO getUserPortfolioDate(PortfolioRequestDTO request) {
 		LocalDate date = LocalDate.parse(request.getDate());
-		List<PortfolioEntity> entityList = this.portfolioRep.findByUserIdAndDate(request.getIdUser(), date);
+		List<PortfolioEntity> entityList = this.portfolioRep.findByUserIdAndDate(request.getId(), date);
 		if(entityList.isEmpty()) {
 			return null;
 		}

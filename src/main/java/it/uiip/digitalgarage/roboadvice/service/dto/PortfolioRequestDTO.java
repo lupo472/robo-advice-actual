@@ -12,7 +12,7 @@ public @Data class PortfolioRequestDTO {
 
     @NotNull
     @Min(1)
-    private Long idUser;
+    private Long id;
 
     @NotNull
     private String date;
