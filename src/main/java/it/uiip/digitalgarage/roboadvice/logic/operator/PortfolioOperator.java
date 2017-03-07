@@ -13,7 +13,6 @@ import it.uiip.digitalgarage.roboadvice.persistence.repository.UserRepository;
 import it.uiip.digitalgarage.roboadvice.service.dto.*;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.Period;
@@ -127,7 +126,6 @@ public class PortfolioOperator extends AbstractOperator {
     public boolean computeUserPortfolio(UserLoggedDTO user) {
     	PortfolioDTO currentPorfolio = this.getUserCurrentPortfolio(user);
     	if(currentPorfolio == null) {
-    		System.out.println("CurrentPortfolio è null");
     		return false;
     	}
     	List<PortfolioElementDTO> elements = currentPorfolio.getList();
@@ -135,7 +133,6 @@ public class PortfolioOperator extends AbstractOperator {
     		BigDecimal units = element.getUnits();
     		BigDecimal newValue = this.getValueForAsset(units, element.getAsset());
     		if(newValue == null) {
-    			System.out.println("NewValue è null");
     			return false;
     		}
     		element.setValue(newValue);
@@ -157,9 +154,7 @@ public class PortfolioOperator extends AbstractOperator {
     		BigDecimal amountPerAsset = element.getUnits().multiply(data.getValue());
     		amount.add(amountPerAsset);
     		amount = amount.add(amountPerAsset);
-    		System.out.println("Amount totale: " + amount);
     	}
-    	System.out.println("Amount totale: " + amount);
     	return amount;
     }
     
@@ -168,6 +163,7 @@ public class PortfolioOperator extends AbstractOperator {
 			this.portfolioRep.save(entity);
 		}
     }
+    
     
     private BigDecimal getValueForAsset(BigDecimal units, AssetDTO asset) {
     	FinancialDataEntity financialDataEntity = this.financialDataRep.findLastForAnAsset(asset.getId());
@@ -178,5 +174,6 @@ public class PortfolioOperator extends AbstractOperator {
     	BigDecimal result = units.multiply(financialData.getValue());
     	return result;
     }
+    
     
 }

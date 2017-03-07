@@ -47,4 +47,5 @@ public class CapitalController extends AbstractController {
 		}
 		return new GenericResponse<String>(1, "done");
 	}
+	
 }
