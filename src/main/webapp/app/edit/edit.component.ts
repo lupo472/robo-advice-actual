@@ -18,14 +18,17 @@ export class EditComponent implements OnInit {
   public selectedAsset = [];
   strategies:any;
 
-  constructor(private service:AssetService,private router:Router,public StrategyService:StrategyService){
+  constructor(public AssetService:AssetService, public StrategyService:StrategyService, private router:Router){
     this.isCustom = true;
   }
 
   ngOnInit(): void {
-    this.service.getAssetClassSet().subscribe((result) => this.getAssetClass(result));
-    this.service.getAssetSet().subscribe((result) => this.getAsset(result));
+
+    this.AssetService.getAssetClassSet().subscribe((result) => this.getAssetClass(result));
+    this.AssetService.getAssetSet().subscribe((result) => this.getAsset(result));
+
     this.StrategyService.getDefaultStrategySet().subscribe(res=> this.getStrategy(res));
+
     if(!Cookie.check('email')){
       console.log("non loggato");
       this.router.navigate(['pages/login']);
@@ -50,7 +53,7 @@ export class EditComponent implements OnInit {
 
   //ASSIGN ASSET CLASS
   public getAssetClass(result) {
-    this.assetClassSet = result.data;
+    this.assetClassSet = result;
     this.assetClassSet.forEach((item, index) => {
 
     this.assetClasses[index] = {id: item.id, name:  item.name, data: [65, 59, 84, 84, 51, 55, 40], percentage: 15}
@@ -61,7 +64,7 @@ export class EditComponent implements OnInit {
 
   //ASSIGN ASSET
   public getAsset(result) {
-    this.assetSet = result.data;
+    this.assetSet = result;
     this.assetSet.forEach((item, index) => {
       this.assets[index] = { name: item.name, assetClass: item.assetClass, data: [65, 59, 84, 84, 51, 55, 40], percentage: 15 }
     })
