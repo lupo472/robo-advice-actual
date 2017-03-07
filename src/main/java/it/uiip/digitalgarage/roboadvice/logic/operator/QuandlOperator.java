@@ -40,10 +40,7 @@ public class QuandlOperator extends AbstractOperator {
 	private void saveList(List<FinancialDataEntity> list) {
 		for (FinancialDataEntity financialData : list) {
 			if(financialDataRep.findByAssetIdAndDate(financialData.getAsset().getId(), financialData.getDate()).size() == 0) {
-				System.out.println(financialData.toString());
 				financialDataRep.save(financialData);
-			} else {
-				System.out.println("Già presente");
 			}
 		}
 	}

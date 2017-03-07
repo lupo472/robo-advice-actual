@@ -10,7 +10,6 @@ import { Cookie } from 'ng2-cookies';
   providers: [AssetService]
 })
 export class DashboardComponent implements OnInit {
-
   constructor(private service:AssetService,private router:Router,public StrategyService:StrategyService){
 
 
