@@ -2,7 +2,6 @@ import { Component, OnInit, Renderer } from '@angular/core';
 import { Router } from '@angular/router';
 import { AssetService } from '../services/asset.service';
 import { StrategyService } from '../services/strategy.service';
-import { AssetClass } from './assetclass';
 import { Cookie } from 'ng2-cookies';
 
 
