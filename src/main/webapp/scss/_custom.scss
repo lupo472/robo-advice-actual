@@ -29,3 +29,30 @@
 .btn-strategy.is-disabled {
   opacity: .5;
 }
+
+.ui-slider-horizontal {
+  height: 0.3em !important;
+}
+.ui-slider-horizontal .ui-slider-handle {
+  top: -6px !important;
+}
+
+
+.ui-slider .ui-slider-handle {
+  position: absolute;
+  z-index: 2;
+  width: 17px !important;
+  cursor: default;
+  outline: none;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border: none;
+  left: 0%;
+  background-color: #263238;
+  border-radius: 35%;
+  height: 17px !important;
+  background-image: none !important;
+}
+.ui-slider {
+  background-color: white;
+}
