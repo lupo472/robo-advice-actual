@@ -2,17 +2,14 @@ package it.uiip.digitalgarage.roboadvice.logic.operator;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.CapitalEntity;
-import it.uiip.digitalgarage.roboadvice.persistence.entity.PortfolioEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.CapitalRepository;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.PortfolioRepository;
 import it.uiip.digitalgarage.roboadvice.service.dto.CapitalDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CapitalResponseDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
-import org.springframework.scheduling.annotation.Scheduled;
 
 public class CapitalOperator extends AbstractOperator {
 	
