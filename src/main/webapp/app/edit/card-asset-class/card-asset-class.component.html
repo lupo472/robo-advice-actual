@@ -1,5 +1,4 @@
-
-			<div class="card card-inverse card-primary">
+			<div class="card card-inverse card-primary" [style.padding]="isCustom ? '5%' : '0%'">
 				<div class="card-block pb-0">
 					<div class="btn-group float-right" dropdown>
 						<button type="button"
@@ -11,15 +10,15 @@
 						</div>
 					</div>
 					<h4 class="mb-0">{{value}}</h4>
-					<p *ngIf="!isCustom">{{percent}}</p>
-					<p *ngIf="isCustom">{{strategy.percentage}}%</p>
+					<!-- <p *ngIf="!isCustom">{{percent}}</p> -->
+					<p *ngIf="isCustom">{{percentage}}%</p>
 				</div>
-				<div class="chart-wrapper px-1" style="height: 70px;">
-					<canvas *ngIf="!isCustom" baseChart class="chart" [data]="lineChartData"
+				<div class="chart-wrapper px-1" style="height:70px">
+					<canvas baseChart class="chart" [data]="lineChartData"
 						[labels]="lineChartLabels" [options]="lineChartOptions"
 						[colors]="lineChartColours" [legend]="lineChartLegend"
 						[chartType]="lineChartType" (chartHover)="chartHovered($event)"
 						(chartClick)="chartClicked($event)"></canvas>
-						<p-slider *ngIf="isCustom" [(ngModel)]="strategy.percentage" [min]="0" [max]="100" (onSlideEnd)="handleSlide($event)" (click)="handleSlide($event)"></p-slider>
-				</div>
+									</div>
+				<p-slider *ngIf="isCustom" [(ngModel)]="percentage" [min]="0" [max]="100" (onSlideEnd)="handleSlide($event)" (click)="handleSlide($event)"></p-slider>
 			</div>

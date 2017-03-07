@@ -1,13 +1,21 @@
-<div class="card btn-strategy">
-  <div class="card-block text-center">
-    <div class="text-uppercase font-weight-bold">{{strategy.name}}</div>
-    <div class="chart-wrapper ">
-      <canvas baseChart class="chart" [data]="strategy.data"
-              [labels]="strategy.labels" [options]="strategyOptions"
-              [colors]="strategy.colours" [legend]="strategyLegend"
-              [chartType]="strategyType" (chartHover)="chartHovered($event)"
+<div class="card">
+  <div class="card-block">
+    <div class="row">
+      <div class="col-sm-10">
+        <h4 class="card-title mb-0">My Strategy</h4>
+        <div class="small text-muted">from January 15 2017</div>
+      </div>
+      <div class="col-sm-2 hidden-sm-down">
+        <button type="button" class="btn btn-primary float-right">
+          <i class="icon-cloud-download"></i>
+        </button>
+      </div>
+      <!--/.col-->
+    </div>
+    <div class="chart-wrapper">
+      <canvas baseChart class="chart" [data]="pieChartData" [labels]="pieChartLabels"
+              [chartType]="pieChartType" (chartHover)="chartHovered($event)"
               (chartClick)="chartClicked($event)"></canvas>
     </div>
-
   </div>
 </div>

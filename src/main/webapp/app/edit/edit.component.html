@@ -1,6 +1,6 @@
 <div class="animated fadeIn">
 
-	<app-strategy-selector></app-strategy-selector>
+<app-strategy-selector></app-strategy-selector>
 
 	<!-- ASSET CLASS ROW -->
 	<div class="row">
@@ -11,8 +11,7 @@
 				[lineChartOptions]="lineChartOptions"
 				[lineChartColours]="lineChartColours"
 				[lineChartType]="lineChartType"
-				(click)="showAsset(assetClass.id)"
-				(onStrategy)="onStrategy($event)">
+				(click)="showAsset(assetClass.id)">
 			</app-card-asset-class>
 		</div>
 	</div>

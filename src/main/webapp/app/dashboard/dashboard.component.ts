@@ -13,8 +13,11 @@ export class DashboardComponent implements OnInit {
 
   constructor(private service:AssetService,private router:Router,public StrategyService:StrategyService){
 
-  }
-  ngOnInit() {
 
   }
+
+  ngOnInit(): void {
+
+  }
+
 }

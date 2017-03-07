@@ -1,25 +1,19 @@
 package it.uiip.digitalgarage.roboadvice.service.dto;
 
-import lombok.Data;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
+import javax.validation.constraints.Size;
 
-public @Data class  CustomStrategyDTO {
+import lombok.Data;
 
-    @NotNull
-    private Long idUser;
-
-    @NotNull
-    private Long idAssetClass;
-
-    @NotNull
-    private BigDecimal percentage;
-
-    @NotNull
-    private boolean active;
-
-    @NotNull
-    private String date;
-
+public @Data class CustomStrategyDTO {
+	
+	 @NotNull
+	 private Long idUser;
+	 
+	 @NotNull
+	 @Size(min = 1)
+	 private List<AssetClassStrategyDTO> list;
+	
 }

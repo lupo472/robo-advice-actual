@@ -9,10 +9,7 @@ import lombok.Data;
 public @Data class AssetClassStrategyDTO {
 	
 	@NotNull
-	private Long id;
-	
-	@NotNull
-	private String name;
+	private AssetClassDTO assetClass;
 	
 	@NotNull
 	private BigDecimal percentage;
