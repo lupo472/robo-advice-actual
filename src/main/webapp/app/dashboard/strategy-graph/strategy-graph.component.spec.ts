@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CardFilterComponent } from './card-filter.component';
+import { StrategyGraphComponent } from './strategy-graph.component';
 
-describe('CardFilterComponent', () => {
-  let component: CardFilterComponent;
-  let fixture: ComponentFixture<CardFilterComponent>;
+describe('StrategyGraphComponent', () => {
+  let component: StrategyGraphComponent;
+  let fixture: ComponentFixture<StrategyGraphComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CardFilterComponent ]
+      declarations: [ StrategyGraphComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CardFilterComponent);
+    fixture = TestBed.createComponent(StrategyGraphComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

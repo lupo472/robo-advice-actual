@@ -37,7 +37,6 @@ public class PortfolioOperator extends AbstractOperator {
     }
 
     public PortfolioDTO getUserCurrentPortfolio(UserLoggedDTO dto) {
-        LocalDate date = LocalDate.now();
         List<PortfolioEntity> entityList = this.portfolioRep.findLastPortfolioForUser(dto.getId());
         if(entityList.isEmpty()) {
         	return null;
@@ -147,7 +146,8 @@ public class PortfolioOperator extends AbstractOperator {
     
     public void savePortfolio(List<PortfolioEntity> entities) {
     	for (PortfolioEntity entity : entities) {
-			this.savePortfolioRow(this.assetConv.convertToDTO(entity.getAsset()), entity.getValue(), (UserLoggedDTO) this.userConv.convertToDTO(entity.getUser()));
+    		System.out.println("Sto salvando entity");
+			this.portfolioRep.save(entity);
 		}
     }
     
