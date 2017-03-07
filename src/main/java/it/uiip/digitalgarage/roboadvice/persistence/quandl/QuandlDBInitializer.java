@@ -16,7 +16,7 @@ import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataDTO;
 public class QuandlDBInitializer {
 	
 	public List<FinancialDataDTO> getData(AssetEntity asset) {
-		QuandlSession session = QuandlSession.create();
+		QuandlSession session = QuandlSession.create("fvEjoT6QAMxEmSAp-9wZ");
 		
 		TabularResult tabularResult = session.getDataSet(
 				DataSetRequest.Builder.of(asset.getDataSource())

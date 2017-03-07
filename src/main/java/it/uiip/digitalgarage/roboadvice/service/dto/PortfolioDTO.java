@@ -11,7 +11,7 @@ public @Data class PortfolioDTO {
     private Long idUser;
 
     @NotNull
-    private List<PortfolioElementsDTO> list;
+    private List<PortfolioElementDTO> list;
 
     @NotNull
     private String date;

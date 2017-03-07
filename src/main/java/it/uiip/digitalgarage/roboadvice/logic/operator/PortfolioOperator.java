@@ -2,6 +2,7 @@ package it.uiip.digitalgarage.roboadvice.logic.operator;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.CapitalEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.CustomStrategyEntity;
+import it.uiip.digitalgarage.roboadvice.persistence.entity.FinancialDataEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.PortfolioEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.AssetRepository;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.CapitalRepository;
@@ -15,10 +16,12 @@ import it.uiip.digitalgarage.roboadvice.service.dto.AssetDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioElementDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PortfolioOperator extends AbstractOperator {
@@ -38,8 +41,7 @@ public class PortfolioOperator extends AbstractOperator {
     }
 
     public PortfolioDTO getUserCurrentPortfolio(UserLoggedDTO dto) {
-        LocalDate date = LocalDate.now();
-        List<PortfolioEntity> entityList = this.portfolioRep.findByUserIdAndDate(dto.getId(), date);
+        List<PortfolioEntity> entityList = this.portfolioRep.findLastPortfolioForUser(dto.getId());
         if(entityList.isEmpty()) {
         	return null;
         }
@@ -90,4 +92,48 @@ public class PortfolioOperator extends AbstractOperator {
     	return units;
     }
 
+    public boolean computeUserPortfolio(UserLoggedDTO user) {
+    	PortfolioDTO currentPorfolio = this.getUserCurrentPortfolio(user);
+    	if(currentPorfolio == null) {
+    		System.out.println("Current portfolio == null");
+    		return false;
+    	}
+    	List<PortfolioElementDTO> elements = currentPorfolio.getList();
+    	List<PortfolioElementDTO> newPortofolioElements = new ArrayList<>();
+    	for (PortfolioElementDTO element : elements) {
+    		BigDecimal units = element.getUnits();
+    		BigDecimal newValue = this.computeValue(units, element.getAsset());
+    		if(newValue == null) {
+    			System.out.println("newValue == null");
+    			return false;
+    		}
+    		element.setValue(newValue);
+    		newPortofolioElements.add(element);
+		}
+    	PortfolioDTO newPortfolio = new PortfolioDTO();
+    	newPortfolio.setIdUser(user.getId());
+    	newPortfolio.setDate(LocalDate.now().toString());
+    	newPortfolio.setList(newPortofolioElements);
+    	List<PortfolioEntity> entities = this.portfolioWrap.unwrapToEntity(newPortfolio);
+    	this.savePortfolio(entities);
+    	return true;
+    }
+    
+    public void savePortfolio(List<PortfolioEntity> entities) {
+    	for (PortfolioEntity entity : entities) {
+    		System.out.println("Sto salvando entity");
+			this.portfolioRep.save(entity);
+		}
+    }
+    
+    private BigDecimal computeValue(BigDecimal units, AssetDTO asset) {
+    	FinancialDataEntity financialDataEntity = this.financialDataRep.findLastForAnAsset(asset.getId());
+    	if(financialDataEntity == null) {
+    		return null;
+    	}
+    	FinancialDataDTO financialData = this.financialDataConv.convertToDTO(financialDataEntity);
+    	BigDecimal result = units.multiply(financialData.getValue());
+    	return result;
+    }
+    
 }

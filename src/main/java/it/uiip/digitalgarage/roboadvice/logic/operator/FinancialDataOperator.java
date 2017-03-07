@@ -2,8 +2,8 @@ package it.uiip.digitalgarage.roboadvice.logic.operator;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -40,9 +40,7 @@ public class FinancialDataOperator extends AbstractOperator {
 		if(request.getPeriod() == 0) {
 			entity = this.financialDataRep.findLastForAnAsset(request.getId());
 		} else {
-			Calendar calendar = Calendar.getInstance();
-			calendar.add(Calendar.DATE, -(request.getPeriod()));
-			LocalDate date = LocalDate.of(calendar.get(Calendar.YEAR), (calendar.get(Calendar.MONTH) + 1), calendar.get(Calendar.DAY_OF_MONTH));
+			LocalDate date = LocalDate.now().minus(Period.ofDays(request.getPeriod()));
 			entity = this.financialDataRep.findLastForAnAssetBefore(request.getId(), date.toString());
 		}
 		if(entity == null) {
@@ -62,9 +60,7 @@ public class FinancialDataOperator extends AbstractOperator {
 				FinancialDataEntity entity = null;
 				int n = 1;
 				while(true) {
-					Calendar calendar = Calendar.getInstance();
-					calendar.add(Calendar.DATE, -n);
-					LocalDate date = LocalDate.of(calendar.get(Calendar.YEAR), (calendar.get(Calendar.MONTH) + 1), calendar.get(Calendar.DAY_OF_MONTH));
+					LocalDate date = LocalDate.now().minus(Period.ofDays(n));
 					entity = this.financialDataRep.findLastForAnAssetBefore(assetEntity.getId(), date.toString());
 					if(entity == null) {
 						break;
@@ -92,11 +88,8 @@ public class FinancialDataOperator extends AbstractOperator {
 		int days = request.getPeriod();
 		while(days > 0) {
 			for (AssetEntity assetEntity : assets) {
-				Calendar calendar = Calendar.getInstance();
-				calendar.add(Calendar.DATE, -days);
-				LocalDate date = LocalDate.of(calendar.get(Calendar.YEAR), (calendar.get(Calendar.MONTH) + 1), calendar.get(Calendar.DAY_OF_MONTH));
+				LocalDate date = LocalDate.now().minus(Period.ofDays(days));
 				FinancialDataEntity entity = this.financialDataRep.findLastForAnAssetBefore(assetEntity.getId(), date.toString());
-				
 				if(map.get(date.toString()) == null) {
 					map.put(date.toString(), new BigDecimal(0));
 				}
@@ -112,25 +105,16 @@ public class FinancialDataOperator extends AbstractOperator {
 			f.setValue(map.get(date));
 			result.add(f);
 		}
-		
-//		List<FinancialDataEntity> financialDataSet = null;
-//		for (AssetEntity assetEntity : assets) {
-//			request.setId(assetEntity.getId());
-//			financialDataSet = this.financialDataConv.convertToEntity(this.getFinancialDataSetForAsset(request));
-//			System.out.println(assetEntity.getName() + ": " + financialDataSet.size());
-//		}
 		Collections.sort(result);
 		return result;
 	}
 	
 	public List<FinancialDataDTO> getFinancialDataSetForAsset(DataRequestDTO request) {
-		Calendar calendar = Calendar.getInstance();
 		List<FinancialDataEntity> list;
 		if(request.getPeriod() == 0) {
 			list = this.financialDataRep.findByAssetId(request.getId());
 		} else {
-			calendar.add(Calendar.DATE, -(request.getPeriod()));
-			LocalDate date = LocalDate.of(calendar.get(Calendar.YEAR), (calendar.get(Calendar.MONTH) + 1), calendar.get(Calendar.DAY_OF_MONTH));		
+			LocalDate date = LocalDate.now().minus(Period.ofDays(request.getPeriod()));
 			list =  this.financialDataRep.findByAssetIdForPeriod(request.getId(), date.toString());
 		}
 		return this.financialDataConv.convertToDTO(list);
