@@ -1,17 +1,13 @@
-<div class="row">
-	<div class="col-md-2 col-sm-4"
-		*ngFor="let strategy of strategies; let i = index">
-		<div class="card btn-strategy">
+<div class="card btn-strategy">
 			<div class="card-block text-center">
-			<div class="text-uppercase font-weight-bold">{{strategy.name}}</div>
+			<div class="text-uppercase font-weight-bold">{{name}}</div>
 				<div class="chart-wrapper ">
-					<canvas baseChart class="chart" [data]="strategy.data"
-						[labels]="strategy.labels" [options]="strategyOptions"
-						[colors]="strategy.colours" [legend]="strategyLegend"
-						[chartType]="strategyType" (chartHover)="chartHovered($event)"
+					<canvas baseChart class="chart" [data]="data"
+						[labels]="labels" [options]="strategyOptions"
+						[colors]="colors" [legend]="strategyLegend"
+						[chartType]="strategyType"
+						(chartHover)="chartHovered($event)"
 						></canvas>
 				</div>
 			</div>
 		</div>
-	</div>
-</div>

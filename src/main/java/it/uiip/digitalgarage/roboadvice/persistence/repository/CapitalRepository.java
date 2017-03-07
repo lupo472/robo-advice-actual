@@ -19,7 +19,13 @@ public interface CapitalRepository extends PagingAndSortingRepository<CapitalEnt
 	
 	static final String FIND_LAST = "SELECT * FROM capital WHERE id_user = ?1 AND date = "
 								  + "(SELECT max(date) FROM capital WHERE id_user = ?1)";
-	
+
+	static final String LAST_PORTFOLIO_FOR_USER_VALUE_SUM = "INSERT INTO capital (id_user, amount, date) " +
+			"SELECT id_user, SUM(value) as amount, curdate() as date " +
+			"FROM (SELECT * FROM portfolio WHERE id_user = ?1 " +
+			"AND date = (SELECT max(date) FROM portfolio WHERE id_user = ?1)) as t1";
+
+
 	public CapitalEntity findByUserIdAndDate(Long userId, LocalDate date);
 	
 	@Query(value = FIND_LAST, nativeQuery = true)
@@ -28,7 +34,9 @@ public interface CapitalRepository extends PagingAndSortingRepository<CapitalEnt
 	@Modifying
 	@Query(value = UPDATE_CAPITAL, nativeQuery =  true)
 	public void updateCapital(Long userId, String date, BigDecimal amount);
-	
-	
-	
+
+	@Query(value = LAST_PORTFOLIO_FOR_USER_VALUE_SUM, nativeQuery = true)
+	public void lastPortfolioForUserValueSum(Long id);
+
+
 }

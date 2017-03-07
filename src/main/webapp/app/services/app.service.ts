@@ -18,12 +18,12 @@ export class AppService {
     return this.http.post(AppConfig.url + 'registerUser', user)
       .map(response => response.json());
   }
-  
+
   getDefaultStrategySet() {
     return this.http.post(AppConfig.url + 'getDefaultStrategySet', {})
       .map(response => response.json());
   }
-  
+
   getAssetClassSet() {
     return this.http.post(AppConfig.url + 'getAssetClassSet', {})
       .map(response => response.json());
@@ -33,12 +33,12 @@ export class AppService {
     return this.http.post(AppConfig.url + 'getAssetSet', {})
       .map(response => response.json());
   }
-  
+
   getFinancialData(id, period){
     return this.http.post(AppConfig.url + 'getFinancialData', {id: id, period: period})
       .map(response => response.json());
   }
-  
+
   getUserCurrentPortfolio(id, email, password){
     return this.http.post(AppConfig.url + 'getUserCurrentPortfolio', {id: id, email: email, password: password})
       .map(response => response.json());
@@ -51,6 +51,11 @@ export class AppService {
   
   getCurrentCapital(user){
     return this.http.post(AppConfig.url + 'getCurrentCapital', user)
+      .map(response => response.json());
+  }
+
+  setCustomStrategy(strategy){
+    return this.http.post(AppConfig.url + 'setCustomStrategy', strategy)
       .map(response => response.json());
   }
 }
