@@ -41,7 +41,7 @@ public class SchedulingOperator {
 	@Autowired
 	private CustomStrategyRepository customStrategyRep;
 	
-	@Scheduled(cron = "0 0 12 * * *")
+	@Scheduled(cron = "0 * * * * *")
 	public void scheduleTask() {
 		QuandlOperator quandlOp = new QuandlOperator(this.financialDataRep, this.assetRep);
 		UserOperator userOp = new UserOperator(this.userRep);
