@@ -18,7 +18,7 @@ export class EditComponent implements OnInit {
   public selectedAsset = [];
 
   constructor(private service:AssetService,private router:Router,public StrategyService:StrategyService){
-    this.isCustom = this.StrategyService.isCustom;
+    this.isCustom = true;
   }
 
   ngOnInit(): void {

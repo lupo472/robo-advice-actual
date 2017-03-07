@@ -2,7 +2,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { AppConfig } from './app.config';
 import { Strategy } from '../model/strategy';
-
+import { AssetClass } from '../model/asset-class';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
 
@@ -13,16 +13,19 @@ export class StrategyService {
   maxPercentage:number;
   prova:any;
   oldValue:number;
-  isCustom:boolean;
+  oldStrategy:any;
+  //isCustom:boolean;
   constructor(private http:Http) {
+
     this.sumPercentage = 0;
     this.maxPercentage = 100;
-    this.strategies.set(1,null);
-    this.strategies.set(2,null);
-    this.strategies.set(3,null);
-    this.strategies.set(4,null);
+    this.strategies.set(1,new Strategy(0,new AssetClass(1,"")));
+    this.strategies.set(2,new Strategy(0,new AssetClass(2,"")));
+    this.strategies.set(3,new Strategy(0,new AssetClass(3,"")));
+    this.strategies.set(4,new Strategy(0,new AssetClass(4,"")));
     this.oldValue = 0;
-    this.isCustom = false;
+    //this.isCustom = true;
+
   }
   // getStrategy(){
   //   return this.strategies;
@@ -32,7 +35,8 @@ export class StrategyService {
   // }
   onStrategy(strategy:Strategy) {
     console.log("++onStrategy");
-      this.oldValue = this.strategies.get(strategy.assetClass.id).percentage;
+      this.oldStrategy = this.strategies.get(strategy.assetClass.id);
+      this.oldValue = this.oldStrategy.percentage;
       console.log("oldValue " + this.oldValue);
       if (strategy.percentage - this.oldValue + this.sumPercentage > 100) {
         if (this.maxPercentage !=0) {

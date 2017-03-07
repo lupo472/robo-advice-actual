@@ -10,7 +10,6 @@ import { StrategyService } from '../../services/strategy.service';
   //providers:[StrategyService]
 })
 export class StrategySelectorComponent implements OnInit {
-  @Input() id;
   public strategySet = [];
   public strategies =  [];
 
@@ -41,7 +40,7 @@ export class StrategySelectorComponent implements OnInit {
     this.strategySet.forEach((item, index) => {
 
       item.list.forEach((element, i) =>{
-       arrayPercentage[i] = element.percentage;
+       arrayPercentage[i] = 0;
        arrayNull[i] = 0;
        arrayLabels[i] = element.assetClass.name;
        arrayColours[i] = this.assignColour(element.assetClass.id);
