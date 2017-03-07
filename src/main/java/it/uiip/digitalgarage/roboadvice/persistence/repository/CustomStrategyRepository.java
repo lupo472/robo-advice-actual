@@ -22,7 +22,7 @@ public interface CustomStrategyRepository extends PagingAndSortingRepository<Cus
     @Query("UPDATE CustomStrategyEntity ce SET ce.active = false WHERE ce.user.id = ?1 AND ce.active = true")
     public void setStrategyInactive(Long userId);
     
-    public List<CustomStrategyEntity> findByDate(LocalDate date);
+    public List<CustomStrategyEntity> findByUserIdAndDate(Long userId, LocalDate date);
 
     public List<CustomStrategyEntity> findByUserIdAndActive(Long idUser, boolean active);
     

@@ -27,7 +27,7 @@ public class CustomStrategyOperator extends AbstractOperator{
     
     public void setCustomStrategy(CustomStrategyDTO request) {
     	this.customStrategyRep.setStrategyInactive(request.getIdUser());
-    	List<CustomStrategyEntity> todayStrategySet = this.customStrategyRep.findByDate(LocalDate.now());
+    	List<CustomStrategyEntity> todayStrategySet = this.customStrategyRep.findByUserIdAndDate(request.getIdUser(), LocalDate.now());
     	if(todayStrategySet.size() > 0) {
     		this.customStrategyRep.delete(todayStrategySet);
     	}
@@ -51,9 +51,6 @@ public class CustomStrategyOperator extends AbstractOperator{
 			map.get(entity.getDate().toString()).add(entity);
 		}
         List<CustomStrategyResponseDTO> list = new ArrayList<>();
-        if(list.isEmpty()) {
-        	return null;
-        }
         for (String date : map.keySet()) {
 			CustomStrategyResponseDTO dto = (CustomStrategyResponseDTO) this.customStrategyWrap.wrapToDTO(map.get(date));
 			list.add(dto);
