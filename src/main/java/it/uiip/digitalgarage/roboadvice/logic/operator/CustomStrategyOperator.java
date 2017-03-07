@@ -51,9 +51,6 @@ public class CustomStrategyOperator extends AbstractOperator{
 			map.get(entity.getDate().toString()).add(entity);
 		}
         List<CustomStrategyResponseDTO> list = new ArrayList<>();
-        if(list.isEmpty()) {
-        	return null;
-        }
         for (String date : map.keySet()) {
 			CustomStrategyResponseDTO dto = (CustomStrategyResponseDTO) this.customStrategyWrap.wrapToDTO(map.get(date));
 			list.add(dto);
