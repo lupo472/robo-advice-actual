@@ -2,17 +2,15 @@ package it.uiip.digitalgarage.roboadvice.logic.operator;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.CapitalEntity;
-import it.uiip.digitalgarage.roboadvice.persistence.entity.PortfolioEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.CapitalRepository;
+import it.uiip.digitalgarage.roboadvice.persistence.repository.FinancialDataRepository;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.PortfolioRepository;
 import it.uiip.digitalgarage.roboadvice.service.dto.CapitalDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CapitalResponseDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
-import org.springframework.scheduling.annotation.Scheduled;
 
 public class CapitalOperator extends AbstractOperator {
 	
@@ -20,9 +18,10 @@ public class CapitalOperator extends AbstractOperator {
 		this.capitalRep = capitalRep;
 	}
 
-	public CapitalOperator(CapitalRepository capitalRep, PortfolioRepository portfolioRep) {
+	public CapitalOperator(CapitalRepository capitalRep, PortfolioRepository portfolioRep, FinancialDataRepository financialDataRep) {
 		this.capitalRep = capitalRep;
 		this.portfolioRep = portfolioRep;
+		this.financialDataRep = financialDataRep;
 	}
 	
 	public CapitalResponseDTO getCurrentCapital(UserLoggedDTO user) {
@@ -49,20 +48,21 @@ public class CapitalOperator extends AbstractOperator {
 		}
 	}
 
-	public void computeCapitalDaily(UserLoggedDTO user) {
-
+	public boolean computeCapital(UserLoggedDTO user) {
 		CapitalEntity capitalEntity = new CapitalEntity();
 		UserEntity userEntity = new UserEntity();
-
-		BigDecimal amount = this.portfolioRep.evaluateCurrentPortfolio(user.getId());
+		PortfolioOperator portfolioOp = new PortfolioOperator(this.portfolioRep, this.financialDataRep);
+		BigDecimal amount = portfolioOp.evaluatePortfolio(user);
+		if(amount == null) {
+			return false;
+		}
 		LocalDate currentDate = LocalDate.now();
-
 		userEntity.setId(user.getId());
 		capitalEntity.setUser(userEntity);
 		capitalEntity.setAmount(amount);
 		capitalEntity.setDate(currentDate);
-
 		this.capitalRep.save(capitalEntity);
+		return true;
 	}
 	
 }
