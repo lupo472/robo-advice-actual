@@ -1,6 +1,5 @@
 import { AppConfig } from '../../services/app.config';
 import { Component, OnInit, Input } from '@angular/core';
-
 import { StrategyService } from '../../services/strategy.service';
 
 @Component({
@@ -33,7 +32,7 @@ export class StrategySelectorComponent implements OnInit {
   public strategyType:string = 'pie';
 
   ngOnInit() {
-    
+
   }
 
 }
