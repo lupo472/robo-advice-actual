@@ -45,10 +45,11 @@ public class PortfolioOperator extends AbstractOperator {
         return response;
     }
 
-    public List<PortfolioDTO> getUserPortfolioPeriod(PortfolioRequestDTO request){
+    public List<PortfolioDTO> getUserPortfolioPeriod(DataRequestDTO request){
         LocalDate initialDate = LocalDate.now();
         LocalDate finalDate = initialDate.minus(Period.ofDays(request.getPeriod()));
-        List<PortfolioEntity> entityList = this.portfolioRep.findByUserIdAndDateBetween(request.getIdUser(), finalDate, initialDate);
+        List<PortfolioEntity> entityList = this.portfolioRep.findByUserIdAndDateBetween(request.getId(), finalDate, initialDate);
+
         if(entityList.isEmpty()){
             return null;
         }
@@ -67,6 +68,16 @@ public class PortfolioOperator extends AbstractOperator {
 		}
         return list;
     }
+
+    public PortfolioDTO getUserPortfolioDate(PortfolioRequestDTO request) {
+		LocalDate date = LocalDate.parse(request.getDate());
+		List<PortfolioEntity> entityList = this.portfolioRep.findByUserIdAndDate(request.getIdUser(), date);
+		if(entityList.isEmpty()) {
+			return null;
+		}
+		PortfolioDTO response = this.portfolioWrap.wrapToDTO(entityList);
+    	return response;
+	}
 
     public boolean createUserPortfolio(UserLoggedDTO user) {
     	CapitalEntity capitalEntity = this.capitalRep.findLast(user.getId());
@@ -153,6 +164,9 @@ public class PortfolioOperator extends AbstractOperator {
     	FinancialDataDTO financialData = this.financialDataConv.convertToDTO(financialDataEntity);
     	BigDecimal result = units.multiply(financialData.getValue());
     	return result;
+
+
+
     }
     
 }

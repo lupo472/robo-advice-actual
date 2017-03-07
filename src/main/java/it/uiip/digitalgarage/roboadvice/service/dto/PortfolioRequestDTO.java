@@ -15,5 +15,5 @@ public @Data class PortfolioRequestDTO {
     private Long idUser;
 
     @NotNull
-    private int period;
+    private String date;
 }
