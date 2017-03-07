@@ -38,4 +38,9 @@ export class AppService {
     return this.http.post(AppConfig.url + 'getFinancialData', {id: id, period: period})
       .map(response => response.json());
   }
+  
+  getUserCurrentPortfolio(id, email, password){
+    return this.http.post(AppConfig.url + 'getUserCurrentPortfolio', {id: id, email: email, password: password})
+      .map(response => response.json());
+  }
 }
