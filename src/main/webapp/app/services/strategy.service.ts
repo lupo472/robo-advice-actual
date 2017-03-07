@@ -2,8 +2,10 @@
 import { Injectable, Inject } from '@angular/core';
 import { AppConfig } from './app.config';
 import { AppService } from './app.service';
+import { Strategy } from '../model/strategy';
 import { AssetClassStrategy } from '../model/asset-class-strategy';
 import { AssetClass } from '../model/asset-class';
+import { Cookie } from 'ng2-cookies';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
 
@@ -12,11 +14,10 @@ export class StrategyService {
   assetClassStrategy:AssetClassStrategy;
   assetClass:AssetClass;
   strategies:Map<number, AssetClassStrategy> = new Map<number, AssetClassStrategy>();
+  strategy:Strategy;
   sumPercentage:number;
   maxPercentage:number;
-  prova:any;
   oldValue:number;
-  oldStrategy:any = [{percentage:0}];
   result:any;
 
   public strategySet = [];
@@ -49,7 +50,6 @@ export class StrategyService {
             }
         }
       }
-      //console.log(assetClassStrategy.getAssetClass());
       this.strategies.set(this.strategies.get(id).assetClass.id,this.strategies.get(id));
       var sum = 0;
       this.strategies.forEach( (k,v) => [
@@ -58,10 +58,24 @@ export class StrategyService {
       this.sumPercentage = sum;
       this.maxPercentage = 100 - this.sumPercentage;
 
-      console.log(this.strategies);
-      console.log("sumPercentage" + this.sumPercentage);
-      console.log("maxPercentage" + this.maxPercentage);
+      // console.log(this.strategies);
+      // console.log("sumPercentage" + this.sumPercentage);
+      // console.log("maxPercentage" + this.maxPercentage);
       return this.strategies.get(id).getPercentage();
+  }
+
+  setCustomStrategy() {
+    this.strategy = new Strategy();
+    this.strategy.setUserId(Cookie.get('id'));
+    var array = [];
+    this.strategies.forEach( (k,v) => [
+      array.push(k)
+    ]);
+    //console.log(array);
+    this.strategy.setStrategyArray(array);
+    //console.log(this.strategy);
+      return this.AppService.setCustomStrategy(this.strategy).map(res => console.log(res));
+
   }
 
   // STRATEGY JSON REMAPPING
