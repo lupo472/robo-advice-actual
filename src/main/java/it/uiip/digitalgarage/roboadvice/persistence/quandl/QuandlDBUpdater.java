@@ -20,7 +20,7 @@ public class QuandlDBUpdater {
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DATE, -5);
 				
-		QuandlSession session = QuandlSession.create();
+		QuandlSession session = QuandlSession.create("fvEjoT6QAMxEmSAp-9wZ");
 
 		TabularResult tabularResult = session.getDataSet(
 				DataSetRequest.Builder.of(asset.getDataSource())
