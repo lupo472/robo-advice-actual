@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { StrategyService } from '../../services/strategy.service';
-import { Strategy } from '../../model/strategy';
+import { AssetClassStrategy } from '../../model/asset-class-strategy';
 import { AssetClass } from '../../model/asset-class';
 
 @Component({
@@ -19,11 +19,16 @@ export class CardAssetClassComponent implements OnInit {
     @Input() lineChartType;
     @Input() isCustom;
     @Input() id;
-    strategy:Strategy;
+    assetClassStrategy:AssetClassStrategy;
     percentage:number;
-
+    oldValue:number;
   constructor(public StrategyService:StrategyService) {
-    this.strategy = new Strategy(0,new AssetClass(0,""));
+    this.percentage = 0;
+
+
+  //  this.strategies.get(this.id);
+    //this.assetClassStrategy = new AssetClassStrategy(0,new AssetClass(0,""));
+    //this.assetClassStrategy = this.StrategyService.assetClassStrategy;
     //this.strategy.percentage = 0;
   }
 
@@ -37,12 +42,12 @@ export class CardAssetClassComponent implements OnInit {
   }
 
   handleSlide(e) {
-    console.log(this.id);
-    this.strategy.assetClass.id = this.id;
-    this.strategy.assetClass.name = this.value;
-    this.strategy.percentage = this.percentage;
-    this.StrategyService.onStrategy(this.strategy);
-    console.log(this.StrategyService.strategies);
+    this.oldValue = this.StrategyService.strategies.get(this.id).percentage;
+    this.StrategyService.strategies.get(this.id).getAssetClass().setName(this.value);
+    this.StrategyService.strategies.get(this.id).setPercentage(this.percentage);
+    // console.log(this.StrategyService.strategies.get(this.id).getAssetClass());
+    // console.log(this.StrategyService.strategies.get(this.id).getPercentage());
+    this.percentage = this.StrategyService.createAssetClassStrategy(this.id,this.oldValue);  
   }
   // handleChange(e) {
   // }

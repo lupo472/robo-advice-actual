@@ -27,7 +27,7 @@ public class CustomStrategyOperator extends AbstractOperator{
     
     public void setCustomStrategy(CustomStrategyDTO request) {
     	this.customStrategyRep.setStrategyInactive(request.getIdUser());
-    	List<CustomStrategyEntity> todayStrategySet = this.customStrategyRep.findByDate(LocalDate.now());
+    	List<CustomStrategyEntity> todayStrategySet = this.customStrategyRep.findByUserIdAndDate(request.getIdUser(), LocalDate.now());
     	if(todayStrategySet.size() > 0) {
     		this.customStrategyRep.delete(todayStrategySet);
     	}
