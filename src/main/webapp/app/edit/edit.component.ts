@@ -16,6 +16,7 @@ export class EditComponent implements OnInit {
   public assetSet = [];
   public assets = [];
   public selectedAsset = [];
+  strategies:any;
 
   constructor(private service:AssetService,private router:Router,public StrategyService:StrategyService){
     this.isCustom = true;
@@ -24,6 +25,7 @@ export class EditComponent implements OnInit {
   ngOnInit(): void {
     this.service.getAssetClassSet().subscribe((result) => this.getAssetClass(result));
     this.service.getAssetSet().subscribe((result) => this.getAsset(result));
+    this.StrategyService.getDefaultStrategySet().subscribe(res=> this.getStrategy(res));
     if(!Cookie.check('email')){
       console.log("non loggato");
       this.router.navigate(['pages/login']);
@@ -32,6 +34,11 @@ export class EditComponent implements OnInit {
 
   showDetails() {
     console.log("clicked");
+  }
+
+  //ASSIGN STRATEGIES
+  getStrategy(res){
+    this.strategies = res;
   }
 
   setCustomStrategy() {
@@ -119,10 +126,6 @@ export class EditComponent implements OnInit {
 
   // events
   public chartClicked(e: any): void {
-    console.log(e);
-  }
-
-  public chartHovered(e: any): void {
     console.log(e);
   }
 
