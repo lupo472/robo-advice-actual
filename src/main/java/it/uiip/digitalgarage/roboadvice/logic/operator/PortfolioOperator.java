@@ -126,7 +126,6 @@ public class PortfolioOperator extends AbstractOperator {
     public boolean computeUserPortfolio(UserLoggedDTO user) {
     	PortfolioDTO currentPorfolio = this.getUserCurrentPortfolio(user);
     	if(currentPorfolio == null) {
-    		System.out.println("Current portfolio == null");
     		return false;
     	}
     	List<PortfolioElementDTO> elements = currentPorfolio.getList();
@@ -135,7 +134,6 @@ public class PortfolioOperator extends AbstractOperator {
     		BigDecimal units = element.getUnits();
     		BigDecimal newValue = this.computeValue(units, element.getAsset());
     		if(newValue == null) {
-    			System.out.println("newValue == null");
     			return false;
     		}
     		element.setValue(newValue);
@@ -148,6 +146,29 @@ public class PortfolioOperator extends AbstractOperator {
     	List<PortfolioEntity> entities = this.portfolioWrap.unwrapToEntity(newPortfolio);
     	this.savePortfolio(entities);
     	return true;
+    }
+    
+    public boolean recreatePortfolio(UserLoggedDTO user) {
+    	PortfolioDTO currentPorfolio = this.getUserCurrentPortfolio(user);
+    	if(currentPorfolio == null) {
+    		return false;
+    	}
+    	BigDecimal value = this.evaluatePortfolio(user);
+    	List<CustomStrategyEntity> strategyEntity = this.customStrategyRep.findByUserIdAndActive(user.getId(), true);
+    	if(strategyEntity.isEmpty()) {
+    		return false;
+    	}
+    	CustomStrategyDTO strategy = this.customStrategyWrap.wrapToDTO(strategyEntity);
+    	for (AssetClassStrategyDTO element : strategy.getList()) {
+    		BigDecimal amountPerClass = value.divide(new BigDecimal(100.00), 4, RoundingMode.HALF_UP).multiply(element.getPercentage());
+    		this.savePortfolioForClass(element.getAssetClass(), amountPerClass, user);
+		}
+    	return true;
+    }
+    
+    private BigDecimal evaluatePortfolio(UserLoggedDTO user) {
+    	BigDecimal value = this.portfolioRep.evaluateCurrentPortfolio(user.getId());
+    	return value;
     }
     
     public void savePortfolio(List<PortfolioEntity> entities) {
