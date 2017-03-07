@@ -37,4 +37,12 @@ public class CapitalController extends AbstractController {
 		return new GenericResponse<CapitalResponseDTO>(1, result);
 	}
 
+	//TODO Remove after it is sure that it works
+	@RequestMapping("/computeCapital")
+	@ResponseBody
+	public GenericResponse<?> computeCapital(@Valid @RequestBody UserLoggedDTO user){
+		this.capitalOp = new CapitalOperator(this.capitalRep, this.portfolioRep);
+		this.capitalOp.computeCapitalDaily(user);
+		return new GenericResponse<String>(1, "done");
+	}
 }
