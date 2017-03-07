@@ -7,6 +7,7 @@ import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioElementDTO;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,8 @@ public class PortfolioWrapper implements GenericWrapper<PortfolioEntity, Portfol
             entity.setAssetClass(this.assetClassConv.convertToEntity(element.getAsset().getAssetClass()));
             entity.setUnits(element.getUnits());
             entity.setValue(element.getValue());
+            entity.setDate(LocalDate.parse(dto.getDate()));
+            portfolioEntityList.add(entity);
         }
         return portfolioEntityList;
     }
