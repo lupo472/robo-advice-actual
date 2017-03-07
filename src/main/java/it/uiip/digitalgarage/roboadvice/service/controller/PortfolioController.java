@@ -13,6 +13,7 @@ import javax.validation.Valid;
 public class PortfolioController extends AbstractController {
 
     @RequestMapping("/getUserCurrentPortfolio")
+    @ResponseBody
     public GenericResponse<?> getUserCurrentPortfolio(@Valid @RequestBody UserLoggedDTO user) {
         this.portfolioOp = new PortfolioOperator(this.portfolioRep);
         PortfolioDTO result = this.portfolioOp.getUserCurrentPortfolio(user);
@@ -20,6 +21,18 @@ public class PortfolioController extends AbstractController {
     		return new GenericResponse<String>(0, "The portfolio of this user is empty");
     	}
         return new GenericResponse<PortfolioDTO>(1, result);
+    }
+    
+    @RequestMapping("/createUserPortfolio")
+    @ResponseBody
+    public GenericResponse<?> createUserPortfolio(@Valid @RequestBody UserLoggedDTO user) {
+    	this.portfolioOp = new PortfolioOperator(this.portfolioRep, this.capitalRep, this.customStrategyRep, 
+    											 this.assetRep, this.financialDataRep, this.userRep);
+    	boolean done = this.portfolioOp.createUserPortfolio(user);
+    	if(done) {
+    		return new GenericResponse<String>(1, "done");
+    	}
+    	return new GenericResponse<String>(0, "A problem occurred");
     }
 
 }

@@ -33,6 +33,9 @@ public abstract class AbstractController {
 
 	@Autowired
 	protected PortfolioRepository portfolioRep;
+	
+	@Autowired
+	protected CapitalRepository capitalRep;
 
 	protected UserOperator userOp;
 	
@@ -50,5 +53,6 @@ public abstract class AbstractController {
 
 	protected PortfolioOperator portfolioOp;
 
+	protected CapitalOperator capitalOp;
 	
 }

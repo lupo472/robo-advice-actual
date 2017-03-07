@@ -1,15 +1,19 @@
 package it.uiip.digitalgarage.roboadvice.service.dto;
 
-import lombok.Data;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
-public @Data class  CustomStrategyDTO extends CustomStrategyRequestDTO {
+import lombok.Data;
 
-    @NotNull
-    private boolean active;
-
-    @NotNull
-    private String date;
-
+public @Data class CustomStrategyDTO {
+	
+	 @NotNull
+	 private Long idUser;
+	 
+	 @NotNull
+	 @Size(min = 1)
+	 private List<AssetClassStrategyDTO> list;
+	
 }

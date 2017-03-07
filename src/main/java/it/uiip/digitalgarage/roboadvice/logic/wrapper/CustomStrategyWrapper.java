@@ -7,13 +7,13 @@ import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetClassEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.CustomStrategyEntity;
 import it.uiip.digitalgarage.roboadvice.service.dto.AssetClassDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.AssetClassStrategyDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyResponseDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyRequestDTO;
 
-public class CustomStrategyWrapper implements GenericWrapper<CustomStrategyEntity, CustomStrategyRequestDTO>{
+public class CustomStrategyWrapper implements GenericWrapper<CustomStrategyEntity, CustomStrategyDTO>{
 
 	@Override
-	public List<CustomStrategyEntity> unwrapToEntity(CustomStrategyRequestDTO dto) {
+	public List<CustomStrategyEntity> unwrapToEntity(CustomStrategyDTO dto) {
 		List<CustomStrategyEntity> entityList = new ArrayList<>();
 		for (AssetClassStrategyDTO element : dto.getList()) {
 			CustomStrategyEntity entity = new CustomStrategyEntity();
@@ -29,8 +29,8 @@ public class CustomStrategyWrapper implements GenericWrapper<CustomStrategyEntit
 	}
 	
 	@Override 
-	public CustomStrategyDTO wrapToDTO(List<CustomStrategyEntity> entityList) {
-		CustomStrategyDTO dto = new CustomStrategyDTO();
+	public CustomStrategyResponseDTO wrapToDTO(List<CustomStrategyEntity> entityList) {
+		CustomStrategyResponseDTO dto = new CustomStrategyResponseDTO();
 		dto.setActive(entityList.get(0).isActive());
 		dto.setDate(entityList.get(0).getDate().toString());
 		dto.setIdUser(entityList.get(0).getUser().getId());
