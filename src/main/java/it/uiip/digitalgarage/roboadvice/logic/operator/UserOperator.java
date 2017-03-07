@@ -1,6 +1,8 @@
 package it.uiip.digitalgarage.roboadvice.logic.operator;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.UserRepository;
@@ -37,5 +39,15 @@ public class UserOperator extends AbstractOperator {
 	public boolean isRegistered(String email) {
 		return !(this.userRep.findByEmail(email) == null);
 	}
+	
+	public List<UserLoggedDTO> getAllUsers() {
+		List<UserEntity> entities = this.userRep.findAll();
+		List<UserLoggedDTO> users = new ArrayList<>();
+		for(UserEntity entity : entities) {
+			UserLoggedDTO user = (UserLoggedDTO) this.userConv.convertToDTO(entity);
+			users.add(user);
+		}
+		return users;
+	} 
 
 }

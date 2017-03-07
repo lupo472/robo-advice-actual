@@ -38,7 +38,7 @@ public class PortfolioWrapper implements GenericWrapper<PortfolioEntity, Portfol
     public PortfolioDTO wrapToDTO(List<PortfolioEntity> entityList) {
         PortfolioDTO dto = new PortfolioDTO();
         dto.setList(new ArrayList<>());
-        dto.setIdUser(entityList.get(0).getId());
+        dto.setIdUser(entityList.get(0).getUser().getId());
         dto.setDate(entityList.get(0).getDate().toString());
         for (PortfolioEntity entity : entityList) {
             PortfolioElementDTO element = new PortfolioElementDTO();
