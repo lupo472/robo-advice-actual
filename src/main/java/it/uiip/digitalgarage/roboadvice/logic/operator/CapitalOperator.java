@@ -50,7 +50,6 @@ public class CapitalOperator extends AbstractOperator {
 	}
 
 	public void computeCapitalDaily(UserLoggedDTO user) {
-
 		CapitalEntity capitalEntity = new CapitalEntity();
 		UserEntity userEntity = new UserEntity();
 
@@ -63,6 +62,8 @@ public class CapitalOperator extends AbstractOperator {
 		capitalEntity.setDate(currentDate);
 
 		this.capitalRep.save(capitalEntity);
+
+
 	}
 	
 }
