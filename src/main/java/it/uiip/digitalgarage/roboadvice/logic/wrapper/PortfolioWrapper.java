@@ -28,7 +28,6 @@ public class PortfolioWrapper implements GenericWrapper<PortfolioEntity, Portfol
             entity.setUnits(element.getUnits());
             entity.setValue(element.getValue());
         }
-
         return portfolioEntityList;
     }
 

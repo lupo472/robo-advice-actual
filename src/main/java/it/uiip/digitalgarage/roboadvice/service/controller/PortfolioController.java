@@ -38,7 +38,8 @@ public class PortfolioController extends AbstractController {
     @RequestMapping("/computeUserPortfolio")
     @ResponseBody
     public GenericResponse<?> computeUserPortfolio(@Valid @RequestBody UserLoggedDTO user) {
-    	this.portfolioOp = new PortfolioOperator(this.portfolioRep, this.financialDataRep);
+    	this.portfolioOp = new PortfolioOperator(this.portfolioRep, this.capitalRep, this.customStrategyRep, 
+				 this.assetRep, this.financialDataRep, this.userRep);
     	boolean done = this.portfolioOp.computeUserPortfolio(user);
     	if(done) {
     		return new GenericResponse<String>(1, "done");
