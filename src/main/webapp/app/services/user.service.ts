@@ -13,16 +13,17 @@ export class UserService {
   
   private capital = 10000;
   
-  public user:User;
+  private user:User;
 
   constructor(private AppService:AppService) { }
   
   //SET AND GET USER
   setUser(res){
-    if(res.response == 1){
-      this.user = new User(res.data);
-    }
-      return res;
+    
+      this.user = new User(res);
+      this.AppService.getCurrentCapital(res).subscribe(res => this.setCapital(res));
+    
+    return res = {response: 1, data: res};
   }
   
   getUser(){
@@ -31,12 +32,12 @@ export class UserService {
   
   //LOGIN 
   loginUser(user) {
-   return this.AppService.loginUser(user).map(res => this.setUser(res));
+   return this.AppService.loginUser(user).map(res => { if(res.response == 1){return this.setUser(res.data)}else{return res}});
   }
   
   //REGISTER
   registerUser(user){
-    return this.AppService.registerUser(user).map(res => this.setUser(res));
+    return this.AppService.registerUser(user).map(res => { if(res.response == 1){return this.setUser(res.data)}else{return res}});
   }
 
   addCapital(){
@@ -49,6 +50,7 @@ export class UserService {
   
   setCapital(res){
     this.user.capital = res.data.amount;
+    console.log("UTENTE: " + JSON.stringify(this.user));
   }
     
 }

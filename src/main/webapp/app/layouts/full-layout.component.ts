@@ -14,14 +14,22 @@ export class FullLayoutComponent implements OnInit {
 
   constructor(private UserService:UserService) { }
   
-  ngOnInit(): void { }
+  ngOnInit(): void { 
+    
+    if(Cookie.check('email')){
+        this.UserService.setUser({email: Cookie.get('email'), 
+                      password: Cookie.get('password'), 
+                      id: Cookie.get('id')});
+      }
+    
+    this.user = this.UserService.getUser();
+  }
 
   public disabled:boolean = false;
   public status:{isopen:boolean} = {isopen: false};
 
   public toggled(open:boolean):void {
     console.log('Dropdown is now: ', open);
-    console.log("try to get user " + this.UserService.getUser());
   }
 
   public logout():void{

@@ -4,13 +4,15 @@ import { UserService } from '../services/user.service';
 import { Router } from '@angular/router';
 
 @Component({
-  templateUrl: 'login.component.html',
-  providers:[UserService]
+  templateUrl: 'login.component.html'
 })
 export class LoginComponent{
   constructor(private UserService:UserService, private router:Router) {
       if(Cookie.check('email')){
-          console.log("Already Logged");
+          this.UserService.setUser({email: Cookie.get('email'), 
+                      password: Cookie.get('password'), 
+                      id: Cookie.get('id')});
+          
           this.router.navigate(['edit']);
       }
   };
@@ -18,8 +20,8 @@ export class LoginComponent{
 
   public onSubmit(){
     this.UserService.loginUser(this.user).subscribe(res => 
-      {if(res.response == 1){
-        this.UserService.getCurrentCapital(res.data).subscribe();
+      {
+      if(res.response == 1){
         this.setCookie(res.data)
         }else{
         alert("Wrong Username or Password");}
