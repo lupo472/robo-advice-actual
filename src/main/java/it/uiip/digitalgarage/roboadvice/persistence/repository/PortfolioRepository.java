@@ -13,5 +13,7 @@ import java.util.List;
 public interface PortfolioRepository extends PagingAndSortingRepository<PortfolioEntity, Long> {
 
     public List<PortfolioEntity> findByUserIdAndDate(Long idUser, LocalDate date);
+
+    public List<PortfolioEntity> findByUserIdAndDateBetween(Long idUser, LocalDate finalDate, LocalDate initialDate);
 	
 }
