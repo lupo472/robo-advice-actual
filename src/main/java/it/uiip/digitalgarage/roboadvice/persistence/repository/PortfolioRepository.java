@@ -25,5 +25,7 @@ public interface PortfolioRepository extends PagingAndSortingRepository<Portfoli
 
     @Query(value = FIND_LAST_PORTFOLIO_FOR_USER, nativeQuery = true)
     public List<PortfolioEntity> findLastPortfolioForUser(Long idUser);
+    
+    public PortfolioEntity findByUserIdAndAssetIdAndDate(Long userId, Long assetId, LocalDate date);
 	
 }
