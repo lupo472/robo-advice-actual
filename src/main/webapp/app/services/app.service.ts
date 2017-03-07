@@ -43,4 +43,14 @@ export class AppService {
     return this.http.post(AppConfig.url + 'getUserCurrentPortfolio', {id: id, email: email, password: password})
       .map(response => response.json());
   }
+  
+  addCapital(id, amount){
+    return this.http.post(AppConfig.url + 'addCapital', {idUser: id, amount: amount})
+      .map(response => response.json());
+  }
+  
+  getCurrentCapital(user){
+    return this.http.post(AppConfig.url + 'getCurrentCapital', user)
+      .map(response => response.json());
+  }
 }

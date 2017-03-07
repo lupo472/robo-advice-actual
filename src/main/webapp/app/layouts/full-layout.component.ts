@@ -1,13 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import {Cookie} from "ng2-cookies";
 
+import { User } from '../model/user';
+import { UserService } from '../services/user.service';
+
 @Component({
   selector: 'app-dashboard',
-  templateUrl: './full-layout.component.html'
+  templateUrl: './full-layout.component.html',
+  providers: [ UserService ]
 })
 export class FullLayoutComponent implements OnInit {
+  
+  user:User;
 
-  constructor() { }
+  constructor(private UserService:UserService) { }
+  
+  ngOnInit(): void {
+    console.log("try to get user " + this.UserService.getUser());
+  }
 
   public disabled:boolean = false;
   public status:{isopen:boolean} = {isopen: false};
@@ -73,5 +83,5 @@ export class FullLayoutComponent implements OnInit {
   public socialChartType:string = 'line';
   
 
-  ngOnInit(): void {}
+  
 }

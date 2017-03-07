@@ -8,9 +8,9 @@ import { Router } from '@angular/router';
   providers:[UserService]
 })
 export class LoginComponent{
-  constructor(private service:UserService, private router:Router) {
+  constructor(private UserService:UserService, private router:Router) {
       if(Cookie.check('email')){
-          console.log("già loggato");
+          console.log("Already Logged");
           console.log(Cookie.get('email'));
           this.router.navigate(['edit']);
       }
@@ -18,30 +18,21 @@ export class LoginComponent{
   user:any = {};
 
   public onSubmit(){
-    this.service.login(this.user).subscribe(
-        (res)=>{
-            if(res.response==1){
-                console.log(JSON.stringify(res));
-                Cookie.set('email',res.data.email);
-                Cookie.set('password',res.data.password);
-                Cookie.set('id',res.data.id);
-                console.log(Cookie.getAll());
-                this.router.navigate(['edit']);
-            }
-            else{
-                //alert("Incorrect credentials: "+res.data);
-                console.log("Incorrect credentials: ",res);
-                document.getElementById('alertLogin').style.display="block";
-
-            }
-        },
-    (error) => {
-      //console.error("ERROR"+error);
-      console.log("LOG "+error);  //Prints 'error!' so throw works.
-      alert("Server error, try later");
-    });
-    //this.form.reset();
+    this.UserService.loginUser(this.user).subscribe(res => 
+      {if(res.response == 1){
+        this.UserService.getCurrentCapital(res.data).subscribe();
+        this.setCookie(res.data)
+        }else{
+        alert("Wrong Username or Password");}
+      });
   }
 
+  public setCookie(user){
+      Cookie.set('email',user.email);
+      Cookie.set('password',user.password);
+      Cookie.set('id',user.id);
+      console.log(Cookie.getAll());
+      this.router.navigate(['dashboard']);
+  }
 
 }
