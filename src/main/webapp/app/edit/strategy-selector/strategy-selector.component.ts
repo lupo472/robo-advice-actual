@@ -5,22 +5,27 @@ import { StrategyService } from '../../services/strategy.service';
 @Component({
   selector: 'app-strategy-selector',
   templateUrl: './strategy-selector.component.html',
-  styleUrls: ['./strategy-selector.component.scss'],
-  //providers:[StrategyService]
+  styleUrls: ['./strategy-selector.component.scss']
 })
 export class StrategySelectorComponent implements OnInit {
-  public strategySet = [];
-  public strategies =  [];
+  @Input() data;
+  @Input() labels;
+  @Input() options;
+  @Input() colors;
+  @Input() legend;
+  @Input() chartType;
+  @Input() name;
 
   constructor(private StrategyService:StrategyService) {
-      this.StrategyService.getDefaultStrategySet().subscribe(res=> this.getStrategy(res));
    }
 
-  //ASSIGN STRATEGIES
-  getStrategy(res){
-    this.strategies = res;
-  }
+   ngOnInit() {
 
+   }
+
+  public chartHovered(e: any): void {
+    console.log(e);
+  }
   //GENERAL SETTINGS
   public strategyOptions:any = {
     maintainAspectRatio: false,
@@ -30,9 +35,5 @@ export class StrategySelectorComponent implements OnInit {
     }
   };
   public strategyType:string = 'pie';
-
-  ngOnInit() {
-
-  }
 
 }
