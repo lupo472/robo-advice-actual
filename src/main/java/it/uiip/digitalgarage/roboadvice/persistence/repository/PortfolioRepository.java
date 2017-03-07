@@ -23,16 +23,16 @@ public interface PortfolioRepository extends PagingAndSortingRepository<Portfoli
 													 + "WHERE id_user = ?1 "
 													 + "AND date = (SELECT max(date) FROM portfolio "
 													 + 			  "WHERE id_user = ?1)";
-
-    static final String FIND_LAST_PORTFOLIO_FOR_USER_VALUE_SUM = "SELECT SUM(value) as sum"
-                                                                + " FROM (SELECT * FROM roboadvice.portfolio "
-                                                                + "WHERE id_user = ?1 "
-                                                                + "AND date = (SELECT max(date) FROM roboadvice.portfolio WHERE id_user = ?1)) as t1";
+    
+    static final String EVALUATE_CURRENT_PORTFOLIO = "SELECT sum(value) FROM portfolio WHERE id_user = ?1 "
+    												+ "AND date = (SELECT max(date) FROM portfolio "
+    												+ "WHERE id_user = ?1)";
+	
 
     @Query(value = FIND_LAST_PORTFOLIO_FOR_USER, nativeQuery = true)
     public List<PortfolioEntity> findLastPortfolioForUser(Long idUser);
-
-    @Query(value = FIND_LAST_PORTFOLIO_FOR_USER_VALUE_SUM, nativeQuery = true)
-    public BigDecimal findLastPortfolioForUserValueSum(Long id);
+	
+	@Query(value = EVALUATE_CURRENT_PORTFOLIO, nativeQuery = true)
+	public BigDecimal evaluateCurrentPortfolio(Long id);
 
 }

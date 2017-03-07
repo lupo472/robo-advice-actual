@@ -54,7 +54,7 @@ public class CapitalOperator extends AbstractOperator {
 		CapitalEntity capitalEntity = new CapitalEntity();
 		UserEntity userEntity = new UserEntity();
 
-		BigDecimal amount = this.portfolioRep.findLastPortfolioForUserValueSum(user.getId());
+		BigDecimal amount = this.portfolioRep.evaluateCurrentPortfolio(user.getId());
 		LocalDate currentDate = LocalDate.now();
 
 		userEntity.setId(user.getId());
