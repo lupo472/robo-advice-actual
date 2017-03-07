@@ -24,6 +24,7 @@ import { HttpModule } from '@angular/http';
 
 //Services
 import { StrategyService } from './services/strategy.service';
+import { AppService } from './services/app.service';
 
 @NgModule({
   imports: [
@@ -51,6 +52,7 @@ import { StrategyService } from './services/strategy.service';
     provide: LocationStrategy,
     useClass: HashLocationStrategy
   },
+    AppService,
     Cookie],
 
   bootstrap: [ AppComponent ]
