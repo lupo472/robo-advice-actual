@@ -44,10 +44,6 @@ export class UserService {
     return this.AppService.addCapital(this.user.id, this.capital); 
   }
   
-  getCurrentCapital(user){
-    return this.AppService.getCurrentCapital(user).map(res => this.setCapital(res));
-  }
-  
   setCapital(res){
     this.user.capital = res.data.amount;
     console.log("UTENTE: " + JSON.stringify(this.user));
