@@ -1,14 +1,16 @@
-import { Component, OnInit, Renderer } from '@angular/core';
+import {Component, OnInit, Renderer, ViewChild, AfterViewInit} from '@angular/core';
 import { Router } from '@angular/router';
 import { AssetService } from '../services/asset.service';
 import { StrategyService } from '../services/strategy.service';
 import { Cookie } from 'ng2-cookies';
 
+import { ModalDirective } from 'ng2-bootstrap/modal/modal.component';
+
 
 @Component({
   templateUrl: 'edit.component.html'
 })
-export class EditComponent implements OnInit {
+export class EditComponent implements OnInit,AfterViewInit {
   public isCustom:boolean;
   public assetClassSet = [];
   public assetClasses = [];
@@ -17,8 +19,21 @@ export class EditComponent implements OnInit {
   public selectedAsset = [];
   strategies:any;
 
+  @ViewChild('childModal') public childModal:ModalDirective;
+
   constructor(public AssetService:AssetService, public StrategyService:StrategyService, private router:Router){
     this.isCustom = true;
+  }
+  public showChildModal():void {
+    this.childModal.show();
+  }
+  
+  public hideChildModal():void {
+    this.childModal.hide();
+  }
+  ngAfterViewInit() {
+    // viewChild is set after the view has been initialized
+    this.childModal.show();
   }
 
   ngOnInit(): void {
