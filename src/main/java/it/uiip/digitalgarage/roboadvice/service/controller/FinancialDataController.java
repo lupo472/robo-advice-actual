@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import it.uiip.digitalgarage.roboadvice.service.dto.DataRequestDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataClassDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataDTO;
+import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 
 @CrossOrigin("*")
@@ -45,7 +46,7 @@ public class FinancialDataController extends AbstractController {
 	public GenericResponse<?> findLastFinancialDataForAsset(@Valid @RequestBody DataRequestDTO request) {
 		FinancialDataDTO result = this.financialDataOp.findLast(request);
 		if(result == null) {
-			return new GenericResponse<String>(0, "No results");
+			return new GenericResponse<String>(0, ControllerConstants.NO_RESULTS);
 		}
 		return new GenericResponse<FinancialDataDTO>(1, result);
 	}
@@ -54,14 +55,14 @@ public class FinancialDataController extends AbstractController {
 	@ResponseBody
 	public GenericResponse<?> updateFinancialDataSet() {
 		this.quandlOp.updateFinancialDataSet();
-		return new GenericResponse<String>(1, "Done");
+		return new GenericResponse<String>(1, ControllerConstants.DONE);
 	}
 	
 	@RequestMapping("/initializeFinancialDataSet")
 	@ResponseBody
 	public GenericResponse<?> initializeFinancialDataSet() {
 		this.quandlOp.initializeFinancialDataSet();
-		return new GenericResponse<String>(1, "Done");
+		return new GenericResponse<String>(1, ControllerConstants.DONE);
 	}
 
 }

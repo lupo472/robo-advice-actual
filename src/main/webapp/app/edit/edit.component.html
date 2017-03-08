@@ -36,3 +36,74 @@
 
 </div>
 
+<div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-success modal-lg" role="document">
+		<div class="modal-content backgroundImg">
+			<div class="modal-header">
+				<h4 class="modal-title">The our strategy suggested</h4>
+				<button type="button" class="close" (click)="hideChildModal()" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<p>Step 1&hellip;</p>
+				<carousel [interval]=false>
+					<slide>
+						<!--<img src="http://badialiconsulting.it/uploads/kcFinder/images/iStock_000005594027Small.jpg" alt="First slide">-->
+						<div class="contentSugg">
+							<h3>What did you eat yesterday?</h3>
+
+							<div class="row">
+								<div class="col-lg-8">Fruit</div>
+								<div class="col-lg-4">
+									<label class="switch switch-lg switch-3d switch-primary">
+										<input type="checkbox" class="switch-input" checked>
+										<span class="switch-label"></span>
+										<span class="switch-handle"></span>
+									</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-8">Pizza</div>
+								<div class="col-lg-4">
+									<label class="switch switch-lg switch-3d switch-primary">
+										<input type="checkbox" class="switch-input" checked>
+										<span class="switch-label"></span>
+										<span class="switch-handle"></span>
+									</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-8">Sushi</div>
+								<div class="col-lg-4">
+									<label class="switch switch-lg switch-3d switch-primary">
+										<input type="checkbox" class="switch-input" checked>
+										<span class="switch-label"></span>
+										<span class="switch-handle"></span>
+									</label>
+								</div>
+							</div>
+						</div>
+
+					</slide>
+					<slide>
+						slide 2
+						<!--<img src="http://www.touhouproject.it/wp-content/uploads/2015/06/finance1.png" alt="Second slide">-->
+					</slide>
+					<slide>
+						slide 3
+						<!--<img src="http://p11cdn4static.sharpschool.com/UserFiles/Servers/Server_212375/Image/finance-industry.jpg" alt="Third slide">-->
+					</slide>
+				</carousel>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" (click)="successModal.hide()">Close</button>
+				<button type="button" class="btn btn-primary">Save changes</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+

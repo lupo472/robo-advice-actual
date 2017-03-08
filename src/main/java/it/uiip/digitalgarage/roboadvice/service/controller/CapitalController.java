@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import it.uiip.digitalgarage.roboadvice.service.dto.CapitalDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CapitalResponseDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
+import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class CapitalController extends AbstractController {
     @ResponseBody
 	public GenericResponse<?> addCapital(@Valid @RequestBody CapitalDTO capital) {
 		this.capitalOp.addCapital(capital);
-		return new GenericResponse<String>(1, "done");
+		return new GenericResponse<String>(1, ControllerConstants.DONE);
 	}
 	
 	@RequestMapping("/getCurrentCapital")
@@ -32,7 +33,7 @@ public class CapitalController extends AbstractController {
 	public GenericResponse<?> getCurrentCapital(@Valid @RequestBody UserLoggedDTO user){
 		CapitalResponseDTO result = this.capitalOp.getCurrentCapital(user);
 		if(result == null) {
-			return new GenericResponse<String>(0, "This user doesn't have any capital");
+			return new GenericResponse<String>(0, ControllerConstants.ANY_CAPITAL);
 		}
 		return new GenericResponse<CapitalResponseDTO>(1, result);
 	}
@@ -42,9 +43,9 @@ public class CapitalController extends AbstractController {
 	public GenericResponse<?> computeCapital(@Valid @RequestBody UserLoggedDTO user){
 		boolean done = this.capitalOp.computeCapital(user);
 		if(!done) {
-			return new GenericResponse<String>(0, "A problem occurred");
+			return new GenericResponse<String>(0, ControllerConstants.PROBLEM);
 		}
-		return new GenericResponse<String>(1, "done");
+		return new GenericResponse<String>(1, ControllerConstants.DONE);
 	}
 
 	@RequestMapping("/getCapitalPeriod")
@@ -52,7 +53,7 @@ public class CapitalController extends AbstractController {
 	public GenericResponse<?> getCapitalPeriod(@Valid @RequestBody DataRequestDTO request) {
 		List<CapitalResponseDTO> result = this.capitalOp.getCapitalPeriod(request);
 		if(result == null) {
-			return new GenericResponse<String>(0, "This user doesn't have any capital");
+			return new GenericResponse<String>(0, ControllerConstants.ANY_CAPITAL);
 		}
 		return new GenericResponse<List<CapitalResponseDTO>>(1, result);
 	}
