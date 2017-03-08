@@ -13,12 +13,23 @@ import java.util.List;
 
 public class PortfolioWrapper implements GenericWrapper<PortfolioEntity, PortfolioDTO> {
 
-    private AssetConverter assetConv = new AssetConverter();
+//    private AssetConverter assetConv = new AssetConverter();
     private AssetClassConverter assetClassConv = new AssetClassConverter();
 
-  //todo Ricreare metodo unwrapToEntity
+  //TODO Ricreare metodo unwrapToEntity
     @Override
     public List<PortfolioEntity> unwrapToEntity(PortfolioDTO dto) {
+    	List<PortfolioEntity> entityList = new ArrayList<>();
+    	UserEntity user = new UserEntity();
+		user.setId(dto.getIdUser());
+    	for (PortfolioElementDTO element : dto.getList()) {
+			PortfolioEntity entity = new PortfolioEntity();
+			entity.setAssetClass(this.assetClassConv.convertToEntity(element.getAssetClassStrategy().getAssetClass()));
+			entity.setDate(LocalDate.parse(dto.getDate()));
+			entity.setUser(user);
+			entity.setValue(element.getValue());
+		}
+    	return entityList;
 //        List<PortfolioEntity> portfolioEntityList = new ArrayList<PortfolioEntity>();
 //        for(PortfolioElementDTO element : dto.getList()){
 //            PortfolioEntity entity = new PortfolioEntity();
@@ -33,12 +44,20 @@ public class PortfolioWrapper implements GenericWrapper<PortfolioEntity, Portfol
 //            portfolioEntityList.add(entity);
 //        }
 //        return portfolioEntityList;
-    	return null;
     }
 
     //TODO Ricreare metodo wrapToDTO
     @Override
     public PortfolioDTO wrapToDTO(List<PortfolioEntity> entityList) {
+    	PortfolioDTO dto = new PortfolioDTO();
+    	List<PortfolioElementDTO> elements = new ArrayList<>();
+    	dto.setDate(entityList.get(0).getDate().toString());
+    	dto.setIdUser(entityList.get(0).getUser().getId());
+    	//CREARE LISTA
+    	for (PortfolioEntity entity : entityList) {
+			
+		}
+    	
 //        PortfolioDTO dto = new PortfolioDTO();
 //        dto.setList(new ArrayList<>());
 //        dto.setIdUser(entityList.get(0).getUser().getId());
