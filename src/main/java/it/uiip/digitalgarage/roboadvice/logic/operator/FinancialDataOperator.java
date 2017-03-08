@@ -46,7 +46,6 @@ public class FinancialDataOperator extends AbstractOperator {
 		if(request.getPeriod() == 0) {
 			interrupt = false;
 		}
-		int count = 0;
 		for (AssetEntity assetEntity : assets) {
 			int n = 0;
 			LocalDate entityDate = LocalDate.now();
@@ -58,7 +57,6 @@ public class FinancialDataOperator extends AbstractOperator {
 				LocalDate date = LocalDate.now().minus(Period.ofDays(n));				
 				if(date.isEqual(entityDate) || date.isBefore(entityDate)) {
 					FinancialDataEntity entity = this.financialDataRep.findLastForAnAssetBefore(assetEntity.getId(), date.toString());
-					count++;
 					if(entity == null) {
 						break;
 					}
@@ -73,7 +71,6 @@ public class FinancialDataOperator extends AbstractOperator {
 			}
 		}
 		List<FinancialDataClassDTO> result = computeResult(request, map);
-		System.out.println("Ho fatto " + count + " query");
 		return result;
 	}
 
