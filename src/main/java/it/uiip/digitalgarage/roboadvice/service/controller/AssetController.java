@@ -18,6 +18,9 @@ public class AssetController extends AbstractController {
 	@ResponseBody
 	public GenericResponse<?> getAssetSet() {
 		List<AssetDTO> result = this.assetOp.getAssetSet();
+		if(result.isEmpty()){
+			return new GenericResponse<String>(0, "There are no assets");
+		}
 		return new GenericResponse<List<AssetDTO>>(1, result);
 	}
 	
