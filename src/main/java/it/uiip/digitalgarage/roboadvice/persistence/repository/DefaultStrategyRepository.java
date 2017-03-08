@@ -13,7 +13,5 @@ import it.uiip.digitalgarage.roboadvice.persistence.entity.DefaultStrategyEntity
 public interface DefaultStrategyRepository extends PagingAndSortingRepository<DefaultStrategyEntity, Long> {
 
 	public List<DefaultStrategyEntity> findAll();
-
-	public DefaultStrategyEntity save(DefaultStrategyEntity defaultStrategyEntity);
 	
 }

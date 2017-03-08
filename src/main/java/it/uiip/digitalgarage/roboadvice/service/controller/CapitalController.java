@@ -54,6 +54,6 @@ public class CapitalController extends AbstractController {
 		if(result == null) {
 			return new GenericResponse<String>(0, "This user doesn't have any capital");
 		}
-		return new GenericResponse<List<CapitalResponseDTO>>(1,result);
+		return new GenericResponse<List<CapitalResponseDTO>>(1, result);
 	}
 }

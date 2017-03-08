@@ -41,48 +41,35 @@ public class FinancialDataOperator extends AbstractOperator {
 	
 	//TODO improve scalability
 	public List<FinancialDataClassDTO> getFinancialDataSetForAssetClass(DataRequestDTO request) {
-		List<AssetEntity> assets = this.assetRep.findByAssetClassId(request.getId());		
+		List<AssetEntity> assets = this.assetRep.findByAssetClassId(request.getId());
 		Map<String, BigDecimal> map = new HashMap<>();
+		boolean interrupt = true;
 		if(request.getPeriod() == 0) {
-			for(AssetEntity assetEntity : assets) {
-				FinancialDataEntity entity = null;
-				int n = 1;
-				while(true) {
-					LocalDate date = LocalDate.now().minus(Period.ofDays(n));
-					entity = this.financialDataRep.findLastForAnAssetBefore(assetEntity.getId(), date.toString());
-					if(entity == null) {
-						break;
-					}
-					if(map.get(date.toString()) == null) {
-						map.put(date.toString(), new BigDecimal(0));
-					}
-					map.put(date.toString(), map.get(date.toString()).add(entity.getValue()));
-					n++;
+			interrupt = false;
+		}
+		for (AssetEntity assetEntity : assets) {
+			int n = 0;
+			while(true) {
+				if(interrupt && n >= request.getPeriod()) {
+					break;
 				}
-			}
-			List<FinancialDataClassDTO> result = new ArrayList<>();
-			for (String date : map.keySet()) {
-				FinancialDataClassDTO f = new FinancialDataClassDTO();
-				f.setAssetClass(this.assetClassConv.convertToDTO(this.assetClassRep.findById(request.getId())));
-				f.setDate(date);
-				f.setValue(map.get(date));
-				result.add(f);
-			}
-			Collections.sort(result);
-			return result;
-		}	
-		int days = request.getPeriod();
-		while(days > 0) {
-			for (AssetEntity assetEntity : assets) {
-				LocalDate date = LocalDate.now().minus(Period.ofDays(days));
+				LocalDate date = LocalDate.now().minus(Period.ofDays(n));
 				FinancialDataEntity entity = this.financialDataRep.findLastForAnAssetBefore(assetEntity.getId(), date.toString());
+				if(entity == null) {
+					break;
+				}
 				if(map.get(date.toString()) == null) {
 					map.put(date.toString(), new BigDecimal(0));
 				}
 				map.put(date.toString(), map.get(date.toString()).add(entity.getValue()));
+				n++;
 			}
-			days--;
 		}
+		List<FinancialDataClassDTO> result = computeResult(request, map);
+		return result;
+	}
+
+	private List<FinancialDataClassDTO> computeResult(DataRequestDTO request, Map<String, BigDecimal> map) {
 		List<FinancialDataClassDTO> result = new ArrayList<>();
 		for (String date : map.keySet()) {
 			FinancialDataClassDTO f = new FinancialDataClassDTO();
