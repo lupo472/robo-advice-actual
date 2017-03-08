@@ -1,31 +1,21 @@
-import { AssetClass } from './asset-class';
-import { Asset } from './asset';
+
+import { AssetClassStrategy } from './asset-class-strategy';
 
 export class PortfolioElem {
-  private _asset:Asset;
-  private _units:number;
+  private _assetClassStrategy:AssetClassStrategy;
   private _value:number;
 
   constructor(portfolioelem:any) {
-    this._asset = portfolioelem.id;
-    this._units = portfolioelem._units;
-    this._value=portfolioelem._value;
+    this._assetClassStrategy = portfolioelem._assetClassStrategy;
+    this._value = portfolioelem._value;
   }
 
-  get asset(): Asset {
-    return this._asset;
+  get assetClassStrategy(): AssetClassStrategy {
+    return this._assetClassStrategy;
   }
 
-  set asset(value: Asset) {
-    this._asset = value;
-  }
-
-  get units(): number {
-    return this._units;
-  }
-
-  set units(value: number) {
-    this._units = value;
+  set assetClassStrategy(value: AssetClassStrategy) {
+    this._assetClassStrategy = value;
   }
 
   get value(): number {
@@ -35,6 +25,4 @@ export class PortfolioElem {
   set value(value: number) {
     this._value = value;
   }
-
-
 }

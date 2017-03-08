@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
+import { ModalModule } from 'ng2-bootstrap';
+import { CarouselModule } from 'ng2-bootstrap';
 import { DropdownModule } from 'ng2-bootstrap/dropdown';
 import { CommonModule } from '@angular/common';
 import { EditComponent } from './edit.component';
@@ -22,7 +24,9 @@ import { StrategySelectorComponent } from './strategy-selector/strategy-selector
     JsonpModule,
     SliderModule,
     AccordionModule,
-    FormsModule
+    FormsModule,
+    ModalModule.forRoot(),
+    CarouselModule.forRoot()
   ],
   declarations: [
     EditComponent,
