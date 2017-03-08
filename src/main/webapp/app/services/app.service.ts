@@ -29,11 +29,6 @@ export class AppService {
       .map(response => response.json());
   }
 
-  getAssetSet(){
-    return this.http.post(AppConfig.url + 'getAssetSet', {})
-      .map(response => response.json());
-  }
-
   getFinancialData(id, period){
     return this.http.post(AppConfig.url + 'getFinancialData', {id: id, period: period})
       .map(response => response.json());
