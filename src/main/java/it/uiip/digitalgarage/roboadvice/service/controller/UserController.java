@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import it.uiip.digitalgarage.roboadvice.logic.operator.UserOperator;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
@@ -20,7 +19,6 @@ public class UserController extends AbstractController {
 	@RequestMapping("/registerUser")
 	@ResponseBody
 	public GenericResponse<?> registerUser(@Valid @RequestBody UserDTO userDTO) {
-		this.userOp = new UserOperator(this.userRep);
 		if(!this.userOp.isRegistered(userDTO.getEmail())) {
 			UserLoggedDTO registered = this.userOp.registerUser(userDTO);
 			return new GenericResponse<UserLoggedDTO>(1, registered);
@@ -31,7 +29,6 @@ public class UserController extends AbstractController {
 	@RequestMapping("/loginUser")
 	@ResponseBody
 	public GenericResponse<?> loginUser(@Valid @RequestBody UserDTO userDTO) {
-		this.userOp = new UserOperator(this.userRep);
 		if(!this.userOp.isRegistered(userDTO.getEmail())) {
 			return new GenericResponse<String>(0, "Email not registered");
 		}

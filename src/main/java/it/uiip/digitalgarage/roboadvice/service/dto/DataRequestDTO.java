@@ -6,8 +6,8 @@ import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 /*
- * This DTO is used to accept requests both for an Asset and for an AssetClass.
- * The field 'id' is the identifier of the asset or of the assetClass.
+ * This DTO is used to accept request for different objects.
+ * The field 'id' is the identifier of object on the database.
  * The field 'period' contains an amount of days, if it is setted to 0
  * the methods will return the entire data set.
  */

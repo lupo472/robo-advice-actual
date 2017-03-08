@@ -23,7 +23,7 @@ public interface FinancialDataRepository extends PagingAndSortingRepository<Fina
 													+ "WHERE id_asset = ?1 "
 													+ "AND date = (SELECT max(date) FROM financial_data "
 													+ 			  "WHERE id_asset = ?1 "
-													+ 			  "AND date < ?2)";
+													+ 			  "AND date <= ?2)";
 	
 	static final String FIND_BY_ASSET_ID = "SELECT * FROM financial_data WHERE id_asset = ?1 ORDER BY date ASC";
 	

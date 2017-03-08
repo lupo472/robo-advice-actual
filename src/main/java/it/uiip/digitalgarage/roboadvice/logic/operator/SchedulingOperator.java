@@ -8,44 +8,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import it.uiip.digitalgarage.roboadvice.persistence.repository.AssetRepository;
-import it.uiip.digitalgarage.roboadvice.persistence.repository.CapitalRepository;
-import it.uiip.digitalgarage.roboadvice.persistence.repository.CustomStrategyRepository;
-import it.uiip.digitalgarage.roboadvice.persistence.repository.FinancialDataRepository;
-import it.uiip.digitalgarage.roboadvice.persistence.repository.PortfolioRepository;
-import it.uiip.digitalgarage.roboadvice.persistence.repository.UserRepository;
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyResponseDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
 
 @Service
-public class SchedulingOperator {
+public class SchedulingOperator extends AbstractOperator {
+	
+	@Autowired 
+	private UserOperator userOp;
 	
 	@Autowired
-	private FinancialDataRepository financialDataRep;
+	private QuandlOperator quandlOp;
 	
 	@Autowired
-	private AssetRepository assetRep;
+	private PortfolioOperator portfolioOp;
 	
 	@Autowired
-	private UserRepository userRep;
+	private CapitalOperator capitalOp;
 	
 	@Autowired
-	private PortfolioRepository portfolioRep;
-	
-	@Autowired
-	private CapitalRepository capitalRep;
-	
-	@Autowired
-	private CustomStrategyRepository customStrategyRep;
+	private CustomStrategyOperator customStrategyOp;
 	
 	@Scheduled(cron = "0 0 10 * * *")
 	public void scheduleTask() {
-		QuandlOperator quandlOp = new QuandlOperator(this.financialDataRep, this.assetRep);
-		UserOperator userOp = new UserOperator(this.userRep);
-		PortfolioOperator portfolioOp = new PortfolioOperator(this.portfolioRep, this.capitalRep, this.customStrategyRep, assetRep, financialDataRep, userRep);
-		CustomStrategyOperator customStrategyOp = new CustomStrategyOperator(this.customStrategyRep);
-		CapitalOperator capitalOp = new CapitalOperator(this.capitalRep, this.portfolioRep, this.financialDataRep);
 		quandlOp.updateFinancialDataSet();
 		List<UserLoggedDTO> users = userOp.getAllUsers();
 		for (UserLoggedDTO user : users) {
