@@ -8,6 +8,7 @@ import { StrategyService } from '../../services/strategy.service';
   styleUrls: ['./strategy-selector.component.scss']
 })
 export class StrategySelectorComponent implements OnInit {
+  
   @Input() data;
   @Input() labels;
   @Input() options;
@@ -16,16 +17,16 @@ export class StrategySelectorComponent implements OnInit {
   @Input() chartType;
   @Input() name;
   @Input() id;
-  constructor(private StrategyService:StrategyService) {
-   }
+  @Input() selected;
+  
+  constructor(private StrategyService:StrategyService) { }
 
-   ngOnInit() {
-
-   }
-
+  ngOnInit() { }
+  
   public chartHovered(e: any): void {
     console.log(e);
   }
+  
   //GENERAL SETTINGS
   public strategyOptions:any = {
     maintainAspectRatio: false,

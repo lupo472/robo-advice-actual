@@ -19,11 +19,10 @@ export class CardAssetClassComponent implements OnInit {
     @Input() lineChartType;
     @Input() isCustom;
     @Input() id;
-    percentage:number;
+    @Input() percentage;
     oldValue:number;
-  constructor(public StrategyService:StrategyService) {
-    this.percentage = 0;
-  }
+  
+  constructor(public StrategyService:StrategyService) { }
 
   // public brandPrimary:string =  '#20a8d8';
   // public brandSuccess:string =  '#4dbd74';

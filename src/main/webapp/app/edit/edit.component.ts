@@ -9,21 +9,24 @@ import { Cookie } from 'ng2-cookies';
   templateUrl: 'edit.component.html'
 })
 export class EditComponent implements OnInit {
-  public isCustom:boolean;
+  public isCustom: boolean;
+  public isActive: boolean;
   public assetClassSet = [];
   public assetClasses = [];
   public assetSet = [];
   public assets = [];
   public selectedAsset = [];
-  strategies:any;
+  strategies: any;
 
-  constructor(public AssetService:AssetService, public StrategyService:StrategyService, private router:Router){
-    this.isCustom = true;
+  public selected = [];
+
+  constructor(public AssetService: AssetService, public StrategyService: StrategyService, private router: Router) {
+    this.isCustom = false;
   }
 
   ngOnInit(): void {
     this.AssetService.getAssetClassSet().subscribe((result) => this.getAssetClass(result));
-    this.StrategyService.getDefaultStrategySet().subscribe(res=> this.getStrategy(res));
+    this.StrategyService.getDefaultStrategySet().subscribe(res => this.getStrategy(res));
   }
 
   showDetails() {
@@ -31,16 +34,33 @@ export class EditComponent implements OnInit {
   }
 
   //ASSIGN STRATEGIES
-  getStrategy(res){
+  getStrategy(res) {
     this.strategies = res;
-    console.log(this.strategies);
+    console.dir(this.strategies);
   }
 
-  setCustomStrategy() {
+  confirmStrategy() {
     this.StrategyService.setCustomStrategy().subscribe(
       (error) => {
         console.log("errore " + error);
       });
+  }
+
+  setStrategy(i) {
+    if (i == (this.strategies.length - 1)) {
+      this.isCustom = !this.isCustom;
+    }else{
+      this.isCustom = false;
+    }
+
+    this.strategies.forEach((item, index) => {
+      if (index == i) {
+        this.selected[index] = true;
+      } else {
+        this.selected[index] = false;
+      }
+    })
+
   }
 
   //ASSIGN ASSET CLASS
@@ -48,8 +68,8 @@ export class EditComponent implements OnInit {
     this.assetClassSet = result;
     this.assetClassSet.forEach((item, index) => {
 
-    this.assetClasses[index] = {id: item.id, name:  item.name, data: [65, 59, 84, 84, 51, 55, 40], percentage: 15}
-    //this.StrategyService.strategies.set(item.id, 0);
+      this.assetClasses[index] = { id: item.id, name: item.name, data: [65, 59, 84, 84, 51, 55, 40], percentage: 15 }
+      //this.StrategyService.strategies.set(item.id, 0);
 
     })
   }
