@@ -2,7 +2,7 @@ package it.uiip.digitalgarage.roboadvice.service.controller;
 
 import it.uiip.digitalgarage.roboadvice.service.dto.DataRequestDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioRequestDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioRequestForDateDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 import org.springframework.web.bind.annotation.*;
@@ -56,7 +56,7 @@ public class PortfolioController extends AbstractController {
 
     @RequestMapping("/getUserPortfolioDate")
     @ResponseBody
-    public GenericResponse<?> getUserPortfolioDate(@Valid @RequestBody PortfolioRequestDTO request){
+    public GenericResponse<?> getUserPortfolioDate(@Valid @RequestBody PortfolioRequestForDateDTO request){
         PortfolioDTO result = this.portfolioOp.getUserPortfolioDate(request);
         if(result == null) {
             return new GenericResponse<String>(0,"The portfolio of this user at the date selected is empty");

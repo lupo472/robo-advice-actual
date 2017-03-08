@@ -52,7 +52,7 @@ public class PortfolioOperator extends AbstractOperator {
         return list;
     }
 
-    public PortfolioDTO getUserPortfolioDate(PortfolioRequestDTO request) {
+    public PortfolioDTO getUserPortfolioDate(PortfolioRequestForDateDTO request) {
 		LocalDate date = LocalDate.parse(request.getDate());
 		List<PortfolioEntity> entityList = this.portfolioRep.findByUserIdAndDate(request.getId(), date);
 		if(entityList.isEmpty()) {
