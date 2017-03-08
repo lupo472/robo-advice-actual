@@ -28,17 +28,8 @@ public class PortofolioControllerTest {
 		user.setEmail("cristian.laurini@gmail.com");
 		user.setPassword("cristianlaurini");
 		GenericResponse<?> response = this.portfolioCtrl.getUserCurrentPortfolio(user);
-		assertEquals(1, response.getResponse());
-	}
-	
-	@Test
-	public void getUserCurrentPortfolioOK2() {
-		UserLoggedDTO user = new UserLoggedDTO();
-		user.setId(new Long(35));
-		user.setEmail("cristian.laurini@gmail.com");
-		user.setPassword("cristianlaurini");
-		GenericResponse<?> response = this.portfolioCtrl.getUserCurrentPortfolio(user);
 		PortfolioDTO portfolio = (PortfolioDTO) response.getData();
+		assertEquals(1, response.getResponse());
 		assertEquals(new Long(35), portfolio.getIdUser());
 		assertEquals(true, portfolio.getList().size() > 0);
 	}
@@ -54,4 +45,6 @@ public class PortofolioControllerTest {
 		assertEquals("The portfolio of this user is empty", response.getData());
 	}
 
+	
+	
 }
