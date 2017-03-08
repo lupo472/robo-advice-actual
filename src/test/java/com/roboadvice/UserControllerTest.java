@@ -13,6 +13,8 @@ import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 
 import static org.junit.Assert.*;
 
+import java.time.LocalDateTime;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = RoboadviceApplication.class)
 public class UserControllerTest {
@@ -47,6 +49,27 @@ public class UserControllerTest {
 		GenericResponse<?> response = userCtrl.loginUser(user);
 		assertEquals(0, response.getResponse());
 		assertEquals("Email not registered", response.getData());
+	}
+	
+	@Test
+	public void registerTestEmailAlreadyRegistered() {
+		UserDTO user = new UserDTO();
+		user.setEmail("cristian.laurini@gmail.com");
+		user.setPassword("cristianlaurini");
+		GenericResponse<?> response = userCtrl.registerUser(user);
+		assertEquals(0, response.getResponse());
+		assertEquals("Email Already Registered", response.getData());
+	}
+	
+	@Test
+	public void registerTestOK() {
+		UserDTO user = new UserDTO();
+		LocalDateTime time = LocalDateTime.now();
+		int email = time.toString().hashCode();
+		user.setEmail(email + "@test.it");
+		user.setPassword("test");
+		GenericResponse<?> response = userCtrl.registerUser(user);
+		assertEquals(1, response.getResponse());
 	}
 
 }
