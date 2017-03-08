@@ -31,12 +31,19 @@ public class PortfolioOperator extends AbstractOperator {
     }
 
     public List<PortfolioDTO> getUserPortfolioPeriod(DataRequestDTO request){
-        LocalDate initialDate = LocalDate.now();
-        LocalDate finalDate = initialDate.minus(Period.ofDays(request.getPeriod()));
-        List<PortfolioEntity> entityList = this.portfolioRep.findByUserIdAndDateBetween(request.getId(), finalDate, initialDate);
-        if(entityList.isEmpty()){
-            return null;
-        }
+		List<PortfolioDTO> response = new ArrayList<PortfolioDTO>();
+		List<PortfolioEntity> entityList;
+		if(request.getPeriod() == 0){
+			entityList = this.portfolioRep.findByUserId(request.getId());
+		}
+		else {
+			LocalDate initialDate = LocalDate.now();
+			LocalDate finalDate = initialDate.minus(Period.ofDays(request.getPeriod() - 1));
+			entityList = this.portfolioRep.findByUserIdAndDateBetween(request.getId(), finalDate, initialDate);
+		}
+		if (entityList.isEmpty()) {
+			return null;
+		}
 		Map<String, List<PortfolioEntity>> map = new HashMap<>();
 		for (PortfolioEntity entity : entityList) {
 			if(map.get(entity.getDate().toString()) == null) {

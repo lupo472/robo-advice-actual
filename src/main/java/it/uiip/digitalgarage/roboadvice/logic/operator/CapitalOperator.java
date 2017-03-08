@@ -2,6 +2,9 @@ package it.uiip.digitalgarage.roboadvice.logic.operator;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.Period;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +13,7 @@ import it.uiip.digitalgarage.roboadvice.persistence.entity.CapitalEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
 import it.uiip.digitalgarage.roboadvice.service.dto.CapitalDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CapitalResponseDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.DataRequestDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
 
 @Service
@@ -62,5 +66,25 @@ public class CapitalOperator extends AbstractOperator {
 		}
 		return true;
 	}
-	
+
+	public List<CapitalResponseDTO> getCapitalPeriod(DataRequestDTO request) {
+		List<CapitalResponseDTO> response = new ArrayList<CapitalResponseDTO>();
+		List<CapitalEntity> entityList;
+		if(request.getPeriod() == 0) {
+			entityList = this.capitalRep.findByUserId(request.getId());
+		}
+		else {
+			LocalDate initialDate = LocalDate.now();
+			LocalDate finalDate = initialDate.minus(Period.ofDays(request.getPeriod() - 1));
+			entityList = this.capitalRep.findByUserIdAndDateBetween(request.getId(), finalDate, initialDate);
+		}
+		if (entityList.isEmpty()) {
+			return null;
+		}
+		for(CapitalEntity entity : entityList){
+			CapitalResponseDTO dto = (CapitalResponseDTO) this.capitalConv.convertToDTO(entity);
+			response.add(dto);
+		}
+		return  response;
+	}
 }

@@ -2,6 +2,7 @@ package it.uiip.digitalgarage.roboadvice.persistence.repository;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -28,5 +29,10 @@ public interface CapitalRepository extends PagingAndSortingRepository<CapitalEnt
 	@Modifying
 	@Query(value = UPDATE_CAPITAL, nativeQuery =  true)
 	public void updateCapital(Long userId, String date, BigDecimal amount);
+
+	public List<CapitalEntity> findByUserId(Long userId);
+
+	public List<CapitalEntity> findByUserIdAndDateBetween(Long userId, LocalDate finalDate, LocalDate initialDate);
+
 
 }
