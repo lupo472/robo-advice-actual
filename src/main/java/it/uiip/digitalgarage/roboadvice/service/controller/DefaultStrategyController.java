@@ -18,7 +18,7 @@ public class DefaultStrategyController extends AbstractController {
 	@RequestMapping("/getDefaultStrategySet")
 	@ResponseBody
 	public GenericResponse<?> getDefaultStrategySet() {
-		this.defaultStrategyOp = new DefaultStrategyOperator(this.defaultStrategyRep);
+//		this.defaultStrategyOp = new DefaultStrategyOperator(this.defaultStrategyRep);
 		List<DefaultStrategyDTO> assets = this.defaultStrategyOp.getDefaultStrategySet();
 		return new GenericResponse<List<DefaultStrategyDTO>>(1, assets);
 	}

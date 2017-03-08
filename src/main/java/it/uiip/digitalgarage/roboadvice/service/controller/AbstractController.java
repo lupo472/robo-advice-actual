@@ -50,6 +50,7 @@ public abstract class AbstractController {
 	
 	protected AssetOperator assetOp;
 	
+	@Autowired
 	protected DefaultStrategyOperator defaultStrategyOp;
 
 	protected CustomStrategyOperator customStrategyOp;
