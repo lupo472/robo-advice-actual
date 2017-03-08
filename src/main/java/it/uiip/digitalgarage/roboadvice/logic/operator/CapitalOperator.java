@@ -79,11 +79,10 @@ public class CapitalOperator extends AbstractOperator {
 		List<CapitalEntity> entityList;
 		if(request.getPeriod() == 0) {
 			entityList = this.capitalRep.findByUserId(request.getId());
-
 		}
 		else {
 			LocalDate initialDate = LocalDate.now();
-			LocalDate finalDate = initialDate.minus(Period.ofDays(request.getPeriod()));
+			LocalDate finalDate = initialDate.minus(Period.ofDays(request.getPeriod() - 1));
 			entityList = this.capitalRep.findByUserIdAndDateBetween(request.getId(), finalDate, initialDate);
 		}
 		if (entityList.isEmpty()) {
