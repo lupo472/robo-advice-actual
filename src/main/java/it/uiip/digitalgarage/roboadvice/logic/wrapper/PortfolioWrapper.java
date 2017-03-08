@@ -8,6 +8,7 @@ import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioElementDTO;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,6 +46,7 @@ public class PortfolioWrapper implements GenericWrapper<PortfolioEntity, Portfol
     }
 
 	private void createPortfolioElement(List<PortfolioEntity> entityList, List<PortfolioElementDTO> elements) {
+		BigDecimal totalCapital = getTotalCapital(entityList);
 		Map<Long, List<PortfolioEntity>> map = createMap(entityList);
     	for (Long idAssetClass : map.keySet()) {
 			BigDecimal sum = new BigDecimal(0);
@@ -53,11 +55,21 @@ public class PortfolioWrapper implements GenericWrapper<PortfolioEntity, Portfol
 				sum = sum.add(entity.getValue());
 			}
 			element.setValue(sum);
+			BigDecimal percentage = sum.divide(totalCapital, 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100.00));
 			AssetClassStrategyDTO assetClassStrategy = new AssetClassStrategyDTO();
+			assetClassStrategy.setPercentage(percentage);
 			assetClassStrategy.setAssetClass(this.assetClassConv.convertToDTO(map.get(idAssetClass).get(0).getAssetClass()));
 			element.setAssetClassStrategy(assetClassStrategy);
 			elements.add(element);
 		}
+	}
+
+	private BigDecimal getTotalCapital(List<PortfolioEntity> entityList) {
+		BigDecimal totalCapital = new BigDecimal(0);
+		for (PortfolioEntity entity : entityList) {
+			totalCapital = totalCapital.add(entity.getValue());
+		}
+		return totalCapital;
 	}
 
 	private Map<Long, List<PortfolioEntity>> createMap(List<PortfolioEntity> entityList) {
