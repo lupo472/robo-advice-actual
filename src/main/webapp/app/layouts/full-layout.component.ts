@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Cookie} from "ng2-cookies";
-
+import { Router } from '@angular/router';
 import { User } from '../model/user';
 import { UserService } from '../services/user.service';
 
@@ -12,15 +12,18 @@ export class FullLayoutComponent implements OnInit {
   
   user:User;
 
-  constructor(private UserService:UserService) { }
+  constructor(private UserService:UserService, private router:Router) { }
   
   ngOnInit(): void { 
     
     if(Cookie.check('email')){
         this.UserService.setUser({email: Cookie.get('email'), 
-                      password: Cookie.get('password'), 
-                      id: Cookie.get('id')});
-      }
+                                  password: Cookie.get('password'), 
+                                  id: Cookie.get('id')});
+      }else{
+      console.log("Not Logged");
+      this.router.navigate(['pages/login']);
+    }
     
     this.user = this.UserService.getUser();
   }

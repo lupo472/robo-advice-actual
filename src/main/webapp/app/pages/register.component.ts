@@ -16,7 +16,7 @@ export class RegisterComponent {
     if(this.user.password == this.user.password2){
     this.UserService.registerUser(this.user).subscribe(res => 
       {if(res.response == 1){
-        this.UserService.addCapital().subscribe(res => console.log("ADDED CAPITAL"));
+        this.UserService.addCapital().subscribe(res => console.log("CAPITAL ADDED"));
         this.router.navigate(['pages/login']);
         }else{
         alert("Username already existing");}

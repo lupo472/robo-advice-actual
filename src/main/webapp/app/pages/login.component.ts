@@ -10,8 +10,8 @@ export class LoginComponent{
   constructor(private UserService:UserService, private router:Router) {
       if(Cookie.check('email')){
           this.UserService.setUser({email: Cookie.get('email'), 
-                      password: Cookie.get('password'), 
-                      id: Cookie.get('id')});
+                                    password: Cookie.get('password'), 
+                                    id: Cookie.get('id')});
           
           this.router.navigate(['edit']);
       }

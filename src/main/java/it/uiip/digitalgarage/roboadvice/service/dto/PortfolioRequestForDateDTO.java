@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-public @Data class PortfolioRequestDTO {
+public @Data class PortfolioRequestForDateDTO {
 
     @NotNull
     @Min(1)

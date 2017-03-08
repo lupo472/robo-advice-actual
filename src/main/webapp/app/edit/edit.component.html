@@ -5,7 +5,7 @@
 		<div class="col-md-2 col-sm-4"
 			*ngFor="let strategy of strategies; let i = index">
 				<app-strategy-selector [name]="strategy.name" [data]="strategy.data"
-					[labels]="strategy.labels" [colors]="strategy.colours"
+					[labels]="strategy.labels" [colors]="strategy.colours" [id]="strategy.id"
 					></app-strategy-selector>
 			</div>
 		</div>
@@ -23,15 +23,15 @@
 			</app-card-asset-class>
 		</div>
 	</div>
-
-<button type="button" (click)="setCustomStrategy()">crea</button>
+<button type="button" class="btn btn-danger">Cancel</button>
+<button type="button" class="btn btn-success" (click)="setCustomStrategy()">Create Strategy</button>
 
 		<!-- ASSET CLASS 1 ROW -->
 		<div class="row" *ngIf="selectedAsset">
 
 
 			<!-- ASSET 1 -->
-			<div class="col-sm-6 col-lg-3" *ngFor="let asset of selectedAsset">
+			<!-- <div class="col-sm-6 col-lg-3" *ngFor="let asset of selectedAsset">
 				<app-card-asset [lineChartData]="asset.data"
 					[lineChartLabels]="lineChartLabels"
 					[lineChartOptions]="lineChartOptions"
@@ -42,7 +42,7 @@
 					[barChartColours]="barChart1Colours"
 					[barChartLegend]="barChart1Legend" [barChartType]="barChart1Type"></app-card-asset>
 			</div>
-		</div>
+		</div> -->
 		<!-- END ASSET CLASS 1-->
 
 

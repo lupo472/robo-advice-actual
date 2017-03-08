@@ -8,8 +8,7 @@ import { ModalDirective } from 'ng2-bootstrap/modal/modal.component';
 
 
 @Component({
-  templateUrl: 'edit.component.html',
-  providers: [AssetService]
+  templateUrl: 'edit.component.html'
 })
 export class EditComponent implements OnInit,AfterViewInit {
   public isCustom:boolean;
@@ -28,7 +27,7 @@ export class EditComponent implements OnInit,AfterViewInit {
   public showChildModal():void {
     this.childModal.show();
   }
-
+  
   public hideChildModal():void {
     this.childModal.hide();
   }
@@ -39,14 +38,7 @@ export class EditComponent implements OnInit,AfterViewInit {
 
   ngOnInit(): void {
     this.AssetService.getAssetClassSet().subscribe((result) => this.getAssetClass(result));
-    this.AssetService.getAssetSet().subscribe((result) => this.getAsset(result));
-
     this.StrategyService.getDefaultStrategySet().subscribe(res=> this.getStrategy(res));
-
-    if(!Cookie.check('email')){
-      console.log("non loggato");
-      this.router.navigate(['pages/login']);
-    }
   }
 
   showDetails() {
@@ -56,6 +48,7 @@ export class EditComponent implements OnInit,AfterViewInit {
   //ASSIGN STRATEGIES
   getStrategy(res){
     this.strategies = res;
+    console.log(this.strategies);
   }
 
   setCustomStrategy() {
@@ -74,24 +67,6 @@ export class EditComponent implements OnInit,AfterViewInit {
     //this.StrategyService.strategies.set(item.id, 0);
 
     })
-  }
-
-  //ASSIGN ASSET
-  public getAsset(result) {
-    this.assetSet = result;
-    this.assetSet.forEach((item, index) => {
-      this.assets[index] = { name: item.name, assetClass: item.assetClass, data: [65, 59, 84, 84, 51, 55, 40], percentage: 15 }
-    })
-
-    var i = 0;
-
-    this.assets.forEach((item, index) => {
-      if (item.assetClass.id == 1) {
-        this.selectedAsset[i] = item;
-        i++;
-      }
-
-    });
   }
 
   //ASSET CLASS COLOUR//

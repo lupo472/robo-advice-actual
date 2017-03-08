@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import it.uiip.digitalgarage.roboadvice.logic.operator.DefaultStrategyOperator;
 import it.uiip.digitalgarage.roboadvice.service.dto.DefaultStrategyDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 
@@ -18,7 +17,6 @@ public class DefaultStrategyController extends AbstractController {
 	@RequestMapping("/getDefaultStrategySet")
 	@ResponseBody
 	public GenericResponse<?> getDefaultStrategySet() {
-		this.defaultStrategyOp = new DefaultStrategyOperator(this.defaultStrategyRep);
 		List<DefaultStrategyDTO> assets = this.defaultStrategyOp.getDefaultStrategySet();
 		return new GenericResponse<List<DefaultStrategyDTO>>(1, assets);
 	}
