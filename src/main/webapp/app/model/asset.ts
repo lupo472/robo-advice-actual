@@ -1,62 +1,39 @@
 import { AssetClass } from './asset-class';
+import { AssetClassStrategy } from './asset-class-strategy';
 
 export class Asset {
-  private _id:number;
-  private _name:string;
-  private _dataSource: string;
-  private _assetClass:AssetClass;
-  private _percentage:number;
+  private _assetClass:AssetClassStrategy;
+  private _amount:number;
+  private _color:string;
 
   constructor(asset:any) {
-    this._id = asset.id;
-    this._name = asset.name;
-    this._dataSource=asset.dataSource;
-    this._assetClass=asset.assetClass;
-    this._percentage=asset.percentage
+    this._assetClass=asset.assetClassStrategy;
+    this._amount=asset.amount;
+    this._color=asset.color;
   }
 
-
-  get id(): number {
-    return this._id;
-  }
-
-  set id(value: number) {
-    this._id = value;
-  }
-
-  get name(): string {
-    return this._name;
-  }
-
-  set name(value: string) {
-    this._name = value;
-  }
-
-  get dataSource(): string {
-    return this._dataSource;
-  }
-
-  set dataSource(value: string) {
-    this._dataSource = value;
-  }
-
-  get assetClass(): AssetClass {
+  get assetClass(): AssetClassStrategy {
     return this._assetClass;
   }
 
-  set assetClass(value: AssetClass) {
+  set assetClass(value: AssetClassStrategy) {
     this._assetClass = value;
   }
 
-  get percentage(): number {
-    return this._percentage;
+  get amount(): number {
+    return this._amount;
   }
 
-  set percentage(value: number) {
-    this._percentage = value;
+  set amount(value: number) {
+    this._amount = value;
   }
 
+  get color(): string {
+    return this._color;
+  }
 
-
+  set color(value: string) {
+    this._color = value;
+  }
 
 }

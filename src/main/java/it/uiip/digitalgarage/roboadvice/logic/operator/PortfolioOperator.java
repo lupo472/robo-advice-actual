@@ -27,6 +27,11 @@ public class PortfolioOperator extends AbstractOperator {
         this.portfolioRep = portfolioRep;
     }
     
+    public PortfolioOperator(PortfolioRepository portfolioRep, FinancialDataRepository financialDataRep) {
+    	this.portfolioRep = portfolioRep;
+    	this.financialDataRep = financialDataRep;
+    }
+    
     public PortfolioOperator(PortfolioRepository portfolioRep, CapitalRepository capitalRep, CustomStrategyRepository customStrategyRep, 
     		AssetRepository assetRep, FinancialDataRepository financialDataRep, UserRepository userRep) {
         this.portfolioRep = portfolioRep;
@@ -84,41 +89,41 @@ public class PortfolioOperator extends AbstractOperator {
     	if(capitalEntity == null) {
     		return false;
     	}
-    	BigDecimal amount = this.capitalConv.convertToDTO(capitalEntity).getAmount();
+    	BigDecimal amount = capitalEntity.getAmount();
     	List<CustomStrategyEntity> strategyEntity = this.customStrategyRep.findByUserIdAndActive(user.getId(), true);
     	if(strategyEntity.isEmpty()) {
     		return false;
     	}
     	CustomStrategyDTO strategy = this.customStrategyWrap.wrapToDTO(strategyEntity);
     	for (AssetClassStrategyDTO element : strategy.getList()) {
-    		BigDecimal amountPerClass = amount.divide(new BigDecimal(100.00), 4, RoundingMode.HALF_UP).multiply(element.getPercentage());
-    		this.savePortfolioForClass(element.getAssetClass(), amountPerClass, user);
+    		BigDecimal amountPerClass = amount.divide(new BigDecimal(100.00), 10, RoundingMode.HALF_UP).multiply(element.getPercentage());
+    		this.savePortfolioForAssetClass(element.getAssetClass(), amountPerClass, user);
 		}
     	return true;
     }
     
-    private void savePortfolioForClass(AssetClassDTO assetClass, BigDecimal amount, UserLoggedDTO user) {
+    private void savePortfolioForAssetClass(AssetClassDTO assetClass, BigDecimal amount, UserLoggedDTO user) {
     	List<AssetDTO> assets = this.assetConv.convertToDTO(this.assetRep.findByAssetClassId(assetClass.getId()));
     	for (AssetDTO asset : assets) {
-			BigDecimal amountPerAsset = amount.divide(new BigDecimal(100.00), 4, RoundingMode.HALF_UP).multiply(asset.getPercentage());
-			this.savePortfolioRow(asset, amountPerAsset, user);
+			BigDecimal amountPerAsset = amount.divide(new BigDecimal(100.00), 10, RoundingMode.HALF_UP).multiply(asset.getPercentage());
+			PortfolioEntity entity = new PortfolioEntity();
+	    	entity.setAsset(this.assetConv.convertToEntity(asset));
+	    	entity.setAssetClass(this.assetClassConv.convertToEntity(asset.getAssetClass()));
+	    	entity.setUser(this.userRep.findById(user.getId()));
+	    	entity.setValue(amountPerAsset);
+	    	entity.setUnits(this.getUnitsForAsset(asset, amountPerAsset));
+	    	entity.setDate(LocalDate.now());
+	    	PortfolioEntity savedEntity = this.portfolioRep.findByUserIdAndAssetIdAndDate(user.getId(), asset.getId(), LocalDate.now());
+	    	if(savedEntity != null) {
+	    		this.portfolioRep.delete(savedEntity);
+	    	} 
+	    	this.portfolioRep.save(entity);
 		}
-    }
-    
-    private void savePortfolioRow(AssetDTO asset, BigDecimal amount, UserLoggedDTO user) {
-    	PortfolioEntity entity = new PortfolioEntity();
-    	entity.setAsset(this.assetConv.convertToEntity(asset));
-    	entity.setAssetClass(this.assetClassConv.convertToEntity(asset.getAssetClass()));
-    	entity.setUser(this.userRep.findById(user.getId()));
-    	entity.setValue(amount);
-    	entity.setUnits(this.getUnitsForAsset(asset, amount));
-    	entity.setDate(LocalDate.now());
-    	this.portfolioRep.save(entity);
     }
     
     private BigDecimal getUnitsForAsset(AssetDTO asset, BigDecimal amount) {
     	FinancialDataDTO financialData = this.financialDataConv.convertToDTO(this.financialDataRep.findLastForAnAsset(asset.getId()));
-    	BigDecimal units = amount.divide(financialData.getValue(), 4, RoundingMode.HALF_UP);
+    	BigDecimal units = amount.divide(financialData.getValue(), 10, RoundingMode.HALF_UP);
     	return units;
     }
 
@@ -128,55 +133,45 @@ public class PortfolioOperator extends AbstractOperator {
     		return false;
     	}
     	List<PortfolioElementDTO> elements = currentPorfolio.getList();
-    	List<PortfolioElementDTO> newPortofolioElements = new ArrayList<>();
     	for (PortfolioElementDTO element : elements) {
     		BigDecimal units = element.getUnits();
-    		BigDecimal newValue = this.computeValue(units, element.getAsset());
+    		BigDecimal newValue = this.getValueForAsset(units, element.getAsset());
     		if(newValue == null) {
     			return false;
     		}
     		element.setValue(newValue);
-    		newPortofolioElements.add(element);
 		}
-    	PortfolioDTO newPortfolio = new PortfolioDTO();
-    	newPortfolio.setIdUser(user.getId());
-    	newPortfolio.setDate(LocalDate.now().toString());
-    	newPortfolio.setList(newPortofolioElements);
-    	List<PortfolioEntity> entities = this.portfolioWrap.unwrapToEntity(newPortfolio);
+    	currentPorfolio.setDate(LocalDate.now().toString());
+    	List<PortfolioEntity> entities = this.portfolioWrap.unwrapToEntity(currentPorfolio);
     	this.savePortfolio(entities);
     	return true;
     }
     
-    public boolean recreatePortfolio(UserLoggedDTO user) {
-    	PortfolioDTO currentPorfolio = this.getUserCurrentPortfolio(user);
-    	if(currentPorfolio == null) {
-    		return false;
+    public BigDecimal evaluatePortfolio(UserLoggedDTO user) {
+    	PortfolioDTO currentPortfolio = this.getUserCurrentPortfolio(user);
+    	if(currentPortfolio == null) {
+    		return null;
     	}
-    	BigDecimal value = this.evaluatePortfolio(user);
-    	List<CustomStrategyEntity> strategyEntity = this.customStrategyRep.findByUserIdAndActive(user.getId(), true);
-    	if(strategyEntity.isEmpty()) {
-    		return false;
+    	BigDecimal amount = new BigDecimal(0);
+    	for(PortfolioElementDTO element : currentPortfolio.getList()) {
+    		FinancialDataEntity data = this.financialDataRep.findLastForAnAsset(element.getAsset().getId());
+    		BigDecimal amountPerAsset = element.getUnits().multiply(data.getValue());
+    		amount = amount.add(amountPerAsset);
     	}
-    	CustomStrategyDTO strategy = this.customStrategyWrap.wrapToDTO(strategyEntity);
-    	for (AssetClassStrategyDTO element : strategy.getList()) {
-    		BigDecimal amountPerClass = value.divide(new BigDecimal(100.00), 4, RoundingMode.HALF_UP).multiply(element.getPercentage());
-    		this.savePortfolioForClass(element.getAssetClass(), amountPerClass, user);
-		}
-    	return true;
-    }
-    
-    private BigDecimal evaluatePortfolio(UserLoggedDTO user) {
-    	BigDecimal value = this.portfolioRep.evaluateCurrentPortfolio(user.getId());
-    	return value;
+    	return amount;
     }
     
     public void savePortfolio(List<PortfolioEntity> entities) {
     	for (PortfolioEntity entity : entities) {
-			this.portfolioRep.save(entity);
+    		PortfolioEntity savedEntity = this.portfolioRep.findByUserIdAndAssetIdAndDate(entity.getUser().getId(), entity.getAsset().getId(), LocalDate.now());
+	    	if(savedEntity != null) {
+	    		this.portfolioRep.delete(savedEntity);
+	    	}
+    		this.portfolioRep.save(entity);
 		}
     }
     
-    private BigDecimal computeValue(BigDecimal units, AssetDTO asset) {
+    private BigDecimal getValueForAsset(BigDecimal units, AssetDTO asset) {
     	FinancialDataEntity financialDataEntity = this.financialDataRep.findLastForAnAsset(asset.getId());
     	if(financialDataEntity == null) {
     		return null;

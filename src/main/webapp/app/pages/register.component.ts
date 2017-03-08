@@ -8,24 +8,23 @@ import {Router} from "@angular/router";
 })
 export class RegisterComponent {
 
-  constructor(private service:UserService,private router:Router) { }
+  constructor(private UserService:UserService,private router:Router) { }
   
   user:any = {};
   
   public onSubmit(){
-    console.log(this.user.password2);
-    if(this.user.password==this.user.password2){
-      this.service.register(this.user).subscribe(
-          (res)=>{
-            console.log(JSON.stringify(res));
-            this.router.navigate(['pages/login']);
-            });
+    if(this.user.password == this.user.password2){
+    this.UserService.registerUser(this.user).subscribe(res => 
+      {if(res.response == 1){
+        this.UserService.addCapital().subscribe(res => console.log("CAPITAL ADDED"));
+        this.router.navigate(['pages/login']);
+        }else{
+        alert("Username already existing");}
+      });
     }else{
-      alert("Password mismatch");
-      this.user.password="";
-      this.user.password2="";
+      alert("Password Mismatch");
+      this.user.password = "";
+      this.user.password2 = "";
     }
-
-  }
-  
+  }  
 }

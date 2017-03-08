@@ -2,19 +2,14 @@ package it.uiip.digitalgarage.roboadvice.logic.wrapper;
 
 import it.uiip.digitalgarage.roboadvice.logic.converter.AssetClassConverter;
 import it.uiip.digitalgarage.roboadvice.logic.converter.AssetConverter;
-import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetClassEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.PortfolioEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
-import it.uiip.digitalgarage.roboadvice.service.dto.AssetClassStrategyDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioElementDTO;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class PortfolioWrapper implements GenericWrapper<PortfolioEntity, PortfolioDTO> {
 
@@ -38,8 +33,8 @@ public class PortfolioWrapper implements GenericWrapper<PortfolioEntity, Portfol
         }
         return portfolioEntityList;
     }
-
-    @Override
+    /*
+        @Override
     public PortfolioDTO wrapToDTO(List<PortfolioEntity> entityList) {
         PortfolioDTO dto = new PortfolioDTO();
         List<PortfolioElementDTO> portfolioElementList = new ArrayList<PortfolioElementDTO>();
@@ -62,13 +57,30 @@ public class PortfolioWrapper implements GenericWrapper<PortfolioEntity, Portfol
             assetClassStrategyDTO.setAssetClass(this.assetClassConv.convertToDTO(assetClass));
             //manca la percentuale
             element.setValue(assetValueSum);
-            element.setAssetClassStrategy(assetClassStrategyDTO);
             portfolioElementList.add(element);
         }
 
         dto.setList(portfolioElementList);
         return dto;
     }
+    **/
+
+    @Override
+    public PortfolioDTO wrapToDTO(List<PortfolioEntity> entityList) {
+        PortfolioDTO dto = new PortfolioDTO();
+        dto.setList(new ArrayList<>());
+        dto.setIdUser(entityList.get(0).getUser().getId());
+        dto.setDate(entityList.get(0).getDate().toString());
+        for (PortfolioEntity entity : entityList) {
+            PortfolioElementDTO element = new PortfolioElementDTO();
+            element.setAsset(this.assetConv.convertToDTO(entity.getAsset()));
+            element.setUnits(entity.getUnits());
+            element.setValue(entity.getValue());
+            dto.getList().add(element);
+        }
+        return dto;
+    }
+
 
 
 }
