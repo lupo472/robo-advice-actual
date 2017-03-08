@@ -26,14 +26,11 @@ export class FullLayoutComponent implements OnInit {
     }
     
     this.user = this.UserService.getUser();
+    
   }
 
   public disabled:boolean = false;
   public status:{isopen:boolean} = {isopen: false};
-
-  public toggled(open:boolean):void {
-    console.log('Dropdown is now: ', open);
-  }
 
   public logout():void{
     Cookie.deleteAll();

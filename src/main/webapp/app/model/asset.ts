@@ -5,6 +5,8 @@ export class Asset {
   private _assetClass:AssetClassStrategy;
   private _amount:number;
   private _color:string;
+  
+  private _amountList:Array<number>;
 
   constructor(asset:any) {
     this._assetClass=asset.assetClassStrategy;

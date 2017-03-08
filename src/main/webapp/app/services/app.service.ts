@@ -53,4 +53,9 @@ export class AppService {
     return this.http.post(AppConfig.url + 'setCustomStrategy', strategy)
       .map(response => response.json());
   }
+  
+  getActiveStrategy(user){
+    return this.http.post(AppConfig.url + 'getActiveUserCustomStrategy', user)
+      .map(response => response.json());
+  }
 }

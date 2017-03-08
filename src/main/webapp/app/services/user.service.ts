@@ -22,6 +22,7 @@ export class UserService {
     
       this.user = new User(res);
       this.AppService.getCurrentCapital(res).subscribe(res => this.setCapital(res));
+      this.AppService.getActiveStrategy(res).subscribe(res => this.setStrategy(res));
     
     return res = {response: 1, data: res};
   }
@@ -40,13 +41,21 @@ export class UserService {
     return this.AppService.registerUser(user).map(res => { if(res.response == 1){return this.setUser(res.data)}else{return res}});
   }
 
+  //INITIAL REGISTER CAPITAL 
   addCapital(){
     return this.AppService.addCapital(this.user.id, this.capital); 
   }
   
+  //SET THE CURRENT CAPITAL FOR THIS USER
   setCapital(res){
     this.user.capital = res.data.amount;
-    console.log("UTENTE: " + JSON.stringify(this.user));
+    console.dir(this.user);
   }
-    
+  
+  //SET THE ACTIVE STRATEGY FOR THIS USER
+  setStrategy(res){
+    if(res.response == 1){
+      this.user.strategy = res.data.list;
+    }
+  }    
 }
