@@ -19,7 +19,6 @@ public class UserController extends AbstractController {
 	@RequestMapping("/registerUser")
 	@ResponseBody
 	public GenericResponse<?> registerUser(@Valid @RequestBody UserDTO userDTO) {
-//		this.userOp = new UserOperator(this.userRep);
 		if(!this.userOp.isRegistered(userDTO.getEmail())) {
 			UserLoggedDTO registered = this.userOp.registerUser(userDTO);
 			return new GenericResponse<UserLoggedDTO>(1, registered);
@@ -30,7 +29,6 @@ public class UserController extends AbstractController {
 	@RequestMapping("/loginUser")
 	@ResponseBody
 	public GenericResponse<?> loginUser(@Valid @RequestBody UserDTO userDTO) {
-//		this.userOp = new UserOperator(this.userRep);
 		if(!this.userOp.isRegistered(userDTO.getEmail())) {
 			return new GenericResponse<String>(0, "Email not registered");
 		}

@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import it.uiip.digitalgarage.roboadvice.logic.operator.AssetClassOperator;
 import it.uiip.digitalgarage.roboadvice.service.dto.AssetClassDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 
@@ -18,7 +17,6 @@ public class AssetClassController extends AbstractController {
 	@RequestMapping("/getAssetClassSet")
 	@ResponseBody
 	public GenericResponse<?> getAssetClassSet() {
-//		this.assetClassOp = new AssetClassOperator(assetClassRep);
 		List<AssetClassDTO> result = this.assetClassOp.getAssetClassSet();
 		return new GenericResponse<List<AssetClassDTO>>(1, result);
 	}
