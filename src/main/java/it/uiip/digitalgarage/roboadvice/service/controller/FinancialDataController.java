@@ -24,7 +24,7 @@ public class FinancialDataController extends AbstractController {
 	@RequestMapping("/getFinancialDataSet")
 	@ResponseBody
 	public GenericResponse<?> getFinancialDataSet() {
-		this.financialDataOp = new FinancialDataOperator(this.financialDataRep);
+//		this.financialDataOp = new FinancialDataOperator(this.financialDataRep);
 		List<FinancialDataDTO> result = this.financialDataOp.getFinancialDataSet();
 		return new GenericResponse<List<FinancialDataDTO>>(1, result);
 	}
@@ -32,7 +32,7 @@ public class FinancialDataController extends AbstractController {
 	@RequestMapping("/getFinancialDataForAsset")
 	@ResponseBody
 	public GenericResponse<?> getFinancialDataForAsset(@Valid @RequestBody DataRequestDTO request) {
-		this.financialDataOp = new FinancialDataOperator(this.financialDataRep);
+//		this.financialDataOp = new FinancialDataOperator(this.financialDataRep);
 		List<FinancialDataDTO> result = this.financialDataOp.getFinancialDataSetForAsset(request);
 		return new GenericResponse<List<FinancialDataDTO>>(1, result);
 	}
@@ -48,7 +48,7 @@ public class FinancialDataController extends AbstractController {
 	@RequestMapping("/findLastFinancialDataForAsset")
 	@ResponseBody
 	public GenericResponse<?> findLastFinancialDataForAsset(@Valid @RequestBody DataRequestDTO request) {
-		this.financialDataOp = new FinancialDataOperator(this.financialDataRep);
+//		this.financialDataOp = new FinancialDataOperator(this.financialDataRep);
 		FinancialDataDTO result = this.financialDataOp.findLast(request);
 		if(result == null) {
 			return new GenericResponse<String>(0, "No results");

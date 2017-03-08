@@ -38,12 +38,12 @@ public abstract class AbstractController {
 	@Autowired
 	protected CapitalRepository capitalRep;
 
-	//Modified
 	@Autowired
 	protected UserOperator userOp;
 	
 	protected QuandlOperator quandlOp;
 	
+	@Autowired
 	protected FinancialDataOperator financialDataOp;
 	
 	protected AssetClassOperator assetClassOp;

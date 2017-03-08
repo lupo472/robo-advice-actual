@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Service;
+
 import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.FinancialDataEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.AssetClassRepository;
@@ -18,11 +20,12 @@ import it.uiip.digitalgarage.roboadvice.service.dto.DataRequestDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataClassDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataDTO;
 
+@Service
 public class FinancialDataOperator extends AbstractOperator {
 
-	public FinancialDataOperator(FinancialDataRepository financialDataRep) {
-		this.financialDataRep = financialDataRep;
-	}
+//	public FinancialDataOperator(FinancialDataRepository financialDataRep) {
+//		this.financialDataRep = financialDataRep;
+//	}
 	
 	public FinancialDataOperator(FinancialDataRepository financialDataRep, AssetRepository assetRep, AssetClassRepository assetClassRep) {
 		this.financialDataRep = financialDataRep;
