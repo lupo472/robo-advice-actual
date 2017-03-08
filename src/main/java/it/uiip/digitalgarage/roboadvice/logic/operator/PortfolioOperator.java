@@ -1,5 +1,6 @@
 package it.uiip.digitalgarage.roboadvice.logic.operator;
 
+import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.CapitalEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.CustomStrategyEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.FinancialDataEntity;
@@ -127,37 +128,56 @@ public class PortfolioOperator extends AbstractOperator {
     	return units;
     }
 
+    //TODO delete unuseful comments
     public boolean computeUserPortfolio(UserLoggedDTO user) {
-    	PortfolioDTO currentPorfolio = this.getUserCurrentPortfolio(user);
-    	if(currentPorfolio == null) {
-    		return false;
-    	}
-    	List<PortfolioElementDTO> elements = currentPorfolio.getList();
-    	for (PortfolioElementDTO element : elements) {
+//    	PortfolioDTO currentPorfolio = this.getUserCurrentPortfolio(user);
+    	List<PortfolioEntity> currentPortfolioList = this.portfolioRep.findLastPortfolioForUser(user.getId());
+//    	if(currentPorfolio == null) {
+//    		return false;
+//    	}
+    	for (PortfolioEntity element : currentPortfolioList) {
     		BigDecimal units = element.getUnits();
     		BigDecimal newValue = this.getValueForAsset(units, element.getAsset());
     		if(newValue == null) {
     			return false;
     		}
     		element.setValue(newValue);
+    		element.setDate(LocalDate.now());
 		}
-    	currentPorfolio.setDate(LocalDate.now().toString());
-    	List<PortfolioEntity> entities = this.portfolioWrap.unwrapToEntity(currentPorfolio);
-    	this.savePortfolio(entities);
+    	this.savePortfolio(currentPortfolioList);
+//    	List<PortfolioElementDTO> elements = currentPorfolio.getList();
+//    	for (PortfolioElementDTO element : elements) {
+//    		BigDecimal units = element.getUnits();
+//    		BigDecimal newValue = this.getValueForAsset(units, element.getAsset());
+//    		if(newValue == null) {
+//    			return false;
+//    		}
+//    		element.setValue(newValue);
+//		}
+//    	currentPorfolio.setDate(LocalDate.now().toString());
+//    	List<PortfolioEntity> entities = this.portfolioWrap.unwrapToEntity(currentPorfolio);
+//    	this.savePortfolio(entities);
     	return true;
     }
     
+    //TODO delete unuseful comments
     public BigDecimal evaluatePortfolio(UserLoggedDTO user) {
-    	PortfolioDTO currentPortfolio = this.getUserCurrentPortfolio(user);
-    	if(currentPortfolio == null) {
-    		return null;
-    	}
+//    	PortfolioDTO currentPortfolio = this.getUserCurrentPortfolio(user);
+    	List<PortfolioEntity> currentPortfolioList = this.portfolioRep.findLastPortfolioForUser(user.getId());
+//    	if(currentPortfolio == null) {
+//    		return null;
+//    	}
     	BigDecimal amount = new BigDecimal(0);
-    	for(PortfolioElementDTO element : currentPortfolio.getList()) {
+    	for (PortfolioEntity element : currentPortfolioList) {
     		FinancialDataEntity data = this.financialDataRep.findLastForAnAsset(element.getAsset().getId());
     		BigDecimal amountPerAsset = element.getUnits().multiply(data.getValue());
     		amount = amount.add(amountPerAsset);
-    	}
+		}
+//    	for(PortfolioElementDTO element : currentPortfolio.getList()) {
+//    		FinancialDataEntity data = this.financialDataRep.findLastForAnAsset(element.getAsset().getId());
+//    		BigDecimal amountPerAsset = element.getUnits().multiply(data.getValue());
+//    		amount = amount.add(amountPerAsset);
+//    	}
     	return amount;
     }
     
@@ -171,7 +191,7 @@ public class PortfolioOperator extends AbstractOperator {
 		}
     }
     
-    private BigDecimal getValueForAsset(BigDecimal units, AssetDTO asset) {
+    private BigDecimal getValueForAsset(BigDecimal units, AssetEntity asset) {
     	FinancialDataEntity financialDataEntity = this.financialDataRep.findLastForAnAsset(asset.getId());
     	if(financialDataEntity == null) {
     		return null;

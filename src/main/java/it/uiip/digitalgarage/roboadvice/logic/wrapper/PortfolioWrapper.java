@@ -16,38 +16,42 @@ public class PortfolioWrapper implements GenericWrapper<PortfolioEntity, Portfol
     private AssetConverter assetConv = new AssetConverter();
     private AssetClassConverter assetClassConv = new AssetClassConverter();
 
+  //todo Ricreare metodo unwrapToEntity
     @Override
     public List<PortfolioEntity> unwrapToEntity(PortfolioDTO dto) {
-        List<PortfolioEntity> portfolioEntityList = new ArrayList<PortfolioEntity>();
-        for(PortfolioElementDTO element : dto.getList()){
-            PortfolioEntity entity = new PortfolioEntity();
-            UserEntity user = new UserEntity();
-            user.setId(dto.getIdUser());
-            entity.setUser(user);
-            entity.setAsset(this.assetConv.convertToEntity(element.getAsset()));
-            entity.setAssetClass(this.assetClassConv.convertToEntity(element.getAsset().getAssetClass()));
-            entity.setUnits(element.getUnits());
-            entity.setValue(element.getValue());
-            entity.setDate(LocalDate.parse(dto.getDate()));
-            portfolioEntityList.add(entity);
-        }
-        return portfolioEntityList;
+//        List<PortfolioEntity> portfolioEntityList = new ArrayList<PortfolioEntity>();
+//        for(PortfolioElementDTO element : dto.getList()){
+//            PortfolioEntity entity = new PortfolioEntity();
+//            UserEntity user = new UserEntity();
+//            user.setId(dto.getIdUser());
+//            entity.setUser(user);
+//            entity.setAsset(this.assetConv.convertToEntity(element.getAsset()));
+//            entity.setAssetClass(this.assetClassConv.convertToEntity(element.getAsset().getAssetClass()));
+//            entity.setUnits(element.getUnits());
+//            entity.setValue(element.getValue());
+//            entity.setDate(LocalDate.parse(dto.getDate()));
+//            portfolioEntityList.add(entity);
+//        }
+//        return portfolioEntityList;
+    	return null;
     }
 
+    //TODO Ricreare metodo wrapToDTO
     @Override
     public PortfolioDTO wrapToDTO(List<PortfolioEntity> entityList) {
-        PortfolioDTO dto = new PortfolioDTO();
-        dto.setList(new ArrayList<>());
-        dto.setIdUser(entityList.get(0).getUser().getId());
-        dto.setDate(entityList.get(0).getDate().toString());
-        for (PortfolioEntity entity : entityList) {
-            PortfolioElementDTO element = new PortfolioElementDTO();
-            element.setAsset(this.assetConv.convertToDTO(entity.getAsset()));
-            element.setUnits(entity.getUnits());
-            element.setValue(entity.getValue());
-            dto.getList().add(element);
-        }
-        return dto;
+//        PortfolioDTO dto = new PortfolioDTO();
+//        dto.setList(new ArrayList<>());
+//        dto.setIdUser(entityList.get(0).getUser().getId());
+//        dto.setDate(entityList.get(0).getDate().toString());
+//        for (PortfolioEntity entity : entityList) {
+//            PortfolioElementDTO element = new PortfolioElementDTO();
+//            element.setAsset(this.assetConv.convertToDTO(entity.getAsset()));
+//            element.setUnits(entity.getUnits());
+//            element.setValue(entity.getValue());
+//            dto.getList().add(element);
+//        }
+//        return dto;
+    	return null;
     }
 
 }
