@@ -22,26 +22,29 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class PortfolioOperator extends AbstractOperator {
 
-    public PortfolioOperator(PortfolioRepository portfolioRep){
-        this.portfolioRep = portfolioRep;
-    }
-    
-    public PortfolioOperator(PortfolioRepository portfolioRep, FinancialDataRepository financialDataRep) {
-    	this.portfolioRep = portfolioRep;
-    	this.financialDataRep = financialDataRep;
-    }
-    
-    public PortfolioOperator(PortfolioRepository portfolioRep, CapitalRepository capitalRep, CustomStrategyRepository customStrategyRep, 
-    		AssetRepository assetRep, FinancialDataRepository financialDataRep, UserRepository userRep) {
-        this.portfolioRep = portfolioRep;
-        this.capitalRep = capitalRep;
-        this.customStrategyRep = customStrategyRep;
-        this.assetRep = assetRep;
-        this.financialDataRep = financialDataRep;
-        this.userRep = userRep;
-    }
+//    public PortfolioOperator(PortfolioRepository portfolioRep){
+//        this.portfolioRep = portfolioRep;
+//    }
+//    
+//    public PortfolioOperator(PortfolioRepository portfolioRep, FinancialDataRepository financialDataRep) {
+//    	this.portfolioRep = portfolioRep;
+//    	this.financialDataRep = financialDataRep;
+//    }
+//    
+//    public PortfolioOperator(PortfolioRepository portfolioRep, CapitalRepository capitalRep, CustomStrategyRepository customStrategyRep, 
+//    		AssetRepository assetRep, FinancialDataRepository financialDataRep, UserRepository userRep) {
+//        this.portfolioRep = portfolioRep;
+//        this.capitalRep = capitalRep;
+//        this.customStrategyRep = customStrategyRep;
+//        this.assetRep = assetRep;
+//        this.financialDataRep = financialDataRep;
+//        this.userRep = userRep;
+//    }
 
     public PortfolioDTO getUserCurrentPortfolio(UserLoggedDTO dto) {
         List<PortfolioEntity> entityList = this.portfolioRep.findLastPortfolioForUser(dto.getId());

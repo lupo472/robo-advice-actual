@@ -13,50 +13,56 @@ import it.uiip.digitalgarage.roboadvice.persistence.repository.UserRepository;
 
 public abstract class AbstractController {
 
-	@Autowired
-	protected AssetRepository assetRep;
-	
-	@Autowired
-	protected AssetClassRepository assetClassRep;
-	
-	@Autowired
-	protected FinancialDataRepository financialDataRep;
-	
-	//Remove
-	@Autowired
-	protected UserRepository userRep;
-	
-	@Autowired
-	protected DefaultStrategyRepository defaultStrategyRep;
-
-	@Autowired
-	protected CustomStrategyRepository customStrategyRep;
-
-	@Autowired
-	protected PortfolioRepository portfolioRep;
-	
-	@Autowired
-	protected CapitalRepository capitalRep;
+//	@Autowired
+//	protected AssetRepository assetRep;
+//	
+//	@Autowired
+//	protected AssetClassRepository assetClassRep;
+//	
+//	@Autowired
+//	protected FinancialDataRepository financialDataRep;
+//	
+//	//Remove
+//	@Autowired
+//	protected UserRepository userRep;
+//	
+////	@Autowired
+////	protected DefaultStrategyRepository defaultStrategyRep;
+//
+//	@Autowired
+//	protected CustomStrategyRepository customStrategyRep;
+//
+//	@Autowired
+//	protected PortfolioRepository portfolioRep;
+//	
+//	@Autowired
+//	protected CapitalRepository capitalRep;
 
 	@Autowired
 	protected UserOperator userOp;
 	
+	@Autowired
 	protected QuandlOperator quandlOp;
 	
 	@Autowired
 	protected FinancialDataOperator financialDataOp;
 	
+	@Autowired
 	protected AssetClassOperator assetClassOp;
 	
+	@Autowired
 	protected AssetOperator assetOp;
 	
 	@Autowired
 	protected DefaultStrategyOperator defaultStrategyOp;
 
+	@Autowired
 	protected CustomStrategyOperator customStrategyOp;
 
+	@Autowired
 	protected PortfolioOperator portfolioOp;
 
+	@Autowired
 	protected CapitalOperator capitalOp;
 	
 }

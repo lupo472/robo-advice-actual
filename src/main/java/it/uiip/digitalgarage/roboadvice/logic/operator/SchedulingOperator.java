@@ -19,36 +19,30 @@ import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
 
 @Service
-public class SchedulingOperator {
-	
-	@Autowired
-	private FinancialDataRepository financialDataRep;
-	
-	@Autowired
-	private AssetRepository assetRep;
-	
-	@Autowired
-	private UserRepository userRep;
-	
-	@Autowired
-	private PortfolioRepository portfolioRep;
-	
-	@Autowired
-	private CapitalRepository capitalRep;
-	
-	@Autowired
-	private CustomStrategyRepository customStrategyRep;
+public class SchedulingOperator extends AbstractOperator {
 	
 	@Autowired 
 	private UserOperator userOp;
 	
+	@Autowired
+	private QuandlOperator quandlOp;
+	
+	@Autowired
+	private PortfolioOperator portfolioOp;
+	
+	@Autowired
+	private CapitalOperator capitalOp;
+	
+	@Autowired
+	private CustomStrategyOperator customStrategyOp;
+	
 	@Scheduled(cron = "0 0 10 * * *")
 	public void scheduleTask() {
-		QuandlOperator quandlOp = new QuandlOperator(this.financialDataRep, this.assetRep);
+//		QuandlOperator quandlOp = new QuandlOperator(this.financialDataRep, this.assetRep);
 //		UserOperator userOp = new UserOperator(this.userRep);
-		PortfolioOperator portfolioOp = new PortfolioOperator(this.portfolioRep, this.capitalRep, this.customStrategyRep, assetRep, financialDataRep, userRep);
-		CustomStrategyOperator customStrategyOp = new CustomStrategyOperator(this.customStrategyRep);
-		CapitalOperator capitalOp = new CapitalOperator(this.capitalRep, this.portfolioRep, this.financialDataRep);
+//		PortfolioOperator portfolioOp = new PortfolioOperator(this.portfolioRep, this.capitalRep, this.customStrategyRep, assetRep, financialDataRep, userRep);
+//		CustomStrategyOperator customStrategyOp = new CustomStrategyOperator(this.customStrategyRep);
+//		CapitalOperator capitalOp = new CapitalOperator(this.capitalRep, this.portfolioRep, this.financialDataRep);
 		quandlOp.updateFinancialDataSet();
 		List<UserLoggedDTO> users = userOp.getAllUsers();
 		for (UserLoggedDTO user : users) {

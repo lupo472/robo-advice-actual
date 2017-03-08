@@ -40,7 +40,7 @@ public class FinancialDataController extends AbstractController {
 	@RequestMapping("/getFinancialDataForAssetClass")
 	@ResponseBody
 	public GenericResponse<?> getFinancialDataForAssetClass(@Valid @RequestBody DataRequestDTO request) {
-		this.financialDataOp = new FinancialDataOperator(this.financialDataRep, this.assetRep, this.assetClassRep);
+//		this.financialDataOp = new FinancialDataOperator(this.financialDataRep, this.assetRep, this.assetClassRep);
 		List<FinancialDataClassDTO> result = this.financialDataOp.getFinancialDataSetForAssetClass(request);
 		return new GenericResponse<List<FinancialDataClassDTO>>(1, result);
 	}
@@ -59,7 +59,7 @@ public class FinancialDataController extends AbstractController {
 	@RequestMapping("/updateFinancialDataSet")
 	@ResponseBody
 	public GenericResponse<?> updateFinancialDataSet() {
-		this.quandlOp = new QuandlOperator(this.financialDataRep, this.assetRep);
+//		this.quandlOp = new QuandlOperator(this.financialDataRep, this.assetRep);
 		this.quandlOp.updateFinancialDataSet();
 		return new GenericResponse<String>(1, "Done");
 	}
@@ -67,7 +67,7 @@ public class FinancialDataController extends AbstractController {
 	@RequestMapping("/initializeFinancialDataSet")
 	@ResponseBody
 	public GenericResponse<?> initializeFinancialDataSet() {
-		this.quandlOp = new QuandlOperator(this.financialDataRep, this.assetRep);
+//		this.quandlOp = new QuandlOperator(this.financialDataRep, this.assetRep);
 		this.quandlOp.initializeFinancialDataSet();
 		return new GenericResponse<String>(1, "Done");
 	}

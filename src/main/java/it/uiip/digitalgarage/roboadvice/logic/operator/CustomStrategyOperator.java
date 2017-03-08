@@ -14,16 +14,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class CustomStrategyOperator extends AbstractOperator{
 
-	public CustomStrategyOperator(CustomStrategyRepository customStrategyRep){
-        this.customStrategyRep = customStrategyRep;
-    }
-	
-	public CustomStrategyOperator(CustomStrategyRepository customStrategyRep, UserRepository userRep){
-        this.customStrategyRep = customStrategyRep;
-        this.userRep = userRep;
-    }
+//	public CustomStrategyOperator(CustomStrategyRepository customStrategyRep){
+//        this.customStrategyRep = customStrategyRep;
+//    }
+//	
+//	public CustomStrategyOperator(CustomStrategyRepository customStrategyRep, UserRepository userRep){
+//        this.customStrategyRep = customStrategyRep;
+//        this.userRep = userRep;
+//    }
     
     public void setCustomStrategy(CustomStrategyDTO request) {
     	this.customStrategyRep.setStrategyInactive(request.getIdUser());
@@ -65,7 +68,6 @@ public class CustomStrategyOperator extends AbstractOperator{
     	}
     	CustomStrategyResponseDTO result = (CustomStrategyResponseDTO) this.customStrategyWrap.wrapToDTO(entityList);
     	return result;
-    	
     }
 
 }

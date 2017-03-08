@@ -27,11 +27,11 @@ public class FinancialDataOperator extends AbstractOperator {
 //		this.financialDataRep = financialDataRep;
 //	}
 	
-	public FinancialDataOperator(FinancialDataRepository financialDataRep, AssetRepository assetRep, AssetClassRepository assetClassRep) {
-		this.financialDataRep = financialDataRep;
-		this.assetRep = assetRep;
-		this.assetClassRep = assetClassRep;
-	}
+//	public FinancialDataOperator(FinancialDataRepository financialDataRep, AssetRepository assetRep, AssetClassRepository assetClassRep) {
+//		this.financialDataRep = financialDataRep;
+//		this.assetRep = assetRep;
+//		this.assetClassRep = assetClassRep;
+//	}
 	
 	public List<FinancialDataDTO> getFinancialDataSet() {
 		List<FinancialDataEntity> list =  this.financialDataRep.findAll();

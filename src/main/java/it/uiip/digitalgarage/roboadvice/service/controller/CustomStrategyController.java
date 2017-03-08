@@ -22,7 +22,7 @@ public class CustomStrategyController extends AbstractController {
 	@RequestMapping("/setCustomStrategy")
 	@ResponseBody
     public GenericResponse<?> setCustomStrategy(@Valid @RequestBody CustomStrategyDTO request){
-		this.customStrategyOp = new CustomStrategyOperator(this.customStrategyRep, this.userRep);
+//		this.customStrategyOp = new CustomStrategyOperator(this.customStrategyRep, this.userRep);
 		this.customStrategyOp.setCustomStrategy(request);
 		return new GenericResponse<String>(1, "Done");
     }
@@ -30,7 +30,7 @@ public class CustomStrategyController extends AbstractController {
     @RequestMapping("/getUserCustomStrategySet")
     @ResponseBody
     public GenericResponse<?> getUserCustomStrategySet(@Valid @RequestBody UserLoggedDTO user){
-    	this.customStrategyOp = new CustomStrategyOperator(this.customStrategyRep);
+//    	this.customStrategyOp = new CustomStrategyOperator(this.customStrategyRep);
     	List<CustomStrategyResponseDTO> result = this.customStrategyOp.getUserCustomStrategySet(user);
     	if(result == null) {
     		return new GenericResponse<String>(0, "This user doesn't have any strategy");
@@ -41,13 +41,12 @@ public class CustomStrategyController extends AbstractController {
     @RequestMapping("/getActiveUserCustomStrategy")
     @ResponseBody
     public GenericResponse<?> getUserCustomStrategyActive(@Valid @RequestBody UserLoggedDTO user){
-    	this.customStrategyOp = new CustomStrategyOperator(this.customStrategyRep);
+//    	this.customStrategyOp = new CustomStrategyOperator(this.customStrategyRep);
     	CustomStrategyResponseDTO result = this.customStrategyOp.getActiveUserCustomStrategy(user);
     	if(result == null) {
     		return new GenericResponse<String>(0, "This user doesn't have any active strategy");
     	}
     	return new GenericResponse<CustomStrategyResponseDTO>(1, result);
     }
-
 
 }

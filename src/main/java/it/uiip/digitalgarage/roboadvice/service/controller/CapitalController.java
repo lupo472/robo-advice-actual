@@ -21,7 +21,7 @@ public class CapitalController extends AbstractController {
 	@RequestMapping("/addCapital")
     @ResponseBody
 	public GenericResponse<?> addCapital(@Valid @RequestBody CapitalDTO capital) {
-		this.capitalOp = new CapitalOperator(this.capitalRep);
+//		this.capitalOp = new CapitalOperator(this.capitalRep);
 		this.capitalOp.addCapital(capital);
 		return new GenericResponse<String>(1, "done");
 	}
@@ -29,7 +29,7 @@ public class CapitalController extends AbstractController {
 	@RequestMapping("/getCurrentCapital")
     @ResponseBody
 	public GenericResponse<?> getCurrentCapital(@Valid @RequestBody UserLoggedDTO user){
-		this.capitalOp = new CapitalOperator(this.capitalRep);
+//		this.capitalOp = new CapitalOperator(this.capitalRep);
 		CapitalResponseDTO result = this.capitalOp.getCurrentCapital(user);
 		if(result == null) {
 			return new GenericResponse<String>(0, "This user doesn't have any capital");
@@ -40,7 +40,7 @@ public class CapitalController extends AbstractController {
 	@RequestMapping("/computeCapital")
 	@ResponseBody
 	public GenericResponse<?> computeCapital(@Valid @RequestBody UserLoggedDTO user){
-		this.capitalOp = new CapitalOperator(this.capitalRep, this.portfolioRep, this.financialDataRep);
+//		this.capitalOp = new CapitalOperator(this.capitalRep, this.portfolioRep, this.financialDataRep);
 		boolean done = this.capitalOp.computeCapital(user);
 		if(!done) {
 			return new GenericResponse<String>(0, "A problem occurred");

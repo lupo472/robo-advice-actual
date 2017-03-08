@@ -18,7 +18,7 @@ public class PortfolioController extends AbstractController {
     @RequestMapping("/getUserCurrentPortfolio")
     @ResponseBody
     public GenericResponse<?> getUserCurrentPortfolio(@Valid @RequestBody UserLoggedDTO user) {
-        this.portfolioOp = new PortfolioOperator(this.portfolioRep);
+//        this.portfolioOp = new PortfolioOperator(this.portfolioRep);
         PortfolioDTO result = this.portfolioOp.getUserCurrentPortfolio(user);
         if(result == null) {
     		return new GenericResponse<String>(0, "The portfolio of this user is empty");
@@ -29,8 +29,8 @@ public class PortfolioController extends AbstractController {
     @RequestMapping("/createUserPortfolio")
     @ResponseBody
     public GenericResponse<?> createUserPortfolio(@Valid @RequestBody UserLoggedDTO user) {
-    	this.portfolioOp = new PortfolioOperator(this.portfolioRep, this.capitalRep, this.customStrategyRep, 
-    											 this.assetRep, this.financialDataRep, this.userRep);
+//    	this.portfolioOp = new PortfolioOperator(this.portfolioRep, this.capitalRep, this.customStrategyRep, 
+//    											 this.assetRep, this.financialDataRep, this.userRep);
     	boolean done = this.portfolioOp.createUserPortfolio(user);
     	if(done) {
     		return new GenericResponse<String>(1, "done");
@@ -41,8 +41,8 @@ public class PortfolioController extends AbstractController {
     @RequestMapping("/computeUserPortfolio")
     @ResponseBody
     public GenericResponse<?> computeUserPortfolio(@Valid @RequestBody UserLoggedDTO user) {
-    	this.portfolioOp = new PortfolioOperator(this.portfolioRep, this.capitalRep, this.customStrategyRep, 
-				 this.assetRep, this.financialDataRep, this.userRep);
+//    	this.portfolioOp = new PortfolioOperator(this.portfolioRep, this.capitalRep, this.customStrategyRep, 
+//				 this.assetRep, this.financialDataRep, this.userRep);
     	boolean done = this.portfolioOp.computeUserPortfolio(user);
     	if(done) {
     		return new GenericResponse<String>(1, "done");
@@ -53,7 +53,7 @@ public class PortfolioController extends AbstractController {
     @RequestMapping("/getUserPortfolioPeriod")
     @ResponseBody
     public GenericResponse<?> getUserPortfolioPeriod(@Valid @RequestBody DataRequestDTO request) {
-        this.portfolioOp = new PortfolioOperator(this.portfolioRep);
+//        this.portfolioOp = new PortfolioOperator(this.portfolioRep);
         List<PortfolioDTO> result = this.portfolioOp.getUserPortfolioPeriod(request);
         if(result == null) {
             return new GenericResponse<String>(0, "The portfolio of this user is empty");
@@ -64,7 +64,7 @@ public class PortfolioController extends AbstractController {
     @RequestMapping("/getUserPortfolioDate")
     @ResponseBody
     public GenericResponse<?> getUserPortfolioDate(@Valid @RequestBody PortfolioRequestDTO request){
-        this.portfolioOp = new PortfolioOperator(this.portfolioRep);
+//        this.portfolioOp = new PortfolioOperator(this.portfolioRep);
         PortfolioDTO result = this.portfolioOp.getUserPortfolioDate(request);
         if(result == null) {
             return new GenericResponse<String>(0,"The portfolio of this user at the date selected is empty");

@@ -13,10 +13,6 @@ import it.uiip.digitalgarage.roboadvice.service.util.HashFunction;
 
 @Service
 public class UserOperator extends AbstractOperator {
-		
-//	public UserOperator(UserRepository userRep) {
-//		this.userRep = userRep;
-//	}
 	
 	public UserLoggedDTO registerUser(UserDTO userDTO) {
 		UserEntity userEntity = this.userConv.convertToEntity(userDTO);

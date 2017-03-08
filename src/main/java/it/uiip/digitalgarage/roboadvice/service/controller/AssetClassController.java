@@ -18,7 +18,7 @@ public class AssetClassController extends AbstractController {
 	@RequestMapping("/getAssetClassSet")
 	@ResponseBody
 	public GenericResponse<?> getAssetClassSet() {
-		this.assetClassOp = new AssetClassOperator(assetClassRep);
+//		this.assetClassOp = new AssetClassOperator(assetClassRep);
 		List<AssetClassDTO> result = this.assetClassOp.getAssetClassSet();
 		return new GenericResponse<List<AssetClassDTO>>(1, result);
 	}
