@@ -4,6 +4,7 @@ import it.uiip.digitalgarage.roboadvice.service.dto.DataRequestDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioRequestForDateDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
+import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +20,7 @@ public class PortfolioController extends AbstractController {
     public GenericResponse<?> getUserCurrentPortfolio(@Valid @RequestBody UserLoggedDTO user) {
         PortfolioDTO result = this.portfolioOp.getUserCurrentPortfolio(user);
         if(result == null) {
-    		return new GenericResponse<String>(0, "The portfolio of this user is empty");
+    		return new GenericResponse<String>(0, ControllerConstants.EMPTY_PORTFOLIO);
     	}
         return new GenericResponse<PortfolioDTO>(1, result);
     }
@@ -29,9 +30,9 @@ public class PortfolioController extends AbstractController {
     public GenericResponse<?> createUserPortfolio(@Valid @RequestBody UserLoggedDTO user) {
     	boolean done = this.portfolioOp.createUserPortfolio(user);
     	if(done) {
-    		return new GenericResponse<String>(1, "done");
+    		return new GenericResponse<String>(1, ControllerConstants.DONE);
     	}
-    	return new GenericResponse<String>(0, "A problem occurred");
+    	return new GenericResponse<String>(0, ControllerConstants.PROBLEM);
     }
     
     @RequestMapping("/computeUserPortfolio")
@@ -39,9 +40,9 @@ public class PortfolioController extends AbstractController {
     public GenericResponse<?> computeUserPortfolio(@Valid @RequestBody UserLoggedDTO user) {
     	boolean done = this.portfolioOp.computeUserPortfolio(user);
     	if(done) {
-    		return new GenericResponse<String>(1, "done");
+    		return new GenericResponse<String>(1, ControllerConstants.DONE);
     	}
-    	return new GenericResponse<String>(0, "A problem occurred");
+    	return new GenericResponse<String>(0, ControllerConstants.PROBLEM);
     }
 
     @RequestMapping("/getUserPortfolioPeriod")
@@ -49,7 +50,7 @@ public class PortfolioController extends AbstractController {
     public GenericResponse<?> getUserPortfolioPeriod(@Valid @RequestBody DataRequestDTO request) {
         List<PortfolioDTO> result = this.portfolioOp.getUserPortfolioPeriod(request);
         if(result == null) {
-            return new GenericResponse<String>(0, "The portfolio of this user is empty");
+            return new GenericResponse<String>(0, ControllerConstants.EMPTY_PORTFOLIO);
         }
         return new GenericResponse<List<PortfolioDTO>>(1,result);
     }
@@ -59,7 +60,7 @@ public class PortfolioController extends AbstractController {
     public GenericResponse<?> getUserPortfolioDate(@Valid @RequestBody PortfolioRequestForDateDTO request){
         PortfolioDTO result = this.portfolioOp.getUserPortfolioDate(request);
         if(result == null) {
-            return new GenericResponse<String>(0,"The portfolio of this user at the date selected is empty");
+            return new GenericResponse<String>(0, ControllerConstants.EMPTY_PORTFOLIO);
         }
         return new GenericResponse<PortfolioDTO>(1, result);
     }

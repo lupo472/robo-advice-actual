@@ -12,6 +12,7 @@ import it.uiip.digitalgarage.roboadvice.RoboadviceApplication;
 import it.uiip.digitalgarage.roboadvice.service.controller.PortfolioController;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
+import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 
 @RunWith(SpringRunner.class)
@@ -42,7 +43,7 @@ public class PortofolioControllerTest {
 		user.setPassword("ceaaaaaa");
 		GenericResponse<?> response = this.portfolioCtrl.getUserCurrentPortfolio(user);
 		assertEquals(0, response.getResponse());
-		assertEquals("The portfolio of this user is empty", response.getData());
+		assertEquals(ControllerConstants.EMPTY_PORTFOLIO, response.getData());
 	}
 
 	

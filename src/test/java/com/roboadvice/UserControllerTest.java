@@ -9,6 +9,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import it.uiip.digitalgarage.roboadvice.RoboadviceApplication;
 import it.uiip.digitalgarage.roboadvice.service.controller.UserController;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserDTO;
+import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 
 import static org.junit.Assert.*;
@@ -38,7 +39,7 @@ public class UserControllerTest {
 		user.setPassword("cristian");
 		GenericResponse<?> response = userCtrl.loginUser(user);
 		assertEquals(0, response.getResponse());
-		assertEquals("Wrong Password", response.getData());
+		assertEquals(ControllerConstants.WRONG_PASSWORD, response.getData());
 	}
 	
 	@Test
@@ -48,7 +49,7 @@ public class UserControllerTest {
 		user.setPassword("cristianlaurini");
 		GenericResponse<?> response = userCtrl.loginUser(user);
 		assertEquals(0, response.getResponse());
-		assertEquals("Email not registered", response.getData());
+		assertEquals(ControllerConstants.EMAIL_NOT_REGISTERED, response.getData());
 	}
 	
 	@Test
@@ -58,7 +59,7 @@ public class UserControllerTest {
 		user.setPassword("cristianlaurini");
 		GenericResponse<?> response = userCtrl.registerUser(user);
 		assertEquals(0, response.getResponse());
-		assertEquals("Email Already Registered", response.getData());
+		assertEquals(ControllerConstants.EMAIL_ALREADY_REGISTERED, response.getData());
 	}
 	
 	@Test
