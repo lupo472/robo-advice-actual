@@ -50,7 +50,6 @@ public class CapitalController extends AbstractController {
 	@RequestMapping("/getCapitalPeriod")
 	@ResponseBody
 	public GenericResponse<?> getCapitalPeriod(@Valid @RequestBody DataRequestDTO request) {
-		this.capitalOp = new CapitalOperator(this.capitalRep);
 		List<CapitalResponseDTO> result = this.capitalOp.getCapitalPeriod(request);
 		if(result == null) {
 			return new GenericResponse<String>(0, "This user doesn't have any capital");

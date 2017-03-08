@@ -31,7 +31,6 @@ public class PortfolioOperator extends AbstractOperator {
     }
 
     public List<PortfolioDTO> getUserPortfolioPeriod(DataRequestDTO request){
-		List<PortfolioDTO> response = new ArrayList<PortfolioDTO>();
 		List<PortfolioEntity> entityList;
 		if(request.getPeriod() == 0){
 			entityList = this.portfolioRep.findByUserId(request.getId());
