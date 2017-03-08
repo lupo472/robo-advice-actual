@@ -13,9 +13,6 @@ import org.springframework.stereotype.Service;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.FinancialDataEntity;
-import it.uiip.digitalgarage.roboadvice.persistence.repository.AssetClassRepository;
-import it.uiip.digitalgarage.roboadvice.persistence.repository.AssetRepository;
-import it.uiip.digitalgarage.roboadvice.persistence.repository.FinancialDataRepository;
 import it.uiip.digitalgarage.roboadvice.service.dto.DataRequestDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataClassDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataDTO;
@@ -23,16 +20,6 @@ import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataDTO;
 @Service
 public class FinancialDataOperator extends AbstractOperator {
 
-//	public FinancialDataOperator(FinancialDataRepository financialDataRep) {
-//		this.financialDataRep = financialDataRep;
-//	}
-	
-//	public FinancialDataOperator(FinancialDataRepository financialDataRep, AssetRepository assetRep, AssetClassRepository assetClassRep) {
-//		this.financialDataRep = financialDataRep;
-//		this.assetRep = assetRep;
-//		this.assetClassRep = assetClassRep;
-//	}
-	
 	public List<FinancialDataDTO> getFinancialDataSet() {
 		List<FinancialDataEntity> list =  this.financialDataRep.findAll();
 		return this.financialDataConv.convertToDTO(list);
@@ -54,10 +41,8 @@ public class FinancialDataOperator extends AbstractOperator {
 	
 	//TODO improve scalability
 	public List<FinancialDataClassDTO> getFinancialDataSetForAssetClass(DataRequestDTO request) {
-		List<AssetEntity> assets = this.assetRep.findByAssetClassId(request.getId());
-		
+		List<AssetEntity> assets = this.assetRep.findByAssetClassId(request.getId());		
 		Map<String, BigDecimal> map = new HashMap<>();
-		
 		if(request.getPeriod() == 0) {
 			for(AssetEntity assetEntity : assets) {
 				FinancialDataEntity entity = null;
@@ -85,9 +70,7 @@ public class FinancialDataOperator extends AbstractOperator {
 			}
 			Collections.sort(result);
 			return result;
-		}
-		
-		
+		}	
 		int days = request.getPeriod();
 		while(days > 0) {
 			for (AssetEntity assetEntity : assets) {

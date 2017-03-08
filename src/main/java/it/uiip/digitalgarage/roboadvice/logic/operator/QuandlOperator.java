@@ -13,11 +13,6 @@ import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataDTO;
 @Service
 public class QuandlOperator extends AbstractOperator {
 	
-//	public QuandlOperator(FinancialDataRepository financialDataRep, AssetRepository assetRep) {
-//		this.financialDataRep = financialDataRep;
-//		this.assetRep = assetRep;
-//	}
-	
 	public void updateFinancialDataSet() {
 		List<AssetEntity> assets = (List<AssetEntity>) this.assetRep.findAll();
 		QuandlDBUpdater q = new QuandlDBUpdater();

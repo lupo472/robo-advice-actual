@@ -8,7 +8,6 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.DefaultStrategyEntity;
-import it.uiip.digitalgarage.roboadvice.persistence.repository.DefaultStrategyRepository;
 import it.uiip.digitalgarage.roboadvice.service.dto.AssetClassDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.AssetClassStrategyDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.DefaultStrategyDTO;
@@ -16,10 +15,6 @@ import it.uiip.digitalgarage.roboadvice.service.dto.DefaultStrategyDTO;
 @Service
 public class DefaultStrategyOperator extends AbstractOperator {
 
-//	public DefaultStrategyOperator(DefaultStrategyRepository defaultStrategyRep) {
-//		this.defaultStrategyRep = defaultStrategyRep;
-//	}
-	
 	public List<DefaultStrategyDTO> getDefaultStrategySet() {
 		List<DefaultStrategyEntity> defaultStrategySet = this.defaultStrategyRep.findAll();
 		Map<String, List<AssetClassStrategyDTO>> map = new HashMap<>();

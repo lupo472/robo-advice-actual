@@ -8,25 +8,12 @@ import org.springframework.stereotype.Service;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.CapitalEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
-import it.uiip.digitalgarage.roboadvice.persistence.repository.CapitalRepository;
-import it.uiip.digitalgarage.roboadvice.persistence.repository.FinancialDataRepository;
-import it.uiip.digitalgarage.roboadvice.persistence.repository.PortfolioRepository;
 import it.uiip.digitalgarage.roboadvice.service.dto.CapitalDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CapitalResponseDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
 
 @Service
 public class CapitalOperator extends AbstractOperator {
-	
-//	public CapitalOperator(CapitalRepository capitalRep) {
-//		this.capitalRep = capitalRep;
-//	}
-//
-//	public CapitalOperator(CapitalRepository capitalRep, PortfolioRepository portfolioRep, FinancialDataRepository financialDataRep) {
-//		this.capitalRep = capitalRep;
-//		this.portfolioRep = portfolioRep;
-//		this.financialDataRep = financialDataRep;
-//	}
 	
 	@Autowired
 	private PortfolioOperator portfolioOp;
@@ -58,7 +45,6 @@ public class CapitalOperator extends AbstractOperator {
 	public boolean computeCapital(UserLoggedDTO user) {
 		CapitalEntity capitalEntity = new CapitalEntity();
 		UserEntity userEntity = new UserEntity();
-//		PortfolioOperator portfolioOp = new PortfolioOperator(this.portfolioRep, this.financialDataRep);
 		BigDecimal amount = portfolioOp.evaluatePortfolio(user);
 		if(amount == null) {
 			return false;
