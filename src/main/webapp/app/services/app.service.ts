@@ -39,6 +39,11 @@ export class AppService {
       .map(response => response.json());
   }
   
+  getUserPortfolioPeriod(id, period){
+     return this.http.post(AppConfig.url + 'getUserPortfolioPeriod', {id: id, period: period})
+      .map(response => response.json());
+  }
+  
   addCapital(id, amount){
     return this.http.post(AppConfig.url + 'addCapital', {idUser: id, amount: amount})
       .map(response => response.json());

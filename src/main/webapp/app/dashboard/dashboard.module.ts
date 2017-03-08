@@ -11,7 +11,6 @@ import {AccordionModule} from 'primeng/primeng';     //accordion and accordion t
 import { FormsModule } from '@angular/forms';
 import { StrategyGraphComponent } from './strategy-graph/strategy-graph.component';
 import { StrategyClassesGraphComponent } from './strategy-classes-graph/strategy-classes-graph.component';
-import { StrategyAssetsTableComponent } from './strategy-assets-table/strategy-assets-table.component'
 
 
 @NgModule({
@@ -28,8 +27,7 @@ import { StrategyAssetsTableComponent } from './strategy-assets-table/strategy-a
   declarations: [
     DashboardComponent,
     StrategyGraphComponent,
-    StrategyClassesGraphComponent,
-    StrategyAssetsTableComponent
+    StrategyClassesGraphComponent
   ]
 })
 export class DashboardModule { }
