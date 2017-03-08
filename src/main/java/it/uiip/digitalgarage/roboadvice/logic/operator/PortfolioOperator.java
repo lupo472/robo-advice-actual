@@ -96,7 +96,7 @@ public class PortfolioOperator extends AbstractOperator {
     	}
     	CustomStrategyDTO strategy = this.customStrategyWrap.wrapToDTO(strategyEntity);
     	for (AssetClassStrategyDTO element : strategy.getList()) {
-    		BigDecimal amountPerClass = amount.divide(new BigDecimal(100.00), 10, RoundingMode.HALF_UP).multiply(element.getPercentage());
+    		BigDecimal amountPerClass = amount.divide(new BigDecimal(100.00), 4, RoundingMode.HALF_UP).multiply(element.getPercentage());
     		this.savePortfolioForAssetClass(element.getAssetClass(), amountPerClass, user);
 		}
     	return true;
@@ -105,7 +105,7 @@ public class PortfolioOperator extends AbstractOperator {
     private void savePortfolioForAssetClass(AssetClassDTO assetClass, BigDecimal amount, UserLoggedDTO user) {
     	List<AssetDTO> assets = this.assetConv.convertToDTO(this.assetRep.findByAssetClassId(assetClass.getId()));
     	for (AssetDTO asset : assets) {
-			BigDecimal amountPerAsset = amount.divide(new BigDecimal(100.00), 10, RoundingMode.HALF_UP).multiply(asset.getPercentage());
+			BigDecimal amountPerAsset = amount.divide(new BigDecimal(100.00), 4, RoundingMode.HALF_UP).multiply(asset.getPercentage());
 			PortfolioEntity entity = new PortfolioEntity();
 	    	entity.setAsset(this.assetConv.convertToEntity(asset));
 	    	entity.setAssetClass(this.assetClassConv.convertToEntity(asset.getAssetClass()));
@@ -123,7 +123,7 @@ public class PortfolioOperator extends AbstractOperator {
     
     private BigDecimal getUnitsForAsset(AssetDTO asset, BigDecimal amount) {
     	FinancialDataDTO financialData = this.financialDataConv.convertToDTO(this.financialDataRep.findLastForAnAsset(asset.getId()));
-    	BigDecimal units = amount.divide(financialData.getValue(), 10, RoundingMode.HALF_UP);
+    	BigDecimal units = amount.divide(financialData.getValue(), 4, RoundingMode.HALF_UP);
     	return units;
     }
 
