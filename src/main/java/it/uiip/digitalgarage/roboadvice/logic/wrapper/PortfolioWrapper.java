@@ -45,13 +45,7 @@ public class PortfolioWrapper implements GenericWrapper<PortfolioEntity, Portfol
     }
 
 	private void createPortfolioElement(List<PortfolioEntity> entityList, List<PortfolioElementDTO> elements) {
-		Map<Long, List<PortfolioEntity>> map = new HashMap<>();
-    	for (PortfolioEntity entity : entityList) {
-    		if(map.get(entity.getAssetClass().getId()) == null) {
-    			map.put(entity.getAssetClass().getId(), new ArrayList<>());
-    		}
-			map.get(entity.getAssetClass().getId()).add(entity);
-		}
+		Map<Long, List<PortfolioEntity>> map = createMap(entityList);
     	for (Long idAssetClass : map.keySet()) {
 			BigDecimal sum = new BigDecimal(0);
 			PortfolioElementDTO element = new PortfolioElementDTO();
@@ -64,6 +58,17 @@ public class PortfolioWrapper implements GenericWrapper<PortfolioEntity, Portfol
 			element.setAssetClassStrategy(assetClassStrategy);
 			elements.add(element);
 		}
+	}
+
+	private Map<Long, List<PortfolioEntity>> createMap(List<PortfolioEntity> entityList) {
+		Map<Long, List<PortfolioEntity>> map = new HashMap<>();
+    	for (PortfolioEntity entity : entityList) {
+    		if(map.get(entity.getAssetClass().getId()) == null) {
+    			map.put(entity.getAssetClass().getId(), new ArrayList<>());
+    		}
+			map.get(entity.getAssetClass().getId()).add(entity);
+		}
+		return map;
 	}
 
 }
