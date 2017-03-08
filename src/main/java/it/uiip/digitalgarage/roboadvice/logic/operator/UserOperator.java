@@ -4,17 +4,20 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.UserRepository;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.HashFunction;
 
+@Service
 public class UserOperator extends AbstractOperator {
 		
-	public UserOperator(UserRepository userRep) {
-		this.userRep = userRep;
-	}
+//	public UserOperator(UserRepository userRep) {
+//		this.userRep = userRep;
+//	}
 	
 	public UserLoggedDTO registerUser(UserDTO userDTO) {
 		UserEntity userEntity = this.userConv.convertToEntity(userDTO);

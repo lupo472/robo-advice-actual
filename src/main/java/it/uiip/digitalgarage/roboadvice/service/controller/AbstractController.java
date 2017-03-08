@@ -22,6 +22,7 @@ public abstract class AbstractController {
 	@Autowired
 	protected FinancialDataRepository financialDataRep;
 	
+	//Remove
 	@Autowired
 	protected UserRepository userRep;
 	
@@ -37,6 +38,8 @@ public abstract class AbstractController {
 	@Autowired
 	protected CapitalRepository capitalRep;
 
+	//Modified
+	@Autowired
 	protected UserOperator userOp;
 	
 	protected QuandlOperator quandlOp;

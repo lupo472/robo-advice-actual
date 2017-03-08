@@ -1,6 +1,9 @@
 package it.uiip.digitalgarage.roboadvice.logic.operator;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import it.uiip.digitalgarage.roboadvice.logic.converter.*;
 import it.uiip.digitalgarage.roboadvice.logic.wrapper.CustomStrategyWrapper;
 import it.uiip.digitalgarage.roboadvice.logic.wrapper.GenericWrapper;
@@ -22,6 +25,7 @@ public abstract class AbstractOperator {
 	
 	protected FinancialDataRepository financialDataRep;
 	
+	@Autowired
 	protected UserRepository userRep;
 	
 	protected DefaultStrategyRepository defaultStrategyRep;
