@@ -39,7 +39,6 @@ public class FinancialDataOperator extends AbstractOperator {
 		return this.financialDataConv.convertToDTO(entity);
 	}
 	
-	//TODO improve scalability
 	public List<FinancialDataClassDTO> getFinancialDataSetForAssetClass(DataRequestDTO request) {
 		List<AssetEntity> assets = this.assetRep.findByAssetClassId(request.getId());
 		Map<String, BigDecimal> map = new HashMap<>();
@@ -47,25 +46,34 @@ public class FinancialDataOperator extends AbstractOperator {
 		if(request.getPeriod() == 0) {
 			interrupt = false;
 		}
+		int count = 0;
 		for (AssetEntity assetEntity : assets) {
 			int n = 0;
+			LocalDate entityDate = LocalDate.now();
+			BigDecimal entityValue = new BigDecimal(0);
 			while(true) {
 				if(interrupt && n >= request.getPeriod()) {
 					break;
 				}
-				LocalDate date = LocalDate.now().minus(Period.ofDays(n));
-				FinancialDataEntity entity = this.financialDataRep.findLastForAnAssetBefore(assetEntity.getId(), date.toString());
-				if(entity == null) {
-					break;
+				LocalDate date = LocalDate.now().minus(Period.ofDays(n));				
+				if(date.isEqual(entityDate) || date.isBefore(entityDate)) {
+					FinancialDataEntity entity = this.financialDataRep.findLastForAnAssetBefore(assetEntity.getId(), date.toString());
+					count++;
+					if(entity == null) {
+						break;
+					}
+					entityDate = entity.getDate();
+					entityValue = entity.getValue();
 				}
 				if(map.get(date.toString()) == null) {
 					map.put(date.toString(), new BigDecimal(0));
 				}
-				map.put(date.toString(), map.get(date.toString()).add(entity.getValue()));
+				map.put(date.toString(), map.get(date.toString()).add(entityValue));
 				n++;
 			}
 		}
 		List<FinancialDataClassDTO> result = computeResult(request, map);
+		System.out.println("Ho fatto " + count + " query");
 		return result;
 	}
 
