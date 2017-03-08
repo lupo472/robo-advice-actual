@@ -29,13 +29,23 @@ export class AppService {
       .map(response => response.json());
   }
 
-  getAssetSet(){
-    return this.http.post(AppConfig.url + 'getAssetSet', {})
+  getFinancialData(id, period){
+    return this.http.post(AppConfig.url + 'getFinancialData', {id: id, period: period})
       .map(response => response.json());
   }
 
-  getFinancialData(id, period){
-    return this.http.post(AppConfig.url + 'getFinancialData', {id: id, period: period})
+  getUserCurrentPortfolio(id, email, password){
+    return this.http.post(AppConfig.url + 'getUserCurrentPortfolio', {id: id, email: email, password: password})
+      .map(response => response.json());
+  }
+  
+  addCapital(id, amount){
+    return this.http.post(AppConfig.url + 'addCapital', {idUser: id, amount: amount})
+      .map(response => response.json());
+  }
+  
+  getCurrentCapital(user){
+    return this.http.post(AppConfig.url + 'getCurrentCapital', user)
       .map(response => response.json());
   }
 
