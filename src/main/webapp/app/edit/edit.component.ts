@@ -24,7 +24,7 @@ export class EditComponent implements OnInit {
 
   ngOnInit(): void {
     this.service.getAssetClassSet().subscribe((result) => this.getAssetClass(result));
-    this.service.getAssetSet().subscribe((result) => this.getAsset(result));
+    //this.service.getAssetSet().subscribe((result) => this.getAsset(result));
     this.StrategyService.getDefaultStrategySet().subscribe(res=> this.getStrategy(res));
     if(!Cookie.check('email')){
       console.log("non loggato");
@@ -39,6 +39,7 @@ export class EditComponent implements OnInit {
   //ASSIGN STRATEGIES
   getStrategy(res){
     this.strategies = res;
+    console.log(this.strategies);
   }
 
   setCustomStrategy() {
@@ -60,22 +61,22 @@ export class EditComponent implements OnInit {
   }
 
   //ASSIGN ASSET
-  public getAsset(result) {
-    this.assetSet = result.data;
-    this.assetSet.forEach((item, index) => {
-      this.assets[index] = { name: item.name, assetClass: item.assetClass, data: [65, 59, 84, 84, 51, 55, 40], percentage: 15 }
-    })
-
-    var i = 0;
-
-    this.assets.forEach((item, index) => {
-      if (item.assetClass.id == 1) {
-        this.selectedAsset[i] = item;
-        i++;
-      }
-
-    });
-  }
+  // public getAsset(result) {
+  //   this.assetSet = result.data;
+  //   this.assetSet.forEach((item, index) => {
+  //     this.assets[index] = { name: item.name, assetClass: item.assetClass, data: [65, 59, 84, 84, 51, 55, 40], percentage: 15 }
+  //   })
+  //
+  //   var i = 0;
+  //
+  //   this.assets.forEach((item, index) => {
+  //     if (item.assetClass.id == 1) {
+  //       this.selectedAsset[i] = item;
+  //       i++;
+  //     }
+  //
+  //   });
+  // }
 
   //ASSET CLASS COLOUR//
   public assetClassColour: string = '#20a8d8';

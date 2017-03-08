@@ -15,7 +15,7 @@ export class StrategySelectorComponent implements OnInit {
   @Input() legend;
   @Input() chartType;
   @Input() name;
-
+  @Input() id;
   constructor(private StrategyService:StrategyService) {
    }
 
