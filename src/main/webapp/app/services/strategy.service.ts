@@ -39,6 +39,7 @@ export class StrategyService {
     this.strategies.set(2,new AssetClassStrategy(0,new AssetClass(2,"")));
     this.strategies.set(3,new AssetClassStrategy(0,new AssetClass(3,"")));
     this.strategies.set(4,new AssetClassStrategy(0,new AssetClass(4,"")));
+    //this.extendedDefaultStrategy = new ExtendedDefaultStrategy();
     this.oldValue = 0;
     this.defaultStrategies = [];
     this.extendedDefaultStrategies = [];
@@ -96,10 +97,9 @@ export class StrategyService {
     // var arrayNull = [];
     // var arrayLabels = [];
     // var arrayColours = [];
-
+    this.extendedDefaultStrategies = [];
     res.data.forEach((item, index) => {
-
-      this.defaultStrategy = new DefaultStrategy(item.name);
+      //this.defaultStrategy = new DefaultStrategy(item.name);
       this.extendedDefaultStrategy = new ExtendedDefaultStrategy(item.name);
 
       item.list.forEach((element, i) =>{
@@ -107,7 +107,7 @@ export class StrategyService {
         this.asset = new Asset(element.percentage,
           new AssetClass(element.assetClass.id,element.assetClass.name));
         this.asset.color=color;
-        this.defaultStrategy.setList(element);
+        //this.defaultStrategy.setList(element);
         this.extendedDefaultStrategy.setList(this.asset);
 
       //  arrayPercentage[i] = element.percentage;
@@ -118,7 +118,7 @@ export class StrategyService {
        //
       //   console.log("defaultstrategy");
       //   console.log(this.defaultStrategy);
-        this.defaultStrategies.push(this.defaultStrategy);
+        //this.defaultStrategies.push(this.defaultStrategy);
         this.extendedDefaultStrategies.push(this.extendedDefaultStrategy);
 
       // this.strategySet[index] = {
@@ -135,7 +135,7 @@ export class StrategyService {
       // arrayLabels = [];
       // arrayColours = [];
     })
-    this.defaultStrategies.push(new DefaultStrategy("custom"));
+    //this.defaultStrategies.push(new DefaultStrategy("custom"));
     this.extendedDefaultStrategies.push(new ExtendedDefaultStrategy("custom"));
     // console.log(this.defaultStrategies);
     // console.log("extended");

@@ -10,8 +10,11 @@ import 'rxjs/add/operator/map';
 export class AssetService {
 
   assetClass:Asset;
+  assetClassSet:Asset[];
 
-  constructor(private AppService:AppService) { }
+  constructor(private AppService:AppService) {
+    this.assetClassSet = [];
+  }
 
   //REMAPPING ASSET CLASS
   getAssetClassSet() {

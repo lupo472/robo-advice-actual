@@ -13,9 +13,8 @@
 				</app-strategy-selector>
 			</div> -->
 
-			<app-strategy-selector [name]="strategy.name" [data]="strategy.data"
+			<app-strategy-selector [name]="strategy.name"
 				[selected] = "selected[i]" [strategy]="strategy"
-				[labels]="strategy.labels" [colors]="strategy.colours"
 				[id]="i" (click)="setStrategy(i)"></app-strategy-selector>
 
 		</div>
@@ -25,9 +24,10 @@
 	<!-- ASSET CLASS ROW -->
 	<div class="row" >
 		<div class="col-sm-6 col-lg-3"
-			*ngFor="let assetClass of assetClasses; let i = index;">
-			<app-card-asset-class [value]="assetClass.name" [isCustom]="isCustom"
-				[id]="assetClass.id" [percentage]="assetClass.percentage" [lineChartData]="assetClass.data"
+			*ngFor="let assets of arrayAssets; let i = index;">
+			<app-card-asset-class [value]="assets.assetClass.name" [isCustom]="isCustom"
+				[id]="assets.assetClass.id" [percentage]="assets.percentage"
+				[color]="assets.color"
 				[lineChartLabels]="lineChartLabels"
 				[lineChartOptions]="lineChartOptions"
 				[lineChartColours]="lineChartColours"

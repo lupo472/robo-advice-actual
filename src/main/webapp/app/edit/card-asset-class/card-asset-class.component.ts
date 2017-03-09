@@ -20,8 +20,9 @@ export class CardAssetClassComponent implements OnInit {
     @Input() isCustom;
     @Input() id;
     @Input() percentage;
+    @Input() color;
     oldValue:number;
-  
+
   constructor(public StrategyService:StrategyService) { }
 
   // public brandPrimary:string =  '#20a8d8';
