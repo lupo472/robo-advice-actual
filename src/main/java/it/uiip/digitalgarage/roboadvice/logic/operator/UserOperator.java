@@ -1,16 +1,12 @@
 package it.uiip.digitalgarage.roboadvice.logic.operator;
 
-import java.math.BigInteger;
-import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import it.uiip.digitalgarage.roboadvice.persistence.entity.AuthEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
 import it.uiip.digitalgarage.roboadvice.service.dto.AuthDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserDTO;
@@ -33,22 +29,12 @@ public class UserOperator extends AbstractOperator {
 		return userLoggedDTO;
 	}
 	
-	public UserRegisteredDTO loginUser(UserDTO userDTO) {
+	public AuthDTO loginUser(UserDTO userDTO) {
 		UserEntity userEntity = this.userRep.findByEmail(userDTO.getEmail());
 		String hashedPassword = HashFunction.hashStringSHA256(userDTO.getPassword());
 		if(userEntity.getPassword().equals(hashedPassword)) {
-			UserRegisteredDTO userLoggedDTO = (UserRegisteredDTO) this.userConv.convertToDTO(userEntity);
-			//
-			this.authOp.createAuth(userEntity);
-//			AuthEntity auth = new AuthEntity();
-//			Random random = new SecureRandom();
-//			String token = new BigInteger(130, random).toString(32);
-//			auth.setToken(token);
-//			auth.setUser(userEntity);
-//			auth.setDate(LocalDate.now());
-//			this.authRep.save(auth);
-			//
-			return userLoggedDTO;
+			AuthDTO auth = this.authOp.createAuth(userEntity);
+			return auth;
 		}
 		
 		return null;

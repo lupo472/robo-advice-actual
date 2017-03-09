@@ -19,7 +19,7 @@ public class AuthOperator extends AbstractOperator {
 		return true;
 	}
 	
-	public void createAuth(UserEntity user) {
+	public AuthDTO createAuth(UserEntity user) {
 		AuthEntity auth = new AuthEntity();
 		Random random = new SecureRandom();
 		String token = new BigInteger(130, random).toString(32);
@@ -27,7 +27,8 @@ public class AuthOperator extends AbstractOperator {
 		auth.setUser(user);
 		auth.setDate(LocalDate.now());
 		this.checkAuth(auth);
-		this.authRep.save(auth);
+		AuthEntity entity = this.authRep.save(auth);
+		return this.authConv.convertToDTO(entity);
 	}
 	
 	private void checkAuth(AuthEntity auth) {
