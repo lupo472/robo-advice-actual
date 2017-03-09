@@ -5,7 +5,7 @@ import java.util.List;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.UserRegisteredDTO;
 
 public class UserConverter implements GenericConverter<UserEntity, UserDTO>{
 
@@ -18,8 +18,8 @@ public class UserConverter implements GenericConverter<UserEntity, UserDTO>{
 	}
 
 	@Override
-	public UserLoggedDTO convertToDTO(UserEntity entity) {
-		UserLoggedDTO dto = new UserLoggedDTO();
+	public UserRegisteredDTO convertToDTO(UserEntity entity) {
+		UserRegisteredDTO dto = new UserRegisteredDTO();
 		dto.setEmail(entity.getEmail());
 		dto.setPassword(entity.getPassword());
 		dto.setId(entity.getId());

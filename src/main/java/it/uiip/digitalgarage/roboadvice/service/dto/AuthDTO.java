@@ -4,9 +4,12 @@ import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 
-public @Data class UserLoggedDTO extends UserDTO {
+public @Data class AuthDTO {
 	
 	@NotNull
-	private Long id;
+	private Long idUser;
+	
+	@NotNull
+	private String token;
 
 }

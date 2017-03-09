@@ -1,6 +1,8 @@
 package it.uiip.digitalgarage.roboadvice.service.controller;
 
 import it.uiip.digitalgarage.roboadvice.RoboadviceApplication;
+import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyResponseDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.UserRegisteredDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.*;
 import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
@@ -17,9 +19,6 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Luca on 08/03/2017.
- */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = RoboadviceApplication.class)
 public class CustomStrategyControllerTest {
@@ -81,7 +80,7 @@ public class CustomStrategyControllerTest {
 
     @Test
     public void getUserCustomStrategySetValidUser() throws Exception {
-        UserLoggedDTO user = new UserLoggedDTO();
+        UserRegisteredDTO user = new UserRegisteredDTO();
         user.setId(new Long(23));
         user.setEmail("test@case.it");
         user.setPassword("12345");
@@ -92,7 +91,7 @@ public class CustomStrategyControllerTest {
 
     @Test
     public void getUserCustomStrategySetInvalidUser() throws Exception {
-        UserLoggedDTO user = new UserLoggedDTO();
+    	UserRegisteredDTO user = new UserRegisteredDTO();
         user.setId(new Long(0));
         user.setEmail("test@case.it");
         user.setPassword("12345");
@@ -103,7 +102,7 @@ public class CustomStrategyControllerTest {
 
     @Test
     public void getUserCustomStrategyActiveValidUser() throws Exception {
-        UserLoggedDTO dto = new UserLoggedDTO();
+    	UserRegisteredDTO dto = new UserRegisteredDTO();
         dto.setId(new Long(23));
         dto.setEmail("email@email");
         dto.setPassword("12345");
@@ -114,7 +113,7 @@ public class CustomStrategyControllerTest {
 
     @Test
     public void getUserCustomStrategyActiveInvalidUser() throws Exception {
-        UserLoggedDTO dto = new UserLoggedDTO();
+    	UserRegisteredDTO dto = new UserRegisteredDTO();
         dto.setId(new Long(0));
         dto.setEmail("email@email");
         dto.setPassword("12345");
