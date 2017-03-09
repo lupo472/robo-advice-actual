@@ -14,11 +14,15 @@ import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 
 @CrossOrigin("*")
 @RestController
-public class AuthController {
+public class AuthController extends AbstractController {
 
 	@RequestMapping("/authenticate")
 	@ResponseBody
 	public GenericResponse<?> authenticate(@RequestBody @Valid AuthDTO auth) {
+		boolean authenticated = this.authOp.authenticate(auth);
+		if(!authenticated) {
+			return new GenericResponse<String>(0, ControllerConstants.AUTHENTICATION_FAILED);
+		}
 		return new GenericResponse<String>(1, ControllerConstants.AUTHENTICATED);
 	}
 		

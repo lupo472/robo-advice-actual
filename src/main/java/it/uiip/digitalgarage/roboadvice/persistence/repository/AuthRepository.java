@@ -12,4 +12,6 @@ public interface AuthRepository extends PagingAndSortingRepository<AuthEntity, L
 
 	public AuthEntity findByUserId(Long userId);
 	
+	public AuthEntity findByUserIdAndToken(Long userId, String token);
+	
 }

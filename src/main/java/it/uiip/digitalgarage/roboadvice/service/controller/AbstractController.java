@@ -32,4 +32,7 @@ public abstract class AbstractController {
 	@Autowired
 	protected CapitalOperator capitalOp;
 	
+	@Autowired
+	protected AuthOperator authOp;
+	
 }

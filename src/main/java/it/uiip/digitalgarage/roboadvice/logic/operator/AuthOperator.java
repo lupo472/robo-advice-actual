@@ -15,7 +15,10 @@ import it.uiip.digitalgarage.roboadvice.service.dto.AuthDTO;
 public class AuthOperator extends AbstractOperator {
 
 	public boolean authenticate(AuthDTO auth) {
-		
+		AuthEntity entity = this.authRep.findByUserIdAndToken(auth.getId(), auth.getToken());
+		if(entity == null) {
+			return false;
+		}
 		return true;
 	}
 	
