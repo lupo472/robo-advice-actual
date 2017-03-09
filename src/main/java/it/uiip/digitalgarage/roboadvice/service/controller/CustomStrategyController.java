@@ -22,7 +22,10 @@ public class CustomStrategyController extends AbstractController {
 	@RequestMapping("/setCustomStrategy")
 	@ResponseBody
     public GenericResponse<?> setCustomStrategy(@Valid @RequestBody CustomStrategyDTO request){
-		this.customStrategyOp.setCustomStrategy(request);
+		boolean response = this.customStrategyOp.setCustomStrategy(request);
+		if(!response){
+			return new GenericResponse<String>(0, ControllerConstants.PROBLEM);
+		}
 		return new GenericResponse<String>(1, ControllerConstants.DONE);
     }
     
@@ -30,7 +33,7 @@ public class CustomStrategyController extends AbstractController {
     @ResponseBody
     public GenericResponse<?> getUserCustomStrategySet(@Valid @RequestBody UserLoggedDTO user){
     	List<CustomStrategyResponseDTO> result = this.customStrategyOp.getUserCustomStrategySet(user);
-    	if(result == null) {
+    	if(result.isEmpty()) {
     		return new GenericResponse<String>(0, ControllerConstants.ANY_STRATEGY);
     	}
         return new GenericResponse<List<CustomStrategyResponseDTO>>(1, result);
