@@ -11,9 +11,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.Data;
+
 @Entity
 @Table(name = "auth")
-public class AuthEntity {
+public @Data class AuthEntity {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,7 +26,7 @@ public class AuthEntity {
     private UserEntity user;
 	
 	@Column(name = "token", nullable = false, unique = true)
-    private String percentage;
+    private String token;
 	
 	@Column(name = "date", nullable = false)
     private LocalDate date;
