@@ -40,8 +40,6 @@ export class StrategySelectorComponent implements OnInit {
 
    }
 
-  ngOnInit() { }
-
   public chartHovered(e: any): void {
     console.log(e);
   }
