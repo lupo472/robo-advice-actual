@@ -3,9 +3,7 @@ import { Router } from '@angular/router';
 import { AssetService } from '../services/asset.service';
 import { StrategyService } from '../services/strategy.service';
 import { Cookie } from 'ng2-cookies';
-
 import { ModalDirective } from 'ng2-bootstrap/modal/modal.component';
-
 
 @Component({
   templateUrl: 'edit.component.html'
@@ -22,7 +20,7 @@ export class EditComponent implements OnInit,AfterViewInit {
   strategies: any;
 
   public selected = [];
-  
+
   @ViewChild('childModal') public childModal:ModalDirective;
 
   constructor(public AssetService: AssetService, public StrategyService: StrategyService, private router: Router) {
@@ -31,13 +29,14 @@ export class EditComponent implements OnInit,AfterViewInit {
   public showChildModal():void {
     this.childModal.show();
   }
-  
+
   public hideChildModal():void {
     this.childModal.hide();
   }
   ngAfterViewInit() {
     // viewChild is set after the view has been initialized
     this.childModal.show();
+
   }
 
   ngOnInit(): void {
@@ -52,8 +51,14 @@ export class EditComponent implements OnInit,AfterViewInit {
   //ASSIGN STRATEGIES
   getStrategy(res) {
     this.strategies = res;
-    console.dir(this.strategies);
   }
+
+
+
+  // setCustomStrategy() {
+  //
+  //   console.dir(this.strategies);
+  // }
 
   confirmStrategy() {
     this.StrategyService.setCustomStrategy().subscribe(
