@@ -4,7 +4,7 @@ import { AssetService } from '../services/asset.service';
 import { StrategyService } from '../services/strategy.service';
 import { Cookie } from 'ng2-cookies';
 import { ModalDirective } from 'ng2-bootstrap/modal/modal.component';
-
+import { Asset } from '../model/asset';
 @Component({
   templateUrl: 'edit.component.html'
 })
@@ -13,18 +13,19 @@ export class EditComponent implements OnInit,AfterViewInit {
   public isCustom:boolean;
 
   public assetClassSet = [];
-  public assetClasses = [];
+  arrayAssets:Asset[];
   public assetSet = [];
   public assets = [];
   public selectedAsset = [];
   strategies: any;
-
+  asset:Asset;
   public selected = [];
 
   @ViewChild('childModal') public childModal:ModalDirective;
 
   constructor(public AssetService: AssetService, public StrategyService: StrategyService, private router: Router) {
     this.isCustom = false;
+    this.arrayAssets = [];
   }
   public showChildModal():void {
     this.childModal.show();
@@ -42,6 +43,7 @@ export class EditComponent implements OnInit,AfterViewInit {
   ngOnInit(): void {
     this.AssetService.getAssetClassSet().subscribe((result) => this.getAssetClass(result));
     this.StrategyService.getDefaultStrategySet().subscribe(res => this.getStrategy(res));
+    console.log("a");
   }
 
   showDetails() {
@@ -51,6 +53,8 @@ export class EditComponent implements OnInit,AfterViewInit {
   //ASSIGN STRATEGIES
   getStrategy(res) {
     this.strategies = res;
+    console.log("strategies");
+    console.log(this.strategies);
   }
 
 
@@ -86,13 +90,22 @@ export class EditComponent implements OnInit,AfterViewInit {
 
   //ASSIGN ASSET CLASS
   public getAssetClass(result) {
-    this.assetClassSet = result;
-    this.assetClassSet.forEach((item, index) => {
-
-      this.assetClasses[index] = { id: item.id, name: item.name, data: [65, 59, 84, 84, 51, 55, 40], percentage: 15 }
+    //this.assetClassSet = result;
+    result.forEach((item,i) => {
+      this.asset = new Asset(0,item);
+      let color = this.AssetService.assignColour(item.id);
+      this.asset.setColor(color);
+      this.AssetService.assetClassSet.push(this.asset);
+      // console.log(this.asset);
+    });
+    this.arrayAssets = this.AssetService.assetClassSet;
+    console.log(this.AssetService.assetClassSet);
+    // this.assetClassSet.forEach((item, index) => {
+    //
+    //   this.assetClasses[index] = { id: item.id, name: item.name, data: [65, 59, 84, 84, 51, 55, 40], percentage: 15 }
       //this.StrategyService.strategies.set(item.id, 0);
 
-    })
+    //})
   }
 
   //ASSET CLASS COLOUR//

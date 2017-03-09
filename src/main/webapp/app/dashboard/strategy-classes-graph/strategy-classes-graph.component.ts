@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { AppService } from '../../services/app.service';
+import { UserService } from '../../services/user.service';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-strategy-classes-graph',
@@ -7,131 +9,135 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StrategyClassesGraphComponent implements OnInit {
 
-  constructor() { }
+  constructor(private AppService: AppService, private UserService: UserService) { }
 
-  public brandPrimary:string =  '#20a8d8';
-  public brandSuccess:string =  '#4dbd74';
-  public brandInfo:string =   '#63c2de';
-  public brandWarning:string =  '#f8cb00';
-  public brandDanger:string =   '#f86c6b';
+  user: any;
+  public portfolio = [];
+
+  public lineChartLabels = [];
+  public lineChartData = [{}, {}, {}, {}];
+
+  public data = [];
+
+  ngOnInit() {
+    this.user = this.UserService.getUser();
+    this.AppService.getUserPortfolioPeriod(this.user.id, 30).subscribe(res => this.getPortfolio(res));
+  }
+
+  getPortfolio(res) {
+    if (res.response == 1) {
+      this.portfolio = res.data;
+
+      var value = [];
+
+      var percentage = [];
+      var name = [];
+      var date = [];
+
+      this.portfolio.forEach((item, index) => {
+
+        var portfolioElem = item.list;
+
+        var label = [];
+        var id = [];
+        var assetClass = [];
+
+        for (var k = 0; k < 4; k++) {
+
+          if (value[k] == undefined) {
+            value[k] = [];
+          }
+          
+          value[k][index] = 0;
+              percentage[k] = 0;
+              name[k] = '';
+
+          portfolioElem.forEach((element, i) => {
+            assetClass[i] = element.assetClassStrategy.assetClass;
+
+            var j = assetClass[i].id - 1;
+
+            if (k == j) {
+              value[k][index] = element.value;
+              percentage[k] = element.assetClassStrategy.percentage;
+              name[k] = assetClass[i].name;
+            }
+          })
+          
+          this.data[k] = { data: value[k], label: name[k], percentage: percentage[k] };
+        }
+        date.push(item.date);
+      })
+
+      this.lineChartLabels = date;
+      this.lineChartData = this.data;
+
+      console.dir(this.lineChartData);
+      console.dir(this.lineChartLabels);
+
+    } else {
+      alert(res.data);
+    }
+  }
+
+  //COLORS
+  public brandPrimary: string = '#20a8d8';
+  public brandSuccess: string = '#4dbd74';
+  public brandInfo: string = '#63c2de';
+  public brandWarning: string = '#f8cb00';
+  public brandDanger: string = '#f86c6b';
 
   //convert Hex to RGBA
-  public convertHex(hex:string,opacity:number){
-    hex = hex.replace('#','');
-    let r = parseInt(hex.substring(0,2), 16);
-    let g = parseInt(hex.substring(2,4), 16);
-    let b = parseInt(hex.substring(4,6), 16);
+  public convertHex(hex: string, opacity: number) {
+    hex = hex.replace('#', '');
+    let r = parseInt(hex.substring(0, 2), 16);
+    let g = parseInt(hex.substring(2, 4), 16);
+    let b = parseInt(hex.substring(4, 6), 16);
 
-    let rgba = 'rgba('+r+','+g+','+b+','+opacity/100+')';
+    let rgba = 'rgba(' + r + ',' + g + ',' + b + ',' + opacity / 100 + ')';
     return rgba;
   }
 
   // events
-  public chartClicked(e:any):void {
+  public chartClicked(e: any): void {
+
+  }
+
+  public chartHovered(e: any): void {
     console.log(e);
   }
 
-  public chartHovered(e:any):void {
-    console.log(e);
-  }
-
-  public random(min:number, max:number) {
-    return Math.floor(Math.random()*(max-min+1)+min);
-  }
-
-  public mainChartElements:number = 7;
-  public mainChartData1:Array<number> = [];
-  public mainChartData2:Array<number> = [];
-  public mainChartData3:Array<number> = [];
-  public mainChartData4:Array<number> = [];
-
-  public mainChartData:Array<any> = [
-    {
-      data: this.mainChartData1,
-      label: 'Bonds'
-    },
-    {
-      data: this.mainChartData2,
-      label: 'Stocks'
-    },
-    {
-      data: this.mainChartData3,
-      label: 'Forex'
-    },
-    {
-      data: this.mainChartData4,
-      label: 'Commodities'
-    }
-  ];
-  public mainChartLabels:Array<any> = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-  public mainChartOptions:any = {
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      xAxes: [{
-        gridLines: {
-          drawOnChartArea: false,
-        },
-        ticks: {
-          callback: function(value:any) {
-            return value.charAt(0);
-          }
-        }
-      }],
-      yAxes: [{
-        ticks: {
-          beginAtZero: true,
-          maxTicksLimit: 5,
-          stepSize: Math.ceil(100 / 5),
-          max: 100
-        }
-      }]
-    },
-    elements: {
-      line: {
-        borderWidth: 2
-      },
-      point: {
-        radius: 0,
-        hitRadius: 10,
-        hoverRadius: 4,
-        hoverBorderWidth: 3,
-      }
-    },
-    legend: {
-      display: false
-    }
+  // lineChart
+  public lineChartOptions: any = {
+    animation: false,
+    responsive: true
   };
-  public mainChartColours:Array<any> = [
-    { //brandInfo
-      backgroundColor: this.convertHex(this.brandInfo,10),
-      borderColor: this.brandInfo,
-      pointHoverBackgroundColor: '#fff'
-    },
-    { //brandSuccess
-      backgroundColor: 'transparent',
-      borderColor: this.brandSuccess,
-      pointHoverBackgroundColor: '#fff'
-    },
-    { //brandDanger
-      backgroundColor: 'transparent',
-      borderColor: this.brandDanger,
+  public lineChartColours: Array<any> = [
+    { // grey
+      backgroundColor: 'rgba(148,159,177,0.2)',
+      borderColor: 'rgba(148,159,177,1)',
+      pointBackgroundColor: 'rgba(148,159,177,1)',
+      pointBorderColor: '#fff',
       pointHoverBackgroundColor: '#fff',
-      borderWidth: 1,
-      borderDash: [8, 5]
+      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+    },
+    { // dark grey
+      backgroundColor: 'rgba(77,83,96,0.2)',
+      borderColor: 'rgba(77,83,96,1)',
+      pointBackgroundColor: 'rgba(77,83,96,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(77,83,96,1)'
+    },
+    { // grey
+      backgroundColor: 'rgba(148,159,177,0.2)',
+      borderColor: 'rgba(148,159,177,1)',
+      pointBackgroundColor: 'rgba(148,159,177,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
     }
   ];
-  public mainChartLegend:boolean = false;
-  public mainChartType:string = 'line';
-
-  ngOnInit() {
-    //generate random values for mainChart
-    for (var i = 0; i <= this.mainChartElements; i++) {
-      this.mainChartData1.push(this.random(10,100));
-      this.mainChartData2.push(this.random(10,100));
-      this.mainChartData3.push(this.random(10,100));
-      this.mainChartData4.push(this.random(10,100));
-    }
-  }
-
+  public lineChartLegend: boolean = false;
+  public lineChartType: string = 'line';
 }

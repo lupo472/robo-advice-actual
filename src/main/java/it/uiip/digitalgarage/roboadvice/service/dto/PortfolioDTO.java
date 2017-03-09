@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-public @Data class PortfolioDTO {
+public @Data class PortfolioDTO implements Comparable<PortfolioDTO> {
 
     @NotNull
     private Long idUser;
@@ -15,5 +15,10 @@ public @Data class PortfolioDTO {
 
     @NotNull
     private String date;
+
+    @Override
+    public int compareTo(PortfolioDTO o) {
+        return this.date.compareTo(o.getDate());
+    }
     
 }

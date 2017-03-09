@@ -1,6 +1,7 @@
 package it.uiip.digitalgarage.roboadvice.logic.converter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetClassEntity;
@@ -39,6 +40,7 @@ public class AssetClassConverter implements GenericConverter<AssetClassEntity, A
 		for (AssetClassEntity assetClassEntity : entity) {
 			dto.add(this.convertToDTO(assetClassEntity));
 		}
+		Collections.sort(dto);
 		return dto;
 	}
 

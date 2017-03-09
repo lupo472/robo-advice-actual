@@ -1,39 +1,37 @@
 <div class="card">
-  <div class="card-block">
-    <div class="row">
-      <div class="col-sm-5">
-        <h4 class="card-title mb-0">Classes</h4>
-        <!--<div class="small text-muted">November 2015</div>-->
-      </div>
-      <div class="col-sm-7 hidden-sm-down">
-        <button type="button" class="btn btn-primary float-right">
-          <i class="icon-cloud-download"></i>
-        </button>
-      </div>
-      <!--/.col-->
-    </div>
+	<div class="card-block">
+		<div class="row">
+			<div class="col-sm-5">
+				<h4 class="card-title mb-0">Classes</h4>
+				<!--<div class="small text-muted">November 2015</div>-->
+			</div>
+			<div class="col-sm-7 hidden-sm-down">
+				<button type="button" class="btn btn-primary float-right">
+					<i class="icon-cloud-download"></i>
+				</button>
+			</div>
+			<!--/.col-->
+		</div>
 
-    <!--/.row-->
-    <div class="chart-wrapper" style="height: 300px; margin-top: 40px;">
-      <canvas baseChart class="chart" [datasets]="mainChartData"
-              [labels]="mainChartLabels" [options]="mainChartOptions"
-              [colors]="mainChartColours" [legend]="mainChartLegend"
-              [chartType]="mainChartType" (chartHover)="chartHovered($event)"
-              (chartClick)="chartClicked($event)"></canvas>
-    </div>
-  </div>
-  <div class="card-footer">
-    <ul>
-      <li *ngFor="let i of ['Bonds','Stocks','Forex','Commodities']">
-        <div>{{i}}</div>
-        <strong>25%
-          </strong>
-        <div class="progress progress-xs mt-h">
-          <div class="progress-bar bg-success" role="progressbar"
-               style="width: 40%" aria-valuenow="40" aria-valuemin="0"
-               aria-valuemax="100"></div>
-        </div>
-      </li>
-    </ul>
-  </div>
+		 
+                <div class="chart-wrapper">
+                    <canvas baseChart class="chart" [datasets]="lineChartData" [labels]="lineChartLabels"
+                            [options]="lineChartOptions" [colors]="lineChartColours" [legend]="lineChartLegend"
+                            [chartType]="lineChartType" (chartHover)="chartHovered($event)"
+                            (chartClick)="chartClicked($event)"></canvas>
+                </div>
+           
+	</div>
+	<div class="card-footer">
+		<ul>
+			<li *ngFor="let i of data">
+				<div class="text-capitalize">{{i.label}}</div> <strong>{{i.percentage}}%</strong>
+				<div class="progress progress-xs mt-h">
+					<div class="progress-bar bg-success" role="progressbar"
+						[style.width.%]="i.percentage" aria-valuenow="40" aria-valuemin="0"
+						aria-valuemax="100"></div>
+				</div>
+			</li>
+		</ul>
+	</div>
 </div>

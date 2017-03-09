@@ -17,20 +17,24 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomStrategyOperator extends AbstractOperator{
 
-    public void setCustomStrategy(CustomStrategyDTO request) {
+    public boolean  setCustomStrategy(CustomStrategyDTO request) {
     	this.customStrategyRep.setStrategyInactive(request.getIdUser());
     	List<CustomStrategyEntity> todayStrategySet = this.customStrategyRep.findByUserIdAndDate(request.getIdUser(), LocalDate.now());
     	if(todayStrategySet.size() > 0) {
     		this.customStrategyRep.delete(todayStrategySet);
     	}
     	UserEntity userEntity = this.userRep.findById(request.getIdUser());
+    	if(userEntity == null){
+    		return false;
+		}
     	List<CustomStrategyEntity> entityList = this.customStrategyWrap.unwrapToEntity(request);
     	for (CustomStrategyEntity entity : entityList) {
 			entity.setUser(userEntity);
 			entity.setActive(true);
 			entity.setDate(LocalDate.now());
 		}
-    	this.customStrategyRep.save(entityList);	    
+		this.customStrategyRep.save(entityList);
+    	return true;
     }
 
     public List<CustomStrategyResponseDTO> getUserCustomStrategySet(UserRegisteredDTO user){

@@ -13,9 +13,8 @@
 				</app-strategy-selector>
 			</div> -->
 
-			<app-strategy-selector [name]="strategy.name" [data]="strategy.data"
+			<app-strategy-selector [name]="strategy.name"
 				[selected] = "selected[i]" [strategy]="strategy"
-				[labels]="strategy.labels" [colors]="strategy.colours"
 				[id]="i" (click)="setStrategy(i)"></app-strategy-selector>
 
 		</div>
@@ -25,9 +24,10 @@
 	<!-- ASSET CLASS ROW -->
 	<div class="row" >
 		<div class="col-sm-6 col-lg-3"
-			*ngFor="let assetClass of assetClasses; let i = index;">
-			<app-card-asset-class [value]="assetClass.name" [isCustom]="isCustom"
-				[id]="assetClass.id" [percentage]="assetClass.percentage" [lineChartData]="assetClass.data"
+			*ngFor="let assets of arrayAssets; let i = index;">
+			<app-card-asset-class [value]="assets.assetClass.name" [isCustom]="isCustom"
+				[id]="assets.assetClass.id" [percentage]="assets.percentage"
+				[color]="assets.color"
 				[lineChartLabels]="lineChartLabels"
 				[lineChartOptions]="lineChartOptions"
 				[lineChartColours]="lineChartColours"
@@ -58,7 +58,7 @@
 			<div class="modal-body">
 				<p>Step 1&hellip;</p>
 				<carousel [interval]=false>
-					<slide>
+					<slide> <!--SLIDE 1-->
 						<!--<img src="http://badialiconsulting.it/uploads/kcFinder/images/iStock_000005594027Small.jpg" alt="First slide">-->
 						<div class="contentSugg">
 							<h3>What did you eat yesterday?</h3>
@@ -96,10 +96,105 @@
 						</div>
 
 					</slide>
-					<slide>
-						slide 2
-						<!--<img src="http://www.touhouproject.it/wp-content/uploads/2015/06/finance1.png" alt="Second slide">-->
+					<slide> <!--SLIDE 2-->
+						<div>
+							<h3>What did you eat yesterday?</h3>
+							<div class="row">
+								<div class="col-sm-12">
+										<div class="card-block">
+											<div class="row">
+												<div class="col-sm-12">
+													<div class="form-group">
+														<label for="name">Name</label>
+														<input type="text" class="form-control" id="name" placeholder="Enter your name">
+													</div>
+												</div>
+											</div>
+											<!--/.row-->
+											<div class="row">
+												<div class="col-sm-12">
+													<div class="form-group row">
+														<label class="col-md-3 form-control-label">Quante esperienze di investimento hai avuto</label>
+														<div class="col-md-9">
+															<div class="checkbox">
+																<label for="checkbox1">
+																	<input type="checkbox" id="checkbox1" name="checkbox1" value="option1">Questa è la prima volta
+																</label>
+															</div>
+															<div class="checkbox">
+																<label for="checkbox2">
+																	<input type="checkbox" id="checkbox2" name="checkbox2" value="option2">Poche esperienze di investimento
+																</label>
+															</div>
+															<div class="checkbox">
+																<label for="checkbox3">
+																	<input type="checkbox" id="checkbox3" name="checkbox3" value="option3">Sono esperto
+																</label>
+															</div>
+														</div>
+													</div>
+													<div class="form-group row">
+														<label class="col-md-3 form-control-label">Quante esperienze di investimento hai avuto</label>
+														<div class="col-md-9">
+															<div class="card-block">
+																<h4 class="first">Basic: {{val1}}</h4>
+																<p-slider [(ngModel)]="val1" [min]="0" [max]="10"></p-slider>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!--/.row-->
+											<div class="row">
+												<div class="form-group col-sm-4">
+													<label for="ccmonth">Month</label>
+													<select class="form-control" id="ccmonth">
+														<option>1</option>
+														<option>2</option>
+														<option>3</option>
+														<option>4</option>
+														<option>5</option>
+														<option>6</option>
+														<option>7</option>
+														<option>8</option>
+														<option>9</option>
+														<option>10</option>
+														<option>11</option>
+														<option>12</option>
+													</select>
+												</div>
+												<div class="form-group col-sm-4">
+													<label for="ccyear">Year</label>
+													<select class="form-control" id="ccyear">
+														<option>2014</option>
+														<option>2015</option>
+														<option>2016</option>
+														<option>2017</option>
+														<option>2018</option>
+														<option>2019</option>
+														<option>2020</option>
+														<option>2021</option>
+														<option>2022</option>
+														<option>2023</option>
+														<option>2024</option>
+														<option>2025</option>
+													</select>
+												</div>
+												<div class="col-sm-4">
+													<div class="form-group">
+														<label for="cvv">CVV/CVC</label>
+														<input type="text" class="form-control" id="cvv" placeholder="123">
+													</div>
+												</div>
+											</div>
+											<!--/.row-->
+										</div>
+								</div>
+								<!--/.col-->
+							</div>
+						</div>
 					</slide>
+
 					<slide>
 						slide 3
 						<!--<img src="http://p11cdn4static.sharpschool.com/UserFiles/Servers/Server_212375/Image/finance-industry.jpg" alt="Third slide">-->
