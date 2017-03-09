@@ -24,6 +24,7 @@ export class DashboardComponent implements OnInit {
   }
   
   getPortfolio(res){
+  if(res.response == 1){
     this.portfolio = res.data;
     
     this.portfolio.forEach((item, index)=>{
@@ -47,6 +48,8 @@ export class DashboardComponent implements OnInit {
     })
     
     console.dir(this.daybyday);
+  }else{
+    alert(res.data);
   }
-  
+  }
 }
