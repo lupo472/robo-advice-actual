@@ -40,6 +40,9 @@ public abstract class AbstractOperator {
 	
 	@Autowired
 	protected CapitalRepository capitalRep;
+	
+	@Autowired
+	protected AuthRepository authRep;
 
 	protected GenericConverter<UserEntity, UserDTO> userConv = new UserConverter();
 		
