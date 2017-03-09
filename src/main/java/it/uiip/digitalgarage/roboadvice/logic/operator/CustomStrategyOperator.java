@@ -4,7 +4,7 @@ import it.uiip.digitalgarage.roboadvice.persistence.entity.CustomStrategyEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyResponseDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.UserRegisteredDTO;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class CustomStrategyOperator extends AbstractOperator{
     	this.customStrategyRep.save(entityList);	    
     }
 
-    public List<CustomStrategyResponseDTO> getUserCustomStrategySet(UserLoggedDTO user){
+    public List<CustomStrategyResponseDTO> getUserCustomStrategySet(UserRegisteredDTO user){
     	List<CustomStrategyEntity> entityList = this.customStrategyRep.findByUserId(user.getId());
         Map<String, List<CustomStrategyEntity>> map = new HashMap<>();
         for (CustomStrategyEntity entity : entityList) {
@@ -50,7 +50,7 @@ public class CustomStrategyOperator extends AbstractOperator{
     	return list;
     }
 
-    public CustomStrategyResponseDTO getActiveUserCustomStrategy(UserLoggedDTO user){
+    public CustomStrategyResponseDTO getActiveUserCustomStrategy(UserRegisteredDTO user){
     	List<CustomStrategyEntity> entityList = this.customStrategyRep.findByUserIdAndActive(user.getId(), true);
     	if(entityList.isEmpty()) {
     		return null;
