@@ -4,7 +4,6 @@ import { AssetService } from '../services/asset.service';
 import { StrategyService } from '../services/strategy.service';
 import { Cookie } from 'ng2-cookies';
 
-
 @Component({
   templateUrl: 'edit.component.html'
 })
@@ -19,6 +18,7 @@ export class EditComponent implements OnInit {
 
   constructor(public AssetService:AssetService, public StrategyService:StrategyService, private router:Router){
     this.isCustom = true;
+
   }
 
   ngOnInit(): void {
@@ -33,8 +33,12 @@ export class EditComponent implements OnInit {
   //ASSIGN STRATEGIES
   getStrategy(res){
     this.strategies = res;
+    console.log("++getStrategy++editcomponent");
     console.log(this.strategies);
+
   }
+
+
 
   setCustomStrategy() {
     this.StrategyService.setCustomStrategy().subscribe(

@@ -4,9 +4,12 @@
 	<div class="row">
 		<div class="col-md-2 col-sm-4"
 			*ngFor="let strategy of strategies; let i = index">
-				<app-strategy-selector [name]="strategy.name" [data]="strategy.data"
-					[labels]="strategy.labels" [colors]="strategy.colours" [id]="strategy.id"
-					></app-strategy-selector>
+				<!-- <app-strategy-selector [name]="strategy.name" [data]="asset.percentage"
+					[labels]="strategy.name" [colors]="asset.color" [id]="strategy[i]"
+					></app-strategy-selector> -->
+					<!-- {{asset.percentage}} -->
+				<app-strategy-selector [name]="strategy.name" [id]="i" [strategy]="strategy">
+				</app-strategy-selector>
 			</div>
 		</div>
 

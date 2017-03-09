@@ -1,5 +1,5 @@
 import { AppConfig } from '../../services/app.config';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input} from '@angular/core';
 import { StrategyService } from '../../services/strategy.service';
 
 @Component({
@@ -16,10 +16,25 @@ export class StrategySelectorComponent implements OnInit {
   @Input() chartType;
   @Input() name;
   @Input() id;
+  @Input() strategy;
+  arrayPercentage:any;
+  arrayColor:any;
+  arrayColors:any;
   constructor(private StrategyService:StrategyService) {
+    this.arrayPercentage =  [];
+    this.arrayColor = [];
+    this.arrayColors = {};
    }
 
    ngOnInit() {
+      for (let asset of this.strategy.list) {
+        this.arrayPercentage.push(asset.percentage);
+        this.arrayColor.push(asset.color);
+        this.arrayColors = [{backgroundColor:this.arrayColor,borderWidth:3}];
+    }
+    //  console.log("strategy inside");
+    //  console.log(this.arrayPercentage);
+    //  console.log(this.arrayColors);
 
    }
 
