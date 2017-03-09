@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
 import it.uiip.digitalgarage.roboadvice.service.dto.AuthDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.LoginDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserRegisteredDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.HashFunction;
@@ -29,12 +30,15 @@ public class UserOperator extends AbstractOperator {
 		return userLoggedDTO;
 	}
 	
-	public AuthDTO loginUser(UserDTO userDTO) {
+	public LoginDTO loginUser(UserDTO userDTO) {
 		UserEntity userEntity = this.userRep.findByEmail(userDTO.getEmail());
 		String hashedPassword = HashFunction.hashStringSHA256(userDTO.getPassword());
 		if(userEntity.getPassword().equals(hashedPassword)) {
+			LoginDTO login = new LoginDTO();
+			login.setUser((UserRegisteredDTO) this.userConv.convertToDTO(userEntity));
 			AuthDTO auth = this.authOp.createAuth(userEntity);
-			return auth;
+			login.setAuth(auth);
+			return login;
 		}
 		
 		return null;
