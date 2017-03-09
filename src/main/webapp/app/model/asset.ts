@@ -1,11 +1,10 @@
 import { AssetClass } from './asset-class';
 import { AssetClassStrategy } from './asset-class-strategy';
-
+import { Asset } from '../model/asset';
 export class Asset extends AssetClassStrategy {
   assetClass:AssetClass;
   amount:number;
   color:string;
-
   constructor(percentage: number,assetClass: AssetClass) {
     super(percentage,assetClass);
     // this._assetClass=asset.assetClassStrategy;

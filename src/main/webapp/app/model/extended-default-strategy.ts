@@ -5,7 +5,12 @@ export class ExtendedDefaultStrategy  extends DefaultStrategy {
 
   constructor(name) {
     super(name);
-    //this.color = color;
+  }
+  getName() {
+    return super.getName();
+  }
+  setName(name){
+    super.setName(name);
   }
   getList(){
     return super.getList();
