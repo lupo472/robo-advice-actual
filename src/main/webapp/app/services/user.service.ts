@@ -31,6 +31,11 @@ export class UserService {
     return this.user;
   }
 
+  //AUTH
+  authenticate() {
+    return this.AppService.authenticateUser().map(res => this.printAuth(res));
+  }
+
   //LOGIN
   loginUser(user) {
    return this.AppService.loginUser(user).map(res => { if(res.response == 1){return this.setUser(res.data)}else{return res}});
@@ -50,6 +55,10 @@ export class UserService {
   setCapital(res){
     this.user.capital = res.data.amount;
     console.dir(this.user);
+  }
+  printAuth(res){
+    console.log("Sessione corretta --> response:",res.response);
+    return res;
   }
 
   //SET THE ACTIVE STRATEGY FOR THIS USER

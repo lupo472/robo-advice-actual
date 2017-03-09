@@ -8,10 +8,8 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent {
   constructor(private UserService: UserService, private router: Router) {
-    if (Cookie.check('email')) {
+    if (Cookie.check('id')) {
       this.UserService.setUser({
-        email: Cookie.get('email'),
-        password: Cookie.get('password'),
         id: Cookie.get('id')
       });
 
@@ -25,15 +23,14 @@ export class LoginComponent {
       if (res.response == 1) {
         this.setCookie(res.data)
       } else {
-        alert("Wrong Username or Password");
+        alert(res.data);
       }
     });
   }
 
-  public setCookie(user) {
-    Cookie.set('email', user.email);
-    Cookie.set('password', user.password);
-    Cookie.set('id', user.id);
+  public setCookie(data) {
+    Cookie.set('token', data.token);
+    Cookie.set('id', data.id);
 
     this.router.navigate(['dashboard']);
   }

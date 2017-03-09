@@ -1,5 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import { AppConfig } from './app.config';
+import { Cookie } from 'ng2-cookies';
 
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
@@ -62,5 +63,16 @@ export class AppService {
   getActiveStrategy(user){
     return this.http.post(AppConfig.url + 'getActiveUserCustomStrategy', user)
       .map(response => response.json());
+  }
+  authenticateUser(){
+    if(Cookie.check("id") || Cookie.check("token")) {
+      var id=Cookie.get("id");
+      var token=Cookie.get("token");
+    } else {
+      var id = "0";
+      var token = "";
+    }
+    return this.http.post(AppConfig.url + 'authenticate', {id:id,token:token})
+        .map(response => response.json());
   }
 }

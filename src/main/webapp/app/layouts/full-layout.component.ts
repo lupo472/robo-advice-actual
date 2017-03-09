@@ -11,22 +11,31 @@ import { UserService } from '../services/user.service';
 export class FullLayoutComponent implements OnInit {
   
   user:User;
+  check:number;
 
   constructor(private UserService:UserService, private router:Router) { }
   
-  ngOnInit(): void { 
-    
-    if(Cookie.check('email')){
-        this.UserService.setUser({email: Cookie.get('email'), 
-                                  password: Cookie.get('password'), 
-                                  id: Cookie.get('id')});
-      }else{
+  ngOnInit(): void {
+    this.UserService.authenticate().subscribe(res => this.checkAuth(res));
+
+    if(Cookie.check('id')){
+      this.UserService.setUser({
+        id: Cookie.get('id')});
+    }else{
       console.log("Not Logged");
       this.router.navigate(['pages/login']);
     }
-    
+
     this.user = this.UserService.getUser();
     
+  }
+
+  checkAuth(res):void{
+    console.log(res.response);
+    if(res.response == 0){
+      console.log("CAZZO PUTTANA VAI A LOGIN");
+      this.router.navigate(['pages/login']);
+    }
   }
 
   public disabled:boolean = false;
