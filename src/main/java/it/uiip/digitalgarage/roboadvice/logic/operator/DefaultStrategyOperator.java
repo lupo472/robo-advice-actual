@@ -1,9 +1,6 @@
 package it.uiip.digitalgarage.roboadvice.logic.operator;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.springframework.stereotype.Service;
 
@@ -34,9 +31,11 @@ public class DefaultStrategyOperator extends AbstractOperator {
 		for (String key : map.keySet()) {
 			DefaultStrategyDTO dSDTO = new DefaultStrategyDTO();
 			dSDTO.setName(key);
+			Collections.sort(map.get(key));
 			dSDTO.setList(map.get(key));
 			result.add(dSDTO);
 		}
+
 		return result;
 	}
 	

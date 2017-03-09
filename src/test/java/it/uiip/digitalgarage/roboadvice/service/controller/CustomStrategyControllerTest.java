@@ -2,6 +2,7 @@ package it.uiip.digitalgarage.roboadvice.service.controller;
 
 import it.uiip.digitalgarage.roboadvice.RoboadviceApplication;
 import it.uiip.digitalgarage.roboadvice.service.dto.*;
+import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -72,10 +73,10 @@ public class CustomStrategyControllerTest {
     @Test
     public void setCustomStrategyInvalidUser() throws Exception {
         CustomStrategyDTO dto = new CustomStrategyDTO();
-        dto.setIdUser(new Long(999999999));
+        dto.setIdUser(new Long(0));
         GenericResponse<String> response = (GenericResponse<String>) this.customStrategyCtrl.setCustomStrategy(dto);
         assertEquals(0,response.getResponse());
-        assertEquals("A problem occurred", response.getData());
+        assertEquals(ControllerConstants.PROBLEM, response.getData());
     }
 
     @Test
@@ -92,11 +93,11 @@ public class CustomStrategyControllerTest {
     @Test
     public void getUserCustomStrategySetInvalidUser() throws Exception {
         UserLoggedDTO user = new UserLoggedDTO();
-        user.setId(new Long(999999999));
+        user.setId(new Long(0));
         user.setEmail("test@case.it");
         user.setPassword("12345");
         GenericResponse<String> response = (GenericResponse<String>) this.customStrategyCtrl.getUserCustomStrategySet(user);
-        assertEquals("This user doesn't have any strategy", response.getData());
+        assertEquals(ControllerConstants.ANY_STRATEGY, response.getData());
         assertEquals(0, response.getResponse());
     }
 
@@ -114,12 +115,12 @@ public class CustomStrategyControllerTest {
     @Test
     public void getUserCustomStrategyActiveInvalidUser() throws Exception {
         UserLoggedDTO dto = new UserLoggedDTO();
-        dto.setId(new Long(999999999));
+        dto.setId(new Long(0));
         dto.setEmail("email@email");
         dto.setPassword("12345");
         GenericResponse<String> response = (GenericResponse<String>) this.customStrategyCtrl.getUserCustomStrategyActive(dto);
         assertEquals(0, response.getResponse());
-        assertEquals("This user doesn't have any active strategy", response.getData());
+        assertEquals(ControllerConstants.ANY_ACTIVE_STRATEGY, response.getData());
     }
 
 }
