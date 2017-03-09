@@ -7,7 +7,7 @@ import lombok.Data;
 public @Data class AuthDTO {
 
 	@NotNull
-	private Long idUser;
+	private Long id;
 	
 	@NotNull
 	private String token;

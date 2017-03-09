@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.AuthEntity;
@@ -18,6 +19,9 @@ import it.uiip.digitalgarage.roboadvice.service.util.HashFunction;
 
 @Service
 public class UserOperator extends AbstractOperator {
+	
+	@Autowired
+	private AuthOperator authOp;
 	
 	public UserRegisteredDTO registerUser(UserDTO userDTO) {
 		UserEntity userEntity = this.userConv.convertToEntity(userDTO);
@@ -35,13 +39,14 @@ public class UserOperator extends AbstractOperator {
 		if(userEntity.getPassword().equals(hashedPassword)) {
 			UserRegisteredDTO userLoggedDTO = (UserRegisteredDTO) this.userConv.convertToDTO(userEntity);
 			//
-			AuthEntity auth = new AuthEntity();
-			Random random = new SecureRandom();
-			String token = new BigInteger(130, random).toString(32);
-			auth.setToken(token);
-			auth.setUser(userEntity);
-			auth.setDate(LocalDate.now());
-			this.authRep.save(auth);
+			this.authOp.createAuth(userEntity);
+//			AuthEntity auth = new AuthEntity();
+//			Random random = new SecureRandom();
+//			String token = new BigInteger(130, random).toString(32);
+//			auth.setToken(token);
+//			auth.setUser(userEntity);
+//			auth.setDate(LocalDate.now());
+//			this.authRep.save(auth);
 			//
 			return userLoggedDTO;
 		}

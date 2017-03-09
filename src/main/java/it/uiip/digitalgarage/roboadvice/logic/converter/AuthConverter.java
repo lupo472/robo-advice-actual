@@ -13,7 +13,7 @@ public class AuthConverter implements GenericConverter<AuthEntity, AuthDTO> {
 	public AuthEntity convertToEntity(AuthDTO dto) {
 		AuthEntity entity = new AuthEntity();
 		UserEntity user = new UserEntity();
-		user.setId(dto.getIdUser());
+		user.setId(dto.getId());
 		entity.setUser(user);
 		entity.setToken(dto.getToken());
 		return entity;
@@ -22,7 +22,7 @@ public class AuthConverter implements GenericConverter<AuthEntity, AuthDTO> {
 	@Override
 	public AuthDTO convertToDTO(AuthEntity entity) {
 		AuthDTO dto = new AuthDTO();
-		dto.setIdUser(entity.getUser().getId());
+		dto.setId(entity.getUser().getId());
 		dto.setToken(entity.getToken());
 		return dto;
 	}

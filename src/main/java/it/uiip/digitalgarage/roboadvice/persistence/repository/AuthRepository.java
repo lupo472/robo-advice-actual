@@ -10,6 +10,6 @@ import it.uiip.digitalgarage.roboadvice.persistence.entity.AuthEntity;
 @Transactional
 public interface AuthRepository extends PagingAndSortingRepository<AuthEntity, Long> {
 
-	
+	public AuthEntity findByUserId(Long userId);
 	
 }
