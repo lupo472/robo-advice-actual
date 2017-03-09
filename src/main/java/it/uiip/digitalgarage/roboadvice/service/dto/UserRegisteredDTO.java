@@ -4,7 +4,7 @@ import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 
-public @Data class UserLoggedDTO extends UserDTO {
+public @Data class UserRegisteredDTO extends UserDTO {
 	
 	@NotNull
 	private Long id;

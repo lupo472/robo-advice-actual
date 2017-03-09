@@ -12,7 +12,7 @@ import it.uiip.digitalgarage.roboadvice.RoboadviceApplication;
 import it.uiip.digitalgarage.roboadvice.service.controller.PortfolioController;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioRequestForDateDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.UserRegisteredDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 
@@ -31,7 +31,7 @@ public class PortofolioControllerTest {
 	
 	@Test
 	public void getUserCurrentPortfolioOK() {
-		UserLoggedDTO user = new UserLoggedDTO();
+		UserRegisteredDTO user = new UserRegisteredDTO();
 		user.setId(new Long(35));
 		user.setEmail("cristian.laurini@gmail.com");
 		user.setPassword("cristianlaurini");
@@ -44,7 +44,7 @@ public class PortofolioControllerTest {
 	
 	@Test
 	public void getUserCurrentPortfolioProblem() {
-		UserLoggedDTO user = new UserLoggedDTO();
+		UserRegisteredDTO user = new UserRegisteredDTO();
 		user.setId(new Long(15));
 		user.setEmail("criidd@a");
 		user.setPassword("ceaaaaaa");

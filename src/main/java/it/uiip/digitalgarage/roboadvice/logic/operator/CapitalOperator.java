@@ -14,7 +14,7 @@ import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
 import it.uiip.digitalgarage.roboadvice.service.dto.CapitalDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CapitalResponseDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.DataRequestDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.UserRegisteredDTO;
 
 @Service
 public class CapitalOperator extends AbstractOperator {
@@ -22,7 +22,7 @@ public class CapitalOperator extends AbstractOperator {
 	@Autowired
 	private PortfolioOperator portfolioOp;
 	
-	public CapitalResponseDTO getCurrentCapital(UserLoggedDTO user) {
+	public CapitalResponseDTO getCurrentCapital(UserRegisteredDTO user) {
 		CapitalEntity entity = this.capitalRep.findLast(user.getId());
 		if(entity == null) {
 			return null;
@@ -46,7 +46,7 @@ public class CapitalOperator extends AbstractOperator {
 		}
 	}
 
-	public boolean computeCapital(UserLoggedDTO user) {
+	public boolean computeCapital(UserRegisteredDTO user) {
 		CapitalEntity capitalEntity = new CapitalEntity();
 		UserEntity userEntity = new UserEntity();
 		BigDecimal amount = portfolioOp.evaluatePortfolio(user);
