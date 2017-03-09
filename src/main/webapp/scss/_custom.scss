@@ -10,24 +10,27 @@
 
 // Strategy Card
 .btn-strategy {
+  width: 100%;
   color: $general;
   background-color: #fff;
-  border-radius: 3px;
-}
+  margin-bottom: auto;
 
-.btn-strategy:hover {
-    color: #fff;
-    background-color: rgba($general,0.5) ;
-}
+    &:hover,
+    &.hover {
+        color: #fff;
+        background-color: rgba($general,0.5) ;
+    }
 
-.btn-strategy:active {
-    color: #fff;
-    background-color: $general;
-}
+    &:active,
+    &.active {
+        color: #fff;
+        background-color: $general;
+    }
 
-.btn-strategy:disabled,
-.btn-strategy.is-disabled {
-  opacity: .5;
+    &:disabled,
+    &.disabled {
+        opacity: .5;
+    }
 }
 
 .ui-slider-horizontal {
@@ -55,4 +58,11 @@
 }
 .ui-slider {
   background-color: white;
+}
+.contentSugg{
+  margin-left: 15%;
+  margin-right: 15%;
+}
+.backgroundImg{
+  background-image: url("../img/backModal.jpg");
 }

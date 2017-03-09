@@ -4,49 +4,115 @@
 	<div class="row">
 		<div class="col-md-2 col-sm-4"
 			*ngFor="let strategy of strategies; let i = index">
+
 				<!-- <app-strategy-selector [name]="strategy.name" [data]="asset.percentage"
 					[labels]="strategy.name" [colors]="asset.color" [id]="strategy[i]"
 					></app-strategy-selector> -->
 					<!-- {{asset.percentage}} -->
-				<app-strategy-selector [name]="strategy.name" [id]="i" [strategy]="strategy">
+				<!-- <app-strategy-selector [name]="strategy.name" [id]="i" [strategy]="strategy">
 				</app-strategy-selector>
-			</div>
+			</div> -->
+
+			<app-strategy-selector [name]="strategy.name" [data]="strategy.data"
+				[selected] = "selected[i]" [strategy]="strategy"
+				[labels]="strategy.labels" [colors]="strategy.colours"
+				[id]="i" (click)="setStrategy(i)"></app-strategy-selector>
+
 		</div>
+	</div>
+
 
 	<!-- ASSET CLASS ROW -->
-	<div class="row">
-		<div class="col-sm-6 col-lg-3" *ngFor="let assetClass of assetClasses; let i = index;">
-			<app-card-asset-class [value]="assetClass.name" [isCustom]="isCustom" [id]="assetClass.id"
-				[lineChartData]="assetClass.data"
+	<div class="row" >
+		<div class="col-sm-6 col-lg-3"
+			*ngFor="let assetClass of assetClasses; let i = index;">
+			<app-card-asset-class [value]="assetClass.name" [isCustom]="isCustom"
+				[id]="assetClass.id" [percentage]="assetClass.percentage" [lineChartData]="assetClass.data"
 				[lineChartLabels]="lineChartLabels"
 				[lineChartOptions]="lineChartOptions"
 				[lineChartColours]="lineChartColours"
-				[lineChartType]="lineChartType"
-				(click)="showAsset(assetClass.id)">
+				[lineChartType]="lineChartType">
 			</app-card-asset-class>
 		</div>
+
+		<div class="col-md-12 text-center" *ngIf="isCustom">
+			<button type="button" class="btn btn-danger"
+				(click)="isCustom = false">Cancel</button>
+			<button type="button" class="btn btn-success"
+				(click)="confirmStrategy()">Create</button>
+		</div>
 	</div>
-<button type="button" class="btn btn-danger">Cancel</button>
-<button type="button" class="btn btn-success" (click)="setCustomStrategy()">Create Strategy</button>
-
-		<!-- ASSET CLASS 1 ROW -->
-		<div class="row" *ngIf="selectedAsset">
-
-
-			<!-- ASSET 1 -->
-			<!-- <div class="col-sm-6 col-lg-3" *ngFor="let asset of selectedAsset">
-				<app-card-asset [lineChartData]="asset.data"
-					[lineChartLabels]="lineChartLabels"
-					[lineChartOptions]="lineChartOptions"
-					[lineChartColours]="lineChartColours"
-					[lineChartType]="lineChartType" [barChartData]="barChart1Data"
-					[barChartLabels]="barChart1Labels"
-					[barChartOptions]="barChart1Options"
-					[barChartColours]="barChart1Colours"
-					[barChartLegend]="barChart1Legend" [barChartType]="barChart1Type"></app-card-asset>
-			</div>
-		</div> -->
-		<!-- END ASSET CLASS 1-->
 
 
 </div>
+
+<div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-success modal-lg" role="document">
+		<div class="modal-content backgroundImg">
+			<div class="modal-header">
+				<h4 class="modal-title">The our strategy suggested</h4>
+				<button type="button" class="close" (click)="hideChildModal()" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<p>Step 1&hellip;</p>
+				<carousel [interval]=false>
+					<slide>
+						<!--<img src="http://badialiconsulting.it/uploads/kcFinder/images/iStock_000005594027Small.jpg" alt="First slide">-->
+						<div class="contentSugg">
+							<h3>What did you eat yesterday?</h3>
+
+							<div class="row">
+								<div class="col-lg-8">Fruit</div>
+								<div class="col-lg-4">
+									<label class="switch switch-lg switch-3d switch-primary">
+										<input type="checkbox" class="switch-input" checked>
+										<span class="switch-label"></span>
+										<span class="switch-handle"></span>
+									</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-8">Pizza</div>
+								<div class="col-lg-4">
+									<label class="switch switch-lg switch-3d switch-primary">
+										<input type="checkbox" class="switch-input" checked>
+										<span class="switch-label"></span>
+										<span class="switch-handle"></span>
+									</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-8">Sushi</div>
+								<div class="col-lg-4">
+									<label class="switch switch-lg switch-3d switch-primary">
+										<input type="checkbox" class="switch-input" checked>
+										<span class="switch-label"></span>
+										<span class="switch-handle"></span>
+									</label>
+								</div>
+							</div>
+						</div>
+
+					</slide>
+					<slide>
+						slide 2
+						<!--<img src="http://www.touhouproject.it/wp-content/uploads/2015/06/finance1.png" alt="Second slide">-->
+					</slide>
+					<slide>
+						slide 3
+						<!--<img src="http://p11cdn4static.sharpschool.com/UserFiles/Servers/Server_212375/Image/finance-industry.jpg" alt="Third slide">-->
+					</slide>
+				</carousel>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" (click)="successModal.hide()">Close</button>
+				<button type="button" class="btn btn-primary">Save changes</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

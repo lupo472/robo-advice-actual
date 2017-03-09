@@ -1,23 +1,19 @@
-			<div class="card card-inverse card-primary" [style.padding]="isCustom ? '5%' : '0%'">
-				<div class="card-block pb-0">
-					<div class="btn-group float-right" dropdown>
-						<button type="button"
-							class="btn btn-transparent dropdown-toggle p-0" dropdownToggle>
-							<i class="icon-settings"></i>
-						</button>
-						<div class="dropdown-menu dropdown-menu-right" dropdownMenu>
-							<a class="dropdown-item" href="#">Edit</a>
-						</div>
+			<div class="card card-inverse card-primary">
+				<div class="card-block">
+					<div class="h5 float-left text-capitalize mb-0">
+					{{value}}
+					</div><div class="h5 float-right mb-0">
+					{{percentage}}%
 					</div>
-					<h4 class="mb-0">{{value}}</h4>
-					<p *ngIf="isCustom">{{percentage}}%</p>
 				</div>
-				<div class="chart-wrapper px-1" style="height:70px">
+				<!-- <div class="chart-wrapper px-1" style="height:70px">
 					<canvas baseChart class="chart" [data]="lineChartData"
 						[labels]="lineChartLabels" [options]="lineChartOptions"
 						[colors]="lineChartColours" [legend]="lineChartLegend"
 						[chartType]="lineChartType" (chartHover)="chartHovered($event)"
 						(chartClick)="chartClicked($event)"></canvas>
+				</div> -->
+				<div class="card-block" *ngIf="isCustom">
+				<p-slider  [(ngModel)]="percentage" [min]="0" [max]="100" (onSlideEnd)="handleSlide($event)" (click)="handleSlide($event)"></p-slider>
 				</div>
-				<p-slider *ngIf="isCustom" [(ngModel)]="percentage" [min]="0" [max]="100" (onSlideEnd)="handleSlide($event)" (click)="handleSlide($event)"></p-slider>
 			</div>

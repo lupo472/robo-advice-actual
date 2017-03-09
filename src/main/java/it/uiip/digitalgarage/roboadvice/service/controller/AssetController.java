@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import it.uiip.digitalgarage.roboadvice.logic.operator.AssetOperator;
 import it.uiip.digitalgarage.roboadvice.service.dto.AssetDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 
@@ -18,8 +17,10 @@ public class AssetController extends AbstractController {
 	@RequestMapping("/getAssetSet")
 	@ResponseBody
 	public GenericResponse<?> getAssetSet() {
-		this.assetOp = new AssetOperator(this.assetRep);
 		List<AssetDTO> result = this.assetOp.getAssetSet();
+		if(result.isEmpty()){
+			return new GenericResponse<String>(0, "There are no assets");
+		}
 		return new GenericResponse<List<AssetDTO>>(1, result);
 	}
 	

@@ -11,6 +11,7 @@ export class Asset extends AssetClassStrategy {
     // this._assetClass=asset.assetClassStrategy;
     //this._amount=asset.amount;
     //this._colour=colour;
+
   }
 
   getAssetClass(): AssetClass {

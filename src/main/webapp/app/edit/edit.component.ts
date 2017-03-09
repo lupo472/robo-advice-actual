@@ -1,29 +1,47 @@
-import { Component, OnInit, Renderer } from '@angular/core';
+import {Component, OnInit, Renderer, ViewChild, AfterViewInit} from '@angular/core';
 import { Router } from '@angular/router';
 import { AssetService } from '../services/asset.service';
 import { StrategyService } from '../services/strategy.service';
 import { Cookie } from 'ng2-cookies';
+import { ModalDirective } from 'ng2-bootstrap/modal/modal.component';
 
 @Component({
   templateUrl: 'edit.component.html'
 })
-export class EditComponent implements OnInit {
+
+export class EditComponent implements OnInit,AfterViewInit {
   public isCustom:boolean;
+
   public assetClassSet = [];
   public assetClasses = [];
   public assetSet = [];
   public assets = [];
   public selectedAsset = [];
-  strategies:any;
+  strategies: any;
 
-  constructor(public AssetService:AssetService, public StrategyService:StrategyService, private router:Router){
-    this.isCustom = true;
+  public selected = [];
+
+  @ViewChild('childModal') public childModal:ModalDirective;
+
+  constructor(public AssetService: AssetService, public StrategyService: StrategyService, private router: Router) {
+    this.isCustom = false;
+  }
+  public showChildModal():void {
+    this.childModal.show();
+  }
+
+  public hideChildModal():void {
+    this.childModal.hide();
+  }
+  ngAfterViewInit() {
+    // viewChild is set after the view has been initialized
+    this.childModal.show();
 
   }
 
   ngOnInit(): void {
     this.AssetService.getAssetClassSet().subscribe((result) => this.getAssetClass(result));
-    this.StrategyService.getDefaultStrategySet().subscribe(res=> this.getStrategy(res));
+    this.StrategyService.getDefaultStrategySet().subscribe(res => this.getStrategy(res));
   }
 
   showDetails() {
@@ -31,20 +49,39 @@ export class EditComponent implements OnInit {
   }
 
   //ASSIGN STRATEGIES
-  getStrategy(res){
+  getStrategy(res) {
     this.strategies = res;
-    console.log("++getStrategy++editcomponent");
-    console.log(this.strategies);
-
   }
 
 
 
-  setCustomStrategy() {
+  // setCustomStrategy() {
+  //
+  //   console.dir(this.strategies);
+  // }
+
+  confirmStrategy() {
     this.StrategyService.setCustomStrategy().subscribe(
       (error) => {
         console.log("errore " + error);
       });
+  }
+
+  setStrategy(i) {
+    if (i == (this.strategies.length - 1)) {
+      this.isCustom = !this.isCustom;
+    }else{
+      this.isCustom = false;
+    }
+
+    this.strategies.forEach((item, index) => {
+      if (index == i) {
+        this.selected[index] = true;
+      } else {
+        this.selected[index] = false;
+      }
+    })
+
   }
 
   //ASSIGN ASSET CLASS
@@ -52,8 +89,8 @@ export class EditComponent implements OnInit {
     this.assetClassSet = result;
     this.assetClassSet.forEach((item, index) => {
 
-    this.assetClasses[index] = {id: item.id, name:  item.name, data: [65, 59, 84, 84, 51, 55, 40], percentage: 15}
-    //this.StrategyService.strategies.set(item.id, 0);
+      this.assetClasses[index] = { id: item.id, name: item.name, data: [65, 59, 84, 84, 51, 55, 40], percentage: 15 }
+      //this.StrategyService.strategies.set(item.id, 0);
 
     })
   }

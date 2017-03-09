@@ -2,20 +2,16 @@ package it.uiip.digitalgarage.roboadvice.logic.operator;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.FinancialDataEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.quandl.QuandlDBInitializer;
 import it.uiip.digitalgarage.roboadvice.persistence.quandl.QuandlDBUpdater;
-import it.uiip.digitalgarage.roboadvice.persistence.repository.AssetRepository;
-import it.uiip.digitalgarage.roboadvice.persistence.repository.FinancialDataRepository;
 import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataDTO;
 
+@Service
 public class QuandlOperator extends AbstractOperator {
-	
-	public QuandlOperator(FinancialDataRepository financialDataRep, AssetRepository assetRep) {
-		this.financialDataRep = financialDataRep;
-		this.assetRep = assetRep;
-	}
 	
 	public void updateFinancialDataSet() {
 		List<AssetEntity> assets = (List<AssetEntity>) this.assetRep.findAll();

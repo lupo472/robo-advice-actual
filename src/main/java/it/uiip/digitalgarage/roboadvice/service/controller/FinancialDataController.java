@@ -10,11 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import it.uiip.digitalgarage.roboadvice.logic.operator.FinancialDataOperator;
-import it.uiip.digitalgarage.roboadvice.logic.operator.QuandlOperator;
 import it.uiip.digitalgarage.roboadvice.service.dto.DataRequestDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataClassDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataDTO;
+import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 
 @CrossOrigin("*")
@@ -24,7 +23,6 @@ public class FinancialDataController extends AbstractController {
 	@RequestMapping("/getFinancialDataSet")
 	@ResponseBody
 	public GenericResponse<?> getFinancialDataSet() {
-		this.financialDataOp = new FinancialDataOperator(this.financialDataRep);
 		List<FinancialDataDTO> result = this.financialDataOp.getFinancialDataSet();
 		return new GenericResponse<List<FinancialDataDTO>>(1, result);
 	}
@@ -32,7 +30,6 @@ public class FinancialDataController extends AbstractController {
 	@RequestMapping("/getFinancialDataForAsset")
 	@ResponseBody
 	public GenericResponse<?> getFinancialDataForAsset(@Valid @RequestBody DataRequestDTO request) {
-		this.financialDataOp = new FinancialDataOperator(this.financialDataRep);
 		List<FinancialDataDTO> result = this.financialDataOp.getFinancialDataSetForAsset(request);
 		return new GenericResponse<List<FinancialDataDTO>>(1, result);
 	}
@@ -40,7 +37,6 @@ public class FinancialDataController extends AbstractController {
 	@RequestMapping("/getFinancialDataForAssetClass")
 	@ResponseBody
 	public GenericResponse<?> getFinancialDataForAssetClass(@Valid @RequestBody DataRequestDTO request) {
-		this.financialDataOp = new FinancialDataOperator(this.financialDataRep, this.assetRep, this.assetClassRep);
 		List<FinancialDataClassDTO> result = this.financialDataOp.getFinancialDataSetForAssetClass(request);
 		return new GenericResponse<List<FinancialDataClassDTO>>(1, result);
 	}
@@ -48,10 +44,9 @@ public class FinancialDataController extends AbstractController {
 	@RequestMapping("/findLastFinancialDataForAsset")
 	@ResponseBody
 	public GenericResponse<?> findLastFinancialDataForAsset(@Valid @RequestBody DataRequestDTO request) {
-		this.financialDataOp = new FinancialDataOperator(this.financialDataRep);
 		FinancialDataDTO result = this.financialDataOp.findLast(request);
 		if(result == null) {
-			return new GenericResponse<String>(0, "No results");
+			return new GenericResponse<String>(0, ControllerConstants.NO_RESULTS);
 		}
 		return new GenericResponse<FinancialDataDTO>(1, result);
 	}
@@ -59,17 +54,15 @@ public class FinancialDataController extends AbstractController {
 	@RequestMapping("/updateFinancialDataSet")
 	@ResponseBody
 	public GenericResponse<?> updateFinancialDataSet() {
-		this.quandlOp = new QuandlOperator(this.financialDataRep, this.assetRep);
 		this.quandlOp.updateFinancialDataSet();
-		return new GenericResponse<String>(1, "Done");
+		return new GenericResponse<String>(1, ControllerConstants.DONE);
 	}
 	
 	@RequestMapping("/initializeFinancialDataSet")
 	@ResponseBody
 	public GenericResponse<?> initializeFinancialDataSet() {
-		this.quandlOp = new QuandlOperator(this.financialDataRep, this.assetRep);
 		this.quandlOp.initializeFinancialDataSet();
-		return new GenericResponse<String>(1, "Done");
+		return new GenericResponse<String>(1, ControllerConstants.DONE);
 	}
 
 }
