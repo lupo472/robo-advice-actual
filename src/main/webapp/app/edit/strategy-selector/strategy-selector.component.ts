@@ -1,5 +1,5 @@
 import { AppConfig } from '../../services/app.config';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input} from '@angular/core';
 import { StrategyService } from '../../services/strategy.service';
 
 @Component({
@@ -8,7 +8,7 @@ import { StrategyService } from '../../services/strategy.service';
   styleUrls: ['./strategy-selector.component.scss']
 })
 export class StrategySelectorComponent implements OnInit {
-  
+
   @Input() data;
   @Input() labels;
   @Input() options;
@@ -18,15 +18,32 @@ export class StrategySelectorComponent implements OnInit {
   @Input() name;
   @Input() id;
   @Input() selected;
-  
-  constructor(private StrategyService:StrategyService) { }
+  @Input() strategy;
+  arrayPercentage:any;
+  arrayColor:any;
+  arrayColors:any;
+  constructor(private StrategyService:StrategyService) {
+    this.arrayPercentage =  [];
+    this.arrayColor = [];
+    this.arrayColors = {};
+   }
 
-  ngOnInit() { }
-  
+   ngOnInit() {
+      for (let asset of this.strategy.list) {
+        this.arrayPercentage.push(asset.percentage);
+        this.arrayColor.push(asset.color);
+        this.arrayColors = [{backgroundColor:this.arrayColor,borderWidth:3}];
+    }
+    //  console.log("strategy inside");
+    //  console.log(this.arrayPercentage);
+    //  console.log(this.arrayColors);
+
+   }
+
   public chartHovered(e: any): void {
     console.log(e);
   }
-  
+
   //GENERAL SETTINGS
   public strategyOptions:any = {
     maintainAspectRatio: false,

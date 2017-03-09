@@ -2,9 +2,13 @@
 import { Injectable, Inject } from '@angular/core';
 import { AppConfig } from './app.config';
 import { AppService } from './app.service';
+import { AssetService } from './asset.service';
 import { Strategy } from '../model/strategy';
+import { DefaultStrategy } from '../model/default-strategy';
+import { ExtendedDefaultStrategy } from '../model/extended-default-strategy';
 import { AssetClassStrategy } from '../model/asset-class-strategy';
 import { AssetClass } from '../model/asset-class';
+import { Asset } from '../model/asset';
 import { Cookie } from 'ng2-cookies';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
@@ -12,7 +16,12 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class StrategyService {
   assetClassStrategy:AssetClassStrategy;
+  defaultStrategy:DefaultStrategy;
+  defaultStrategies:DefaultStrategy[];
+  extendedDefaultStrategy:ExtendedDefaultStrategy;
+  extendedDefaultStrategies:ExtendedDefaultStrategy[];
   assetClass:AssetClass;
+  asset:Asset;
   strategies:Map<number, AssetClassStrategy> = new Map<number, AssetClassStrategy>();
   strategy:Strategy;
   sumPercentage:number;
@@ -23,7 +32,7 @@ export class StrategyService {
   public strategySet = [];
 
   //isCustom:boolean;
-  constructor(private AppService:AppService) {
+  constructor(private AppService:AppService, private AssetService:AssetService) {
     this.sumPercentage = 0;
     this.maxPercentage = 100;
     this.strategies.set(1,new AssetClassStrategy(0,new AssetClass(1,"")));
@@ -31,6 +40,8 @@ export class StrategyService {
     this.strategies.set(3,new AssetClassStrategy(0,new AssetClass(3,"")));
     this.strategies.set(4,new AssetClassStrategy(0,new AssetClass(4,"")));
     this.oldValue = 0;
+    this.defaultStrategies = [];
+    this.extendedDefaultStrategies = [];
   }
 
   //SLIDER MAPPING
@@ -71,11 +82,8 @@ export class StrategyService {
     this.strategies.forEach( (k,v) => [
       array.push(k)
     ]);
-    //console.log(array);
     this.strategy.setStrategyArray(array);
-    //console.log(this.strategy);
       return this.AppService.setCustomStrategy(this.strategy).map(res => console.log(res));
-
   }
 
   // STRATEGY JSON REMAPPING
@@ -84,39 +92,57 @@ export class StrategyService {
   }
 
   assignStrategy(res){
-
-    var arrayPercentage = [];
-    var arrayNull = [];
-    var arrayLabels = [];
-    var arrayColours = [];
+    // var arrayPercentage = [];
+    // var arrayNull = [];
+    // var arrayLabels = [];
+    // var arrayColours = [];
 
     res.data.forEach((item, index) => {
 
+      this.defaultStrategy = new DefaultStrategy(item.name);
+      this.extendedDefaultStrategy = new ExtendedDefaultStrategy(item.name);
+
       item.list.forEach((element, i) =>{
-       arrayPercentage[i] = element.percentage;
-       arrayNull[i] = 0;
-       arrayLabels[i] = element.assetClass.name;
-       arrayColours[i] = this.assignColour(element.assetClass.id);
-        });
+        let color = this.AssetService.assignColour(element.assetClass.id);
+        this.asset = new Asset(element.percentage,
+          new AssetClass(element.assetClass.id,element.assetClass.name));
+        this.asset.color=color;
+        this.defaultStrategy.setList(element);
+        this.extendedDefaultStrategy.setList(this.asset);
 
-      this.strategySet[index] = {
-                                name:  item.name,
-                                data: arrayPercentage,
-                                labels: arrayLabels,
-                                colours: [{backgroundColor: arrayColours, borderWidth: 3}]
-                                }
+      //  arrayPercentage[i] = element.percentage;
+      //  arrayNull[i] = 0;
+      //  arrayLabels[i] = element.assetClass.name;
+      //  arrayColours[i] = this.assignColour(element.assetClass.id);
+      });
+       //
+      //   console.log("defaultstrategy");
+      //   console.log(this.defaultStrategy);
+        this.defaultStrategies.push(this.defaultStrategy);
+        this.extendedDefaultStrategies.push(this.extendedDefaultStrategy);
+
+      // this.strategySet[index] = {
+      //                           name:  item.name,
+      //                           data: arrayPercentage,
+      //                           labels: arrayLabels,
+      //                           colours: [{backgroundColor: arrayColours, borderWidth: 3}]
+      //                           }
 
 
-      console.log(this.strategySet[index].colours);
-
-      arrayPercentage = [];
-      arrayLabels = [];
-      arrayColours = [];
+      // console.log(this.strategySet[index].colours);
+      //
+      // arrayPercentage = [];
+      // arrayLabels = [];
+      // arrayColours = [];
     })
-
-    this.strategySet[res.data.length]={name: 'custom', data: arrayNull}
-
-    return this.strategySet;
+    this.defaultStrategies.push(new DefaultStrategy("custom"));
+    this.extendedDefaultStrategies.push(new ExtendedDefaultStrategy("custom"));
+    // console.log(this.defaultStrategies);
+    // console.log("extended");
+    // console.log(this.extendedDefaultStrategies);
+    // this.strategySet[res.data.length]={name: 'custom', data: arrayNull}
+    return this.extendedDefaultStrategies;
+    // return this.strategySet;
   }
 
   //ASSIGN COLOUR

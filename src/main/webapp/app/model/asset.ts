@@ -1,41 +1,41 @@
 import { AssetClass } from './asset-class';
 import { AssetClassStrategy } from './asset-class-strategy';
 
-export class Asset {
-  private _assetClass:AssetClassStrategy;
-  private _amount:number;
-  private _color:string;
-  
-  private _amountList:Array<number>;
+export class Asset extends AssetClassStrategy {
+  assetClass:AssetClass;
+  amount:number;
+  color:string;
 
-  constructor(asset:any) {
-    this._assetClass=asset.assetClassStrategy;
-    this._amount=asset.amount;
-    this._color=asset.color;
+  constructor(percentage: number,assetClass: AssetClass) {
+    super(percentage,assetClass);
+    // this._assetClass=asset.assetClassStrategy;
+    //this._amount=asset.amount;
+    //this._colour=colour;
+
   }
 
-  get assetClass(): AssetClassStrategy {
-    return this._assetClass;
+  getAssetClass(): AssetClass {
+    return this.assetClass;
   }
 
-  set assetClass(value: AssetClassStrategy) {
-    this._assetClass = value;
+  setAssetClass(value: AssetClass) {
+    this.assetClass = value;
   }
 
-  get amount(): number {
-    return this._amount;
+  getAmount(): number {
+    return this.amount;
   }
 
-  set amount(value: number) {
-    this._amount = value;
+  setAmount(value: number) {
+    this.amount = value;
   }
 
-  get color(): string {
-    return this._color;
+  getColor(): string {
+    return this.color;
   }
 
-  set color(value: string) {
-    this._color = value;
+  setColor(value: string) {
+    this.color = value;
   }
 
 }
