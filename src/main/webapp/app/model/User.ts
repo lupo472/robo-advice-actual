@@ -2,7 +2,7 @@ import { Strategy } from './strategy';
 
 export class User {
   
-  id: number;
+  id: any;
   email: string;
   password: string;
   capital: number;

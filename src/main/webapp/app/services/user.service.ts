@@ -20,16 +20,21 @@ export class UserService {
 
   //SET AND GET USER
   setUser(res){
-
-      this.user = new User(res);
-      this.AppService.getCurrentCapital(res).subscribe(res => this.setCapital(res));
-      this.AppService.getActiveStrategy(res).subscribe(res => this.setStrategy(res));
+      this.user = new User(res.user);
+      console.dir(res);
+      this.AppService.getCurrentCapital(res.user).subscribe(res => this.setCapital(res));
+      this.AppService.getActiveStrategy(res.user).subscribe(res => this.setStrategy(res));
 
     return res = {response: 1, data: res};
   }
 
   getUser(){
     return this.user;
+  }
+
+  //AUTH
+  authenticate() {
+    return this.AppService.authenticateUser().map(res => this.printAuth(res));
   }
 
   //LOGIN
@@ -54,6 +59,10 @@ export class UserService {
   
   getCapitalHistory(){
     return this.capitalHistory;
+  }
+  printAuth(res){
+    console.log("Sessione corretta --> response:",res.response);
+    return res;
   }
 
   //SET THE ACTIVE STRATEGY FOR THIS USER

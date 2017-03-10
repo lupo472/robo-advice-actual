@@ -10,28 +10,34 @@ import { UserService } from '../services/user.service';
   templateUrl: './full-layout.component.html'
 })
 export class FullLayoutComponent implements OnInit {
-
-  user: User;
-  capitalHistory: Array<any>;
-
+  
+  user:User;
+  check:number;
   constructor(private UserService: UserService, private AppService:AppService, private router: Router) { }
 
   ngOnInit(): void {
 
-    if (Cookie.check('email')) {
-      this.UserService.setUser({
-        email: Cookie.get('email'),
-        password: Cookie.get('password'),
-        id: Cookie.get('id')
-      });
-    } else {
+/*
+    if(Cookie.check('id')){
+      this.UserService.setUser({user:{
+        id: Cookie.get('id'), email: "a@a", password: "aaaaaa"}});
+    }else{
       console.log("Not Logged");
+      this.router.navigate(['pages/login']);
+    }*/
+    this.UserService.authenticate().subscribe(res => this.checkAuth(res));
+    this.user = this.UserService.getUser();
+    this.AppService.getCapitalPeriod(this.user.id, 0).subscribe(res => this.assignCapitalData(res.data));
+  }
+
+  checkAuth(res):void{
+    console.log(res.response);
+    if(res.response == 0){
+      Cookie.delete("id");
+      Cookie.delete("token");
       this.router.navigate(['pages/login']);
     }
 
-    this.user = this.UserService.getUser();
-    this.AppService.getCapitalPeriod(this.user.id, 0).subscribe(res => this.assignCapitalData(res.data));
-    
   }
 
   public isLoaded: boolean = false;
