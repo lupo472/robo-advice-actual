@@ -18,9 +18,6 @@ public class DefaultStrategyController extends AbstractController {
 	@ResponseBody
 	public GenericResponse<?> getDefaultStrategySet() {
 		List<DefaultStrategyDTO> assets = this.defaultStrategyOp.getDefaultStrategySet();
-		if(assets.isEmpty()){
-			return new GenericResponse<String>(0, "There are no strategies");
-		}
 		return new GenericResponse<List<DefaultStrategyDTO>>(1, assets);
 	}
 

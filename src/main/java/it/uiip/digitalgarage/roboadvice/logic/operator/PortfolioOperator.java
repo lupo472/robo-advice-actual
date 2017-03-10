@@ -132,7 +132,7 @@ public class PortfolioOperator extends AbstractOperator {
     		BigDecimal amountPerAsset = element.getUnits().multiply(data.getValue());
     		amount = amount.add(amountPerAsset);
 		}
-    	return amount;
+    	return currentPortfolioList.isEmpty() ? null : amount ;
     }
     
     public void savePortfolio(List<PortfolioEntity> entities) {
