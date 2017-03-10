@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PortfolioOperator extends AbstractOperator {
 
-    public PortfolioDTO getUserCurrentPortfolio(UserLoggedDTO dto) {
+    public PortfolioDTO getUserCurrentPortfolio(UserRegisteredDTO dto) {
         List<PortfolioEntity> entityList = this.portfolioRep.findLastPortfolioForUser(dto.getId());
         if(entityList.isEmpty()) {
         	return null;
@@ -66,7 +66,7 @@ public class PortfolioOperator extends AbstractOperator {
     	return response;
 	}
 
-    public boolean createUserPortfolio(UserLoggedDTO user) {
+    public boolean createUserPortfolio(UserRegisteredDTO user) {
     	CapitalEntity capitalEntity = this.capitalRep.findLast(user.getId());
     	if(capitalEntity == null) {
     		return false;
@@ -84,7 +84,7 @@ public class PortfolioOperator extends AbstractOperator {
     	return true;
     }
     
-    private void savePortfolioForAssetClass(AssetClassDTO assetClass, BigDecimal amount, UserLoggedDTO user) {
+    private void savePortfolioForAssetClass(AssetClassDTO assetClass, BigDecimal amount, UserRegisteredDTO user) {
     	List<AssetDTO> assets = this.assetConv.convertToDTO(this.assetRep.findByAssetClassId(assetClass.getId()));
     	for (AssetDTO asset : assets) {
 			BigDecimal amountPerAsset = amount.divide(new BigDecimal(100.00), 8, RoundingMode.HALF_UP).multiply(asset.getPercentage());
@@ -109,7 +109,7 @@ public class PortfolioOperator extends AbstractOperator {
     	return units;
     }
 
-    public boolean computeUserPortfolio(UserLoggedDTO user) {
+    public boolean computeUserPortfolio(UserRegisteredDTO user) {
     	List<PortfolioEntity> currentPortfolioList = this.portfolioRep.findLastPortfolioForUser(user.getId());
     	for (PortfolioEntity element : currentPortfolioList) {
     		BigDecimal units = element.getUnits();
@@ -124,7 +124,7 @@ public class PortfolioOperator extends AbstractOperator {
     	return true;
     }
     
-    public BigDecimal evaluatePortfolio(UserLoggedDTO user) {
+    public BigDecimal evaluatePortfolio(UserRegisteredDTO user) {
     	List<PortfolioEntity> currentPortfolioList = this.portfolioRep.findLastPortfolioForUser(user.getId());
     	BigDecimal amount = new BigDecimal(0);
     	for (PortfolioEntity element : currentPortfolioList) {

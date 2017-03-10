@@ -3,7 +3,7 @@ package it.uiip.digitalgarage.roboadvice.service.controller;
 import it.uiip.digitalgarage.roboadvice.RoboadviceApplication;
 import it.uiip.digitalgarage.roboadvice.service.dto.CapitalResponseDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.DataRequestDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.UserRegisteredDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 import org.junit.Test;
@@ -17,10 +17,6 @@ import java.math.BigInteger;
 import java.util.List;
 
 import static org.junit.Assert.*;
-
-/**
- * Created by Luca on 09/03/2017.
- */
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = RoboadviceApplication.class)
@@ -36,7 +32,7 @@ public class CapitalControllerTest {
 
     @Test
     public void getCurrentCapitalValidUser() throws Exception {
-        UserLoggedDTO user = new UserLoggedDTO();
+    	UserRegisteredDTO user = new UserRegisteredDTO();
         user.setId(new Long(23));
         user.setEmail("test@case.it");
         user.setPassword("12345");
@@ -49,7 +45,7 @@ public class CapitalControllerTest {
 
     @Test
     public void getCurrentCapitalInvalidUSer() throws Exception {
-        UserLoggedDTO user = new UserLoggedDTO();
+    	UserRegisteredDTO user = new UserRegisteredDTO();
         user.setId(new Long(0));
         user.setEmail("test@case.it");
         user.setPassword("12345");

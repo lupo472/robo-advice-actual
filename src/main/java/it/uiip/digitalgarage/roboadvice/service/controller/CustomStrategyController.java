@@ -2,7 +2,7 @@ package it.uiip.digitalgarage.roboadvice.service.controller;
 
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyResponseDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.UserRegisteredDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -31,7 +31,7 @@ public class CustomStrategyController extends AbstractController {
     
     @RequestMapping("/getUserCustomStrategySet")
     @ResponseBody
-    public GenericResponse<?> getUserCustomStrategySet(@Valid @RequestBody UserLoggedDTO user){
+    public GenericResponse<?> getUserCustomStrategySet(@Valid @RequestBody UserRegisteredDTO user){
     	List<CustomStrategyResponseDTO> result = this.customStrategyOp.getUserCustomStrategySet(user);
     	if(result.isEmpty()) {
     		return new GenericResponse<String>(0, ControllerConstants.ANY_STRATEGY);
@@ -41,7 +41,7 @@ public class CustomStrategyController extends AbstractController {
 
     @RequestMapping("/getActiveUserCustomStrategy")
     @ResponseBody
-    public GenericResponse<?> getUserCustomStrategyActive(@Valid @RequestBody UserLoggedDTO user){
+    public GenericResponse<?> getUserCustomStrategyActive(@Valid @RequestBody UserRegisteredDTO user){
     	CustomStrategyResponseDTO result = this.customStrategyOp.getActiveUserCustomStrategy(user);
     	if(result == null) {
     		return new GenericResponse<String>(0, ControllerConstants.ANY_ACTIVE_STRATEGY);

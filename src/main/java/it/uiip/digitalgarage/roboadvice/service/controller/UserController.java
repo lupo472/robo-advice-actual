@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.uiip.digitalgarage.roboadvice.service.dto.UserDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.UserRegisteredDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 
@@ -21,8 +21,10 @@ public class UserController extends AbstractController {
 	@ResponseBody
 	public GenericResponse<?> registerUser(@Valid @RequestBody UserDTO userDTO) {
 		if(!this.userOp.isRegistered(userDTO.getEmail())) {
-			UserLoggedDTO registered = this.userOp.registerUser(userDTO);
-			return new GenericResponse<UserLoggedDTO>(1, registered);
+			UserRegisteredDTO registered = this.userOp.registerUser(userDTO);
+			return new GenericResponse<UserRegisteredDTO>(1, registered);
+//			AuthDTO auth = this.userOp.registerUser(userDTO);
+//			return new GenericResponse<AuthDTO>(1, auth);
 		}
 		return new GenericResponse<String>(0, ControllerConstants.EMAIL_ALREADY_REGISTERED);		
 	}
@@ -33,11 +35,11 @@ public class UserController extends AbstractController {
 		if(!this.userOp.isRegistered(userDTO.getEmail())) {
 			return new GenericResponse<String>(0, ControllerConstants.EMAIL_NOT_REGISTERED);
 		}
-		UserLoggedDTO logged = this.userOp.loginUser(userDTO);
+		UserRegisteredDTO logged = this.userOp.loginUser(userDTO);
 		if(logged == null) {
 			return new GenericResponse<String>(0, ControllerConstants.WRONG_PASSWORD);
 		}
-		return new GenericResponse<UserLoggedDTO>(1, logged);
+		return new GenericResponse<UserRegisteredDTO>(1, logged);
 	}
 	
 }
