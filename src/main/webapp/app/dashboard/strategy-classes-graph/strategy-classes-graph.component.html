@@ -20,6 +20,7 @@
 	<div class="card-footer">
 		<ul>
 			<li *ngFor="let i of dataset">
+				<strong>{{i.percentage}}</strong>
 				<div class="text-capitalize">{{i.label}}</div> <strong>{{i.percentage}}%</strong>
 				<div class="progress progress-xs mt-h">
 					<div class="progress-bar bg-success" role="progressbar"

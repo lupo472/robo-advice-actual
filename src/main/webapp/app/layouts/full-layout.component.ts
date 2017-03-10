@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {Cookie} from "ng2-cookies";
+import { Cookie } from "ng2-cookies";
 import { Router } from '@angular/router';
 import { User } from '../model/user';
+import { AppService } from '../services/app.service';
 import { UserService } from '../services/user.service';
 
 @Component({
@@ -9,58 +10,87 @@ import { UserService } from '../services/user.service';
   templateUrl: './full-layout.component.html'
 })
 export class FullLayoutComponent implements OnInit {
-  
-  user:User;
 
-  constructor(private UserService:UserService, private router:Router) { }
-  
-  ngOnInit(): void { 
-    
-    if(Cookie.check('email')){
-        this.UserService.setUser({email: Cookie.get('email'), 
-                                  password: Cookie.get('password'), 
-                                  id: Cookie.get('id')});
-      }else{
+  user: User;
+  capitalHistory: Array<any>;
+
+  constructor(private UserService: UserService, private AppService:AppService, private router: Router) { }
+
+  ngOnInit(): void {
+
+    if (Cookie.check('email')) {
+      this.UserService.setUser({
+        email: Cookie.get('email'),
+        password: Cookie.get('password'),
+        id: Cookie.get('id')
+      });
+    } else {
       console.log("Not Logged");
       this.router.navigate(['pages/login']);
     }
-    
+
     this.user = this.UserService.getUser();
+    this.AppService.getCapitalPeriod(this.user.id, 0).subscribe(res => this.assignCapitalData(res.data));
     
   }
 
-  public disabled:boolean = false;
-  public status:{isopen:boolean} = {isopen: false};
+  public isLoaded: boolean = false;
+  public disabled: boolean = false;
+  public status: { isopen: boolean } = { isopen: false };
 
-  public logout():void{
+  public logout(): void {
     Cookie.deleteAll();
   }
 
-  public toggleDropdown($event:MouseEvent):void {
+  public toggleDropdown($event: MouseEvent): void {
     $event.preventDefault();
     $event.stopPropagation();
     this.status.isopen = !this.status.isopen;
   }
-  
+
   // social box charts
 
-  public socialChartData1:Array<any> = [
-    {
-      data: [65, 59, 84, 84, 51, 55, 40],
-      label: 'Facebook'
-    }
-  ];
+  public capitalData: Array<any>
+
+
+  //  = [
+  //    {
+  //      data: [65, 59, 84, 84, 51, 55, 40],
+  //      label: 'Facebook'
+  //    }  //  ];
   
-  public socialChartLabels:Array<any> = ['January','February','March','April','May','June','July'];
-  public socialChartOptions:any = {
+  public capitalLabels: Array<any>
+
+  //  = ['January','February','March','April','May','June','July'];  
+  assignCapitalData(res) {
+  
+    console.dir(res);
+
+    var data = [];
+    var date = [];
+
+    res.forEach((item, i) => {
+      data.push(item.amount);
+      date.push(item.date);
+    })
+
+    this.capitalData = [{ data: data, label: this.user.email }];
+    console.dir(this.capitalData);
+    this.capitalLabels = date;
+    console.dir(this.capitalLabels);
+    
+    this.isLoaded = true;
+  }
+
+  public socialChartOptions: any = {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
       xAxes: [{
-        display:false,
+        display: false,
       }],
       yAxes: [{
-        display:false,
+        display: false,
       }]
     },
     elements: {
@@ -78,16 +108,16 @@ export class FullLayoutComponent implements OnInit {
       display: false
     }
   };
-  public socialChartColours:Array<any> = [
+  public socialChartColours: Array<any> = [
     {
       backgroundColor: 'rgba(148,159,177,0.2)',
       borderColor: 'rgba(148,159,177,1)',
       pointHoverBackgroundColor: '#fff'
     }
   ];
-  public socialChartLegend:boolean = false;
-  public socialChartType:string = 'line';
-  
+  public socialChartLegend: boolean = false;
+  public socialChartType: string = 'line';
 
-  
+
+
 }

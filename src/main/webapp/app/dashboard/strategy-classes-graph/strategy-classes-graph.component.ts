@@ -104,31 +104,39 @@ export class StrategyClassesGraphComponent implements OnInit {
     responsive: true
   };
   public lineChartColours: Array<any> = [
-    { // grey
-      backgroundColor: 'rgba(148,159,177,0.2)',
-      borderColor: 'rgba(148,159,177,1)',
-      pointBackgroundColor: 'rgba(148,159,177,1)',
+    { // ASSETCLASS1
+      backgroundColor: this.convertHex('#4dbd74', 30),
+      borderColor: '#4dbd74',
+      pointBackgroundColor: '#4dbd74',
       pointBorderColor: '#fff',
       pointHoverBackgroundColor: '#fff',
       pointHoverBorderColor: 'rgba(148,159,177,0.8)'
     },
-    { // dark grey
-      backgroundColor: 'rgba(77,83,96,0.2)',
-      borderColor: 'rgba(77,83,96,1)',
-      pointBackgroundColor: 'rgba(77,83,96,1)',
+    { //ASSETCLASS2
+      backgroundColor: this.convertHex('#63c2de', 30),
+      borderColor: '#63c2de',
+      pointBackgroundColor: '#63c2de',
       pointBorderColor: '#fff',
       pointHoverBackgroundColor: '#fff',
       pointHoverBorderColor: 'rgba(77,83,96,1)'
     },
-    { // grey
-      backgroundColor: 'rgba(148,159,177,0.2)',
-      borderColor: 'rgba(148,159,177,1)',
-      pointBackgroundColor: 'rgba(148,159,177,1)',
+    { //ASSETCLASS3
+      backgroundColor: this.convertHex('#f8cb00', 30),
+      borderColor: '#f8cb00',
+      pointBackgroundColor: '#f8cb00',
       pointBorderColor: '#fff',
       pointHoverBackgroundColor: '#fff',
       pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+    },
+    { //ASSETCLASS4
+      backgroundColor: this.convertHex('#f86c6b', 30),
+      borderColor: '#f86c6b',
+      pointBackgroundColor: '#f86c6b',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(77,83,96,1)'
     }
   ];
-  public lineChartLegend: boolean = false;
+  public lineChartLegend: boolean = true;
   public lineChartType: string = 'line';
 }
