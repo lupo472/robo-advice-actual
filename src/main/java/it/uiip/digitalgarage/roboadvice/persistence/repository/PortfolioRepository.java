@@ -31,7 +31,7 @@ public interface PortfolioRepository extends PagingAndSortingRepository<Portfoli
     public List<PortfolioEntity> findLastPortfolioForUser(Long idUser);
     
     @Query(value = FIND_BY_USERID_ASSETID_AND_DATE, nativeQuery = true)
-    public PortfolioEntity findByUserIdAndAssetIdAndDate(Long userId, Long assetId, LocalDate date);
+    public PortfolioEntity findByUserIdAndAssetIdAndDate(Long userId, Long assetId, String date);
 
     public List<PortfolioEntity> findByUserId(Long userId);
 }

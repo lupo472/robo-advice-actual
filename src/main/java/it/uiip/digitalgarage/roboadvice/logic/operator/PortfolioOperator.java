@@ -95,7 +95,7 @@ public class PortfolioOperator extends AbstractOperator {
 	    	entity.setValue(amountPerAsset);
 	    	entity.setUnits(this.getUnitsForAsset(asset, amountPerAsset));
 	    	entity.setDate(LocalDate.now());
-	    	PortfolioEntity savedEntity = this.portfolioRep.findByUserIdAndAssetIdAndDate(user.getId(), asset.getId(), LocalDate.now());
+	    	PortfolioEntity savedEntity = this.portfolioRep.findByUserIdAndAssetIdAndDate(user.getId(), asset.getId(), LocalDate.now().toString());
 	    	if(savedEntity != null) {
 	    		this.portfolioRep.delete(savedEntity);
 	    	} 
@@ -144,9 +144,8 @@ public class PortfolioOperator extends AbstractOperator {
     
     public void savePortfolio(List<PortfolioEntity> entities) {
     	for (PortfolioEntity entity : entities) {
-    		PortfolioEntity savedEntity = this.portfolioRep.findByUserIdAndAssetIdAndDate(entity.getUser().getId(), entity.getAsset().getId(), LocalDate.now());
-	    	if(savedEntity != null) {
-	    		System.out.println("Sto cancellando");
+    		PortfolioEntity savedEntity = this.portfolioRep.findByUserIdAndAssetIdAndDate(entity.getUser().getId(), entity.getAsset().getId(), LocalDate.now().toString());
+    		if(savedEntity != null) {
 	    		this.portfolioRep.delete(savedEntity);
 	    	}
     		this.portfolioRep.save(entity);
