@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { Cookie } from 'ng2-cookies';
 import { UserService } from '../services/user.service';
 import { Router } from '@angular/router';
+import {isNumber} from "util";
 
 @Component({
   templateUrl: 'login.component.html'
@@ -9,12 +10,12 @@ import { Router } from '@angular/router';
 export class LoginComponent {
   constructor(private UserService: UserService, private router: Router) {
     if (Cookie.check('id')) {
-      this.UserService.setUser({
-        id: Cookie.get('id')
-      });
-
       this.router.navigate(['dashboard']);
+        this.UserService.setUser({user:{
+            id: Cookie.get('id'), email: "a@a", password: "aaaaa"
+        }});
     }
+
   }
   user: any = {};
 
@@ -29,8 +30,8 @@ export class LoginComponent {
   }
 
   public setCookie(data) {
-    Cookie.set('token', data.token);
-    Cookie.set('id', data.id);
+    Cookie.set('token', data.auth.token);
+    Cookie.set('id', data.auth.id);
 
     this.router.navigate(['dashboard']);
   }

@@ -13,27 +13,30 @@ export class FullLayoutComponent implements OnInit {
   user:User;
   check:number;
 
-  constructor(private UserService:UserService, private router:Router) { }
+  constructor(private UserService:UserService, private router:Router) {
+
+
+  }
   
   ngOnInit(): void {
-    this.UserService.authenticate().subscribe(res => this.checkAuth(res));
 
+/*
     if(Cookie.check('id')){
-      this.UserService.setUser({
-        id: Cookie.get('id')});
+      this.UserService.setUser({user:{
+        id: Cookie.get('id'), email: "a@a", password: "aaaaaa"}});
     }else{
       console.log("Not Logged");
       this.router.navigate(['pages/login']);
-    }
-
+    }*/
+    this.UserService.authenticate().subscribe(res => this.checkAuth(res));
     this.user = this.UserService.getUser();
-    
   }
 
   checkAuth(res):void{
     console.log(res.response);
     if(res.response == 0){
-      console.log("CAZZO PUTTANA VAI A LOGIN");
+      Cookie.delete("id");
+      Cookie.delete("token");
       this.router.navigate(['pages/login']);
     }
   }

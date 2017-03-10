@@ -72,6 +72,7 @@ export class AppService {
       var id = "0";
       var token = "";
     }
+    console.log("dati:", id, "-",token);
     return this.http.post(AppConfig.url + 'authenticate', {id:id,token:token})
         .map(response => response.json());
   }
