@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = RoboadviceApplication.class)
-public class CapitalTest {
+public class CapitalControllerTest {
 
     @Autowired
     private CapitalController capitalCtrl;
