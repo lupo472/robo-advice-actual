@@ -1,9 +1,10 @@
 package it.uiip.digitalgarage.roboadvice.test.service;
 
 import it.uiip.digitalgarage.roboadvice.RoboadviceApplication;
-import it.uiip.digitalgarage.roboadvice.service.dto.AssetClassDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 import it.uiip.digitalgarage.roboadvice.service.controller.AssetClassController;
+import it.uiip.digitalgarage.roboadvice.service.dto.AssetClassDTO;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,22 +15,20 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Luca on 10/03/2017.
- */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = RoboadviceApplication.class)
 public class AssetClassControllerTest {
-
+	
     @Autowired
     private AssetClassController assetClassCtrl;
 
     @Test
-    public void getAssetClassSetSuccess() throws Exception {
+    public void getAssetClassSetSuccess() {
         GenericResponse<?> response = this.assetClassCtrl.getAssetClassSet();
-        List<AssetClassDTO> assetClass = (List<AssetClassDTO>) response.getData();
+        List<?> assetClass = (List<?>) response.getData();
         assertEquals(1, response.getResponse());
         assertFalse(assetClass.isEmpty());
+        assertTrue(assetClass.get(0) instanceof AssetClassDTO);
     }
 
 }
