@@ -53,7 +53,7 @@ public class CapitalTest {
 
     }
 
-    @Test
+   /* @Test
     public void computeCapitalValidUser() throws Exception {
         UserRegisteredDTO user = new UserRegisteredDTO();
         user.setId(new Long(23));
@@ -62,7 +62,7 @@ public class CapitalTest {
         boolean response = this.capitalOp.computeCapital(user);
         assertFalse(response);
     }
-
+*/
     @Test
     public void computeCapitalInvalidUser() throws Exception {
         UserRegisteredDTO user = new UserRegisteredDTO();
