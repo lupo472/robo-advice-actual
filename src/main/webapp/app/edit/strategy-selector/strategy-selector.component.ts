@@ -34,11 +34,11 @@ export class StrategySelectorComponent implements OnInit, OnChanges {
         this.arrayColor.push(asset.color);
         this.arrayColors = [{backgroundColor:this.arrayColor,borderWidth:3}];
     }
-    console.log("ngOnInit");
+    
   }
     ngOnChanges(changes:SimpleChanges){
-      console.log("qualcosa è cambiato");
-      console.log(changes);
+      // console.log("qualcosa è cambiato");
+      // console.log(changes);
 
     }
 

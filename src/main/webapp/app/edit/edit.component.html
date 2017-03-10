@@ -31,10 +31,15 @@
 				[lineChartLabels]="lineChartLabels"
 				[lineChartOptions]="lineChartOptions"
 				[lineChartColours]="lineChartColours"
-				[lineChartType]="lineChartType">
+				[lineChartType]="lineChartType"
+				[reset]="reset"
+				>
 			</app-card-asset-class>
 		</div>
-
+		<div *ngIf="!isCustom">
+		<button type="button" class="btn btn-success"
+			(click)="createDefaultStrategy()">Create</button>
+		</div>
 		<div class="col-md-12 text-center" *ngIf="isCustom">
 			<button type="button" class="btn btn-danger"
 				(click)="isCustom = false">Cancel</button>
@@ -42,6 +47,7 @@
 				(click)="confirmStrategy()">Create</button>
 		</div>
 	</div>
+	<!-- <button type="button" (click)="showData()">show data</button> -->
 
 
 </div>
