@@ -11,9 +11,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.Data;
+
 @Entity
 @Table(name = "auth")
-public class AuthEntity {
+public @Data class AuthEntity {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)

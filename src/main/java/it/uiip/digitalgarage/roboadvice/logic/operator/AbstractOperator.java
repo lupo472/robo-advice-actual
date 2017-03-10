@@ -40,6 +40,9 @@ public abstract class AbstractOperator {
 	
 	@Autowired
 	protected CapitalRepository capitalRep;
+	
+	@Autowired
+	protected AuthRepository authRep;
 
 	protected GenericConverter<UserEntity, UserDTO> userConv = new UserConverter();
 		
@@ -50,6 +53,8 @@ public abstract class AbstractOperator {
 	protected GenericConverter<FinancialDataEntity, FinancialDataDTO> financialDataConv = new FinancialDataConverter();
 
 	protected GenericConverter<CapitalEntity, CapitalDTO> capitalConv = new CapitalConverter();
+	
+	protected GenericConverter<AuthEntity, AuthDTO> authConv = new AuthConverter();
 	
 	protected GenericWrapper<PortfolioEntity, PortfolioDTO> portfolioWrap = new PortfolioWrapper();
 

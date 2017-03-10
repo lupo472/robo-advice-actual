@@ -1,8 +1,9 @@
-package it.uiip.digitalgarage.roboadvice.service.controller;
+package it.uiip.digitalgarage.roboadvice.test.service;
 
 import it.uiip.digitalgarage.roboadvice.RoboadviceApplication;
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyResponseDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserRegisteredDTO;
+import it.uiip.digitalgarage.roboadvice.service.controller.CustomStrategyController;
 import it.uiip.digitalgarage.roboadvice.service.dto.*;
 import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
@@ -11,7 +12,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import sun.net.www.content.text.Generic;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

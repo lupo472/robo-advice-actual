@@ -1,11 +1,16 @@
-package it.uiip.digitalgarage.roboadvice.service.controller;
+package it.uiip.digitalgarage.roboadvice.test.service;
 
 import it.uiip.digitalgarage.roboadvice.RoboadviceApplication;
+import it.uiip.digitalgarage.roboadvice.service.dto.AssetClassDTO;
+import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
+import it.uiip.digitalgarage.roboadvice.service.controller.AssetClassController;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -21,8 +26,10 @@ public class AssetClassControllerTest {
 
     @Test
     public void getAssetClassSetSuccess() throws Exception {
-
-
+        GenericResponse<?> response = this.assetClassCtrl.getAssetClassSet();
+        List<AssetClassDTO> assetClass = (List<AssetClassDTO>) response.getData();
+        assertEquals(1, response.getResponse());
+        assertFalse(assetClass.isEmpty());
     }
 
 }

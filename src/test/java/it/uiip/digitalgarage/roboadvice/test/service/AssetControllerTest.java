@@ -1,6 +1,7 @@
-package it.uiip.digitalgarage.roboadvice.service.controller;
+package it.uiip.digitalgarage.roboadvice.test.service;
 
 import it.uiip.digitalgarage.roboadvice.RoboadviceApplication;
+import it.uiip.digitalgarage.roboadvice.service.controller.AssetController;
 import it.uiip.digitalgarage.roboadvice.service.dto.AssetDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 import org.junit.Before;
