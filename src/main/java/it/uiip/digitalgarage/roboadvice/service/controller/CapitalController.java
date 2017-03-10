@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.uiip.digitalgarage.roboadvice.service.dto.CapitalDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CapitalResponseDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.UserRegisteredDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 
@@ -30,7 +30,7 @@ public class CapitalController extends AbstractController {
 	
 	@RequestMapping("/getCurrentCapital")
     @ResponseBody
-	public GenericResponse<?> getCurrentCapital(@Valid @RequestBody UserLoggedDTO user){
+	public GenericResponse<?> getCurrentCapital(@Valid @RequestBody UserRegisteredDTO user){
 		CapitalResponseDTO result = this.capitalOp.getCurrentCapital(user);
 		if(result == null) {
 			return new GenericResponse<String>(0, ControllerConstants.ANY_CAPITAL);
@@ -40,7 +40,7 @@ public class CapitalController extends AbstractController {
 
 	@RequestMapping("/computeCapital")
 	@ResponseBody
-	public GenericResponse<?> computeCapital(@Valid @RequestBody UserLoggedDTO user){
+	public GenericResponse<?> computeCapital(@Valid @RequestBody UserRegisteredDTO user){
 		boolean done = this.capitalOp.computeCapital(user);
 		if(!done) {
 			return new GenericResponse<String>(0, ControllerConstants.PROBLEM);

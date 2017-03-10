@@ -14,7 +14,7 @@ import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetClassEntity;
 public interface AssetClassRepository extends PagingAndSortingRepository<AssetClassEntity, Long> {
 
 	//@Query(value = "SELECT * FROM asset_class ORDER BY id", nativeQuery = true)
-	public List<AssetClassEntity> findAllOrderById();
+	public List<AssetClassEntity> findAllByOrderById();
 
 	public AssetClassEntity findById(Long id);
 		

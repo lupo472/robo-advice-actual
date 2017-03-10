@@ -10,12 +10,15 @@
 	<div class="text-muted text-uppercase font-weight-bold font-xs">My Capital</div>	
 	</div> 
 	
-	<div class="card-block p-0 clearfix">
-		<canvas baseChart class="chart" [datasets]="socialChartData1"
-			[labels]="socialChartLabels" [options]="socialChartOptions"
+	<div class="card-block p-0 clearfix" *ngIf="isLoaded">
+		<canvas baseChart class="chart" [datasets]="capitalData"
+			[labels]="capitalLabels" [options]="socialChartOptions"
 			[colors]="socialChartColours" [legend]="socialChartLegend"
 			[chartType]="socialChartType" (chartHover)="chartHovered($event)"
 			(chartClick)="chartClicked($event)"></canvas>
+	</div>
+	<div class="card-block p-0 clearfix" *ngIf="!isLoaded">
+		<div class="h2 text-primary mb-0 pt-1">DATA NOT YET AVAILABLE</div>
 	</div>
 
 	<!-- RIGHT SIDE NAVBAR -->
@@ -26,7 +29,7 @@
 			role="button" aria-haspopup="true" aria-expanded="false"
 			dropdownToggle><img src="assets/img/avatars/9.jpg"
 				class="img-avatar" alt="admin@bootstrapmaster.com"> <span
-				class="hidden-md-down">My Name</span> </a>
+				class="hidden-md-down">{{user.email}}</span> </a>
 			<div class="dropdown-menu dropdown-menu-right" dropdownMenu
 				aria-labelledby="simple-dropdown">
 

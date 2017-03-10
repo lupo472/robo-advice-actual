@@ -1,9 +1,10 @@
 package it.uiip.digitalgarage.roboadvice.service.controller;
 
 import it.uiip.digitalgarage.roboadvice.RoboadviceApplication;
+import it.uiip.digitalgarage.roboadvice.logic.operator.CapitalOperator;
 import it.uiip.digitalgarage.roboadvice.service.dto.CapitalResponseDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.DataRequestDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.UserRegisteredDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 import org.junit.Test;
@@ -18,38 +19,31 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Luca on 09/03/2017.
- */
-
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = RoboadviceApplication.class)
-public class CapitalControllerTest {
+public class CapitalTest {
 
     @Autowired
     private CapitalController capitalCtrl;
 
-    @Test
-    public void addCapital() throws Exception {
-
-    }
+    @Autowired
+    private CapitalOperator capitalOp;
 
     @Test
     public void getCurrentCapitalValidUser() throws Exception {
-        UserLoggedDTO user = new UserLoggedDTO();
+    	UserRegisteredDTO user = new UserRegisteredDTO();
         user.setId(new Long(23));
         user.setEmail("test@case.it");
         user.setPassword("12345");
         GenericResponse<CapitalResponseDTO> response = (GenericResponse<CapitalResponseDTO>) this.capitalCtrl.getCurrentCapital(user);
         assertEquals(user.getId(), response.getData().getIdUser());
         assertEquals(1, response.getResponse());
-        assertEquals(new BigDecimal(BigInteger.valueOf(0), 4), response.getData().getAmount());
-        assertEquals("2017-03-09", response.getData().getDate());
+        assertFalse(response.getData().getAmount() == null);
     }
 
     @Test
     public void getCurrentCapitalInvalidUSer() throws Exception {
-        UserLoggedDTO user = new UserLoggedDTO();
+    	UserRegisteredDTO user = new UserRegisteredDTO();
         user.setId(new Long(0));
         user.setEmail("test@case.it");
         user.setPassword("12345");
@@ -60,10 +54,26 @@ public class CapitalControllerTest {
     }
 
     @Test
-    public void computeCapital() throws Exception {
-
+    public void computeCapitalValidUser() throws Exception {
+        UserRegisteredDTO user = new UserRegisteredDTO();
+        user.setId(new Long(23));
+        user.setEmail("test@case.it");
+        user.setPassword("12345");
+        boolean response = this.capitalOp.computeCapital(user);
+        assertFalse(response);
     }
 
+    @Test
+    public void computeCapitalInvalidUser() throws Exception {
+        UserRegisteredDTO user = new UserRegisteredDTO();
+        user.setId(new Long(0));
+        user.setEmail("test@case.it");
+        user.setPassword("12345");
+        boolean response = this.capitalOp.computeCapital(user);
+        assertFalse(response);
+    }
+
+    /*
     @Test
     public void getCapitalPeriodValidUserSingleDay() throws Exception {
         DataRequestDTO dto = new DataRequestDTO();
@@ -73,21 +83,32 @@ public class CapitalControllerTest {
         assertEquals(dto.getId(), response.getData().get(0).getIdUser());
         assertFalse(response.getData().isEmpty());
         assertTrue(response.getData().size() == 1);
-        assertEquals("2017-03-09", response.getData().get(0).getDate());
+    }
+    */
+
+    @Test
+    public void getCapitalPeriodValidUserAllDays() throws Exception {
+        DataRequestDTO dto = new DataRequestDTO();
+        dto.setId(new Long(23));
+        dto.setPeriod(0);
+        GenericResponse<List<CapitalResponseDTO>> response = (GenericResponse<List<CapitalResponseDTO>>) this.capitalCtrl.getCapitalPeriod(dto);
+        assertEquals(dto.getId(), response.getData().get(0).getIdUser());
+        assertFalse(response.getData().isEmpty());
+        assertTrue(response.getData().size() > 1);
     }
 
     @Test
     public void getCapitalPeriodValidUserMoreDays() throws Exception {
         DataRequestDTO dto = new DataRequestDTO();
         dto.setId(new Long(23));
-        dto.setPeriod(5);
+        dto.setPeriod(1000);
         GenericResponse<List<CapitalResponseDTO>> response = (GenericResponse<List<CapitalResponseDTO>>) this.capitalCtrl.getCapitalPeriod(dto);
         assertFalse(response.getData().isEmpty());
         assertTrue(response.getData().size() > 1);
         assertEquals(dto.getId(), response.getData().get(0).getIdUser());
-        assertEquals("2017-03-09", response.getData().get(0).getDate());
+        assertEquals("2017-03-07", response.getData().get(0).getDate());
         assertEquals(dto.getId(), response.getData().get(1).getIdUser());
-        assertEquals("2017-03-07", response.getData().get(1).getDate());
+        assertEquals("2017-03-09", response.getData().get(1).getDate());
     }
 
 }

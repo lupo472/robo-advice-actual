@@ -1,5 +1,5 @@
 import { AppConfig } from '../../services/app.config';
-import { Component, OnInit, Input} from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges} from '@angular/core';
 import { StrategyService } from '../../services/strategy.service';
 
 @Component({
@@ -7,7 +7,7 @@ import { StrategyService } from '../../services/strategy.service';
   templateUrl: './strategy-selector.component.html',
   styleUrls: ['./strategy-selector.component.scss']
 })
-export class StrategySelectorComponent implements OnInit {
+export class StrategySelectorComponent implements OnInit, OnChanges {
 
   @Input() data;
   @Input() labels;
@@ -34,11 +34,19 @@ export class StrategySelectorComponent implements OnInit {
         this.arrayColor.push(asset.color);
         this.arrayColors = [{backgroundColor:this.arrayColor,borderWidth:3}];
     }
+    console.log("ngOnInit");
+  }
+    ngOnChanges(changes:SimpleChanges){
+      console.log("qualcosa è cambiato");
+      console.log(changes);
+
+    }
+
     //  console.log("strategy inside");
     //  console.log(this.arrayPercentage);
     //  console.log(this.arrayColors);
 
-   }
+
 
   public chartHovered(e: any): void {
     console.log(e);

@@ -54,6 +54,11 @@ export class AppService {
     return this.http.post(AppConfig.url + 'getCurrentCapital', user)
       .map(response => response.json());
   }
+  
+  getCapitalPeriod(id, period){
+    return this.http.post(AppConfig.url + 'getCapitalPeriod', {id: id, period: period})
+      .map(response => response.json());
+  }
 
   setCustomStrategy(strategy){
     return this.http.post(AppConfig.url + 'setCustomStrategy', strategy)

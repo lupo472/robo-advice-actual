@@ -14,10 +14,10 @@ export class StrategyClassesGraphComponent implements OnInit {
   user: any;
   public portfolio = [];
 
-  public lineChartLabels = [];
-  public lineChartData = [{}, {}, {}, {}];
+  public dataset = [];
+  public date = [];
 
-  public data = [];
+  public render: boolean = false;
 
   ngOnInit() {
     this.user = this.UserService.getUser();
@@ -32,7 +32,6 @@ export class StrategyClassesGraphComponent implements OnInit {
 
       var percentage = [];
       var name = [];
-      var date = [];
 
       this.portfolio.forEach((item, index) => {
 
@@ -42,43 +41,35 @@ export class StrategyClassesGraphComponent implements OnInit {
         var id = [];
         var assetClass = [];
 
-        for (var k = 0; k < 4; k++) {
+        portfolioElem.forEach((element, i) => {
+          assetClass[i] = element.assetClassStrategy.assetClass;
 
-          if (value[k] == undefined) {
-            value[k] = [];
+          var j = assetClass[i].id - 1;
+
+          if (value[j] == undefined) {
+            value[j] = [];
           }
-          
-          value[k][index] = 0;
-              percentage[k] = 0;
-              name[k] = '';
 
-          portfolioElem.forEach((element, i) => {
-            assetClass[i] = element.assetClassStrategy.assetClass;
+          value[j][index] = element.value;
+          percentage[j] = element.assetClassStrategy.percentage;
+          name[j] = assetClass[i].name;
 
-            var j = assetClass[i].id - 1;
+          this.dataset[j] = { data: value[j], label: name[j], percentage: percentage[j] };
+        })
 
-            if (k == j) {
-              value[k][index] = element.value;
-              percentage[k] = element.assetClassStrategy.percentage;
-              name[k] = assetClass[i].name;
-            }
-          })
-          
-          this.data[k] = { data: value[k], label: name[k], percentage: percentage[k] };
-        }
-        date.push(item.date);
+        this.date.push(item.date);
       })
-
-      this.lineChartLabels = date;
-      this.lineChartData = this.data;
-
-      console.dir(this.lineChartData);
-      console.dir(this.lineChartLabels);
 
     } else {
       alert(res.data);
     }
+
+    this.render = true;
+
   }
+
+  public lineChartLabels = this.date;
+  public lineChartData = this.dataset;
 
   //COLORS
   public brandPrimary: string = '#20a8d8';
@@ -113,31 +104,39 @@ export class StrategyClassesGraphComponent implements OnInit {
     responsive: true
   };
   public lineChartColours: Array<any> = [
-    { // grey
-      backgroundColor: 'rgba(148,159,177,0.2)',
-      borderColor: 'rgba(148,159,177,1)',
-      pointBackgroundColor: 'rgba(148,159,177,1)',
+    { // ASSETCLASS1
+      backgroundColor: this.convertHex('#4dbd74', 30),
+      borderColor: '#4dbd74',
+      pointBackgroundColor: '#4dbd74',
       pointBorderColor: '#fff',
       pointHoverBackgroundColor: '#fff',
       pointHoverBorderColor: 'rgba(148,159,177,0.8)'
     },
-    { // dark grey
-      backgroundColor: 'rgba(77,83,96,0.2)',
-      borderColor: 'rgba(77,83,96,1)',
-      pointBackgroundColor: 'rgba(77,83,96,1)',
+    { //ASSETCLASS2
+      backgroundColor: this.convertHex('#63c2de', 30),
+      borderColor: '#63c2de',
+      pointBackgroundColor: '#63c2de',
       pointBorderColor: '#fff',
       pointHoverBackgroundColor: '#fff',
       pointHoverBorderColor: 'rgba(77,83,96,1)'
     },
-    { // grey
-      backgroundColor: 'rgba(148,159,177,0.2)',
-      borderColor: 'rgba(148,159,177,1)',
-      pointBackgroundColor: 'rgba(148,159,177,1)',
+    { //ASSETCLASS3
+      backgroundColor: this.convertHex('#f8cb00', 30),
+      borderColor: '#f8cb00',
+      pointBackgroundColor: '#f8cb00',
       pointBorderColor: '#fff',
       pointHoverBackgroundColor: '#fff',
       pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+    },
+    { //ASSETCLASS4
+      backgroundColor: this.convertHex('#f86c6b', 30),
+      borderColor: '#f86c6b',
+      pointBackgroundColor: '#f86c6b',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(77,83,96,1)'
     }
   ];
-  public lineChartLegend: boolean = false;
+  public lineChartLegend: boolean = true;
   public lineChartType: string = 'line';
 }

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyResponseDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.UserRegisteredDTO;
 
 @Service
 public class SchedulingOperator extends AbstractOperator {
@@ -33,8 +33,8 @@ public class SchedulingOperator extends AbstractOperator {
 	@Scheduled(cron = "0 0 10 * * *")
 	public void scheduleTask() {
 		quandlOp.updateFinancialDataSet();
-		List<UserLoggedDTO> users = userOp.getAllUsers();
-		for (UserLoggedDTO user : users) {
+		List<UserRegisteredDTO> users = userOp.getAllUsers();
+		for (UserRegisteredDTO user : users) {
 			PortfolioDTO currentPortfolio = portfolioOp.getUserCurrentPortfolio(user);
 			if(currentPortfolio == null) {
 				boolean created = portfolioOp.createUserPortfolio(user);
