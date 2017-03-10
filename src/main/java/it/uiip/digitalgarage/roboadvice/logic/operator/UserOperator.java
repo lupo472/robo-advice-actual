@@ -1,21 +1,24 @@
 package it.uiip.digitalgarage.roboadvice.logic.operator;
 
-import java.math.BigInteger;
-import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
+import it.uiip.digitalgarage.roboadvice.service.dto.AuthDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.LoginDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserRegisteredDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.HashFunction;
 
 @Service
 public class UserOperator extends AbstractOperator {
+
+	@Autowired
+	private AuthOperator authOp;
 	
 	public UserRegisteredDTO registerUser(UserDTO userDTO) {
 		UserEntity userEntity = this.userConv.convertToEntity(userDTO);
@@ -23,23 +26,21 @@ public class UserOperator extends AbstractOperator {
 		userEntity.setPassword(password);
 		userEntity.setDate(LocalDate.now());
 		userEntity = userRep.save(userEntity);
-		UserRegisteredDTO userRegistered = (UserRegisteredDTO) this.userConv.convertToDTO(userEntity);
-		return userRegistered;
-//		AuthDTO auth = new AuthDTO();
-//		auth.setIdUser(userEntity.getId());
-//		Random random = new SecureRandom();
-//		String token = new BigInteger(130, random).toString(32);
-//		auth.setToken(token);
-//		return auth;
+		UserRegisteredDTO userLoggedDTO = (UserRegisteredDTO) this.userConv.convertToDTO(userEntity);
+		return userLoggedDTO;
 	}
 	
-	public UserRegisteredDTO loginUser(UserDTO userDTO) {
+	public LoginDTO loginUser(UserDTO userDTO) {
 		UserEntity userEntity = this.userRep.findByEmail(userDTO.getEmail());
 		String hashedPassword = HashFunction.hashStringSHA256(userDTO.getPassword());
 		if(userEntity.getPassword().equals(hashedPassword)) {
-			UserRegisteredDTO userLoggedDTO = (UserRegisteredDTO) this.userConv.convertToDTO(userEntity);
-			return userLoggedDTO;
+			LoginDTO login = new LoginDTO();
+			login.setUser((UserRegisteredDTO) this.userConv.convertToDTO(userEntity));
+			AuthDTO auth = this.authOp.createAuth(userEntity);
+			login.setAuth(auth);
+			return login;
 		}
+		
 		return null;
 	}
 	
