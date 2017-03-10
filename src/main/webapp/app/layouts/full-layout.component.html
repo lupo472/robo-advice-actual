@@ -1,14 +1,10 @@
 <header class="app-header navbar">
 
 	<!-- BUTTON WITH LOGO -->
-	<button class="navbar-toggler mobile-sidebar-toggler hidden-lg-up"
+<!--	<button class="navbar-toggler mobile-sidebar-toggler hidden-lg-up"
 		type="button">&#9776;</button>
-	<a class="navbar-brand navbar-toggler sidebar-toggler" href="#"></a>
-	
-	<div class="card-block p-0 clearfix">
-	<div class="h4 text-primary mb-0 pt-1">${{user.capital}}</div>
-	<div class="text-muted text-uppercase font-weight-bold font-xs">My Capital</div>	
-	</div> 
+ 	<a class="navbar-brand navbar-toggler sidebar-toggler" href="#"></a> -->
+ 	<a class="navbar-brand navbar-toggler" href="#"></a>
 	
 	<div class="card-block p-0 clearfix" *ngIf="isLoaded">
 		<canvas baseChart class="chart" [datasets]="capitalData"
@@ -18,12 +14,17 @@
 			(chartClick)="chartClicked($event)"></canvas>
 	</div>
 	<div class="card-block p-0 clearfix" *ngIf="!isLoaded">
-		<div class="h2 text-primary mb-0 pt-1">DATA NOT YET AVAILABLE</div>
+		<div class="h3 text-primary mb-0 pt-1">{{response}}</div>
 	</div>
+	
+	<div class="card-block p-0 clearfix">
+	<div class="h4 text-primary mb-0 pt-1">${{user.capital}}</div>
+	<div class="text-muted text-uppercase font-weight-bold font-xs">My Capital</div>	
+	</div> 
 
 	<!-- RIGHT SIDE NAVBAR -->
 	<ul class="nav navbar-nav ml-auto">
-
+	
 		<li class="nav-item dropdown" dropdown>
 			<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
 			role="button" aria-haspopup="true" aria-expanded="false"
@@ -38,6 +39,7 @@
 				</div>
 
 				<a class="dropdown-item" href="#"><i class="fa fa-user"></i>Profile</a>
+				<a class="dropdown-item" [routerLink]="['/edit'] " href="#"><i class="fa fa-wrench"></i>Strategy</a>
 				<a class="dropdown-item" [routerLink]="['/pages/login'] " href="#" (click)="logout()"><i class="fa fa-lock"></i> Logout</a>
 			</div>
 		</li>

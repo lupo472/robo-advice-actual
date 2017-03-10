@@ -27,7 +27,7 @@ export class FullLayoutComponent implements OnInit {
     }*/
     this.UserService.authenticate().subscribe(res => this.checkAuth(res));
     this.user = this.UserService.getUser();
-    this.AppService.getCapitalPeriod(this.user.id, 0).subscribe(res => this.assignCapitalData(res.data));
+    this.AppService.getCapitalPeriod(this.user.id, 0).subscribe(res => this.assignCapitalData(res));
   }
 
   checkAuth(res):void{
@@ -43,6 +43,8 @@ export class FullLayoutComponent implements OnInit {
   public isLoaded: boolean = false;
   public disabled: boolean = false;
   public status: { isopen: boolean } = { isopen: false };
+  
+  public response = 'Data not yet available'
 
   public logout(): void {
     Cookie.deleteAll();
@@ -57,25 +59,17 @@ export class FullLayoutComponent implements OnInit {
   // social box charts
 
   public capitalData: Array<any>
-
-
-  //  = [
-  //    {
-  //      data: [65, 59, 84, 84, 51, 55, 40],
-  //      label: 'Facebook'
-  //    }  //  ];
   
   public capitalLabels: Array<any>
-
-  //  = ['January','February','March','April','May','June','July'];  
-  assignCapitalData(res) {
   
-    console.dir(res);
-
+  assignCapitalData(res) {
+    
+    if(res.response == 1){
+  
     var data = [];
     var date = [];
 
-    res.forEach((item, i) => {
+    res.data.forEach((item, i) => {
       data.push(item.amount);
       date.push(item.date);
     })
@@ -86,6 +80,9 @@ export class FullLayoutComponent implements OnInit {
     console.dir(this.capitalLabels);
     
     this.isLoaded = true;
+    }else{
+      this.response = 'Come back tomorrow'
+    }
   }
 
   public socialChartOptions: any = {
@@ -118,7 +115,10 @@ export class FullLayoutComponent implements OnInit {
     {
       backgroundColor: 'rgba(148,159,177,0.2)',
       borderColor: 'rgba(148,159,177,1)',
-      pointHoverBackgroundColor: '#fff'
+      pointBackgroundColor: '#20a8d8',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#20a8d8',
+      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
     }
   ];
   public socialChartLegend: boolean = false;

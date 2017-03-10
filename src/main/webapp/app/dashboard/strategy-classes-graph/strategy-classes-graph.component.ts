@@ -1,6 +1,6 @@
 import { AppService } from '../../services/app.service';
 import { UserService } from '../../services/user.service';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, KeyValueChangeRecord } from '@angular/core';
 
 @Component({
   selector: 'app-strategy-classes-graph',
@@ -18,6 +18,7 @@ export class StrategyClassesGraphComponent implements OnInit {
   public date = [];
 
   public render: boolean = false;
+  public response:string = 'Data not yet available';
 
   ngOnInit() {
     this.user = this.UserService.getUser();
@@ -54,18 +55,29 @@ export class StrategyClassesGraphComponent implements OnInit {
           percentage[j] = element.assetClassStrategy.percentage;
           name[j] = assetClass[i].name;
 
-          this.dataset[j] = { data: value[j], label: name[j], percentage: percentage[j] };
+          this.dataset[j] = { data: value[j], label: name[j], percentage: percentage[j], value: value[j][index] };
         })
-
+        
         this.date.push(item.date);
       })
-
-    } else {
-      alert(res.data);
-    }
+      
+      for(var iter = 0; iter < this.dataset.length-1; iter++){
+          console.log("Object: ",iter, this.dataset[iter]);
+          if(this.dataset[iter] == undefined){
+            console.log("splice");
+            this.dataset.splice(iter, 1);
+            iter = 0;
+          }
+        }
 
     this.render = true;
 
+    }else{
+      this.response = res.data;
+    } 
+
+    console.log("dataset: ", this.dataset);
+    console.log("date: ", this.date);
   }
 
   public lineChartLabels = this.date;

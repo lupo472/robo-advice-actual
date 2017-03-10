@@ -44,7 +44,7 @@ export class UserService {
 
   //REGISTER
   registerUser(user){
-    return this.AppService.registerUser(user).map(res => { if(res.response == 1){return this.setUser(res.data)}else{return res}});
+    return this.AppService.registerUser(user).map(res => { if(res.response == 1){return this.setUser({user:res.data})}else{return res}});
   }
 
   //INITIAL REGISTER CAPITAL
