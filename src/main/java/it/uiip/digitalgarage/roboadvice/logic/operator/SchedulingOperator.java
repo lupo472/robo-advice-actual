@@ -47,7 +47,7 @@ public class SchedulingOperator extends AbstractOperator {
 			CustomStrategyResponseDTO strategy = customStrategyOp.getActiveUserCustomStrategy(user);
 			if(strategy != null && customStrategyOp.getUserCustomStrategySet(user).size() > 1 && 
 					(strategy.getDate().equals(LocalDate.now().toString()) || 
-					strategy.getDate().equals(LocalDate.now().minus(Period.ofDays(1)).toString()))) {
+					 strategy.getDate().equals(LocalDate.now().minus(Period.ofDays(1)).toString()))) {
 				boolean recreated = portfolioOp.createUserPortfolio(user);
 				if(recreated) {
 					System.out.println("Re-created portfolio for user: " + user.getId());
