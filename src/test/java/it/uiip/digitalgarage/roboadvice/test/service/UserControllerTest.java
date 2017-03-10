@@ -1,4 +1,4 @@
-package it.uiip.digitalgarage.roboadvice.service.controller;
+package it.uiip.digitalgarage.roboadvice.test.service;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
