@@ -10,33 +10,41 @@ import { UserService } from '../services/user.service';
   templateUrl: './full-layout.component.html'
 })
 export class FullLayoutComponent implements OnInit {
-
-  user: User;
-  capitalHistory: Array<any>;
-
+  
+  user:User;
+  check:number;
   constructor(private UserService: UserService, private AppService:AppService, private router: Router) { }
 
   ngOnInit(): void {
 
-    if (Cookie.check('email')) {
-      this.UserService.setUser({
-        email: Cookie.get('email'),
-        password: Cookie.get('password'),
-        id: Cookie.get('id')
-      });
-    } else {
+/*
+    if(Cookie.check('id')){
+      this.UserService.setUser({user:{
+        id: Cookie.get('id'), email: "a@a", password: "aaaaaa"}});
+    }else{
       console.log("Not Logged");
+      this.router.navigate(['pages/login']);
+    }*/
+    this.UserService.authenticate().subscribe(res => this.checkAuth(res));
+    this.user = this.UserService.getUser();
+    this.AppService.getCapitalPeriod(this.user.id, 0).subscribe(res => this.assignCapitalData(res));
+  }
+
+  checkAuth(res):void{
+    console.log(res.response);
+    if(res.response == 0){
+      Cookie.delete("id");
+      Cookie.delete("token");
       this.router.navigate(['pages/login']);
     }
 
-    this.user = this.UserService.getUser();
-    this.AppService.getCapitalPeriod(this.user.id, 0).subscribe(res => this.assignCapitalData(res.data));
-    
   }
 
   public isLoaded: boolean = false;
   public disabled: boolean = false;
   public status: { isopen: boolean } = { isopen: false };
+  
+  public response = 'Data not yet available'
 
   public logout(): void {
     Cookie.deleteAll();
@@ -51,25 +59,17 @@ export class FullLayoutComponent implements OnInit {
   // social box charts
 
   public capitalData: Array<any>
-
-
-  //  = [
-  //    {
-  //      data: [65, 59, 84, 84, 51, 55, 40],
-  //      label: 'Facebook'
-  //    }  //  ];
   
   public capitalLabels: Array<any>
-
-  //  = ['January','February','March','April','May','June','July'];  
-  assignCapitalData(res) {
   
-    console.dir(res);
-
+  assignCapitalData(res) {
+    
+    if(res.response == 1){
+  
     var data = [];
     var date = [];
 
-    res.forEach((item, i) => {
+    res.data.forEach((item, i) => {
       data.push(item.amount);
       date.push(item.date);
     })
@@ -80,6 +80,9 @@ export class FullLayoutComponent implements OnInit {
     console.dir(this.capitalLabels);
     
     this.isLoaded = true;
+    }else{
+      this.response = 'Come back tomorrow'
+    }
   }
 
   public socialChartOptions: any = {
@@ -112,7 +115,10 @@ export class FullLayoutComponent implements OnInit {
     {
       backgroundColor: 'rgba(148,159,177,0.2)',
       borderColor: 'rgba(148,159,177,1)',
-      pointHoverBackgroundColor: '#fff'
+      pointBackgroundColor: '#20a8d8',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#20a8d8',
+      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
     }
   ];
   public socialChartLegend: boolean = false;

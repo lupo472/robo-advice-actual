@@ -1,4 +1,4 @@
-package com.roboadvice;
+package it.uiip.digitalgarage.roboadvice.test.service;
 
 import static org.junit.Assert.*;
 

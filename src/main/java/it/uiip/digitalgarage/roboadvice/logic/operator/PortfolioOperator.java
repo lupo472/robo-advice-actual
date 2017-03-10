@@ -95,7 +95,7 @@ public class PortfolioOperator extends AbstractOperator {
 	    	entity.setValue(amountPerAsset);
 	    	entity.setUnits(this.getUnitsForAsset(asset, amountPerAsset));
 	    	entity.setDate(LocalDate.now());
-	    	PortfolioEntity savedEntity = this.portfolioRep.findByUserIdAndAssetIdAndDate(user.getId(), asset.getId(), LocalDate.now());
+	    	PortfolioEntity savedEntity = this.portfolioRep.findByUserIdAndAssetIdAndDate(user.getId(), asset.getId(), LocalDate.now().toString());
 	    	if(savedEntity != null) {
 	    		this.portfolioRep.delete(savedEntity);
 	    	} 
@@ -111,16 +111,23 @@ public class PortfolioOperator extends AbstractOperator {
 
     public boolean computeUserPortfolio(UserRegisteredDTO user) {
     	List<PortfolioEntity> currentPortfolioList = this.portfolioRep.findLastPortfolioForUser(user.getId());
+    	List<PortfolioEntity> newPortfolioList = new ArrayList<>();
     	for (PortfolioEntity element : currentPortfolioList) {
     		BigDecimal units = element.getUnits();
     		BigDecimal newValue = this.getValueForAsset(units, element.getAsset());
     		if(newValue == null) {
     			return false;
     		}
-    		element.setValue(newValue);
-    		element.setDate(LocalDate.now());
+    		PortfolioEntity newElement = new PortfolioEntity();
+    		newElement.setAsset(element.getAsset());
+    		newElement.setAssetClass(element.getAssetClass());
+    		newElement.setUser(element.getUser());
+    		newElement.setUnits(units);
+    		newElement.setValue(newValue);
+    		newElement.setDate(LocalDate.now());
+    		newPortfolioList.add(newElement);
 		}
-    	this.savePortfolio(currentPortfolioList);
+    	this.savePortfolio(newPortfolioList);
     	return true;
     }
     
@@ -132,13 +139,13 @@ public class PortfolioOperator extends AbstractOperator {
     		BigDecimal amountPerAsset = element.getUnits().multiply(data.getValue());
     		amount = amount.add(amountPerAsset);
 		}
-    	return amount;
+    	return currentPortfolioList.isEmpty() ? null : amount ;
     }
     
     public void savePortfolio(List<PortfolioEntity> entities) {
     	for (PortfolioEntity entity : entities) {
-    		PortfolioEntity savedEntity = this.portfolioRep.findByUserIdAndAssetIdAndDate(entity.getUser().getId(), entity.getAsset().getId(), LocalDate.now());
-	    	if(savedEntity != null) {
+    		PortfolioEntity savedEntity = this.portfolioRep.findByUserIdAndAssetIdAndDate(entity.getUser().getId(), entity.getAsset().getId(), LocalDate.now().toString());
+    		if(savedEntity != null) {
 	    		this.portfolioRep.delete(savedEntity);
 	    	}
     		this.portfolioRep.save(entity);

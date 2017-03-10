@@ -2,21 +2,20 @@ import { Component, ViewChild } from '@angular/core';
 import { Cookie } from 'ng2-cookies';
 import { UserService } from '../services/user.service';
 import { Router } from '@angular/router';
+import {isNumber} from "util";
 
 @Component({
   templateUrl: 'login.component.html'
 })
 export class LoginComponent {
   constructor(private UserService: UserService, private router: Router) {
-    if (Cookie.check('email')) {
-      this.UserService.setUser({
-        email: Cookie.get('email'),
-        password: Cookie.get('password'),
-        id: Cookie.get('id')
-      });
-
+    if (Cookie.check('id')) {
       this.router.navigate(['dashboard']);
+        this.UserService.setUser({user:{
+            id: Cookie.get('id'), email: "a@a", password: "aaaaa"
+        }});
     }
+
   }
   user: any = {};
 
@@ -25,15 +24,14 @@ export class LoginComponent {
       if (res.response == 1) {
         this.setCookie(res.data)
       } else {
-        alert("Wrong Username or Password");
+        alert(res.data);
       }
     });
   }
 
-  public setCookie(user) {
-    Cookie.set('email', user.email);
-    Cookie.set('password', user.password);
-    Cookie.set('id', user.id);
+  public setCookie(data) {
+    Cookie.set('token', data.auth.token);
+    Cookie.set('id', data.auth.id);
 
     this.router.navigate(['dashboard']);
   }
