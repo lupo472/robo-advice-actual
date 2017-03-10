@@ -8,9 +8,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import it.uiip.digitalgarage.roboadvice.RoboadviceApplication;
 import it.uiip.digitalgarage.roboadvice.service.controller.UserController;
+import it.uiip.digitalgarage.roboadvice.service.dto.AuthDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.LoginDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.UserRegisteredDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
+import it.uiip.digitalgarage.roboadvice.service.util.HashFunction;
 
 import static org.junit.Assert.*;
 
@@ -19,7 +23,7 @@ import java.time.LocalDateTime;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = RoboadviceApplication.class)
 public class UserControllerTest {
-
+	
 	@Autowired
 	private UserController userCtrl;
 	
@@ -30,6 +34,23 @@ public class UserControllerTest {
 		user.setPassword("cristianlaurini");
 		GenericResponse<?> response = userCtrl.loginUser(user);
 		assertEquals(1, response.getResponse());
+		assertTrue(response.getData() instanceof LoginDTO);
+	}
+	
+	@Test
+	public void loginTestOkInspect() {
+		UserDTO user = new UserDTO();
+		user.setEmail("cristian.laurini@gmail.com");
+		user.setPassword("cristianlaurini");
+		GenericResponse<?> response = userCtrl.loginUser(user);
+		LoginDTO login = (LoginDTO) response.getData();
+		UserRegisteredDTO userRegistered = login.getUser();
+		AuthDTO auth = login.getAuth();
+		assertEquals(new Long(35), auth.getId());
+		assertEquals(new Long(35), userRegistered.getId());
+		assertTrue(auth.getToken() instanceof String);
+		assertEquals(HashFunction.hashStringSHA256("cristianlaurini"), userRegistered.getPassword());
+		assertEquals("cristian.laurini@gmail.com", userRegistered.getEmail());
 	}
 	
 	@Test
