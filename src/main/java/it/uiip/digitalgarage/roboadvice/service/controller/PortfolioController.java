@@ -3,7 +3,7 @@ package it.uiip.digitalgarage.roboadvice.service.controller;
 import it.uiip.digitalgarage.roboadvice.service.dto.DataRequestDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioRequestForDateDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.UserLoggedDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.UserRegisteredDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +17,7 @@ public class PortfolioController extends AbstractController {
 
     @RequestMapping("/getUserCurrentPortfolio")
     @ResponseBody
-    public GenericResponse<?> getUserCurrentPortfolio(@Valid @RequestBody UserLoggedDTO user) {
+    public GenericResponse<?> getUserCurrentPortfolio(@Valid @RequestBody UserRegisteredDTO user) {
         PortfolioDTO result = this.portfolioOp.getUserCurrentPortfolio(user);
         if(result == null) {
     		return new GenericResponse<String>(0, ControllerConstants.EMPTY_PORTFOLIO);
@@ -27,7 +27,7 @@ public class PortfolioController extends AbstractController {
     
     @RequestMapping("/createUserPortfolio")
     @ResponseBody
-    public GenericResponse<?> createUserPortfolio(@Valid @RequestBody UserLoggedDTO user) {
+    public GenericResponse<?> createUserPortfolio(@Valid @RequestBody UserRegisteredDTO user) {
     	boolean done = this.portfolioOp.createUserPortfolio(user);
     	if(done) {
     		return new GenericResponse<String>(1, ControllerConstants.DONE);
@@ -37,7 +37,7 @@ public class PortfolioController extends AbstractController {
     
     @RequestMapping("/computeUserPortfolio")
     @ResponseBody
-    public GenericResponse<?> computeUserPortfolio(@Valid @RequestBody UserLoggedDTO user) {
+    public GenericResponse<?> computeUserPortfolio(@Valid @RequestBody UserRegisteredDTO user) {
     	boolean done = this.portfolioOp.computeUserPortfolio(user);
     	if(done) {
     		return new GenericResponse<String>(1, ControllerConstants.DONE);

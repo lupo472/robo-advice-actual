@@ -14,6 +14,7 @@ export class UserService {
   private capital = 10000;
 
   private user:User;
+  private capitalHistory;
 
   constructor(private AppService:AppService) { }
 
@@ -48,8 +49,11 @@ export class UserService {
 
   //SET THE CURRENT CAPITAL FOR THIS USER
   setCapital(res){
-    this.user.capital = res.data.amount;
-    console.dir(this.user);
+    this.user.capital = res.data.amount; 
+  }
+  
+  getCapitalHistory(){
+    return this.capitalHistory;
   }
 
   //SET THE ACTIVE STRATEGY FOR THIS USER

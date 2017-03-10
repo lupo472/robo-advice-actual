@@ -20,8 +20,8 @@
                                     <span class="input-group-addon"><i class="icon-lock"></i>
                                     </span> <input type="password" class="form-control"
                                                    placeholder="Password" [(ngModel)]="user.password"
-                                                   name="password" #password="ngModel" pattern=".{5,10}"
-                                                   maxlength="10" required>
+                                                   name="password" #password="ngModel" pattern=".{5,20}"
+                                                   maxlength="20" required>
                                 </div>
                                 <div [hidden]="password.valid || password.pristine"
                                      class="alert alert-danger">Password is required</div>
