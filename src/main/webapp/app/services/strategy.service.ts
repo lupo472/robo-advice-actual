@@ -75,6 +75,21 @@ export class StrategyService {
       // console.log("maxPercentage" + this.maxPercentage);
       return this.strategies.get(id).getPercentage();
   }
+  // createDefaultStrategy(){
+  //   this.sendStrategy = new Strategy();
+  //   this.sendStrategy.setUserId(Cookie.get('id'));
+  //   let array = [];
+  //   this.currentStrategy.list.forEach((item,index)=>{
+  //     let a = new AssetClassStrategy(item.getPercentage(),new AssetClass(item.assetClass.id,item.assetClass.name));
+  //     array.push(a);
+  //   });
+  //   console.log(array);
+  //   this.sendStrategy.setStrategyArray(array);
+  //   console.log(this.sendStrategy);
+  //   console.log(this.currentStrategy);
+  //     return this.AppService.setCustomStrategy(this.sendStrategy).map(res => console.log(res));
+  //
+  // }
 
   setCustomStrategy() {
     this.strategy = new Strategy();

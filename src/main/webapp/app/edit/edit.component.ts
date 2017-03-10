@@ -2,17 +2,20 @@ import {Component, OnInit, Renderer, ViewChild, AfterViewInit} from '@angular/co
 import { Router } from '@angular/router';
 import { AssetService } from '../services/asset.service';
 import { StrategyService } from '../services/strategy.service';
+import { AppService } from '../services/app.service';
 import { Cookie } from 'ng2-cookies';
 import { ModalDirective } from 'ng2-bootstrap/modal/modal.component';
 import { Asset } from '../model/asset';
 import { AssetClass } from '../model/asset-class';
+import { Strategy } from '../model/strategy';
+import { AssetClassStrategy } from '../model/asset-class-strategy';
 @Component({
   templateUrl: 'edit.component.html'
 })
 
 export class EditComponent implements OnInit,AfterViewInit {
   public isCustom:boolean;
-
+  sendStrategy:any = {};
   public assetClassSet = [];
   arrayAssets:Asset[];
   public assetSet = [];
@@ -21,10 +24,13 @@ export class EditComponent implements OnInit,AfterViewInit {
   strategies: any = [];
   asset:Asset;
   public selected = [];
+  data:any=[];
+  tempAsset:Asset;
+  currentStrategy:any = [];
 
   @ViewChild('childModal') public childModal:ModalDirective;
 
-  constructor(public AssetService: AssetService, public StrategyService: StrategyService, private router: Router) {
+  constructor(public AppService:AppService,public AssetService: AssetService, public StrategyService: StrategyService, private router: Router) {
     this.isCustom = false;
     this.arrayAssets = [];
   }
@@ -41,10 +47,19 @@ export class EditComponent implements OnInit,AfterViewInit {
 
   }
 
+  showData(){
+    console.log(this.StrategyService.strategies);
+    this.data.push(this.StrategyService.strategies.get(1));
+    this.data.push(this.StrategyService.strategies.get(2));
+    this.data.push(this.StrategyService.strategies.get(3));
+    this.data.push(this.StrategyService.strategies.get(4));
+    console.log(this.data);
+
+  }
+
   ngOnInit(): void {
     this.AssetService.getAssetClassSet().subscribe((result) => this.getAssetClass(result));
     this.StrategyService.getDefaultStrategySet().subscribe(res => this.getStrategy(res));
-    console.log("a");
   }
 
   showDetails() {
@@ -54,10 +69,25 @@ export class EditComponent implements OnInit,AfterViewInit {
   //ASSIGN STRATEGIES
   getStrategy(res) {
     this.strategies = res;
-    console.log("strategies");
-    console.log(this.strategies);
+    // console.log("strategies");
+    // console.log(this.strategies);
   }
 
+  createDefaultStrategy(){
+    this.sendStrategy = new Strategy();
+    this.sendStrategy.setUserId(Cookie.get('id'));
+    let array = [];
+    this.currentStrategy.list.forEach((item,index)=>{
+      let a = new AssetClassStrategy(item.getPercentage(),new AssetClass(item.assetClass.id,item.assetClass.name));
+      array.push(a);
+    });
+    console.log(array);
+    this.sendStrategy.setStrategyArray(array);
+    this.AppService.setCustomStrategy(this.sendStrategy).subscribe(
+      (res) => {
+        console.log(res);
+      });
+  }
   confirmStrategy() {
     this.StrategyService.setCustomStrategy().subscribe(
       (error) => {
@@ -65,22 +95,34 @@ export class EditComponent implements OnInit,AfterViewInit {
       });
   }
 
+
   setStrategy(i) {
-    let assetClassStrategy = this.strategies[i];
-    console.log("assetClassStrategy");
-    console.log(assetClassStrategy);
+    this.currentStrategy = this.strategies[i];
+    // console.log("assetClassStrategy");
+    // console.log(this.currentStrategy);
+    if (this.currentStrategy.name != "custom") {
+      console.log("diverso");
+    }
+    console.log(this.StrategyService.strategies);
     this.arrayAssets.forEach((item,i)=>{
       item.setPercentage(0);
-      assetClassStrategy.list.forEach((element,j)=> {
+      console.log(item);
+      this.currentStrategy.list.forEach((element,j)=> {
         if (item.assetClass.id == element.assetClass.id) {
           item.setPercentage(element.getPercentage());
         }
       });
     });
-    if (assetClassStrategy.name == "custom") {
-      assetClassStrategy.list.push(new Asset(0,new AssetClass(0,"")));
+    if (this.currentStrategy.name != "custom") {
+      console.log("diverso");
+      // this.tempAsset = new Asset(10,new AssetClass(3,"stocks"));
+      // let color = "#4dbd74";
+      // this.tempAsset.color=color;
+      // assetClassStrategy.list.push(this.tempAsset);
     }
-    console.log(assetClassStrategy);
+    // console.log(this.currentStrategy);
+    // console.log(this.strategies);
+
     if (i == (this.strategies.length - 1)) {
       this.isCustom = !this.isCustom;
     }else{
@@ -99,6 +141,7 @@ export class EditComponent implements OnInit,AfterViewInit {
 
   //ASSIGN ASSET CLASS
   public getAssetClass(result) {
+    this.AssetService.assetClassSet = [];
     result.forEach((item,i) => {
       this.asset = new Asset(0,item);
       let color = this.AssetService.assignColour(item.id);
@@ -106,7 +149,7 @@ export class EditComponent implements OnInit,AfterViewInit {
       this.AssetService.assetClassSet.push(this.asset);
     });
     this.arrayAssets = this.AssetService.assetClassSet;
-    console.log(this.AssetService.assetClassSet);
+    // console.log(this.AssetService.assetClassSet);
   }
 
   //ASSET CLASS COLOUR//

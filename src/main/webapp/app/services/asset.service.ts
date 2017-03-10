@@ -22,8 +22,8 @@ export class AssetService {
   }
 
   assignAssetClass(res){
-    console.log("assignAssetClass");
-    console.log(res.data);
+    // console.log("assignAssetClass");
+    // console.log(res.data);
     return res.data;
   }
 

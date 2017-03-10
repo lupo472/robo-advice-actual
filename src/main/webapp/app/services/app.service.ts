@@ -1,6 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
 import { AppConfig } from './app.config';
-import { Cookie } from 'ng2-cookies';
 
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
@@ -8,14 +7,14 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class AppService {
 
-  constructor(private http:Http) { }
+  constructor(private http: Http) { }
 
   loginUser(user) {
     return this.http.post(AppConfig.url + 'loginUser', user)
       .map(response => response.json());
   }
 
-  registerUser(user){
+  registerUser(user) {
     return this.http.post(AppConfig.url + 'registerUser', user)
       .map(response => response.json());
   }
@@ -30,55 +29,47 @@ export class AppService {
       .map(response => response.json());
   }
 
-  getFinancialData(id, period){
-    return this.http.post(AppConfig.url + 'getFinancialData', {id: id, period: period})
+  getFinancialData(id, period) {
+    return this.http.post(AppConfig.url + 'getFinancialData', { id: id, period: period })
       .map(response => response.json());
   }
 
-  getUserCurrentPortfolio(id, email, password){
-    return this.http.post(AppConfig.url + 'getUserCurrentPortfolio', {id: id, email: email, password: password})
+  getUserCurrentPortfolio(id, email, password) {
+    return this.http.post(AppConfig.url + 'getUserCurrentPortfolio', { id: id, email: email, password: password })
       .map(response => response.json());
   }
-  
-  getUserPortfolioPeriod(id, period){
-     return this.http.post(AppConfig.url + 'getUserPortfolioPeriod', {id: id, period: period})
+
+  getUserPortfolioPeriod(id, period) {
+    return this.http.post(AppConfig.url + 'getUserPortfolioPeriod', { id: id, period: period })
       .map(response => response.json());
   }
-  
-  addCapital(id, amount){
-    return this.http.post(AppConfig.url + 'addCapital', {idUser: id, amount: amount})
+
+  addCapital(id, amount) {
+    return this.http.post(AppConfig.url + 'addCapital', { idUser: id, amount: amount })
       .map(response => response.json());
   }
-  
-  getCurrentCapital(user){
+
+  getCurrentCapital(user) {
     return this.http.post(AppConfig.url + 'getCurrentCapital', user)
       .map(response => response.json());
   }
-  
-  getCapitalPeriod(id, period){
-    return this.http.post(AppConfig.url + 'getCapitalPeriod', {id: id, period: period})
+
+  getCapitalPeriod(id, period) {
+    return this.http.post(AppConfig.url + 'getCapitalPeriod', { id: id, period: period })
       .map(response => response.json());
   }
 
-  setCustomStrategy(strategy){
+  setCustomStrategy(strategy) {
     return this.http.post(AppConfig.url + 'setCustomStrategy', strategy)
       .map(response => response.json());
   }
-  
-  getActiveStrategy(user){
+
+  getActiveStrategy(user) {
     return this.http.post(AppConfig.url + 'getActiveUserCustomStrategy', user)
       .map(response => response.json());
   }
-  authenticateUser(){
-    if(Cookie.check("id") || Cookie.check("token")) {
-      var id=Cookie.get("id");
-      var token=Cookie.get("token");
-    } else {
-      var id = "0";
-      var token = "";
-    }
-    console.log("dati:", id, "-",token);
-    return this.http.post(AppConfig.url + 'authenticate', {id:id,token:token})
-        .map(response => response.json());
+  authenticateUser(id, token) {
+    return this.http.post(AppConfig.url + 'authenticate', { id: id, token: token })
+      .map(response => response.json());
   }
 }
