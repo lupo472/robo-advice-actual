@@ -52,7 +52,7 @@ public class CapitalController extends AbstractController {
 	@ResponseBody
 	public GenericResponse<?> getCapitalPeriod(@Valid @RequestBody DataRequestDTO request) {
 		List<CapitalResponseDTO> result = this.capitalOp.getCapitalPeriod(request);
-		if(result.isEmpty()) {
+		if(result == null) {
 			return new GenericResponse<String>(0, ControllerConstants.ANY_CAPITAL);
 		}
 		return new GenericResponse<List<CapitalResponseDTO>>(1, result);
