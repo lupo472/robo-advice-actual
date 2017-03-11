@@ -13,7 +13,11 @@ import it.uiip.digitalgarage.roboadvice.service.dto.DefaultStrategyDTO;
 public class DefaultStrategyOperator extends AbstractOperator {
 
 	
-	//There is
+	/*
+	 * There is a forcing: the variable risk is 
+	 * computed assuming that in the database
+	 * the strategies are ordered by risk.
+	*/
 	public List<DefaultStrategyDTO> getDefaultStrategySet() {
 		List<DefaultStrategyEntity> defaultStrategySet = this.defaultStrategyRep.findAll();
 		Map<String, List<AssetClassStrategyDTO>> map = new HashMap<>();
