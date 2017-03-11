@@ -35,7 +35,6 @@ export class CardAssetClassComponent implements OnInit {
   ngOnInit() {
   }
 
-  
   handleSlide(e) {
     this.oldValue = this.StrategyService.strategies.get(this.id).percentage;
     this.StrategyService.strategies.get(this.id).getAssetClass().setName(this.value);

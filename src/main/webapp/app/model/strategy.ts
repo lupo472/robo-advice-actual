@@ -5,7 +5,6 @@ export class Strategy {
   list:AssetClassStrategy[];
 
   constructor() {
-    // this.idUser = 1;
   }
 
   setStrategyArray(strategyArray){

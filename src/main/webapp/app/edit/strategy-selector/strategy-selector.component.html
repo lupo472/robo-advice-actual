@@ -19,7 +19,7 @@
 	<div class="card-block text-center">
 		<div class="text-uppercase font-weight-bold">{{name}}</div>
 		<div class="chart-wrapper">
-			<canvas baseChart class="chart" [data]="arrayPercentage" [labels]="labels"
+			<canvas baseChart class="chart" [data]="arrayPercentage" [labels]="arrayLabels"
 				[options]="strategyOptions" [colors]="arrayColors"
 				[legend]="strategyLegend" [chartType]="strategyType"
 				(chartHover)="chartHovered($event)"></canvas>

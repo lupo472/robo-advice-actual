@@ -3,7 +3,7 @@
 	<!-- STRATEGIES ROW -->
 	<div class="row">
 		<div class="col-md-2 col-sm-4"
-			*ngFor="let strategy of strategies; let i = index">
+			*ngFor="let strategy of defaultStrategies; let i = index">
 
 				<!-- <app-strategy-selector [name]="strategy.name" [data]="asset.percentage"
 					[labels]="strategy.name" [colors]="asset.color" [id]="strategy[i]"
@@ -24,10 +24,10 @@
 	<!-- ASSET CLASS ROW -->
 	<div class="row" >
 		<div class="col-sm-6 col-lg-3"
-			*ngFor="let assets of arrayAssets; let i = index;">
+			*ngFor="let assets of assetClassesStrategies; let i = index;">
 			<app-card-asset-class [value]="assets.assetClass.name" [isCustom]="isCustom"
 				[id]="assets.assetClass.id" [percentage]="assets.percentage"
-				[color]="assets.color"
+				[color]="assignColour(assets.assetClass.id)"
 				[lineChartLabels]="lineChartLabels"
 				[lineChartOptions]="lineChartOptions"
 				[lineChartColours]="lineChartColours"
@@ -38,7 +38,7 @@
 		</div>
 		<div *ngIf="!isCustom">
 		<button type="button" class="btn btn-success"
-			(click)="createDefaultStrategy()">Create</button>
+			(click)="createDefaultStrategy()" [disabled]="isDisabled">Create</button>
 		</div>
 		<div class="col-md-12 text-center" *ngIf="isCustom">
 			<button type="button" class="btn btn-danger"

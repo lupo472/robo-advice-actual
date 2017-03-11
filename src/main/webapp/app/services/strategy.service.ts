@@ -75,6 +75,7 @@ export class StrategyService {
       // console.log("maxPercentage" + this.maxPercentage);
       return this.strategies.get(id).getPercentage();
   }
+
   // createDefaultStrategy(){
   //   this.sendStrategy = new Strategy();
   //   this.sendStrategy.setUserId(Cookie.get('id'));
@@ -107,34 +108,46 @@ export class StrategyService {
     return this.AppService.getDefaultStrategySet().map(res => this.assignStrategy(res));
   }
 
-  assignStrategy(res){
+  assignStrategy(res) {
+    let defaultStrategies = [];
+    res.data.forEach((item,i) => {
+      let defaultStrategy = new DefaultStrategy(item.name);
+      item.list.forEach((element, i) => {
+        defaultStrategy.setList(new AssetClassStrategy(element.percentage,
+        new AssetClass(element.assetClass.id,element.assetClass.name)));
+      });
+      defaultStrategies.push(defaultStrategy);
+    });
+    defaultStrategies.push(new DefaultStrategy("custom"));
+    return defaultStrategies;
+  }
     // var arrayPercentage = [];
     // var arrayNull = [];
     // var arrayLabels = [];
     // var arrayColours = [];
-    this.extendedDefaultStrategies = [];
-    res.data.forEach((item, index) => {
-      //this.defaultStrategy = new DefaultStrategy(item.name);
-      this.extendedDefaultStrategy = new ExtendedDefaultStrategy(item.name);
-
-      item.list.forEach((element, i) =>{
-        let color = this.AssetService.assignColour(element.assetClass.id);
-        this.asset = new Asset(element.percentage,
-          new AssetClass(element.assetClass.id,element.assetClass.name));
-        this.asset.color=color;
-        //this.defaultStrategy.setList(element);
-        this.extendedDefaultStrategy.setList(this.asset);
+    // this.extendedDefaultStrategies = [];
+    // res.data.forEach((item, index) => {
+    //   this.defaultStrategy = new DefaultStrategy(item.name);
+    //   this.extendedDefaultStrategy = new ExtendedDefaultStrategy(item.name);
+    //
+    //   item.list.forEach((element, i) =>{
+    //     let color = this.AssetService.assignColour(element.assetClass.id);
+    //     this.asset = new Asset(element.percentage,
+    //       new AssetClass(element.assetClass.id,element.assetClass.name));
+    //     this.asset.color=color;
+    //     this.defaultStrategy.setList(element);
+    //     this.extendedDefaultStrategy.setList(this.asset);
 
       //  arrayPercentage[i] = element.percentage;
       //  arrayNull[i] = 0;
       //  arrayLabels[i] = element.assetClass.name;
       //  arrayColours[i] = this.assignColour(element.assetClass.id);
-      });
+      // });
        //
       //   console.log("defaultstrategy");
       //   console.log(this.defaultStrategy);
-        //this.defaultStrategies.push(this.defaultStrategy);
-        this.extendedDefaultStrategies.push(this.extendedDefaultStrategy);
+        // this.defaultStrategies.push(this.defaultStrategy);
+        // this.extendedDefaultStrategies.push(this.extendedDefaultStrategy);
 
       // this.strategySet[index] = {
       //                           name:  item.name,
@@ -149,16 +162,17 @@ export class StrategyService {
       // arrayPercentage = [];
       // arrayLabels = [];
       // arrayColours = [];
-    })
-    //this.defaultStrategies.push(new DefaultStrategy("custom"));
-    this.extendedDefaultStrategies.push(new ExtendedDefaultStrategy("custom"));
+    // })
+    // this.defaultStrategies.push(new DefaultStrategy("custom"));
+    // this.extendedDefaultStrategies.push(new ExtendedDefaultStrategy("custom"));
     // console.log(this.defaultStrategies);
     // console.log("extended");
     // console.log(this.extendedDefaultStrategies);
     // this.strategySet[res.data.length]={name: 'custom', data: arrayNull}
-    return this.extendedDefaultStrategies;
+    // return this.extendedDefaultStrategies;
+    // return this.defaultStrategies;
     // return this.strategySet;
-  }
+
 
   //ASSIGN COLOUR
   assignColour(id){
