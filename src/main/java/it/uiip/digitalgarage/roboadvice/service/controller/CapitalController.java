@@ -57,4 +57,5 @@ public class CapitalController extends AbstractController {
 		}
 		return new GenericResponse<List<CapitalResponseDTO>>(1, result);
 	}
+	
 }
