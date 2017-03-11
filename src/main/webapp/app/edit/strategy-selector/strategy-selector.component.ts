@@ -1,6 +1,7 @@
 import { AppConfig } from '../../services/app.config';
 import { Component, OnInit, Input, OnChanges, SimpleChanges} from '@angular/core';
 import { StrategyService } from '../../services/strategy.service';
+import { AssetService } from '../../services/asset.service';
 
 @Component({
   selector: 'app-strategy-selector',
@@ -19,29 +20,30 @@ export class StrategySelectorComponent implements OnInit, OnChanges {
   @Input() id;
   @Input() selected;
   @Input() strategy;
-  arrayPercentage:any;
-  arrayColor:any;
-  arrayColors:any;
-  constructor(private StrategyService:StrategyService) {
-    this.arrayPercentage =  [];
-    this.arrayColor = [];
-    this.arrayColors = {};
+  arrayPercentage:Array<number> = [];
+  arrayColor:Array<string> = [];
+  arrayColors:Array<any> = [];
+  arrayLabels:Array<string> = [];
+  constructor(private StrategyService:StrategyService,private AssetService:AssetService) {
+
    }
 
    ngOnInit() {
-      for (let asset of this.strategy.list) {
-        this.arrayPercentage.push(asset.percentage);
-        this.arrayColor.push(asset.color);
+      for (let assetClass of this.strategy.list) {
+        this.arrayPercentage.push(assetClass.percentage);
+        this.arrayLabels.push(assetClass.assetClass.name);
+        this.arrayColor.push(this.assignColour(assetClass.assetClass.id));
         this.arrayColors = [{backgroundColor:this.arrayColor,borderWidth:3}];
-    }
-    
+      }
   }
     ngOnChanges(changes:SimpleChanges){
       // console.log("qualcosa è cambiato");
       // console.log(changes);
 
     }
-
+    assignColour(id){
+      return this.AssetService.assignColour(id);
+    }
     //  console.log("strategy inside");
     //  console.log(this.arrayPercentage);
     //  console.log(this.arrayColors);
