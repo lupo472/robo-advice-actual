@@ -21,12 +21,13 @@ export class CardAssetClassComponent implements OnInit {
     @Input() id;
     @Input() percentage;
     @Input() color;
-    @Input() reset = false;
+    @Input() reset;
     oldValue:number;
-
+    //strategies:Map<number, AssetClassStrategy> = new Map<number, AssetClassStrategy>();
   constructor(public StrategyService:StrategyService) { }
 
   ngOnInit() {
+
   }
 
   handleSlide(e) {
