@@ -72,12 +72,13 @@ export class EditComponent implements OnInit,AfterViewInit {
     this.AppService.setCustomStrategy(this.sendStrategy).subscribe(
       (res) => {
         console.log(res);
+        this.router.navigate(['dashboard']);
       });
   }
   confirmStrategy() {
     this.StrategyService.setCustomStrategy().subscribe(
-      (error) => {
-        console.log("errore " + error);
+      (res) => {
+        this.router.navigate(['dashboard']);
       });
   }
 
