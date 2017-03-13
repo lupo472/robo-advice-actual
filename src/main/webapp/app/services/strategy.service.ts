@@ -5,10 +5,8 @@ import { AppService } from './app.service';
 import { AssetService } from './asset.service';
 import { Strategy } from '../model/strategy';
 import { DefaultStrategy } from '../model/default-strategy';
-import { ExtendedDefaultStrategy } from '../model/extended-default-strategy';
 import { AssetClassStrategy } from '../model/asset-class-strategy';
 import { AssetClass } from '../model/asset-class';
-import { Asset } from '../model/asset';
 import { Cookie } from 'ng2-cookies';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
@@ -18,10 +16,7 @@ export class StrategyService {
   assetClassStrategy:AssetClassStrategy;
   defaultStrategy:DefaultStrategy;
   defaultStrategies:DefaultStrategy[];
-  extendedDefaultStrategy:ExtendedDefaultStrategy;
-  extendedDefaultStrategies:ExtendedDefaultStrategy[];
   assetClass:AssetClass;
-  asset:Asset;
   strategies:Map<number, AssetClassStrategy> = new Map<number, AssetClassStrategy>();
   strategy:Strategy;
   sumPercentage:number;
@@ -42,7 +37,6 @@ export class StrategyService {
     //this.extendedDefaultStrategy = new ExtendedDefaultStrategy();
     this.oldValue = 0;
     this.defaultStrategies = [];
-    this.extendedDefaultStrategies = [];
   }
 
   //SLIDER MAPPING

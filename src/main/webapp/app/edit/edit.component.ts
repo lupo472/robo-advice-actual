@@ -53,18 +53,16 @@ export class EditComponent implements OnInit,AfterViewInit {
     console.log("clicked");
   }
 
-  assignColour(id){
+  assignColour(id) : string {
     return this.AssetService.assignColour(id);
   }
 
   //ASSIGN STRATEGIES
-  getStrategy(res) {
+  getStrategy(res) : void {
     this.defaultStrategies = res;
-    console.log("default strategy set");
-    console.log(this.defaultStrategies);
   }
 
-  createDefaultStrategy(){
+  createDefaultStrategy() : void {
     this.sendStrategy = new Strategy();
     this.sendStrategy.setUserId(Cookie.get('id'));
     this.sendStrategy.setStrategyArray(this.currentStrategy.list);
@@ -75,15 +73,18 @@ export class EditComponent implements OnInit,AfterViewInit {
         this.router.navigate(['dashboard']);
       });
   }
-  confirmStrategy() {
+  confirmStrategy() : void {
     this.StrategyService.setCustomStrategy().subscribe(
       (res) => {
         this.router.navigate(['dashboard']);
       });
   }
 
+  onSelect(defaultStrategy:DefaultStrategy) : void {
+    this.currentStrategy = defaultStrategy;
+  }
 
-  setStrategy(i) {
+  setStrategy(i) : void {
     this.isDisabled = false;
     this.currentStrategy = this.defaultStrategies[i];
     console.log("assetClassStrategy");
@@ -116,7 +117,7 @@ export class EditComponent implements OnInit,AfterViewInit {
   }
 
   //ASSIGN ASSET CLASS
-  public getAssetClass(result) {
+  public getAssetClass(result) : void {
     this.assetClassesStrategies = result;
     // console.log("this.assetClassesStrategies");
     // console.log(this.assetClassesStrategies);
