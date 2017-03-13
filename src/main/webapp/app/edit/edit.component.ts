@@ -10,118 +10,119 @@ import { Strategy } from '../model/strategy';
 import { DefaultStrategy } from '../model/default-strategy';
 import { AssetClassStrategy } from '../model/asset-class-strategy';
 @Component({
-  templateUrl: 'edit.component.html'
+    templateUrl: 'edit.component.html'
 })
 
-export class EditComponent implements OnInit,AfterViewInit {
-  public isCustom:boolean;
-  public sendStrategy:Strategy;
-  public assetClassesStrategies:AssetClassStrategy[] = [];
-  public assetClassStrategy:AssetClassStrategy;
-  public defaultStrategies:DefaultStrategy[] = [];
-  //public defaultStrategy:DefaultStrategy;
-  public assets = [];
-  public selectedAsset = [];
-  public selected = [];
-  public currentStrategy:DefaultStrategy;
-  public isDisabled = true;
+export class EditComponent implements OnInit, AfterViewInit {
+    public isCustom: boolean;
+    public sendStrategy: Strategy;
+    public assetClassesStrategies: AssetClassStrategy[] = [];
+    public assetClassStrategy: AssetClassStrategy;
+    public defaultStrategies: DefaultStrategy[] = [];
+    //public defaultStrategy:DefaultStrategy;
+    public assets = [];
+    public selectedAsset = [];
+    public selected = [];
+    public currentStrategy: DefaultStrategy;
+    public isDisabled = true;
 
-  @ViewChild('childModal') public childModal:ModalDirective;
+    @ViewChild('childModal') public childModal: ModalDirective;
 
-  constructor(public AppService:AppService,public AssetService: AssetService, public StrategyService: StrategyService, private router: Router) {
-    this.isCustom = false;
-  }
-  public showChildModal():void {
-    this.childModal.show();
-  }
-
-  public hideChildModal():void {
-    this.childModal.hide();
-  }
-  ngAfterViewInit() {
-    // viewChild is set after the view has been initialized
-    this.childModal.show();
-
-  }
-
-  ngOnInit(): void {
-    this.AssetService.getAssetClassSet().subscribe((result) => this.getAssetClass(result));
-    this.StrategyService.getDefaultStrategySet().subscribe(res => this.getStrategy(res));
-  }
-
-  showDetails() {
-    console.log("clicked");
-  }
-
-  assignColour(id) : string {
-    return this.AssetService.assignColour(id);
-  }
-
-  //ASSIGN STRATEGIES
-  getStrategy(res) : void {
-    this.defaultStrategies = res;
-  }
-
-  createDefaultStrategy() : void {
-    this.sendStrategy = new Strategy();
-    this.sendStrategy.setUserId(Cookie.get('id'));
-    this.sendStrategy.setStrategyArray(this.currentStrategy.list);
-    console.log(this.sendStrategy);
-    this.AppService.setCustomStrategy(this.sendStrategy).subscribe(
-      (res) => {
-        console.log(res);
-        this.router.navigate(['dashboard']);
-      });
-  }
-  confirmStrategy() : void {
-    this.StrategyService.setCustomStrategy().subscribe(
-      (res) => {
-        this.router.navigate(['dashboard']);
-      });
-  }
-
-  onSelect(defaultStrategy:DefaultStrategy) : void {
-    this.currentStrategy = defaultStrategy;
-  }
-
-  setStrategy(i) : void {
-    this.isDisabled = false;
-    this.currentStrategy = this.defaultStrategies[i];
-    console.log("assetClassStrategy");
-    console.log(this.currentStrategy);
-
-    this.assetClassesStrategies.forEach((item,i)=>{
-      item.setPercentage(0);
-      console.log(item.getPercentage());
-      this.currentStrategy.list.forEach((element,j)=> {
-        if (item.assetClass.id == element.assetClass.id) {
-          item.setPercentage(element.getPercentage());
-        }
-      });
-    });
-
-    if (i == (this.defaultStrategies.length - 1)) {
-      this.isCustom = !this.isCustom;
-    }else{
-      this.isCustom = false;
+    constructor(public AppService: AppService, public AssetService: AssetService, public StrategyService: StrategyService, private router: Router) {
+        this.isCustom = false;
+    }
+    public showChildModal(): void {
+        this.childModal.show();
     }
 
-    this.defaultStrategies.forEach((item, index) => {
-      if (index == i) {
-        this.selected[index] = true;
-      } else {
-        this.selected[index] = false;
-      }
-    })
+    public hideChildModal(): void {
+        this.childModal.hide();
+    }
+    ngAfterViewInit() {
+        // viewChild is set after the view has been initialized
+        this.childModal.show();
 
-  }
+    }
 
-  //ASSIGN ASSET CLASS
-  public getAssetClass(result) : void {
-    this.assetClassesStrategies = result;
-    // console.log("this.assetClassesStrategies");
-    // console.log(this.assetClassesStrategies);
-  }
+    ngOnInit(): void {
+        this.AssetService.getAssetClassSet().subscribe((result) => this.getAssetClass(result));
+        this.StrategyService.getDefaultStrategySet().subscribe(res => this.getStrategy(res));
+    }
+
+    showDetails() {
+        console.log("clicked");
+    }
+
+    assignColour(id): string {
+        return this.AssetService.assignColour(id);
+    }
+
+    //ASSIGN STRATEGIES
+    getStrategy(res): void {
+        this.defaultStrategies = res;
+    }
+
+    createDefaultStrategy(): void {
+        this.sendStrategy = new Strategy();
+        this.sendStrategy.setUserId(Cookie.get('id'));
+        this.sendStrategy.setStrategyArray(this.currentStrategy.list);
+        console.log(this.sendStrategy);
+        this.AppService.setCustomStrategy(this.sendStrategy).subscribe(
+            (res) => {
+                console.log(res);
+                this.router.navigate(['dashboard']);
+            });
+    }
+    confirmStrategy(): void {
+        this.StrategyService.setCustomStrategy().subscribe(
+            (res) => {
+                this.router.navigate(['dashboard']);
+            });
+    }
+
+    onSelect(defaultStrategy: DefaultStrategy): void {
+        this.currentStrategy = defaultStrategy;
+        console.log(this.currentStrategy);
+    }
+
+    setStrategy(i): void {
+        this.isDisabled = false;
+        this.currentStrategy = this.defaultStrategies[i];
+        console.log("assetClassStrategy");
+        console.log(this.currentStrategy);
+
+        this.assetClassesStrategies.forEach((item, i) => {
+            item.setPercentage(0);
+            console.log(item.getPercentage());
+            this.currentStrategy.list.forEach((element, j) => {
+                if (item.assetClass.id == element.assetClass.id) {
+                    item.setPercentage(element.getPercentage());
+                }
+            });
+        });
+
+        if (i == (this.defaultStrategies.length - 1)) {
+            this.isCustom = !this.isCustom;
+        } else {
+            this.isCustom = false;
+        }
+
+        this.defaultStrategies.forEach((item, index) => {
+            if (index == i) {
+                this.selected[index] = true;
+            } else {
+                this.selected[index] = false;
+            }
+        })
+
+    }
+
+    //ASSIGN ASSET CLASS
+    public getAssetClass(result): void {
+        this.assetClassesStrategies = result;
+        // console.log("this.assetClassesStrategies");
+        // console.log(this.assetClassesStrategies);
+    }
 }
 
   //ASSET CLASS COLOUR//

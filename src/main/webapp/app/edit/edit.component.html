@@ -3,8 +3,7 @@
 	<!-- STRATEGIES ROW -->
 	<div class="row">
 
-		<div class="col-md-2 col-sm-4"
-			*ngFor="let strategy of defaultStrategies; let i = index">
+		<div class="col-md-2 col-sm-4" *ngFor="let strategy of defaultStrategies; let i = index">
 
 
 			<!-- <app-strategy-selector [name]="strategy.name" [data]="asset.percentage"
@@ -22,23 +21,14 @@
 
 
 	<!-- ASSET CLASS ROW -->
-	<div class="row" >
-		<div class="col-sm-6 col-lg-3"
-			*ngFor="let assets of assetClassesStrategies; let i = index;">
-			<app-card-asset-class [value]="assets.assetClass.name" [isCustom]="isCustom"
-				[id]="assets.assetClass.id" [percentage]="assets.percentage"
-				[color]="assignColour(assets.assetClass.id)"
-				[lineChartLabels]="lineChartLabels"
-				[lineChartOptions]="lineChartOptions"
-				[lineChartColours]="lineChartColours"
-				[lineChartType]="lineChartType"
-				[reset]="reset"
-				>
-			</app-card-asset-class>
+	<div class="row">
+		<div class="col-sm-6 col-lg-3" *ngFor="let assets of assetClassesStrategies; let i = index;">
+			<app-card-asset-class [value]="assets.assetClass.name" [isCustom]="isCustom" [id]="assets.assetClass.id" [percentage]="assets.percentage" [color]="assignColour(assets.assetClass.id)" [lineChartLabels]="lineChartLabels" [lineChartOptions]="lineChartOptions"
+							[lineChartColours]="lineChartColours" [lineChartType]="lineChartType" [reset]="reset">
+				</app-card-asset-class>
 		</div>
 		<div class="col-md-12 text-center" *ngIf="!isCustom">
-		<button type="button" class="btn btn-success"
-			(click)="createDefaultStrategy()" [disabled]="isDisabled">Select Strategy</button>
+			<button type="button" class="btn btn-success" (click)="createDefaultStrategy()" [disabled]="isDisabled">Select Strategy</button>
 		</div>
 		<div class="col-md-12 text-center" *ngIf="isCustom">
 			<button type="button" class="btn btn-danger" (click)="isCustom = false">Cancel</button>
@@ -66,18 +56,18 @@
 
 						<div class="col-md-12 col-sm-12">
 							<div class="row">
-									<div class="col-md-8 col-sm-8">
-											<img src="assets/img/animals/turtle.jpg" class="img-avatar" width="100%" alt="turtle">
-										</div>
-										<div class="col-md-4 col-sm-4">
-											<div class="h2 font-weight-bold">Turtle</div>
-											<div >No need to hurry, slow incomes in a safe way!</div>
-											<hr>
-											<div class="h4">Your Strategy:</div>
-											<div class="h1">Bonds</div>
-										</div>
-									</div>
+								<div class="col-md-8 col-sm-8">
+									<img src="assets/img/animals/turtle.jpg" class="img-avatar" width="100%" alt="turtle">
 								</div>
+								<div class="col-md-4 col-sm-4">
+									<div class="h2 font-weight-bold">Turtle</div>
+									<div>No need to hurry, slow incomes in a safe way!</div>
+									<hr>
+									<div class="h4">Your Strategy:</div>
+									<div class="h1">Bonds</div>
+								</div>
+							</div>
+						</div>
 
 
 					</slide>
@@ -85,55 +75,55 @@
 
 						<div class="col-md-12 col-sm-12">
 							<div class="row">
-									<div class="col-md-8 col-sm-8">
-										<img src="assets/img/animals/giraffe.jpg" class="img-avatar" width="100%" alt="giraffe">
-									</div>
-									<div class="col-md-4 col-sm-4">
-										<div class="h2 font-weight-bold">Giraffe</div>
-										<div>Keep safe incomes but crane your neck to some risk</div>
-										<hr>
-										<div class="h4">Your Strategy:</div>
-										<div class="h1">Income</div>
-									</div>
+								<div class="col-md-8 col-sm-8">
+									<img src="assets/img/animals/giraffe.jpg" class="img-avatar" width="100%" alt="giraffe">
+								</div>
+								<div class="col-md-4 col-sm-4">
+									<div class="h2 font-weight-bold">Giraffe</div>
+									<div>Keep safe incomes but crane your neck to some risk</div>
+									<hr>
+									<div class="h4">Your Strategy:</div>
+									<div class="h1">Income</div>
 								</div>
 							</div>
-
-					</slide>
-					<slide>
-
-							<div class="col-md-12 col-sm-12">
-								<div class="row">
-										<div class="col-md-8 col-sm-8">
-										<img src="assets/img/animals/eagle.jpg" class="img-avatar" width="100%" alt="eagle">
-
-										</div>
-										<div class="col-md-4 col-sm-4">
-											<div class="h2 font-weight-bold">Eagle</div>
-											<div >Balance your flight but keep and eagle eye on risky investments</div>
-											<hr>
-											<div class="h4">Your Strategy:</div>
-											<div class="h1">Balanced</div>
-									</div>
-								</div>
-							</div>
+						</div>
 
 					</slide>
 					<slide>
 
 						<div class="col-md-12 col-sm-12">
 							<div class="row">
-									<div class="col-md-8 col-sm-8">
-										<img src="assets/img/animals/leopard.jpg" class="img-avatar" width="100%" alt="leopard">
-									</div>
-									<div class="col-md-4 col-sm-4">
-										<div class="h2 font-weight-bold">Leopard</div>
-										<div >Climbing the trees is not easy but it can be a good point of view</div>
-										<hr>
-										<div class="h4">Your Strategy:</div>
-										<div class="h1">Growth</div>
-									</div>
+								<div class="col-md-8 col-sm-8">
+									<img src="assets/img/animals/eagle.jpg" class="img-avatar" width="100%" alt="eagle">
+
+								</div>
+								<div class="col-md-4 col-sm-4">
+									<div class="h2 font-weight-bold">Eagle</div>
+									<div>Balance your flight but keep and eagle eye on risky investments</div>
+									<hr>
+									<div class="h4">Your Strategy:</div>
+									<div class="h1">Balanced</div>
 								</div>
 							</div>
+						</div>
+
+					</slide>
+					<slide>
+
+						<div class="col-md-12 col-sm-12">
+							<div class="row">
+								<div class="col-md-8 col-sm-8">
+									<img src="assets/img/animals/leopard.jpg" class="img-avatar" width="100%" alt="leopard">
+								</div>
+								<div class="col-md-4 col-sm-4">
+									<div class="h2 font-weight-bold">Leopard</div>
+									<div>Climbing the trees is not easy but it can be a good point of view</div>
+									<hr>
+									<div class="h4">Your Strategy:</div>
+									<div class="h1">Growth</div>
+								</div>
+							</div>
+						</div>
 
 
 					</slide>
@@ -141,18 +131,18 @@
 
 						<div class="col-md-12 col-sm-12">
 							<div class="row">
-									<div class="col-md-8 col-sm-8">
-										<img src="assets/img/animals/lion.jpg" class="img-avatar" width="100%" alt="lion">
-									</div>
-									<div class="col-md-4 col-sm-4">
-										<div class="h2 font-weight-bold">Lion</div>
-										<div>Be the king of the forest is not easy to manage but gives you a big power</div>
-										<hr>
-										<div class="h4">Your Strategy:</div>
-										<div class="h1">Stocks</div>
-									</div>
+								<div class="col-md-8 col-sm-8">
+									<img src="assets/img/animals/lion.jpg" class="img-avatar" width="100%" alt="lion">
+								</div>
+								<div class="col-md-4 col-sm-4">
+									<div class="h2 font-weight-bold">Lion</div>
+									<div>Be the king of the forest is not easy to manage but gives you a big power</div>
+									<hr>
+									<div class="h4">Your Strategy:</div>
+									<div class="h1">Stocks</div>
 								</div>
 							</div>
+						</div>
 
 
 					</slide>
