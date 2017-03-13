@@ -53,18 +53,18 @@ export class EditComponent implements OnInit,AfterViewInit {
     console.log("clicked");
   }
 
-  assignColour(id){
+  assignColour(id) : string {
     return this.AssetService.assignColour(id);
   }
 
   //ASSIGN STRATEGIES
-  getStrategy(res) {
+  getStrategy(res) : void {
     this.defaultStrategies = res;
-    console.log("default strategy set");
-    console.log(this.defaultStrategies);
+    // console.log("default strategy set");
+    // console.log(this.defaultStrategies);
   }
 
-  createDefaultStrategy(){
+  createDefaultStrategy() : void {
     this.sendStrategy = new Strategy();
     this.sendStrategy.setUserId(Cookie.get('id'));
     this.sendStrategy.setStrategyArray(this.currentStrategy.list);
@@ -74,28 +74,32 @@ export class EditComponent implements OnInit,AfterViewInit {
         console.log(res);
       });
   }
-  confirmStrategy() {
+  confirmStrategy() : void {
     this.StrategyService.setCustomStrategy().subscribe(
       (error) => {
         console.log("errore " + error);
       });
   }
 
+  onSelect(defaultStrategy:DefaultStrategy) : void {
+    this.currentStrategy = defaultStrategy;
+  }
 
-  setStrategy(i) {
+  setStrategy(i) : void {
     this.isDisabled = false;
     this.currentStrategy = this.defaultStrategies[i];
     console.log("assetClassStrategy");
     console.log(this.currentStrategy);
 
     this.assetClassesStrategies.forEach((item,i)=>{
-      item.setPercentage(0);
       console.log(item.getPercentage());
-      this.currentStrategy.list.forEach((element,j)=> {
-        if (item.assetClass.id == element.assetClass.id) {
-          item.setPercentage(element.getPercentage());
-        }
-      });
+      // item.setPercentage(0);
+      // console.log(item.getPercentage());
+      // this.currentStrategy.list.forEach((element,j)=> {
+      //   if (item.assetClass.id == element.assetClass.id) {
+      //     item.setPercentage(element.getPercentage());
+      //   }
+      // });
     });
 
     if (i == (this.defaultStrategies.length - 1)) {
@@ -115,7 +119,7 @@ export class EditComponent implements OnInit,AfterViewInit {
   }
 
   //ASSIGN ASSET CLASS
-  public getAssetClass(result) {
+  public getAssetClass(result) : void {
     this.assetClassesStrategies = result;
     // console.log("this.assetClassesStrategies");
     // console.log(this.assetClassesStrategies);
