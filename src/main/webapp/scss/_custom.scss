@@ -72,3 +72,18 @@
 }
 .carousel-control-prev-icon {
   background-image: url(../img/Left-Arrow.png);}
+.carousel-indicators li {
+  background-color: $indicators;
+}
+.carousel-indicators .active {
+  background-color: $active-indicator;
+}
+.carousel-indicators {
+  position: relative;
+}
+.carousel-control-prev {
+  left: -30px;
+}
+.carousel-control-next {
+  right: -30px;
+}
