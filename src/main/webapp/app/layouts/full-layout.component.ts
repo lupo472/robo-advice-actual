@@ -32,11 +32,11 @@ export class FullLayoutComponent implements OnInit {
 
   checkAuth(res):void{
     console.log(res.response);
-    if(res.response == 0){
-      Cookie.delete("id");
-      Cookie.delete("token");
-      this.router.navigate(['pages/login']);
-    }
+    //if(res.response == 0){
+    //  Cookie.delete("id");
+    //  Cookie.delete("token");
+    //  this.router.navigate(['pages/login']);
+    //}
 
   }
 
