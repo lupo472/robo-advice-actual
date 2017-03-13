@@ -4,9 +4,9 @@ import { AssetClassStrategy } from '../../model/asset-class-strategy';
 import { AssetClass } from '../../model/asset-class';
 
 @Component({
-  selector: 'app-card-asset-class',
-  templateUrl: './card-asset-class.component.html',
-  styleUrls: ['./card-asset-class.component.scss']
+    selector: 'app-card-asset-class',
+    templateUrl: './card-asset-class.component.html',
+    styleUrls: ['./card-asset-class.component.scss']
 })
 
 export class CardAssetClassComponent implements OnInit {
@@ -22,22 +22,22 @@ export class CardAssetClassComponent implements OnInit {
     @Input() percentage;
     @Input() color;
     @Input() reset;
-    oldValue:number;
+    oldValue: number;
     //strategies:Map<number, AssetClassStrategy> = new Map<number, AssetClassStrategy>();
-  constructor(public StrategyService:StrategyService) { }
+    constructor(public StrategyService: StrategyService) { }
 
-  ngOnInit() {
+    ngOnInit() {
 
-  }
+    }
 
-  handleSlide(e) {
-    this.oldValue = this.StrategyService.strategies.get(this.id).percentage;
-    this.StrategyService.strategies.get(this.id).getAssetClass().setName(this.value);
-    this.StrategyService.strategies.get(this.id).setPercentage(this.percentage);
-    this.percentage = this.StrategyService.createAssetClassStrategy(this.id,this.oldValue);
-  }
-  // handleChange(e) {
-  // }
+    handleSlide(e) {
+        this.oldValue = this.StrategyService.strategies.get(this.id).percentage;
+        this.StrategyService.strategies.get(this.id).getAssetClass().setName(this.value);
+        this.StrategyService.strategies.get(this.id).setPercentage(this.percentage);
+        this.percentage = this.StrategyService.createAssetClassStrategy(this.id, this.oldValue);
+    }
+    // handleChange(e) {
+    // }
 
 
 }
