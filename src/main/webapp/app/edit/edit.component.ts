@@ -60,8 +60,6 @@ export class EditComponent implements OnInit,AfterViewInit {
   //ASSIGN STRATEGIES
   getStrategy(res) : void {
     this.defaultStrategies = res;
-    // console.log("default strategy set");
-    // console.log(this.defaultStrategies);
   }
 
   createDefaultStrategy() : void {
@@ -93,14 +91,13 @@ export class EditComponent implements OnInit,AfterViewInit {
     console.log(this.currentStrategy);
 
     this.assetClassesStrategies.forEach((item,i)=>{
+      item.setPercentage(0);
       console.log(item.getPercentage());
-      // item.setPercentage(0);
-      // console.log(item.getPercentage());
-      // this.currentStrategy.list.forEach((element,j)=> {
-      //   if (item.assetClass.id == element.assetClass.id) {
-      //     item.setPercentage(element.getPercentage());
-      //   }
-      // });
+      this.currentStrategy.list.forEach((element,j)=> {
+        if (item.assetClass.id == element.assetClass.id) {
+          item.setPercentage(element.getPercentage());
+        }
+      });
     });
 
     if (i == (this.defaultStrategies.length - 1)) {
