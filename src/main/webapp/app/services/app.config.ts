@@ -4,6 +4,6 @@ export interface IAppConfig {
 
 export const AppConfig: IAppConfig = {
 
-  url: 'http://169.254.213.133:8080/roboadvice/'
+  url: 'http://192.168.2.123/roboadvice/'
 
 };
