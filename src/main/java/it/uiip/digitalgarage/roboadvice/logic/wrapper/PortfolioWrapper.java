@@ -24,9 +24,10 @@ public class PortfolioWrapper implements GenericWrapper<PortfolioEntity, Portfol
 		user.setId(dto.getIdUser());
     	for (PortfolioElementDTO element : dto.getList()) {
 			PortfolioEntity entity = new PortfolioEntity();
+			
 			AssetClassEntity assetClass = new AssetClassEntity();
-			assetClass.setId(element.getAssetClassStrategy().getId());
-			assetClass.setName(element.getAssetClassStrategy().getName());
+			assetClass.setId(element.getId());
+			assetClass.setName(element.getName());
 			entity.setAssetClass(assetClass);
 			entity.setDate(LocalDate.parse(dto.getDate()));
 			entity.setUser(user);
@@ -61,7 +62,9 @@ public class PortfolioWrapper implements GenericWrapper<PortfolioEntity, Portfol
 			assetClassStrategy.setPercentage(percentage);			
 			assetClassStrategy.setId(idAssetClass);
 			assetClassStrategy.setName(map.get(idAssetClass).get(0).getAssetClass().getName());
-			element.setAssetClassStrategy(assetClassStrategy);
+			element.setId(idAssetClass);
+			element.setName(map.get(idAssetClass).get(0).getAssetClass().getName());
+//			element.setAssetClassStrategy(assetClassStrategy);
 			elements.add(element);
 		}
 	}
