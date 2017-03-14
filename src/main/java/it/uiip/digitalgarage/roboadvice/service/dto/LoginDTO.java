@@ -7,7 +7,7 @@ import lombok.Data;
 public @Data class LoginDTO {
 
 	@NotNull
-	private UserRegisteredDTO user;
+	private String email;
 	
 	@NotNull
 	private String token;

@@ -35,14 +35,13 @@ public class UserOperator extends AbstractOperator {
 		String hashedPassword = HashFunction.hashStringSHA256(userDTO.getPassword());
 		if(userEntity.getPassword().equals(hashedPassword)) {
 			LoginDTO login = new LoginDTO();
-			login.setUser((UserRegisteredDTO) this.userConv.convertToDTO(userEntity));
+			login.setEmail(userEntity.getEmail());
 			String secretKey = "inglouriousBasterds";
 			String token = Jwts.builder().setSubject(userDTO.getEmail()).claim("role", "USER").setIssuedAt(new Date())
-					.signWith(SignatureAlgorithm.HS256, secretKey).compact();
+						   .signWith(SignatureAlgorithm.HS256, secretKey).compact();
 			login.setToken(token);
 			return login;
-		}
-		
+		}	
 		return null;
 	}
 	
