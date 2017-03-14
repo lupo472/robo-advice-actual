@@ -1,6 +1,7 @@
 import { AppService } from '../../services/app.service';
 import { UserService } from '../../services/user.service';
 import { Component, OnInit } from '@angular/core';
+import {Cookie} from "ng2-cookies";
 
 @Component({
   selector: 'app-strategy-graph',
@@ -19,8 +20,8 @@ export class StrategyGraphComponent implements OnInit {
 
   ngOnInit() {
 
-    let user = this.UserService.getUser();
-    this.AppService.getActiveStrategy(user).subscribe(res => this.getStrategy(res));
+    var user = this.UserService.getUser();
+    this.AppService.getActiveStrategy(user,Cookie.get('token')).subscribe(res => this.getStrategy(res.data));
   }
 
   getStrategy(res) {

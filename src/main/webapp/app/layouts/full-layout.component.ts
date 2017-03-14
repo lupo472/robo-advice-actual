@@ -25,7 +25,7 @@ export class FullLayoutComponent implements OnInit {
       console.log("Not Logged");
       this.router.navigate(['pages/login']);
     }*/
-    this.UserService.authenticate().subscribe(res => this.checkAuth(res));
+    //this.UserService.authenticate().subscribe(res => this.checkAuth(res));
     this.user = this.UserService.getUser();
     this.AppService.getCapitalPeriod(this.user.id, 0).subscribe(res => this.assignCapitalData(res));
   }
