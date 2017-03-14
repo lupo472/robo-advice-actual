@@ -1,10 +1,7 @@
 package it.uiip.digitalgarage.roboadvice.service.controller;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,11 +14,9 @@ import it.uiip.digitalgarage.roboadvice.service.dto.UserRegisteredDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 
-import java.util.Date;
-
 @CrossOrigin("*")
-@RestController
 @RequestMapping("/roboadvice")
+@RestController
 public class UserController extends AbstractController {
 	
 	@RequestMapping("/registerUser")
@@ -44,10 +39,6 @@ public class UserController extends AbstractController {
 		if(login == null) {
 			return new GenericResponse<String>(0, ControllerConstants.WRONG_PASSWORD);
 		}
-		String secretKey = "inglouriousBasterds";
-		String token = Jwts.builder().setSubject(userDTO.getEmail()).claim("role", "USER").setIssuedAt(new Date())
-				.signWith(SignatureAlgorithm.HS256, secretKey).compact();
-		login.setToken(token);
 		return new GenericResponse<LoginDTO>(1, login);
 	}
 	

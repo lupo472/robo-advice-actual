@@ -20,14 +20,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring()
                 .antMatchers("/",
                                          "/index.html",
-                                         "/test.html",
                                          "/html/**",
                                          "/js/**",
-                                         "/bower_components/**",
                                          "/css/**",
                                          "/img/**",
                                          "/fonts/**",
-                                         "/user/signup",  //open REST API for login/signup
+                                         "/roboadvice/registerUser", 
                                          "/roboadvice/loginUser");
     }
 
