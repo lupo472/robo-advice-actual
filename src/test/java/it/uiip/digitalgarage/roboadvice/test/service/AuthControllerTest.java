@@ -26,29 +26,29 @@ public class AuthControllerTest {
 	
 	@Autowired
 	private UserController userCtrl;
-	
-	@Test
-	public void authenticationOKTest() {
-		UserDTO user = new UserDTO();
-		user.setEmail("cristian.laurini@gmail.com");
-		user.setPassword("cristianlaurini");
-		GenericResponse<?> responseLogin = this.userCtrl.loginUser(user);
-		LoginDTO login = (LoginDTO) responseLogin.getData();
-		AuthDTO auth = login.getAuth();
-		GenericResponse<?> response = this.authCtrl.authenticate(auth);
-		System.out.println(response);
-		assertEquals(1, response.getResponse());
-		assertEquals(ControllerConstants.AUTHENTICATED, response.getData());
-	}
-	
-	@Test
-	public void authenticationFailTest() {
-		AuthDTO auth = new AuthDTO();
-		auth.setId(new Long(35));
-		auth.setToken("fail");
-		GenericResponse<?> response = this.authCtrl.authenticate(auth);
-		assertEquals(0, response.getResponse());
-		assertEquals(ControllerConstants.AUTHENTICATION_FAILED, response.getData());
-	}
+//
+//	@Test
+//	public void authenticationOKTest() {
+//		UserDTO user = new UserDTO();
+//		user.setEmail("cristian.laurini@gmail.com");
+//		user.setPassword("cristianlaurini");
+//		GenericResponse<?> responseLogin = this.userCtrl.loginUser(user);
+//		LoginDTO login = (LoginDTO) responseLogin.getData();
+//		AuthDTO auth = login.getAuth();
+//		GenericResponse<?> response = this.authCtrl.authenticate(auth);
+//		System.out.println(response);
+//		assertEquals(1, response.getResponse());
+//		assertEquals(ControllerConstants.AUTHENTICATED, response.getData());
+//	}
+//
+//	@Test
+//	public void authenticationFailTest() {
+//		AuthDTO auth = new AuthDTO();
+//		auth.setId(new Long(35));
+//		auth.setToken("fail");
+//		GenericResponse<?> response = this.authCtrl.authenticate(auth);
+//		assertEquals(0, response.getResponse());
+//		assertEquals(ControllerConstants.AUTHENTICATION_FAILED, response.getData());
+//	}
 
 }

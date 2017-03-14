@@ -5,6 +5,7 @@ import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserRegisteredDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,9 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @CrossOrigin("*")
+@RequestMapping("/roboadvice")
 @RestController
 public class CustomStrategyController extends AbstractController {
 
@@ -41,8 +45,9 @@ public class CustomStrategyController extends AbstractController {
 
     @RequestMapping("/getActiveUserCustomStrategy")
     @ResponseBody
-    public GenericResponse<?> getUserCustomStrategyActive(@Valid @RequestBody UserRegisteredDTO user){
+    public GenericResponse<?> getUserCustomStrategyActive(@Valid @RequestBody UserRegisteredDTO user, Authentication request){
     	CustomStrategyResponseDTO result = this.customStrategyOp.getActiveUserCustomStrategy(user);
+    	System.out.println(request.getPrincipal().toString());
     	if(result == null) {
     		return new GenericResponse<String>(0, ControllerConstants.ANY_ACTIVE_STRATEGY);
     	}

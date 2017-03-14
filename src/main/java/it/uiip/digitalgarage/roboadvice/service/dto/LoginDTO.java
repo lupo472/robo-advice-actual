@@ -10,6 +10,5 @@ public @Data class LoginDTO {
 	private UserRegisteredDTO user;
 	
 	@NotNull
-	private AuthDTO auth;
-	
+	private String token;
 }
