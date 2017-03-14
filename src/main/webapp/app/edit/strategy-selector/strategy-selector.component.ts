@@ -38,8 +38,8 @@ export class StrategySelectorComponent implements OnInit, OnChanges {
     createChart(): void {
         for (let assetClass of this.strategy.list) {
             this.arrayPercentage.push(assetClass.percentage);
-            this.arrayLabels.push(assetClass.assetClass.name);
-            this.arrayColor.push(this.assignColour(assetClass.assetClass.id));
+            this.arrayLabels.push(assetClass.name);
+            this.arrayColor.push(this.assignColour(assetClass.id));
             this.arrayColors = [{ backgroundColor: this.arrayColor, borderWidth: 3 }];
         }
     }

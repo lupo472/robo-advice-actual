@@ -32,7 +32,7 @@ export class CardAssetClassComponent implements OnInit {
 
     handleSlide(e) : void {
         this.oldValue = this.StrategyService.strategies.get(this.id).percentage;
-        this.StrategyService.strategies.get(this.id).getAssetClass().setName(this.value);
+        this.StrategyService.strategies.get(this.id).setName(this.value);
         this.StrategyService.strategies.get(this.id).setPercentage(this.percentage);
         this.percentage = this.StrategyService.createAssetClassStrategy(this.id, this.oldValue);
     }

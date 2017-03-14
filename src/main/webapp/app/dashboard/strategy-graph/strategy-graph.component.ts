@@ -29,7 +29,7 @@ export class StrategyGraphComponent implements OnInit {
     this.date = data.date;
 
     data.list.forEach((item, index) => {
-      this.labels[index] = item.assetClass.name;
+      this.labels[index] = item.name;
       this.data[index] = item.percentage;
     })
 

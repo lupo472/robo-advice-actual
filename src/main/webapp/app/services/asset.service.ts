@@ -20,7 +20,7 @@ export class AssetService {
   assignAssetClass(res) {
     let assetClassesStrategies = [];
     res.data.forEach((item,i) => {
-      let assetClassStrategy = new AssetClassStrategy(0,new AssetClass(item.id,item.name));
+      let assetClassStrategy = new AssetClassStrategy(0,item.id,item.name);
       assetClassesStrategies.push(assetClassStrategy);
     });
     return assetClassesStrategies;

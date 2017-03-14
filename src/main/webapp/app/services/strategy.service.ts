@@ -30,10 +30,10 @@ export class StrategyService {
   constructor(private AppService:AppService, private AssetService:AssetService) {
     this.sumPercentage = 0;
     this.maxPercentage = 100;
-    this.strategies.set(1,new AssetClassStrategy(0,new AssetClass(1,"")));
-    this.strategies.set(2,new AssetClassStrategy(0,new AssetClass(2,"")));
-    this.strategies.set(3,new AssetClassStrategy(0,new AssetClass(3,"")));
-    this.strategies.set(4,new AssetClassStrategy(0,new AssetClass(4,"")));
+    this.strategies.set(1,new AssetClassStrategy(0,1,""));
+    this.strategies.set(2,new AssetClassStrategy(0,2,""));
+    this.strategies.set(3,new AssetClassStrategy(0,3,""));
+    this.strategies.set(4,new AssetClassStrategy(0,4,""));
     //this.extendedDefaultStrategy = new ExtendedDefaultStrategy();
     this.oldValue = 0;
     this.defaultStrategies = [];
@@ -56,7 +56,7 @@ export class StrategyService {
             }
         }
       }
-      this.strategies.set(this.strategies.get(id).assetClass.id,this.strategies.get(id));
+      this.strategies.set(this.strategies.get(id).id,this.strategies.get(id));
       var sum = 0;
       this.strategies.forEach( (k,v) => [
         sum += k.percentage
@@ -114,7 +114,7 @@ export class StrategyService {
       let defaultStrategy = new DefaultStrategy(item.name);
       item.list.forEach((element, i) => {
         defaultStrategy.setList(new AssetClassStrategy(element.percentage,
-        new AssetClass(element.assetClass.id,element.assetClass.name)));
+      element.id,element.name));
       });
       defaultStrategies.push(defaultStrategy);
     });

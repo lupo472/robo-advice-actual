@@ -57,11 +57,10 @@ export class EditComponent implements OnInit, AfterViewInit {
     assignColour(id): string {
         return this.AssetService.assignColour(id);
     }
-    resetCustomStrategy() : void {
-      this.isCustom = false;
-      this.StrategyService.resetCustomStrategy();
-      this.percentage = 0;
-    }
+    // resetCustomStrategy() : void {
+    //   this.isCustom = false;
+    //   this.StrategyService.resetCustomStrategy();
+    // }
 
     //ASSIGN STRATEGIES
     getStrategy(res): void {
@@ -101,7 +100,7 @@ export class EditComponent implements OnInit, AfterViewInit {
             item.setPercentage(0);
             console.log(item.getPercentage());
             this.currentStrategy.list.forEach((element, j) => {
-                if (item.assetClass.id == element.assetClass.id) {
+                if (item.id == element.id) {
                     item.setPercentage(element.getPercentage());
                 }
             });
