@@ -14,7 +14,8 @@
 				</app-strategy-selector>
 			</div> -->
 
-			<app-strategy-selector [name]="strategy.name" [selected]="selected[i]" [strategy]="strategy" [id]="i" (click)="setStrategy(i)"></app-strategy-selector>
+			<app-strategy-selector [name]="strategy.name" [selected]="selected[i]"
+			[strategy]="strategy" [id]="i" (click)="setStrategy(i)"></app-strategy-selector>
 
 		</div>
 	</div>
@@ -24,15 +25,16 @@
 	<div class="row">
 		<div class="col-sm-6 col-lg-3" *ngFor="let assets of assetClassesStrategies; let i = index;">
 			<app-card-asset-class [value]="assets.assetClass.name" [isCustom]="isCustom" [id]="assets.assetClass.id" [percentage]="assets.percentage" [color]="assignColour(assets.assetClass.id)" [lineChartLabels]="lineChartLabels" [lineChartOptions]="lineChartOptions"
-							[lineChartColours]="lineChartColours" [lineChartType]="lineChartType" [reset]="reset">
+							[lineChartColours]="lineChartColours" [lineChartType]="lineChartType"
+							[reset]="reset">
 				</app-card-asset-class>
 		</div>
 		<div class="col-md-12 text-center" *ngIf="!isCustom">
 			<button type="button" class="btn btn-success" (click)="createDefaultStrategy()" [disabled]="isDisabled">Select Strategy</button>
 		</div>
 		<div class="col-md-12 text-center" *ngIf="isCustom">
-			<button type="button" class="btn btn-danger" (click)="isCustom = false">Cancel</button>
-			<button type="button" class="btn btn-success" (click)="confirmStrategy()">Create</button>
+			<button type="button" class="btn btn-danger" (click)="resetCustomStrategy()">Cancel</button>
+			<button type="button" class="btn btn-success" (click)="confirmStrategy()" [disabled]="StrategyService.sumPercentage < 100">Create</button>
 		</div>
 	</div>
 	<!-- <button type="button" (click)="showData()">show data</button> -->

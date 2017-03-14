@@ -25,6 +25,7 @@ export class EditComponent implements OnInit, AfterViewInit {
     public selected = [];
     public currentStrategy: DefaultStrategy;
     public isDisabled = true;
+    //sumPercentage:number;
 
     @ViewChild('childModal') public childModal: ModalDirective;
 
@@ -55,6 +56,11 @@ export class EditComponent implements OnInit, AfterViewInit {
 
     assignColour(id): string {
         return this.AssetService.assignColour(id);
+    }
+    resetCustomStrategy() : void {
+      this.isCustom = false;
+      this.StrategyService.resetCustomStrategy();
+      this.percentage = 0;
     }
 
     //ASSIGN STRATEGIES

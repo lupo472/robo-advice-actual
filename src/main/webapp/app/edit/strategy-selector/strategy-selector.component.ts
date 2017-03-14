@@ -27,7 +27,6 @@ export class StrategySelectorComponent implements OnInit, OnChanges {
     constructor(private AssetService: AssetService) {
 
     }
-
     ngOnInit() {
         this.createChart();
     }
