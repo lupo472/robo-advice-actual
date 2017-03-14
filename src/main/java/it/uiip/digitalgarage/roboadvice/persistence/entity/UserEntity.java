@@ -27,5 +27,8 @@ public @Data class UserEntity {
 	
 	@Column(name = "date", nullable = false)
 	private LocalDate date;
+	
+	@Column(name = "last_update")
+	private LocalDate lastUpdate;
 		
 }

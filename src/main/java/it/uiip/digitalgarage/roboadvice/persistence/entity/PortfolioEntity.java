@@ -8,7 +8,7 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "portfolio")
+@Table(name = "portfolio", indexes = {@Index(name = "IDX1", columnList = "id_user, date")})
 public @Data class PortfolioEntity {
 
     @Id
