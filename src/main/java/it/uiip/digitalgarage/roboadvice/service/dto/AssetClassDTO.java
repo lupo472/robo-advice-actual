@@ -16,4 +16,5 @@ public @Data class AssetClassDTO implements Comparable<AssetClassDTO> {
 	public int compareTo(AssetClassDTO o) {
 		return this.id.compareTo(o.id);
 	}
+	
 }
