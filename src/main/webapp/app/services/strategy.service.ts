@@ -69,6 +69,12 @@ export class StrategyService {
       // console.log("maxPercentage" + this.maxPercentage);
       return this.strategies.get(id).getPercentage();
   }
+  resetCustomStrategy() {
+    this.strategies.forEach((item,index)=>{
+      item.setPercentage(0);
+      return item.getPercentage();
+    });
+  }
 
   // createDefaultStrategy(){
   //   this.sendStrategy = new Strategy();

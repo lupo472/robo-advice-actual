@@ -15,6 +15,7 @@ export class AssetService {
   //REMAPPING ASSET CLASS
   getAssetClassSet() {
     return this.AppService.getAssetClassSet().map(res => this.assignAssetClass(res));
+    //return this.AppService.getFinancialDataSetForAssetClass(id,period).map(res => this.assignFinancialData(res));
   }
   assignAssetClass(res) {
     let assetClassesStrategies = [];
@@ -23,6 +24,9 @@ export class AssetService {
       assetClassesStrategies.push(assetClassStrategy);
     });
     return assetClassesStrategies;
+  }
+  assignFinancialData(res) {
+    return res.data;
   }
 
   //REMAPPING PORTFOLIO
