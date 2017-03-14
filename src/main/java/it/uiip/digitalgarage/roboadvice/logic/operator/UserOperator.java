@@ -2,11 +2,14 @@ package it.uiip.digitalgarage.roboadvice.logic.operator;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
 import it.uiip.digitalgarage.roboadvice.service.dto.AuthDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.LoginDTO;
@@ -36,8 +39,10 @@ public class UserOperator extends AbstractOperator {
 		if(userEntity.getPassword().equals(hashedPassword)) {
 			LoginDTO login = new LoginDTO();
 			login.setUser((UserRegisteredDTO) this.userConv.convertToDTO(userEntity));
-			AuthDTO auth = this.authOp.createAuth(userEntity);
-			//login.setAuth(auth);
+			String secretKey = "inglouriousBasterds";
+			String token = Jwts.builder().setSubject(userDTO.getEmail()).claim("role", "USER").setIssuedAt(new Date())
+					.signWith(SignatureAlgorithm.HS256, secretKey).compact();
+			login.setToken(token);
 			return login;
 		}
 		
