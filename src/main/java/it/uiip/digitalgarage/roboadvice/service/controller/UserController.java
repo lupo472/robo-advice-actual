@@ -30,11 +30,11 @@ public class UserController extends AbstractController {
 	
 	@RequestMapping("/loginUser")
 	@ResponseBody
-	public GenericResponse<?> loginUser(@Valid @RequestBody UserDTO userDTO) {
-		if(!this.userOp.isRegistered(userDTO.getEmail())) {
+	public GenericResponse<?> loginUser(@Valid @RequestBody UserDTO user) {
+		if(!this.userOp.isRegistered(user.getEmail())) {
 			return new GenericResponse<String>(0, ControllerConstants.EMAIL_NOT_REGISTERED);
 		}
-		LoginDTO login = this.userOp.loginUser(userDTO);
+		LoginDTO login = this.userOp.loginUser(user);
 		if(login == null) {
 			return new GenericResponse<String>(0, ControllerConstants.WRONG_PASSWORD);
 		}
