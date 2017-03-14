@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.CapitalEntity;
+import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
 
 @Repository
 @Transactional
@@ -21,7 +22,7 @@ public interface CapitalRepository extends PagingAndSortingRepository<CapitalEnt
 	static final String FIND_LAST = "SELECT * FROM capital WHERE id_user = ?1 AND date = "
 								  + "(SELECT max(date) FROM capital WHERE id_user = ?1)";
 
-	public CapitalEntity findByUserIdAndDate(Long userId, LocalDate date);
+	public CapitalEntity findByUserAndDate(UserEntity user, LocalDate date);
 	
 	@Query(value = FIND_LAST, nativeQuery = true)
 	public CapitalEntity findLast(Long idUser);

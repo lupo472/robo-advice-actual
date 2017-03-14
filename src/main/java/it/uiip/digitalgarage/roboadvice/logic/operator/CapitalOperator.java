@@ -24,7 +24,8 @@ public class CapitalOperator extends AbstractOperator {
 	@Autowired
 	private PortfolioOperator portfolioOp;
 	
-	public CapitalResponseDTO getCurrentCapital(UserRegisteredDTO user) {
+	public CapitalResponseDTO getCurrentCapital(Authentication auth) {
+		UserEntity user = this.userRep.findByEmail(auth.getName());
 		CapitalEntity entity = this.capitalRep.findLast(user.getId());
 		if(entity == null) {
 			return null;
@@ -40,7 +41,7 @@ public class CapitalOperator extends AbstractOperator {
 		}
 		entity.setUser(user);
 		entity.setDate(LocalDate.now());
-		CapitalEntity saved = this.capitalRep.findByUserIdAndDate(entity.getUser().getId(), entity.getDate());
+		CapitalEntity saved = this.capitalRep.findByUserAndDate(entity.getUser(), entity.getDate());
 		if(saved == null) {
 			saved = this.capitalRep.findLast(entity.getUser().getId());
 			if(saved != null) {
@@ -66,7 +67,7 @@ public class CapitalOperator extends AbstractOperator {
 		capitalEntity.setUser(userEntity);
 		capitalEntity.setAmount(amount);
 		capitalEntity.setDate(currentDate);
-		CapitalEntity saved = this.capitalRep.findByUserIdAndDate(user.getId(), currentDate);
+		CapitalEntity saved = this.capitalRep.findByUserAndDate(userEntity, currentDate);
 		if(saved == null) {
 			this.capitalRep.save(capitalEntity);
 		} else {

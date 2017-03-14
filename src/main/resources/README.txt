@@ -28,3 +28,11 @@
 *		Note: 	This API may be called at the first login of the user, that is when the getCurrentCapital call fails		*
 *																															*
 *****************************************************************************************************************************
+*																															*
+* * getCurrentCapital																										*
+*		Header 		[token]																									*
+*		Body 		[]																										*
+*		Response	[response(0/1), data(Capital {amount, date}/String)]													*
+*		Note: 																												*
+*																															*
+*****************************************************************************************************************************

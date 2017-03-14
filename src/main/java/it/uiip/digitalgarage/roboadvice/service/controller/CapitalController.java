@@ -37,8 +37,8 @@ public class CapitalController extends AbstractController {
 	
 	@RequestMapping("/getCurrentCapital")
     @ResponseBody
-	public GenericResponse<?> getCurrentCapital(@Valid @RequestBody UserRegisteredDTO user){
-		CapitalResponseDTO result = this.capitalOp.getCurrentCapital(user);
+	public GenericResponse<?> getCurrentCapital(Authentication auth) {
+		CapitalResponseDTO result = this.capitalOp.getCurrentCapital(auth);
 		if(result == null) {
 			return new GenericResponse<String>(0, ControllerConstants.ANY_CAPITAL);
 		}
