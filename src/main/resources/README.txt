@@ -21,10 +21,10 @@
 *																															*			
 ************************************************ CapitalController **********************************************************
 *																															*
-* * NomeMetodo																												*
-*		Header 		[]																										*
-*		Body 		[]																										*
-*		Response	[]																										*
-*		Note: 																												*
+* * addCapital																												*
+*		Header 		[token]																									*
+*		Body 		[Capital {amount}]																						*
+*		Response	[response(0/1), data(String)]																			*
+*		Note: 	This API may be called at the first login of the user, that is when the getCurrentCapital call fails		*
 *																															*
 *****************************************************************************************************************************

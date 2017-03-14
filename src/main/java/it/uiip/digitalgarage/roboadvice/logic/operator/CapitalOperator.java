@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.CapitalEntity;
@@ -31,8 +32,13 @@ public class CapitalOperator extends AbstractOperator {
 		return (CapitalResponseDTO) this.capitalConv.convertToDTO(entity);
 	}
 	
-	public void addCapital(CapitalDTO capital) {
+	public boolean addCapital(CapitalDTO capital, Authentication auth) {
 		CapitalEntity entity = this.capitalConv.convertToEntity(capital);
+		UserEntity user = this.userRep.findByEmail(auth.getName());
+		if(user == null) {
+			return false;
+		}
+		entity.setUser(user);
 		entity.setDate(LocalDate.now());
 		CapitalEntity saved = this.capitalRep.findByUserIdAndDate(entity.getUser().getId(), entity.getDate());
 		if(saved == null) {
@@ -45,6 +51,7 @@ public class CapitalOperator extends AbstractOperator {
 			BigDecimal newAmount = entity.getAmount().add(saved.getAmount());
 			this.capitalRep.updateCapital(entity.getUser().getId(), entity.getDate().toString(), newAmount);
 		}
+		return true;
 	}
 
 	public boolean computeCapital(UserRegisteredDTO user) {

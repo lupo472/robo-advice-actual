@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.CapitalEntity;
-import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
 import it.uiip.digitalgarage.roboadvice.service.dto.CapitalDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CapitalResponseDTO;
 
@@ -14,9 +13,6 @@ public class CapitalConverter implements GenericConverter<CapitalEntity, Capital
 	public CapitalEntity convertToEntity(CapitalDTO dto) {
 		CapitalEntity entity = new CapitalEntity();
 		entity.setAmount(dto.getAmount());
-		UserEntity user = new UserEntity();
-		user.setId(dto.getIdUser());
-		entity.setUser(user);
 		return entity;
 	}
 
@@ -24,7 +20,6 @@ public class CapitalConverter implements GenericConverter<CapitalEntity, Capital
 	public CapitalResponseDTO convertToDTO(CapitalEntity entity) {
 		CapitalResponseDTO dto = new CapitalResponseDTO();
 		dto.setAmount(entity.getAmount());
-		dto.setIdUser(entity.getUser().getId());
 		dto.setDate(entity.getDate().toString());
 		return dto;
 	}
