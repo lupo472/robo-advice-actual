@@ -2,8 +2,6 @@ package it.uiip.digitalgarage.roboadvice.service.controller;
 
 import javax.validation.Valid;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

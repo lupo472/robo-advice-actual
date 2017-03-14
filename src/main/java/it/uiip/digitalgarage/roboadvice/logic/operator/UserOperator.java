@@ -5,13 +5,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
-import it.uiip.digitalgarage.roboadvice.service.dto.AuthDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.LoginDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserRegisteredDTO;
@@ -19,9 +17,6 @@ import it.uiip.digitalgarage.roboadvice.service.util.HashFunction;
 
 @Service
 public class UserOperator extends AbstractOperator {
-
-	@Autowired
-	private AuthOperator authOp;
 	
 	public UserRegisteredDTO registerUser(UserDTO userDTO) {
 		UserEntity userEntity = this.userConv.convertToEntity(userDTO);
