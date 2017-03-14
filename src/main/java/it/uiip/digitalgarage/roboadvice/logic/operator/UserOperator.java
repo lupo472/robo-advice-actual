@@ -18,14 +18,16 @@ import it.uiip.digitalgarage.roboadvice.service.util.HashFunction;
 @Service
 public class UserOperator extends AbstractOperator {
 	
-	public UserRegisteredDTO registerUser(UserDTO userDTO) {
+	public boolean registerUser(UserDTO userDTO) {
+		if(this.isRegistered(userDTO.getEmail())) {
+			return false;
+		}
 		UserEntity userEntity = this.userConv.convertToEntity(userDTO);
 		String password = HashFunction.hashStringSHA256(userDTO.getPassword());
 		userEntity.setPassword(password);
 		userEntity.setDate(LocalDate.now());
-		userEntity = userRep.save(userEntity);
-		UserRegisteredDTO userLoggedDTO = (UserRegisteredDTO) this.userConv.convertToDTO(userEntity);
-		return userLoggedDTO;
+		userRep.save(userEntity);
+		return true;
 	}
 
 	public LoginDTO loginUser(UserDTO userDTO) {

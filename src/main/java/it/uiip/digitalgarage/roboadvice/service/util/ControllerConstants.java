@@ -3,8 +3,6 @@ package it.uiip.digitalgarage.roboadvice.service.util;
 public class ControllerConstants {
 	
 	public static final String DONE = "done";
-	public static final String AUTHENTICATED = "Authenticated";
-	public static final String AUTHENTICATION_FAILED = "Authentication failed";
 	public static final String PROBLEM = "A problem occurred";
 	public static final String NO_RESULTS = "No results";
 	public static final String ANY_CAPITAL = "This user doesn't have any capital";
