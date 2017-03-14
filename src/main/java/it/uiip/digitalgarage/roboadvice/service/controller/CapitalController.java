@@ -1,8 +1,11 @@
 package it.uiip.digitalgarage.roboadvice.service.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import it.uiip.digitalgarage.roboadvice.service.dto.DataRequestDTO;
+import org.apache.tomcat.util.http.parser.Authorization;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +21,7 @@ import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 import java.util.List;
 
 @CrossOrigin("*")
+@RequestMapping("/roboadvice")
 @RestController
 public class CapitalController extends AbstractController {
 	

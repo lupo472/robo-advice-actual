@@ -12,6 +12,7 @@ import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 
 @CrossOrigin("*")
 @RestController
+@RequestMapping("/roboadvice")
 public class DefaultStrategyController extends AbstractController {
 	
 	@RequestMapping("/getDefaultStrategySet")

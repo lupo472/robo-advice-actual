@@ -9,6 +9,13 @@
         <a class="navbar-brand" href="#"></a>
     </div>-->
 
+    <ul class="nav navbar-nav ml-auto" *ngIf="!isLoaded">
+
+        <li class="nav-item-custom">
+            <a class="h3 text-primary text-center">{{response}}</a>
+        </li>
+    </ul>
+
     <div class="card-block p-0" *ngIf="isLoaded">
 
             <canvas baseChart class="chart" [datasets]="capitalData"
@@ -21,12 +28,8 @@
 
     <ul class="nav navbar-nav ml-auto">
 
-        <li class="nav-item" *ngIf="!isLoaded">
-            <a class="h3 text-primary custom">{{response}}</a>
-        </li>
-
-        <li class="nav-item">
-            <a class="h3 text-primary custom">${{user.capital}}</a>
+        <li class="nav-item-custom" *ngIf="isLoaded">
+            <a class="h3 text-primary">${{user.capital}}</a>
         </li>
 
         <li class="nav-item dropdown" dropdown>

@@ -29,7 +29,7 @@ public class UserOperator extends AbstractOperator {
 		UserRegisteredDTO userLoggedDTO = (UserRegisteredDTO) this.userConv.convertToDTO(userEntity);
 		return userLoggedDTO;
 	}
-	
+
 	public LoginDTO loginUser(UserDTO userDTO) {
 		UserEntity userEntity = this.userRep.findByEmail(userDTO.getEmail());
 		String hashedPassword = HashFunction.hashStringSHA256(userDTO.getPassword());
@@ -37,7 +37,7 @@ public class UserOperator extends AbstractOperator {
 			LoginDTO login = new LoginDTO();
 			login.setUser((UserRegisteredDTO) this.userConv.convertToDTO(userEntity));
 			AuthDTO auth = this.authOp.createAuth(userEntity);
-			login.setAuth(auth);
+			//login.setAuth(auth);
 			return login;
 		}
 		
