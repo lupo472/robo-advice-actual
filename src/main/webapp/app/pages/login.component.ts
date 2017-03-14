@@ -12,7 +12,7 @@ export class LoginComponent {
     if (Cookie.check('id')) {
       this.router.navigate(['dashboard']);
         this.UserService.setUser({user:{
-            id: Cookie.get('id'), email: "a@a", password: "aaaaa"
+            id: Cookie.get('id'), email: Cookie.get('email'), password: "aaaaa"
         }});
     }
 
@@ -32,6 +32,7 @@ export class LoginComponent {
   public setCookie(data) {
     Cookie.set('token', data.auth.token);
     Cookie.set('id', data.auth.id);
+    Cookie.set('email', data.user.email);
 
     this.router.navigate(['dashboard']);
   }

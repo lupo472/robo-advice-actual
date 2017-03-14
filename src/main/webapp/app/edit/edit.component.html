@@ -33,7 +33,9 @@
 			<button type="button" class="btn btn-success" (click)="createDefaultStrategy()" [disabled]="isDisabled">Select Strategy</button>
 		</div>
 		<div class="col-md-12 text-center" *ngIf="isCustom">
-			<button type="button" class="btn btn-danger" (click)="resetCustomStrategy()">Cancel</button>
+
+			<button type="button" class="btn btn-danger" (click)="isCustom = false">Cancel</button>
+
 			<button type="button" class="btn btn-success" (click)="confirmStrategy()" [disabled]="StrategyService.sumPercentage < 100">Create</button>
 		</div>
 	</div>
@@ -101,7 +103,7 @@
 								</div>
 								<div class="col-md-4 col-sm-4">
 									<div class="h2 font-weight-bold">Eagle</div>
-									<div>Balance your flight but keep and eagle eye on risky investments</div>
+									<div>Balance your flight but keep an eagle eye on risky investments</div>
 									<hr>
 									<div class="h4">Your Strategy:</div>
 									<div class="h1">Balanced</div>
@@ -138,7 +140,7 @@
 								</div>
 								<div class="col-md-4 col-sm-4">
 									<div class="h2 font-weight-bold">Lion</div>
-									<div>Be the king of the forest is not easy to manage but gives you a big power</div>
+									<div>Be the king of the forest is not easy but gives you a big power</div>
 									<hr>
 									<div class="h4">Your Strategy:</div>
 									<div class="h1">Stocks</div>

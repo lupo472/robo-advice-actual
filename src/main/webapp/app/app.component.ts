@@ -19,7 +19,7 @@ export class AppComponent extends OnInit {
 
     if (Cookie.check('id')) {
       this.UserService.setUser({user:{
-        id: Cookie.get('id'), email: "a@a", password: "aaaaa"
+        id: Cookie.get('id'), email: Cookie.get('email'), password: "aaaaa"
       }});
     } else {
       Cookie.delete("id");

@@ -32,11 +32,11 @@ export class FullLayoutComponent implements OnInit {
 
   checkAuth(res):void{
     console.log(res.response);
-    if(res.response == 0){
-      Cookie.delete("id");
-      Cookie.delete("token");
-      this.router.navigate(['pages/login']);
-    }
+    //if(res.response == 0){
+    //  Cookie.delete("id");
+    //  Cookie.delete("token");
+    //  this.router.navigate(['pages/login']);
+    //}
 
   }
 
@@ -54,6 +54,17 @@ export class FullLayoutComponent implements OnInit {
     $event.preventDefault();
     $event.stopPropagation();
     this.status.isopen = !this.status.isopen;
+  }
+
+  //convert Hex to RGBA
+  public convertHex(hex: string, opacity: number) {
+    hex = hex.replace('#', '');
+    let r = parseInt(hex.substring(0, 2), 16);
+    let g = parseInt(hex.substring(2, 4), 16);
+    let b = parseInt(hex.substring(4, 6), 16);
+
+    let rgba = 'rgba(' + r + ',' + g + ',' + b + ',' + opacity / 100 + ')';
+    return rgba;
   }
 
   // social box charts
@@ -101,7 +112,7 @@ export class FullLayoutComponent implements OnInit {
         borderWidth: 2
       },
       point: {
-        radius: 0,
+        radius: 3,
         hitRadius: 10,
         hoverRadius: 4,
         hoverBorderWidth: 3,
@@ -113,17 +124,14 @@ export class FullLayoutComponent implements OnInit {
   };
   public socialChartColours: Array<any> = [
     {
-      backgroundColor: 'rgba(148,159,177,0.2)',
-      borderColor: 'rgba(148,159,177,1)',
+      backgroundColor: this.convertHex('#20a8d8', 30),
+      borderColor: '#20a8d8',
       pointBackgroundColor: '#20a8d8',
       pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#20a8d8',
+      pointHoverBackgroundColor: '#fff',
       pointHoverBorderColor: 'rgba(148,159,177,0.8)'
     }
   ];
-  public socialChartLegend: boolean = false;
   public socialChartType: string = 'line';
-
-
 
 }

@@ -41,6 +41,7 @@ export class StrategyClassesGraphComponent implements OnInit {
         var label = [];
         var id = [];
         var assetClass = [];
+          var tendency;
 
         portfolioElem.forEach((element, i) => {
           assetClass[i] = element.assetClassStrategy.assetClass;
@@ -54,8 +55,15 @@ export class StrategyClassesGraphComponent implements OnInit {
           value[j][index] = element.value;
           percentage[j] = element.assetClassStrategy.percentage;
           name[j] = assetClass[i].name;
+            if(value[j][index] > value[j][index-1]){
+                tendency = "positive";
+            }else if(value[j][index] < value[j][index-1]) {
+                tendency = "negative";
+            }else{
+                tendency = "equal";
+            }
 
-          this.dataset[j] = { data: value[j], label: name[j], percentage: percentage[j], value: value[j][index] };
+          this.dataset[j] = { data: value[j], label: name[j], percentage: percentage[j], value: value[j][index] , tendency:tendency};
         })
         
         this.date.push(item.date);
