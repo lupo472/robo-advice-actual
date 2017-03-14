@@ -19,21 +19,23 @@ export class StrategyGraphComponent implements OnInit {
 
   ngOnInit() {
 
-    var user = this.UserService.getUser();
-    this.AppService.getActiveStrategy(user).subscribe(res => this.getStrategy(res.data));
+    let user = this.UserService.getUser();
+    this.AppService.getActiveStrategy(user).subscribe(res => this.getStrategy(res));
   }
 
-  getStrategy(data) {
-    console.log("strategy: ", data);
+  getStrategy(res) {
+    if(res.response == 1) {
+      let resdata = res.data;
 
-    this.date = data.date;
+      this.date = resdata.date;
 
-    data.list.forEach((item, index) => {
-      this.labels[index] = item.name;
-      this.data[index] = item.percentage;
-    })
+      resdata.list.forEach((item, index) => {
+        this.labels[index] = item.name;
+        this.data[index] = item.percentage;
+      });
 
-    this.render = true;
+      this.render = true;
+    }
   }
 
   public brandPrimary: string = '#20a8d8';
