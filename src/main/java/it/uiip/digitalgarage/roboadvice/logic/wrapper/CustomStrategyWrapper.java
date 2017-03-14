@@ -5,7 +5,6 @@ import java.util.List;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetClassEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.CustomStrategyEntity;
-import it.uiip.digitalgarage.roboadvice.service.dto.AssetClassDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.AssetClassStrategyDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyResponseDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyDTO;
@@ -19,8 +18,8 @@ public class CustomStrategyWrapper implements GenericWrapper<CustomStrategyEntit
 			CustomStrategyEntity entity = new CustomStrategyEntity();
 			entity.setId(dto.getIdUser());
 			AssetClassEntity assetClass = new AssetClassEntity();
-			assetClass.setId(element.getAssetClass().getId());
-			assetClass.setName(element.getAssetClass().getName());
+			assetClass.setId(element.getId());
+			assetClass.setName(element.getName());
 			entity.setAssetClass(assetClass);
 			entity.setPercentage(element.getPercentage());
 			entityList.add(entity);
@@ -37,10 +36,8 @@ public class CustomStrategyWrapper implements GenericWrapper<CustomStrategyEntit
 		dto.setList(new ArrayList<>());
 		for (CustomStrategyEntity entity : entityList) {
 			AssetClassStrategyDTO element = new AssetClassStrategyDTO();
-			AssetClassDTO assetClass = new AssetClassDTO();
-			assetClass.setId(entity.getAssetClass().getId());
-			assetClass.setName(entity.getAssetClass().getName());
-			element.setAssetClass(assetClass);
+			element.setId(entity.getAssetClass().getId());
+			element.setName(entity.getAssetClass().getName());
 			element.setPercentage(entity.getPercentage());
 			dto.getList().add(element);
 		}

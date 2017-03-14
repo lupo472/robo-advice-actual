@@ -26,9 +26,8 @@ public class DefaultStrategyOperator extends AbstractOperator {
 		for (DefaultStrategyEntity defaultStrategyEntity : defaultStrategySet) {
 			AssetClassStrategyDTO aCSB = new AssetClassStrategyDTO();
 			AssetClassDTO assetClass = new AssetClassDTO();
-			assetClass.setId(defaultStrategyEntity.getAssetClass().getId());
-			assetClass.setName(defaultStrategyEntity.getAssetClass().getName());
-			aCSB.setAssetClass(assetClass);
+			aCSB.setId(defaultStrategyEntity.getAssetClass().getId());
+			aCSB.setName(defaultStrategyEntity.getAssetClass().getName());
 			aCSB.setPercentage(defaultStrategyEntity.getPercentage());
 			if(map.get(defaultStrategyEntity.getName()) == null) {
 				map.put(defaultStrategyEntity.getName(), new ArrayList<>());
