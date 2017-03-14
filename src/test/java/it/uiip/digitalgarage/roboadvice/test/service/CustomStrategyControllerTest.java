@@ -36,10 +36,8 @@ public class CustomStrategyControllerTest {
         CustomStrategyDTO dto = new CustomStrategyDTO();
         List<AssetClassStrategyDTO> dtoList = new ArrayList<>();
         AssetClassStrategyDTO assetClassStrategy = new AssetClassStrategyDTO();
-        AssetClassDTO assetClass = new AssetClassDTO();
-        assetClass.setName("bonds");
-        assetClass.setId(new Long(1));
-        assetClassStrategy.setAssetClass(assetClass);
+        assetClassStrategy.setName("bonds");
+        assetClassStrategy.setId(new Long(1));
         assetClassStrategy.setPercentage(new BigDecimal(40));
         dtoList.add(assetClassStrategy);
         AssetClassStrategyDTO assetClassStrategy2 = new AssetClassStrategyDTO();

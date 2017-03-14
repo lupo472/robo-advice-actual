@@ -79,7 +79,10 @@ public class PortfolioOperator extends AbstractOperator {
     	CustomStrategyDTO strategy = this.customStrategyWrap.wrapToDTO(strategyEntity);
     	for (AssetClassStrategyDTO element : strategy.getList()) {
     		BigDecimal amountPerClass = amount.divide(new BigDecimal(100.00), 8, RoundingMode.HALF_UP).multiply(element.getPercentage());
-    		this.savePortfolioForAssetClass(element.getAssetClass(), amountPerClass, user);
+    		AssetClassDTO assetClass =  new AssetClassDTO();
+    		assetClass.setId(element.getId());
+    		assetClass.setName(element.getName());
+    		this.savePortfolioForAssetClass(assetClass, amountPerClass, user);
 		}
     	return true;
     }
