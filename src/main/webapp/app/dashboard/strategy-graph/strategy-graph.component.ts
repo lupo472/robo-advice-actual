@@ -19,7 +19,7 @@ export class StrategyGraphComponent implements OnInit {
   public render: boolean = false;
 
   ngOnInit() {
-    
+
     var user = this.UserService.getUser();
     this.AppService.getActiveStrategy(user,Cookie.get('token')).subscribe(res => this.getStrategy(res.data));
   }
