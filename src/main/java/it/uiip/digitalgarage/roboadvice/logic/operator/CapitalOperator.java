@@ -26,7 +26,7 @@ public class CapitalOperator extends AbstractOperator {
 	
 	public CapitalResponseDTO getCurrentCapital(Authentication auth) {
 		UserEntity user = this.userRep.findByEmail(auth.getName());
-		CapitalEntity entity = this.capitalRep.findLast(user.getId());
+		CapitalEntity entity = this.capitalRep.findByUserAndDate(user, user.getLastUpdate());
 		if(entity == null) {
 			return null;
 		}
@@ -52,6 +52,8 @@ public class CapitalOperator extends AbstractOperator {
 			BigDecimal newAmount = entity.getAmount().add(saved.getAmount());
 			this.capitalRep.updateCapital(entity.getUser().getId(), entity.getDate().toString(), newAmount);
 		}
+		user.setLastUpdate(LocalDate.now());
+		userRep.save(user);
 		return true;
 	}
 
