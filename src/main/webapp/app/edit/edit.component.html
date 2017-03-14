@@ -32,7 +32,7 @@
 		</div>
 		<div class="col-md-12 text-center" *ngIf="isCustom">
 			<button type="button" class="btn btn-danger" (click)="isCustom = false">Cancel</button>
-			<button type="button" class="btn btn-success" (click)="confirmStrategy()">Create</button>
+			<button type="button" class="btn btn-success" (click)="confirmStrategy()" [disabled]="StrategyService.sumPercentage < 100">Create</button>
 		</div>
 	</div>
 	<!-- <button type="button" (click)="showData()">show data</button> -->

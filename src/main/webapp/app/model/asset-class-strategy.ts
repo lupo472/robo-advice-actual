@@ -1,27 +1,18 @@
-import { AssetClass } from './asset-class';
+import {AssetClass} from './asset-class';
 
-export class AssetClassStrategy {
-  assetClass:AssetClass;
-  percentage:number;
+export class AssetClassStrategy extends AssetClass {
+    percentage: number;
 
-  constructor(percentage,assetClass) {
-    this.percentage = percentage;
-    this.assetClass = assetClass;
-  }
+    constructor(percentage, id, name) {
+        super(id, name);
+        this.percentage = percentage;
+    }
 
-  setAssetClass(assetClass) {
-    this.assetClass = assetClass;
-  }
+    setPercentage(percentage) {
+        this.percentage = percentage;
+    }
 
-  setPercentage(percentage){
-    this.percentage = percentage;
-  }
-
-  getAssetClass() {
-    return this.assetClass;
-  }
-
-  getPercentage() {
-    return this.percentage;
-  }
+    getPercentage() {
+        return this.percentage;
+    }
 }
