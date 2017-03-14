@@ -3,7 +3,7 @@
 <div class="card-footer">
 		<ul>
 			<li *ngFor="let i of dataset">
-				<div class="text-uppercase font-weight-bold">{{i.label}}</div>
+				<p class="text-uppercase font-weight-bold">{{i.label}}</p>
 				<strong>${{i.value}}</strong>
 				<i *ngIf="i.tendency=='positive'" class="fa fa-arrow-up" aria-hidden="true" style="color: green"></i>
 				<i *ngIf="i.tendency=='negative'" class="fa fa-arrow-down" aria-hidden="true" style="color: red"></i>
@@ -32,7 +32,7 @@
 		</div>
 
 		 
-                <div *ngIf="render" class="chart-wrapper">
+                <div *ngIf="render" class="chart-wrapper hidden-md-down">
                     <canvas baseChart class="chart" [datasets]="lineChartData" [labels]="lineChartLabels"
                             [options]="lineChartOptions" [colors]="lineChartColours" [legend]="lineChartLegend"
                             [chartType]="lineChartType" (chartHover)="chartHovered($event)"

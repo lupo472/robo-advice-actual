@@ -37,16 +37,15 @@
 // Navbar Item
 .navbar {
   .card-block {
-    max-width: 80%;
+    flex: 1 60%;
   }
 }
 
-.nav-item {
-  .custom {
+.nav-item-custom {
     position: relative;
     padding: 20px;
+    min-width: 50%;
   }
-}
 
 // Arrow under dropdown menu
 .dropdown-toggle::after {

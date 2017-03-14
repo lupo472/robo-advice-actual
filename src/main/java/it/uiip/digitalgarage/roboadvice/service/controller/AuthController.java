@@ -14,6 +14,7 @@ import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 
 @CrossOrigin("*")
 @RestController
+@RequestMapping("/roboadvice")
 public class AuthController extends AbstractController {
 
 	@RequestMapping("/authenticate")
