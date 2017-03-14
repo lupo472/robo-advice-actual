@@ -1,26 +1,25 @@
 export class AssetClass {
-  
-  id:number;
-  name:string;
-  
-  constructor(id,name) {
-    this.id = id;
-    this.name = name;
+  private id: number;
+  private name: string;
+
+  constructor(id, name) {
+      this.id = id;
+      this.name = name;
   }
 
-  setId(id){
-    this.id = id;
+  setId(id) : void {
+      this.id = id;
   }
 
-  setName(name) {
-    this.name = name;
+  setName(name) : void {
+      this.name = name;
   }
 
-  getId() {
-    return this.id;
+  getId() : number {
+      return this.id;
   }
 
-  getName() {
-    return this.name;
+  getName() : string {
+      return this.name;
   }
 }

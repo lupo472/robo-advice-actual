@@ -10,7 +10,7 @@ import { UserService } from '../services/user.service';
   templateUrl: './full-layout.component.html'
 })
 export class FullLayoutComponent implements OnInit {
-  
+
   user:User;
   check:number;
   constructor(private UserService: UserService, private AppService:AppService, private router: Router) { }
@@ -25,7 +25,7 @@ export class FullLayoutComponent implements OnInit {
       console.log("Not Logged");
       this.router.navigate(['pages/login']);
     }*/
-    this.UserService.authenticate().subscribe(res => this.checkAuth(res));
+    //this.UserService.authenticate().subscribe(res => this.checkAuth(res));
     this.user = this.UserService.getUser();
     this.AppService.getCapitalPeriod(this.user.id, 0).subscribe(res => this.assignCapitalData(res));
   }
@@ -43,7 +43,7 @@ export class FullLayoutComponent implements OnInit {
   public isLoaded: boolean = false;
   public disabled: boolean = false;
   public status: { isopen: boolean } = { isopen: false };
-  
+
   public response = 'Data not yet available'
 
   public logout(): void {
@@ -70,13 +70,13 @@ export class FullLayoutComponent implements OnInit {
   // social box charts
 
   public capitalData: Array<any>
-  
+
   public capitalLabels: Array<any>
-  
+
   assignCapitalData(res) {
-    
+
     if(res.response == 1){
-  
+
     var data = [];
     var date = [];
 
@@ -89,7 +89,7 @@ export class FullLayoutComponent implements OnInit {
     console.dir(this.capitalData);
     this.capitalLabels = date;
     console.dir(this.capitalLabels);
-    
+
     this.isLoaded = true;
     }else{
       this.response = 'Come back tomorrow'

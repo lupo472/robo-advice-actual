@@ -30,8 +30,7 @@ export class LoginComponent {
   }
 
   public setCookie(data) {
-    Cookie.set('token', data.auth.token);
-    Cookie.set('id', data.auth.id);
+    Cookie.set('token', data.token);
     Cookie.set('email', data.user.email);
 
     this.router.navigate(['dashboard']);

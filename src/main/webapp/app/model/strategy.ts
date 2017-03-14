@@ -1,25 +1,20 @@
 import { AssetClassStrategy } from './asset-class-strategy';
 
 export class Strategy {
-  idUser:number;
-  list:AssetClassStrategy[];
+    list: AssetClassStrategy[];
 
-  constructor() {
-  }
+    constructor() {
+    }
 
-  setStrategyArray(strategyArray){
-    this.list = strategyArray;
-  }
+    setStrategyArray(strategyArray: AssetClassStrategy[]): void {
+        this.list = strategyArray;
+    }
 
-  getStrategyArray(){
-    return this.list;
-  }
+    addAssetClassStrategy(assetClassStrategy: AssetClassStrategy): void {
+        this.list.push(assetClassStrategy);
+    }
 
-  setUserId(id) {
-    this.idUser = id;
-  }
-
-  getUserId() {
-    return this.idUser;
-  }
+    getStrategyArray(): AssetClassStrategy[] {
+        return this.list;
+    }
 }

@@ -1,25 +1,18 @@
 import { AssetClassStrategy } from './asset-class-strategy';
 
-export class DefaultStrategy {
-  name:string;
-  list:AssetClassStrategy[];
+export class DefaultStrategy extends Strategy {
+  private name:string;
 
-  constructor(name) {
+  constructor(name:string) {
+    super();
     this.name = name;
     this.list = [];
   }
-
-  setName(name){
+  setName(name) : void {
     this.name = name;
   }
-  getName(){
+  getName() : string {
     return name;
-  }
-  setList(list){
-    this.list.push(list);
-  }
-  getList(){
-    return this.list;
   }
 
 }
