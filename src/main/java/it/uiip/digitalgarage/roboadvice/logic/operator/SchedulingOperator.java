@@ -31,7 +31,7 @@ public class SchedulingOperator extends AbstractOperator {
 	@Autowired
 	private CustomStrategyOperator customStrategyOp;
 	
-	@Scheduled(cron = "0 25 12 * * *")
+	@Scheduled(cron = "0 31 14 * * *")
 	public void scheduleTask() {
 		quandlOp.updateFinancialDataSet();
 		List<UserEntity> users = userOp.getAllUsers();
@@ -39,11 +39,14 @@ public class SchedulingOperator extends AbstractOperator {
 			PortfolioDTO currentPortfolio = portfolioOp.getCurrentPortfolio(user);
 			if(currentPortfolio == null) {
 				boolean created = portfolioOp.createUserPortfolio(user);
-//				if(created) {
-//					System.out.println("Created portfolio for user: " + user.getId());
-//				}
-//				continue;
+				if(created) {
+					System.out.println("Created portfolio for user: " + user.getId());
+				}
+				continue;
 			}
+			
+			
+			
 //			capitalOp.computeCapital(user);
 ////			CustomStrategyResponseDTO strategy = customStrategyOp.getActiveStrategy(user);
 ////			if(strategy != null && customStrategyOp.getUserCustomStrategySet(user).size() > 1 && 

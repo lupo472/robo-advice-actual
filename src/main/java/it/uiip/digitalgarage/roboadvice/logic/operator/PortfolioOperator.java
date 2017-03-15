@@ -78,6 +78,11 @@ public class PortfolioOperator extends AbstractOperator {
     	if(strategyEntity.isEmpty()) {
     		return false;
     	}
+    	for (CustomStrategyEntity strategy : strategyEntity) {
+			BigDecimal amountPerClass = amount.divide(new BigDecimal(100.00), 8, RoundingMode.HALF_UP).multiply(strategy.getPercentage());
+			AssetClassEntity assetClass = strategy.getAssetClass();
+			this.savePortfolioForAssetClass(assetClass, user, amountPerClass);
+		}
 //    	CustomStrategyDTO strategy = this.customStrategyWrap.wrapToDTO(strategyEntity);
 //    	for (AssetClassStrategyDTO element : strategy.getList()) {
 //    		BigDecimal amountPerClass = amount.divide(new BigDecimal(100.00), 8, RoundingMode.HALF_UP).multiply(element.getPercentage());
@@ -89,6 +94,32 @@ public class PortfolioOperator extends AbstractOperator {
     	return true;
     }
     
+    private void savePortfolioForAssetClass(AssetClassEntity assetClass, UserEntity user, BigDecimal amount) {
+    	List<AssetEntity> assets = this.assetRep.findByAssetClass(assetClass);
+    	for (AssetEntity asset : assets) {
+    		BigDecimal amountPerAsset = amount.divide(new BigDecimal(100.00), 8, RoundingMode.HALF_UP).multiply(asset.getPercentage());
+    		PortfolioEntity entity = new PortfolioEntity();
+    		entity.setAsset(asset);
+    		entity.setAssetClass(assetClass);
+    		entity.setUser(user);
+    		entity.setValue(amountPerAsset);
+    		entity.setUnits(this.getUnitsForAsset(asset, amountPerAsset));
+    		entity.setDate(LocalDate.now());
+    		PortfolioEntity savedEntity = this.portfolioRep.findByUserIdAndAssetIdAndDate(user.getId(), asset.getId(), LocalDate.now().toString());
+	    	if(savedEntity != null) {
+	    		this.portfolioRep.delete(savedEntity);
+	    	}
+	    	this.portfolioRep.save(entity);
+    	}
+    }
+    
+    private BigDecimal getUnitsForAsset(AssetEntity asset, BigDecimal amount) {
+    	FinancialDataEntity financialData = this.financialDataRep.findByAssetAndDate(asset, asset.getLastUpdate());
+		BigDecimal units = amount.divide(financialData.getValue(), 8, RoundingMode.HALF_UP);
+		return units;
+    }
+    
+    //TODO DELETE
 //    private void savePortfolioForAssetClass(AssetClassDTO assetClass, BigDecimal amount, UserRegisteredDTO user) {
 //    	List<AssetDTO> assets = this.assetConv.convertToDTO(this.assetRep.findByAssetClassId(assetClass.getId()));
 //    	for (AssetDTO asset : assets) {
@@ -107,7 +138,8 @@ public class PortfolioOperator extends AbstractOperator {
 //	    	this.portfolioRep.save(entity);
 //		}
 //    }
-    
+  
+    //TODO DELETE
 //    private BigDecimal getUnitsForAsset(AssetDTO asset, BigDecimal amount) {
 //    	FinancialDataDTO financialData = this.financialDataConv.convertToDTO(this.financialDataRep.findLastForAnAsset(asset.getId()));
 //    	BigDecimal units = amount.divide(financialData.getValue(), 8, RoundingMode.HALF_UP);

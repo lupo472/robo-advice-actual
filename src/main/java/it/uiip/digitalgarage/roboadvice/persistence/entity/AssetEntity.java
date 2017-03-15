@@ -1,6 +1,7 @@
 package it.uiip.digitalgarage.roboadvice.persistence.entity;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -36,5 +37,8 @@ public @Data class AssetEntity {
 	
 	@Column(name = "remarks_index", nullable = false)
 	private int remarksIndex;
+	
+	@Column(name = "last_update")
+	private LocalDate lastUpdate;
 	
 }

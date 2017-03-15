@@ -73,7 +73,6 @@ public class CapitalOperator extends AbstractOperator {
 			BigDecimal newAmount = entity.getAmount().add(saved.getAmount());
 			saved.setAmount(newAmount);
 			this.capitalRep.save(saved);
-//			this.capitalRep.updateCapital(entity.getUser().getId(), entity.getDate().toString(), newAmount);
 		}
 		user.setLastUpdate(LocalDate.now());
 		userRep.save(user);
