@@ -14,7 +14,7 @@ import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 
 @CrossOrigin("*")
-@RequestMapping("/roboadvice")
+//@RequestMapping("/roboadvice")
 @RestController
 public class UserController extends AbstractController {
 	

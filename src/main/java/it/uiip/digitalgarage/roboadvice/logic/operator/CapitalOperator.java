@@ -13,9 +13,9 @@ import org.springframework.stereotype.Service;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.CapitalEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
+import it.uiip.digitalgarage.roboadvice.service.dto.CapitalRequestDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CapitalDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.CapitalResponseDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.DataRequestDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.PeriodRequestDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserRegisteredDTO;
 
 @Service
@@ -24,16 +24,38 @@ public class CapitalOperator extends AbstractOperator {
 	@Autowired
 	private PortfolioOperator portfolioOp;
 	
-	public CapitalResponseDTO getCurrentCapital(Authentication auth) {
+	public CapitalDTO getCurrentCapital(Authentication auth) {
 		UserEntity user = this.userRep.findByEmail(auth.getName());
 		CapitalEntity entity = this.capitalRep.findByUserAndDate(user, user.getLastUpdate());
 		if(entity == null) {
 			return null;
 		}
-		return (CapitalResponseDTO) this.capitalConv.convertToDTO(entity);
+		return (CapitalDTO) this.capitalConv.convertToDTO(entity);
 	}
 	
-	public boolean addCapital(CapitalDTO capital, Authentication auth) {
+	public List<CapitalDTO> getCapitalPeriod(PeriodRequestDTO request, Authentication auth) {
+		UserEntity user = this.userRep.findByEmail(auth.getName());
+		List<CapitalDTO> response = new ArrayList<CapitalDTO>();
+		List<CapitalEntity> entityList;
+		if(request.getPeriod() == 0) {
+			entityList = this.capitalRep.findByUser(user);
+		} else {
+			LocalDate initialDate = LocalDate.now();
+			LocalDate finalDate = initialDate.minus(Period.ofDays(request.getPeriod() - 1));
+			entityList = this.capitalRep.findByUserAndDateBetween(user, finalDate, initialDate);
+		}
+		if (entityList.isEmpty()) {
+			return null;
+		}
+		for(CapitalEntity entity : entityList){
+			CapitalDTO dto = (CapitalDTO) this.capitalConv.convertToDTO(entity);
+			response.add(dto);
+		}
+		Collections.sort(response);
+		return  response;
+	}
+	
+	public boolean addCapital(CapitalRequestDTO capital, Authentication auth) {
 		CapitalEntity entity = this.capitalConv.convertToEntity(capital);
 		UserEntity user = this.userRep.findByEmail(auth.getName());
 		if(user == null) {
@@ -78,24 +100,4 @@ public class CapitalOperator extends AbstractOperator {
 		return true;
 	}
 
-	public List<CapitalResponseDTO> getCapitalPeriod(DataRequestDTO request) {
-		List<CapitalResponseDTO> response = new ArrayList<CapitalResponseDTO>();
-		List<CapitalEntity> entityList;
-		if(request.getPeriod() == 0) {
-			entityList = this.capitalRep.findByUserId(request.getId());
-		} else {
-			LocalDate initialDate = LocalDate.now();
-			LocalDate finalDate = initialDate.minus(Period.ofDays(request.getPeriod() - 1));
-			entityList = this.capitalRep.findByUserIdAndDateBetween(request.getId(), finalDate, initialDate);
-		}
-		if (entityList.isEmpty()) {
-			return null;
-		}
-		for(CapitalEntity entity : entityList){
-			CapitalResponseDTO dto = (CapitalResponseDTO) this.capitalConv.convertToDTO(entity);
-			response.add(dto);
-		}
-		Collections.sort(response);
-		return  response;
-	}
 }
