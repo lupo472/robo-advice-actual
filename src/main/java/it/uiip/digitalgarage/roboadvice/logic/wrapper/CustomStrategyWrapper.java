@@ -16,7 +16,6 @@ public class CustomStrategyWrapper implements GenericWrapper<CustomStrategyEntit
 		List<CustomStrategyEntity> entityList = new ArrayList<>();
 		for (AssetClassStrategyDTO element : dto.getList()) {
 			CustomStrategyEntity entity = new CustomStrategyEntity();
-			entity.setId(dto.getIdUser());
 			AssetClassEntity assetClass = new AssetClassEntity();
 			assetClass.setId(element.getId());
 			assetClass.setName(element.getName());
@@ -32,7 +31,6 @@ public class CustomStrategyWrapper implements GenericWrapper<CustomStrategyEntit
 		CustomStrategyResponseDTO dto = new CustomStrategyResponseDTO();
 		dto.setActive(entityList.get(0).isActive());
 		dto.setDate(entityList.get(0).getDate().toString());
-		dto.setIdUser(entityList.get(0).getUser().getId());
 		dto.setList(new ArrayList<>());
 		for (CustomStrategyEntity entity : entityList) {
 			AssetClassStrategyDTO element = new AssetClassStrategyDTO();

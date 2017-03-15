@@ -53,18 +53,43 @@
 *																															*
 ********************************************** AssetClassController *********************************************************
 *																															*
-* * getDefaultStrategySet																									*
+* * getAssetClassSet																										*
 *		Header 		[token]																									*
 *		Body 		[]																										*
 *		Response	[response(1), data(List<AssetClass>)]																	*
 *		Note: 																												*
 *																															*
+********************************************** PortfolioController **********************************************************
+*                                                                                                                           *
+* * getUserCurrentPortfolio                                                                                                 *
+*       Header      [token]                                                                                                 *
+*       Body        []                                                                                                      *
+*       Response    [response(1), data(PortfolioDTO)]                                                                       *
+*       Note:                                                                                                               *
+*                                                                                                                           *
 *****************************************************************************************************************************
-
-
-
-
-
-
-
+*                                                                                                                           *
+* * getUserPortfolioPeriod                                                                                                  *
+*       Header      [token]                                                                                                 *
+*       Body        [Period {period}]                                                                                       *
+*       Response    [response(1), data(List<PortfolioDTO>)]                                                                 *
+*       Note:                                                                                                               *
+*                                                                                                                           *
+******************************************** CustomStrategyController *******************************************************
+*																															*
+* * setCustomStrategy																										*
+*		Header 		[token]																									*
+*		Body 		[CustomStrategy {List<AssetClassStrategy>}]																*
+*		Response	[response(1), data(List<AssetClass>)]																	*
+*		Note: 																												*
+*																															*
+*****************************************************************************************************************************
+*																															*
+* * getActiveStrategy																										*
+*		Header 		[token]																									*
+*		Body 		[]																										*
+*		Response	[response(0/1), data(String/CustomStrategy {List<AssetClassStrategy>, active, date})]													*
+*		Note: 																												*
+*																															*
+*****************************************************************************************************************************
 

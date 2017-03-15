@@ -12,24 +12,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CustomStrategyOperator extends AbstractOperator{
 
-    public boolean  setCustomStrategy(CustomStrategyDTO request) {
-    	this.customStrategyRep.setStrategyInactive(request.getIdUser());
-    	List<CustomStrategyEntity> todayStrategySet = this.customStrategyRep.findByUserIdAndDate(request.getIdUser(), LocalDate.now());
+    public boolean setCustomStrategy(CustomStrategyDTO request, Authentication auth) {
+    	UserEntity user = this.userRep.findByEmail(auth.getName());
+    	if(user == null){
+    		return false;
+		}
+    	this.customStrategyRep.setStrategyInactive(user);
+    	List<CustomStrategyEntity> todayStrategySet = this.customStrategyRep.findByUserAndDate(user, LocalDate.now());
     	if(todayStrategySet.size() > 0) {
     		this.customStrategyRep.delete(todayStrategySet);
     	}
-    	UserEntity userEntity = this.userRep.findById(request.getIdUser());
-    	if(userEntity == null){
-    		return false;
-		}
     	List<CustomStrategyEntity> entityList = this.customStrategyWrap.unwrapToEntity(request);
     	for (CustomStrategyEntity entity : entityList) {
-			entity.setUser(userEntity);
+			entity.setUser(user);
 			entity.setActive(true);
 			entity.setDate(LocalDate.now());
 		}
@@ -37,30 +38,31 @@ public class CustomStrategyOperator extends AbstractOperator{
     	return true;
     }
 
-    public List<CustomStrategyResponseDTO> getUserCustomStrategySet(UserRegisteredDTO user){
-    	List<CustomStrategyEntity> entityList = this.customStrategyRep.findByUserId(user.getId());
-        Map<String, List<CustomStrategyEntity>> map = new HashMap<>();
-        for (CustomStrategyEntity entity : entityList) {
-			if(map.get(entity.getDate().toString()) == null) {
-				map.put(entity.getDate().toString(), new ArrayList<>());
-			}
-			map.get(entity.getDate().toString()).add(entity);
-		}
-        List<CustomStrategyResponseDTO> list = new ArrayList<>();
-        for (String date : map.keySet()) {
-			CustomStrategyResponseDTO dto = (CustomStrategyResponseDTO) this.customStrategyWrap.wrapToDTO(map.get(date));
-			list.add(dto);
-		}
-    	return list;
-    }
-
-    public CustomStrategyResponseDTO getActiveUserCustomStrategy(UserRegisteredDTO user){
-    	List<CustomStrategyEntity> entityList = this.customStrategyRep.findByUserIdAndActive(user.getId(), true);
+    public CustomStrategyResponseDTO getActiveStrategy(Authentication auth){
+    	UserEntity user = this.userRep.findByEmail(auth.getName());
+    	List<CustomStrategyEntity> entityList = this.customStrategyRep.findByUserAndActive(user, true);
     	if(entityList.isEmpty()) {
     		return null;
     	}
     	CustomStrategyResponseDTO result = (CustomStrategyResponseDTO) this.customStrategyWrap.wrapToDTO(entityList);
     	return result;
     }
+    
+    public List<CustomStrategyResponseDTO> getUserCustomStrategySet(UserRegisteredDTO user){
+	List<CustomStrategyEntity> entityList = this.customStrategyRep.findByUserId(user.getId());
+    Map<String, List<CustomStrategyEntity>> map = new HashMap<>();
+    for (CustomStrategyEntity entity : entityList) {
+		if(map.get(entity.getDate().toString()) == null) {
+			map.put(entity.getDate().toString(), new ArrayList<>());
+		}
+		map.get(entity.getDate().toString()).add(entity);
+	}
+    List<CustomStrategyResponseDTO> list = new ArrayList<>();
+    for (String date : map.keySet()) {
+		CustomStrategyResponseDTO dto = (CustomStrategyResponseDTO) this.customStrategyWrap.wrapToDTO(map.get(date));
+		list.add(dto);
+	}
+	return list;
+}
 
 }

@@ -1,10 +1,6 @@
 package it.uiip.digitalgarage.roboadvice.logic.operator;
 
-import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetEntity;
-import it.uiip.digitalgarage.roboadvice.persistence.entity.CapitalEntity;
-import it.uiip.digitalgarage.roboadvice.persistence.entity.CustomStrategyEntity;
-import it.uiip.digitalgarage.roboadvice.persistence.entity.FinancialDataEntity;
-import it.uiip.digitalgarage.roboadvice.persistence.entity.PortfolioEntity;
+import it.uiip.digitalgarage.roboadvice.persistence.entity.*;
 import it.uiip.digitalgarage.roboadvice.service.dto.*;
 
 import java.math.BigDecimal;
@@ -13,29 +9,42 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.*;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PortfolioOperator extends AbstractOperator {
 
-    public PortfolioDTO getUserCurrentPortfolio(UserRegisteredDTO dto) {
-        List<PortfolioEntity> entityList = this.portfolioRep.findLastPortfolioForUser(dto.getId());
-        if(entityList.isEmpty()) {
-        	return null;
-        }
-        PortfolioDTO response = this.portfolioWrap.wrapToDTO(entityList);
-        return response;
-    }
+	//TODO Modify repository so it search by user entity, not user id
+    public PortfolioDTO getUserCurrentPortfolio(Authentication auth) {
+		UserEntity user = this.userRep.findByEmail(auth.getName());
+		List<PortfolioEntity> entityList = this.portfolioRep.findLastPortfolioForUser(user.getId());
+		if(entityList.isEmpty()) {
+			return null;
+		}
+		PortfolioDTO response = this.portfolioWrap.wrapToDTO(entityList);
+		return response;
+	}
 
-    public List<PortfolioDTO> getUserPortfolioPeriod(DataRequestDTO request){
+	public PortfolioDTO getUserCurrentPortfolio(UserRegisteredDTO user) {
+		List<PortfolioEntity> entityList = this.portfolioRep.findLastPortfolioForUser(user.getId());
+		if(entityList.isEmpty()) {
+			return null;
+		}
+		PortfolioDTO response = this.portfolioWrap.wrapToDTO(entityList);
+		return response;
+	}
+
+    public List<PortfolioDTO> getUserPortfolioPeriod(PeriodRequestDTO request, Authentication auth){
+		UserEntity user = this.userRep.findByEmail(auth.getName());
 		List<PortfolioEntity> entityList;
 		if(request.getPeriod() == 0){
-			entityList = this.portfolioRep.findByUserId(request.getId());
+			entityList = this.portfolioRep.findByUser(user);
 		}
 		else {
 			LocalDate initialDate = LocalDate.now();
 			LocalDate finalDate = initialDate.minus(Period.ofDays(request.getPeriod() - 1));
-			entityList = this.portfolioRep.findByUserIdAndDateBetween(request.getId(), finalDate, initialDate);
+			entityList = this.portfolioRep.findByUserAndDateBetween(user, finalDate, initialDate);
 		}
 		if (entityList.isEmpty()) {
 			return null;
@@ -56,7 +65,8 @@ public class PortfolioOperator extends AbstractOperator {
         return list;
     }
 
-    public PortfolioDTO getUserPortfolioDate(PortfolioRequestForDateDTO request) {
+    //TODO Deprecated method
+  /*  public PortfolioDTO getUserPortfolioDate(PortfolioRequestForDateDTO request) {
 		LocalDate date = LocalDate.parse(request.getDate());
 		List<PortfolioEntity> entityList = this.portfolioRep.findByUserIdAndDate(request.getId(), date);
 		if(entityList.isEmpty()) {
@@ -65,7 +75,7 @@ public class PortfolioOperator extends AbstractOperator {
 		PortfolioDTO response = this.portfolioWrap.wrapToDTO(entityList);
     	return response;
 	}
-
+*/
     public boolean createUserPortfolio(UserRegisteredDTO user) {
     	CapitalEntity capitalEntity = this.capitalRep.findLast(user.getId());
     	if(capitalEntity == null) {

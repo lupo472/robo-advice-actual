@@ -8,9 +8,6 @@ import javax.validation.constraints.Size;
 import lombok.Data;
 
 public @Data class CustomStrategyDTO {
-	
-	 @NotNull
-	 private Long idUser;
 	 
 	 @NotNull
 	 @Size(min = 1)
