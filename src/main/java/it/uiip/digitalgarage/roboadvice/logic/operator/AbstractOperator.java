@@ -41,9 +41,9 @@ public abstract class AbstractOperator {
 	@Autowired
 	protected CapitalRepository capitalRep;
 	
+	protected AssetClassConverter assetClassConv = new AssetClassConverter();
+	
 	protected GenericConverter<UserEntity, UserDTO> userConv = new UserConverter();
-		
-	protected GenericConverter<AssetClassEntity, AssetClassDTO> assetClassConv = new AssetClassConverter();
 	
 	protected GenericConverter<CapitalEntity, CapitalRequestDTO> capitalConv = new CapitalConverter();
 		
