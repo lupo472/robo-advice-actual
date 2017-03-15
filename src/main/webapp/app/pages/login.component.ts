@@ -20,6 +20,7 @@ export class LoginComponent {
   user: any = {};
 
   public onSubmit() {
+      console.log("USER SENT: ", this.user);
     this.UserService.loginUser(this.user).subscribe(res => {
       if (res.response == 1) {
         this.setCookie(res.data)

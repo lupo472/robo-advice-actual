@@ -21,39 +21,27 @@ export class UserService {
   constructor(private AppService: AppService) { }
 
   //SET AND GET USER
-  setLogin(res) {
-    this.login = new Login(res.login);
-    console.log(res);
+  setLogin(data) {
+    this.login = new Login(data);
+    console.log("LOGIN RECEIVED: ", this.login);
     //this.AppService.getCurrentCapital(res.user,res.token).subscribe(res => this.setCapital(res));
     //this.AppService.getActiveStrategy(res.user,res.token).subscribe(res => this.setStrategy(res));
 
-    return res = { response: 1, data: res };
+    return { response: 1, data: data };
   }
 
   getLogin() {
     return this.login;
   }
 
-  //AUTH
-  authenticate() {
-    var token;
-    if (Cookie.check("token")) {
-      token = Cookie.get("token");
-    } else {
-      token = "";
-    }
-
-    //return this.AppService.authenticateUser(token).map(res => this.printAuth(res));
-  }
-
   //LOGIN
   loginUser(user) {
-    return this.AppService.loginUser(user).map(res => { if (res.response == 1) { return this.setLogin({ login: res.data }) } else { return res } });
+    return this.AppService.loginUser(user).map(res => { if (res.response == 1) { return this.setLogin(res.data) } else { return res } });
   }
 
   //REGISTER
   registerUser(user) {
-    return this.AppService.registerUser(user).map(res => { if (res.response == 1) { return this.setLogin({ login: res.data }) } else { return res } });
+    return this.AppService.registerUser(user).map(res => { if (res.response == 1) { return this.setLogin(res.data) } else { return res } });
   }
 
   //INITIAL REGISTER CAPITAL
