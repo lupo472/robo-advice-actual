@@ -12,7 +12,6 @@ import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 
 @CrossOrigin("*")
 @RestController
-//@RequestMapping("/roboadvice")
 public class AssetClassController extends AbstractController {
 	
 	@RequestMapping("/getAssetClassSet")

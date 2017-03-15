@@ -53,7 +53,7 @@
 *																															*
 ********************************************** AssetClassController *********************************************************
 *																															*
-* * getDefaultStrategySet																									*
+* * getAssetClassSet																										*
 *		Header 		[token]																									*
 *		Body 		[]																										*
 *		Response	[response(1), data(List<AssetClass>)]																	*
@@ -75,7 +75,14 @@
 *       Response    [response(1), data(List<PortfolioDTO>)]                                                                 *
 *       Note:                                                                                                               *
 *                                                                                                                           *
+******************************************** CustomStrategyController *******************************************************
+*																															*
+* * setCustomStrategy																										*
+*		Header 		[token]																									*
+*		Body 		[CustomStrategy {List<AssetClassStrategy>}]																*
+*		Response	[response(1), data(List<AssetClass>)]																	*
+*		Note: 																												*
+*																															*
 *****************************************************************************************************************************
-
 
 
