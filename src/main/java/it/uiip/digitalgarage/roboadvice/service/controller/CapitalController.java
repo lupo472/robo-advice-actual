@@ -19,7 +19,6 @@ import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 import java.util.List;
 
 @CrossOrigin("*")
-//@RequestMapping("/roboadvice")
 @RestController
 public class CapitalController extends AbstractController {
 	

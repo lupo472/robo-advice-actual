@@ -12,37 +12,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @CrossOrigin("*")
-@RequestMapping("/roboadvice")
 @RestController
 public class CustomStrategyController extends AbstractController {
 
 	@RequestMapping("/setCustomStrategy")
 	@ResponseBody
-    public GenericResponse<?> setCustomStrategy(@Valid @RequestBody CustomStrategyDTO request){
-		boolean response = this.customStrategyOp.setCustomStrategy(request);
+    public GenericResponse<?> setCustomStrategy(@Valid @RequestBody CustomStrategyDTO request, Authentication auth){
+		boolean response = this.customStrategyOp.setCustomStrategy(request, auth);
 		if(!response){
 			return new GenericResponse<String>(0, ControllerConstants.PROBLEM);
 		}
 		return new GenericResponse<String>(1, ControllerConstants.DONE);
     }
     
-    @RequestMapping("/getUserCustomStrategySet")
-    @ResponseBody
-    public GenericResponse<?> getUserCustomStrategySet(@Valid @RequestBody UserRegisteredDTO user){
-    	List<CustomStrategyResponseDTO> result = this.customStrategyOp.getUserCustomStrategySet(user);
-    	if(result.isEmpty()) {
-    		return new GenericResponse<String>(0, ControllerConstants.ANY_STRATEGY);
-    	}
-        return new GenericResponse<List<CustomStrategyResponseDTO>>(1, result);
-    }
-
     @RequestMapping("/getActiveUserCustomStrategy")
     @ResponseBody
     public GenericResponse<?> getUserCustomStrategyActive(@Valid @RequestBody UserRegisteredDTO user, Authentication request){
@@ -53,5 +38,16 @@ public class CustomStrategyController extends AbstractController {
     	}
     	return new GenericResponse<CustomStrategyResponseDTO>(1, result);
     }
+    
+//  @RequestMapping("/getUserCustomStrategySet")
+//  @ResponseBody
+//  public GenericResponse<?> getUserCustomStrategySet(@Valid @RequestBody UserRegisteredDTO user){
+//  	List<CustomStrategyResponseDTO> result = this.customStrategyOp.getUserCustomStrategySet(user);
+//  	if(result.isEmpty()) {
+//  		return new GenericResponse<String>(0, ControllerConstants.ANY_STRATEGY);
+//  	}
+//      return new GenericResponse<List<CustomStrategyResponseDTO>>(1, result);
+//  }
+
 
 }

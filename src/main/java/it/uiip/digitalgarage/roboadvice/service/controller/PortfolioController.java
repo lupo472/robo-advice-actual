@@ -13,7 +13,6 @@ import java.util.List;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/roboadvice")
 public class PortfolioController extends AbstractController {
 
     @RequestMapping("/getUserCurrentPortfolio")
