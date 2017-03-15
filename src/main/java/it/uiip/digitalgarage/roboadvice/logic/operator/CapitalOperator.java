@@ -79,6 +79,7 @@ public class CapitalOperator extends AbstractOperator {
 		return true;
 	}
 
+	//TODO Modify this method
 	public boolean computeCapital(UserRegisteredDTO user) {
 		CapitalEntity capitalEntity = new CapitalEntity();
 		UserEntity userEntity = new UserEntity();

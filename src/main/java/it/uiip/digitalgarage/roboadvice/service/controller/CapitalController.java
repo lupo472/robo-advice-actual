@@ -30,7 +30,6 @@ public class CapitalController extends AbstractController {
 			return new GenericResponse<String>(1, ControllerConstants.DONE);
 		}
 		return new GenericResponse<String>(0, ControllerConstants.PROBLEM);
-		
 	}
 	
 	@RequestMapping("/getCurrentCapital")
