@@ -21,7 +21,7 @@ public class PortfolioOperator extends AbstractOperator {
 	}
 
 	public PortfolioDTO getCurrentPortfolio(UserEntity user) {
-		List<PortfolioEntity> entityList = this.portfolioRep.findByUserAndDate(user, user.getLastUpdate());//findLastPortfolioForUser(user.getId());
+		List<PortfolioEntity> entityList = this.portfolioRep.findByUserAndDate(user, user.getLastUpdate());
 		if(entityList.isEmpty()) {
 			return null;
 		}
@@ -102,8 +102,17 @@ public class PortfolioOperator extends AbstractOperator {
     }
     
     public BigDecimal evaluatePortfolio(UserEntity user) {
-    	List<PortfolioEntity> currentPortfolio = null;//this.getCurrentPortfolio(user);
-    	return null;
+    	List<PortfolioEntity> currentPortfolio = this.portfolioRep.findByUserAndDate(user, user.getLastUpdate());
+    	if(currentPortfolio.isEmpty()) {
+    		return null;
+    	}
+    	BigDecimal amount = new BigDecimal(0);
+    	for (PortfolioEntity element : currentPortfolio) {
+			FinancialDataEntity data = this.financialDataRep.findByAssetAndDate(element.getAsset(), element.getAsset().getLastUpdate());
+			BigDecimal amountPerAsset = element.getUnits().multiply(data.getValue());
+			amount = amount.add(amountPerAsset);
+		}
+    	return amount;
     }
     
 //    public BigDecimal evaluatePortfolio(UserRegisteredDTO user) {

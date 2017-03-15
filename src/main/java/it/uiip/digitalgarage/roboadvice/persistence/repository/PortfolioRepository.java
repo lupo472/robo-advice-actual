@@ -29,11 +29,7 @@ public interface PortfolioRepository extends PagingAndSortingRepository<Portfoli
 //    static final String FIND_LAST_PORTFOLIO_FOR_USER = "SELECT p FROM PortfolioEntity p "
 //			 										 + "WHERE p.user = ?1 "
 //			 										 + "AND p.date = ?2";
-    
-    static final String FIND_BY_USER_ASSET_AND_DATE = "SELECT p FROM PortfolioEntity p "
-    												+ "WHERE p.user = ?1 AND p.asset = ?2 "
-    												+ "AND date = ?3";
-    //TODO delete
+  
 //    @Query(value = FIND_LAST_PORTFOLIO_FOR_USER_ID, nativeQuery = true)
 //    public List<PortfolioEntity> findLastPortfolioForUser(Long idUser);
     
@@ -41,7 +37,6 @@ public interface PortfolioRepository extends PagingAndSortingRepository<Portfoli
 //    @Query(value = FIND_LAST_PORTFOLIO_FOR_USER)
 //    public List<PortfolioEntity> findLastPortfolioForUser(UserEntity user, LocalDate lastUpdate);
     
-//    @Query(value = FIND_BY_USER_ASSET_AND_DATE)
     public PortfolioEntity findByUserAndAssetAndDate(UserEntity user, AssetEntity asset, LocalDate date);
 
     public List<PortfolioEntity> findByUser(UserEntity user);

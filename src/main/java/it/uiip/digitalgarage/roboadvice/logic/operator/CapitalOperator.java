@@ -81,9 +81,24 @@ public class CapitalOperator extends AbstractOperator {
 	
 	public boolean computeCapital(UserEntity user) {
 		CapitalEntity capital = new CapitalEntity();
-//		BigDecimal amount = this.portfolioOp;
-		
-		
+		BigDecimal amount = portfolioOp.evaluatePortfolio(user);
+		if(amount == null) {
+			return false;
+		}
+		LocalDate currentDate = LocalDate.now();
+		capital.setUser(user);
+		capital.setAmount(amount);
+		capital.setDate(currentDate);
+		CapitalEntity saved = this.capitalRep.findByUserAndDate(user, currentDate);
+		if(saved == null) {
+			this.capitalRep.save(capital);
+		} else {
+			saved.setAmount(amount);
+			this.capitalRep.save(saved);
+		}
+		user.setLastUpdate(currentDate);
+		this.userRep.save(user);
+		System.out.println("Update user " + user.getEmail());
 		return true;
 	}
 

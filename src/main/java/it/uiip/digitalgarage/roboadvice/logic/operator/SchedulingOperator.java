@@ -31,7 +31,7 @@ public class SchedulingOperator extends AbstractOperator {
 	@Autowired
 	private CustomStrategyOperator customStrategyOp;
 	
-	@Scheduled(cron = "0 54 14 * * *")
+	@Scheduled(cron = "0 19 15 * * *")
 	public void scheduleTask() {
 		quandlOp.updateFinancialDataSet();
 		List<UserEntity> users = userOp.getAllUsers();
@@ -44,7 +44,10 @@ public class SchedulingOperator extends AbstractOperator {
 				}
 				continue;
 			}
-			capitalOp.computeCapital(user);
+			boolean computed = capitalOp.computeCapital(user);
+			if(computed) {
+				System.out.println("Computed capital for user: " + user.getId());
+			}
 ////			CustomStrategyResponseDTO strategy = customStrategyOp.getActiveStrategy(user);
 ////			if(strategy != null && customStrategyOp.getUserCustomStrategySet(user).size() > 1 && 
 ////					(strategy.getDate().equals(LocalDate.now().toString()) || 
