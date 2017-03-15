@@ -45,8 +45,9 @@ public abstract class AbstractOperator {
 	
 	protected GenericConverter<UserEntity, UserDTO> userConv = new UserConverter();
 	
-	protected GenericConverter<CapitalEntity, CapitalRequestDTO> capitalConv = new CapitalConverter();
-		
+//	protected GenericConverter<CapitalEntity, CapitalRequestDTO> capitalConv = new CapitalConverter();
+	protected CapitalConverter capitalConv = new CapitalConverter();	
+	
 	protected GenericWrapper<PortfolioEntity, PortfolioDTO> portfolioWrap = new PortfolioWrapper();
 
 	protected GenericWrapper<CustomStrategyEntity, CustomStrategyDTO> customStrategyWrap = new CustomStrategyWrapper();
