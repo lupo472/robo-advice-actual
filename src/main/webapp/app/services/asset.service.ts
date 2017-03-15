@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { AppConfig } from './app.config';
 import { AppService } from './app.service';
 import { AssetClassStrategy } from '../model/asset-class-strategy';
-import { AssetClass } from '../model/asset-class';
+import { Portfolio } from '../model/portfolio';
 
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
@@ -10,8 +10,12 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class AssetService {
 
-  constructor(private AppService:AppService) {
-  }
+  constructor(private AppService:AppService) { }
+
+  private portfolio:any;
+  private dataset = [];
+  private date = [];
+
   //REMAPPING ASSET CLASS
   getAssetClassSet() {
     return this.AppService.getAssetClassSet().map(res => this.assignAssetClass(res));
@@ -30,12 +34,21 @@ export class AssetService {
   }
 
   //REMAPPING PORTFOLIO
-  getUserCurrentPortfolio(){
-    return this.AppService.getUserCurrentPortfolio(18, 'a@a', 'aaaaa').map(res => this.assignPortfolio(res));
+  getPortfolioForPeriod(period) {
+    return this.AppService.getPortfolioForPeriod(period).map(res => this.mapPortfolio(res));
   }
 
-  assignPortfolio(res){
-    return res.data.list;
+  mapPortfolio(res){
+    if (res.response == 1) {
+      this.portfolio = new Portfolio(res.data);
+      this.dataset = this.portfolio.getDataset();
+      this.date = this.portfolio.getDate();
+    }
+
+    console.log("dataset: ", this.dataset);
+    console.log("date: ", this.date);
+
+    return {response: res.response, dataset: this.dataset, date: this.date}
   }
 
   //ASSIGN COLOUR
