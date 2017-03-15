@@ -20,8 +20,8 @@ import it.uiip.digitalgarage.roboadvice.service.dto.PeriodRequestDTO;
 @Service
 public class CapitalOperator extends AbstractOperator {
 	
-//	@Autowired
-//	private PortfolioOperator portfolioOp;
+	@Autowired
+	private PortfolioOperator portfolioOp;
 	
 	public CapitalDTO getCurrentCapital(Authentication auth) {
 		UserEntity user = this.userRep.findByEmail(auth.getName());
@@ -76,6 +76,14 @@ public class CapitalOperator extends AbstractOperator {
 		}
 		user.setLastUpdate(LocalDate.now());
 		userRep.save(user);
+		return true;
+	}
+	
+	public boolean computeCapital(UserEntity user) {
+		CapitalEntity capital = new CapitalEntity();
+//		BigDecimal amount = this.portfolioOp;
+		
+		
 		return true;
 	}
 
