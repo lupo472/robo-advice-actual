@@ -62,7 +62,7 @@ public class CapitalOperator extends AbstractOperator {
 		}
 		entity.setUser(user);
 		entity.setDate(LocalDate.now());
-		CapitalEntity saved = this.capitalRep.findByUserAndDate(entity.getUser(), entity.getDate());
+		CapitalEntity saved = this.capitalRep.findByUserAndDate(user, entity.getDate());
 		if(saved == null) {
 			saved = this.capitalRep.findByUserAndDate(user, user.getLastUpdate());
 			if(saved != null) {
