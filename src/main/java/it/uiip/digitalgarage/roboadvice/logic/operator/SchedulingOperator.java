@@ -30,7 +30,7 @@ public class SchedulingOperator extends AbstractOperator {
 	@Autowired
 	private CustomStrategyOperator customStrategyOp;
 	
-	@Scheduled(cron = "0 45 15 * * *")
+	@Scheduled(cron = "0 0 10 * * *")
 	public void scheduleTask() {
 		quandlOp.updateFinancialDataSet();
 		List<UserEntity> users = userOp.getAllUsers();

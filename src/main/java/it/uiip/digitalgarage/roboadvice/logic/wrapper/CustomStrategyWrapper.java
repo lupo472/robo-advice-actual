@@ -3,12 +3,15 @@ package it.uiip.digitalgarage.roboadvice.logic.wrapper;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetClassEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.CustomStrategyEntity;
 import it.uiip.digitalgarage.roboadvice.service.dto.AssetClassStrategyDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyResponseDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyDTO;
 
+@Component
 public class CustomStrategyWrapper {
 
 	public List<CustomStrategyEntity> unwrapToEntity(CustomStrategyDTO dto) {

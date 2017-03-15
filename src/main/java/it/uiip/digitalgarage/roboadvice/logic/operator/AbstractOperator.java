@@ -38,15 +38,19 @@ public abstract class AbstractOperator {
 	@Autowired
 	protected CapitalRepository capitalRep;
 	
-	protected AssetClassConverter assetClassConv = new AssetClassConverter();
+	@Autowired
+	protected AssetClassConverter assetClassConv;
 	
-	protected UserConverter userConv = new UserConverter();
+	@Autowired
+	protected UserConverter userConv;
 	
-	protected CapitalConverter capitalConv = new CapitalConverter();	
+	@Autowired
+	protected CapitalConverter capitalConv;
 	
 	@Autowired
 	protected PortfolioWrapper portfolioWrap;
 
-	protected CustomStrategyWrapper customStrategyWrap = new CustomStrategyWrapper();
+	@Autowired
+	protected CustomStrategyWrapper customStrategyWrap;
 	
 }

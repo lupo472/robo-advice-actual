@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetClassEntity;
 import it.uiip.digitalgarage.roboadvice.service.dto.AssetClassDTO;
 
+@Component
 public class AssetClassConverter {
 
 	public AssetClassDTO convertToDTO(AssetClassEntity entity) {
