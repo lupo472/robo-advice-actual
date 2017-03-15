@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.uiip.digitalgarage.roboadvice.service.dto.CapitalRequestDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CapitalDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.UserRegisteredDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 
@@ -55,14 +54,18 @@ public class CapitalController extends AbstractController {
 		return new GenericResponse<List<CapitalDTO>>(1, result);
 	}
 	
-	@RequestMapping("/computeCapital")
-	@ResponseBody
-	public GenericResponse<?> computeCapital(@Valid @RequestBody UserRegisteredDTO user){
-		boolean done = this.capitalOp.computeCapital(user);
-		if(!done) {
-			return new GenericResponse<String>(0, ControllerConstants.PROBLEM);
-		}
-		return new GenericResponse<String>(1, ControllerConstants.DONE);
-	}
+/************************************************************************************************
+ * 										Test Method												*
+ * ******************************************************************************************** *	
+ * @RequestMapping("/computeCapital")															*
+ *	@ResponseBody																				*
+ *	public GenericResponse<?> computeCapital(@Valid @RequestBody UserRegisteredDTO user){		*
+ *		boolean done = this.capitalOp.computeCapital(user);										*
+ *		if(!done) {																				*
+ *			return new GenericResponse<String>(0, ControllerConstants.PROBLEM);					*	
+ *		}																						*
+ *		return new GenericResponse<String>(1, ControllerConstants.DONE);						*
+ *	}																							*
+ ************************************************************************************************/
 	
 }

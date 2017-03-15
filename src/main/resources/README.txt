@@ -39,8 +39,8 @@
 *																															*
 * * getCapitalForPeriod																										*
 *		Header 		[token]																									*
-*		Body 		[Period {period}]																										*
-*		Response	[response(0/1), data(String/List<Capital>)]													*
+*		Body 		[Period {period}]																						*
+*		Response	[response(0/1), data(String/List<Capital>)]																*
 *		Note: 																												*
 *																															*
 *****************************************************************************************************************************
