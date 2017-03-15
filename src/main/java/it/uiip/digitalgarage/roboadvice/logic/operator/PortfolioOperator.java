@@ -16,9 +16,9 @@ import org.springframework.stereotype.Service;
 public class PortfolioOperator extends AbstractOperator {
 
 	//TODO Modify repository so it search by user entity, not user id
-    public PortfolioDTO getUserCurrentPortfolio(Authentication auth) {
+    public PortfolioDTO getCurrentPortfolio(Authentication auth) {
 		UserEntity user = this.userRep.findByEmail(auth.getName());
-		List<PortfolioEntity> entityList = this.portfolioRep.findLastPortfolioForUser(user.getId());
+		List<PortfolioEntity> entityList = this.portfolioRep.findLastPortfolioForUser(user, user.getLastUpdate());
 		if(entityList.isEmpty()) {
 			return null;
 		}

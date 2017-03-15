@@ -3,7 +3,6 @@ package it.uiip.digitalgarage.roboadvice.logic.wrapper;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetClassEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.PortfolioEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
-import it.uiip.digitalgarage.roboadvice.service.dto.AssetClassStrategyDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioElementDTO;
 

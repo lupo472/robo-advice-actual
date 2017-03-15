@@ -16,7 +16,7 @@ public class PortfolioController extends AbstractController {
     @RequestMapping("/getCurrentPortfolio")
     @ResponseBody
     public GenericResponse<?> getCurrentPortfolio(Authentication auth) {
-        PortfolioDTO result = this.portfolioOp.getUserCurrentPortfolio(auth);
+        PortfolioDTO result = this.portfolioOp.getCurrentPortfolio(auth);
         if(result == null) {
     		return new GenericResponse<String>(0, ControllerConstants.EMPTY_PORTFOLIO);
     	}
