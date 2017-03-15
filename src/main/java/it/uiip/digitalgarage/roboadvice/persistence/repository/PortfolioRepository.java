@@ -14,8 +14,8 @@ import java.util.List;
 @Repository
 @Transactional
 public interface PortfolioRepository extends PagingAndSortingRepository<PortfolioEntity, Long> {
-
-    public List<PortfolioEntity> findByUserIdAndDate(Long idUser, LocalDate date);
+    //TODO Deprecated query
+    //public List<PortfolioEntity> findByUserIdAndDate(Long idUser, LocalDate date);
 
     public List<PortfolioEntity> findByUserAndDateBetween(UserEntity user, LocalDate finalDate, LocalDate initialDate);
 

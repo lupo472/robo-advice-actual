@@ -16,15 +16,24 @@ import org.springframework.stereotype.Service;
 public class PortfolioOperator extends AbstractOperator {
 
 	//TODO Modify repository so it search by user entity, not user id
-    public PortfolioDTO getUserCurrentPortfolio(Authentication auth) {
-    	UserEntity user = this.userRep.findByEmail(auth.getName());
-        List<PortfolioEntity> entityList = this.portfolioRep.findLastPortfolioForUser(user);
-        if(entityList.isEmpty()) {
-        	return null;
-        }
-        PortfolioDTO response = this.portfolioWrap.wrapToDTO(entityList);
-        return response;
-    }
+   /* public PortfolioDTO getUserCurrentPortfolio(Authentication auth) {
+		UserEntity user = this.userRep.findByEmail(auth.getName());
+		List<PortfolioEntity> entityList = this.portfolioRep.findLastPortfolioForUser(user);
+		if(entityList.isEmpty()) {
+			return null;
+		}
+		PortfolioDTO response = this.portfolioWrap.wrapToDTO(entityList);
+		return response;
+	}
+*/
+	public PortfolioDTO getUserCurrentPortfolio(UserRegisteredDTO user) {
+		List<PortfolioEntity> entityList = this.portfolioRep.findLastPortfolioForUser(user.getId());
+		if(entityList.isEmpty()) {
+			return null;
+		}
+		PortfolioDTO response = this.portfolioWrap.wrapToDTO(entityList);
+		return response;
+	}
 
     public List<PortfolioDTO> getUserPortfolioPeriod(PeriodRequestDTO request, Authentication auth){
 		UserEntity user = this.userRep.findByEmail(auth.getName());
@@ -56,7 +65,8 @@ public class PortfolioOperator extends AbstractOperator {
         return list;
     }
 
-    public PortfolioDTO getUserPortfolioDate(PortfolioRequestForDateDTO request) {
+    //TODO Deprecated method
+  /*  public PortfolioDTO getUserPortfolioDate(PortfolioRequestForDateDTO request) {
 		LocalDate date = LocalDate.parse(request.getDate());
 		List<PortfolioEntity> entityList = this.portfolioRep.findByUserIdAndDate(request.getId(), date);
 		if(entityList.isEmpty()) {
@@ -65,7 +75,7 @@ public class PortfolioOperator extends AbstractOperator {
 		PortfolioDTO response = this.portfolioWrap.wrapToDTO(entityList);
     	return response;
 	}
-
+*/
     public boolean createUserPortfolio(UserRegisteredDTO user) {
     	CapitalEntity capitalEntity = this.capitalRep.findLast(user.getId());
     	if(capitalEntity == null) {
