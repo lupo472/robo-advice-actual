@@ -8,22 +8,23 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "portfolio", indexes = {@Index(name = "IDX1", columnList = "id_user, date")})
+@Table(name = "portfolio", indexes = {@Index(name = "IDX1", columnList = "id_user, date"),
+									  @Index(name = "IDX2", columnList = "id_user, id_asset, date")})
 public @Data class PortfolioEntity {
 
     @Id
     @GeneratedValue
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_user", nullable = false)
     private UserEntity user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_asset", nullable = false)
     private AssetEntity asset;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_asset_class", nullable = false)
     private AssetClassEntity assetClass;
 

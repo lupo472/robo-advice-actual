@@ -20,8 +20,8 @@ import it.uiip.digitalgarage.roboadvice.service.dto.PeriodRequestDTO;
 @Service
 public class CapitalOperator extends AbstractOperator {
 	
-//	@Autowired
-//	private PortfolioOperator portfolioOp;
+	@Autowired
+	private PortfolioOperator portfolioOp;
 	
 	public CapitalDTO getCurrentCapital(Authentication auth) {
 		UserEntity user = this.userRep.findByEmail(auth.getName());
@@ -62,7 +62,7 @@ public class CapitalOperator extends AbstractOperator {
 		}
 		entity.setUser(user);
 		entity.setDate(LocalDate.now());
-		CapitalEntity saved = this.capitalRep.findByUserAndDate(entity.getUser(), entity.getDate());
+		CapitalEntity saved = this.capitalRep.findByUserAndDate(user, entity.getDate());
 		if(saved == null) {
 			saved = this.capitalRep.findByUserAndDate(user, user.getLastUpdate());
 			if(saved != null) {
@@ -71,10 +71,33 @@ public class CapitalOperator extends AbstractOperator {
 			this.capitalRep.save(entity);
 		} else {
 			BigDecimal newAmount = entity.getAmount().add(saved.getAmount());
-			this.capitalRep.updateCapital(entity.getUser().getId(), entity.getDate().toString(), newAmount);
+			saved.setAmount(newAmount);
+			this.capitalRep.save(saved);
 		}
 		user.setLastUpdate(LocalDate.now());
 		userRep.save(user);
+		return true;
+	}
+	
+	public boolean computeCapital(UserEntity user) {
+		CapitalEntity capital = new CapitalEntity();
+		BigDecimal amount = portfolioOp.evaluatePortfolio(user);
+		if(amount == null) {
+			return false;
+		}
+		LocalDate currentDate = LocalDate.now();
+		capital.setUser(user);
+		capital.setAmount(amount);
+		capital.setDate(currentDate);
+		CapitalEntity saved = this.capitalRep.findByUserAndDate(user, currentDate);
+		if(saved == null) {
+			this.capitalRep.save(capital);
+		} else {
+			saved.setAmount(amount);
+			this.capitalRep.save(saved);
+		}
+		user.setLastUpdate(currentDate);
+		this.userRep.save(user);
 		return true;
 	}
 
