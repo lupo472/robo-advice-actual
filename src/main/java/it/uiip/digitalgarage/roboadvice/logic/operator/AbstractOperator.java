@@ -44,7 +44,8 @@ public abstract class AbstractOperator {
 	
 	protected CapitalConverter capitalConv = new CapitalConverter();	
 	
-	protected PortfolioWrapper portfolioWrap = new PortfolioWrapper();
+	@Autowired
+	protected PortfolioWrapper portfolioWrap;
 
 	protected CustomStrategyWrapper customStrategyWrap = new CustomStrategyWrapper();
 	

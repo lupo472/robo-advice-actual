@@ -1,6 +1,8 @@
 package it.uiip.digitalgarage.roboadvice.logic.operator;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.*;
+import it.uiip.digitalgarage.roboadvice.persistence.model.AssetClassValue;
+import it.uiip.digitalgarage.roboadvice.persistence.model.TotalValue;
 import it.uiip.digitalgarage.roboadvice.service.dto.*;
 
 import java.math.BigDecimal;
@@ -154,6 +156,14 @@ public class PortfolioOperator extends AbstractOperator {
 	    	}
     		this.portfolioRep.save(entity);
 		}
+    }
+    
+    public TotalValue getTotalValue(UserEntity user, LocalDate date) {
+    	return this.portfolioRep.sumValues(user, date);
+    }
+    
+    public AssetClassValue getAssetClassValue(AssetClassEntity assetClass, UserEntity user, LocalDate date) {
+    	return this.portfolioRep.sumValuesForAssetClass(assetClass, user, date); 
     }
    
     //TODO At this moment this method is unuseful
