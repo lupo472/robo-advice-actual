@@ -8,7 +8,6 @@ import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.FinancialDataEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.quandl.QuandlDBInitializer;
 import it.uiip.digitalgarage.roboadvice.persistence.quandl.QuandlDBUpdater;
-import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataDTO;
 
 @Service
 public class QuandlOperator extends AbstractOperator {
@@ -17,8 +16,7 @@ public class QuandlOperator extends AbstractOperator {
 		List<AssetEntity> assets = (List<AssetEntity>) this.assetRep.findAll();
 		QuandlDBUpdater q = new QuandlDBUpdater();
 		for (AssetEntity asset : assets) {
-			List<FinancialDataDTO> list = q.getData(asset);
-			List<FinancialDataEntity> entities = this.financialDataConv.convertToEntity(list);
+			List<FinancialDataEntity> entities = q.getData(asset);
 			this.saveList(entities);
 		}
 	}
@@ -27,9 +25,8 @@ public class QuandlOperator extends AbstractOperator {
 		List<AssetEntity> assets = (List<AssetEntity>) this.assetRep.findAll();
 		QuandlDBInitializer q = new QuandlDBInitializer();
 		for (AssetEntity assetEntity : assets) {
-				List<FinancialDataDTO> list = q.getData(assetEntity);
-				List<FinancialDataEntity> entities = this.financialDataConv.convertToEntity(list);
-				this.saveList(entities);
+			List<FinancialDataEntity> entities = q.getData(assetEntity);
+			this.saveList(entities);
 		}
 	}
 	
