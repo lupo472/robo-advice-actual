@@ -15,12 +15,12 @@ import java.util.List;
 @Transactional
 public interface PortfolioRepository extends PagingAndSortingRepository<PortfolioEntity, Long> {
     
-    public List<PortfolioEntity> findByUserAndDateBetween(UserEntity user, LocalDate finalDate, LocalDate initialDate);
-  
-    public PortfolioEntity findByUserAndAssetAndDate(UserEntity user, AssetEntity asset, LocalDate date);
-
-    public List<PortfolioEntity> findByUser(UserEntity user);
+	public List<PortfolioEntity> findByUser(UserEntity user);
     
     public List<PortfolioEntity> findByUserAndDate(UserEntity user, LocalDate date);
+	
+	public List<PortfolioEntity> findByUserAndDateBetween(UserEntity user, LocalDate finalDate, LocalDate initialDate);
+  
+	public PortfolioEntity findByUserAndAssetAndDate(UserEntity user, AssetEntity asset, LocalDate date);
     
 }

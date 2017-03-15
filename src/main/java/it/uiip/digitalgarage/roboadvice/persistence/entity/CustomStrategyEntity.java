@@ -8,7 +8,8 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "custom_strategy")
+@Table(name = "custom_strategy", indexes = {@Index(name = "IDX1", columnList = "id_user, date"), 
+											@Index(name = "IDX2", columnList = "id_user, active")})
 public @Data class CustomStrategyEntity {
 
     @Id

@@ -36,8 +36,6 @@ public class PortfolioWrapper {
 			element.setPercentage(percentage);			
 			element.setId(idAssetClass);
 			element.setName(map.get(idAssetClass).get(0).getAssetClass().getName());
-			element.setId(idAssetClass);
-			element.setName(map.get(idAssetClass).get(0).getAssetClass().getName());
 			elements.add(element);
 		}
 	}
