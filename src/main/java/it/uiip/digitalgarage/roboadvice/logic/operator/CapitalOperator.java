@@ -98,7 +98,6 @@ public class CapitalOperator extends AbstractOperator {
 		}
 		user.setLastUpdate(currentDate);
 		this.userRep.save(user);
-		System.out.println("Update user " + user.getEmail());
 		return true;
 	}
 

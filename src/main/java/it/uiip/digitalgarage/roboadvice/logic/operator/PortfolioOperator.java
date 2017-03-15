@@ -114,61 +114,49 @@ public class PortfolioOperator extends AbstractOperator {
 		}
     	return amount;
     }
-    
-//    public BigDecimal evaluatePortfolio(UserRegisteredDTO user) {
-//    	List<PortfolioEntity> currentPortfolioList = this.portfolioRep.findLastPortfolioForUser(user.getId());
-//    	BigDecimal amount = new BigDecimal(0);
-//    	for (PortfolioEntity element : currentPortfolioList) {
-//    		FinancialDataEntity data = this.financialDataRep.findLastForAnAsset(element.getAsset().getId());
-//    		BigDecimal amountPerAsset = element.getUnits().multiply(data.getValue());
-//    		amount = amount.add(amountPerAsset);
-//		}
-//    	return currentPortfolioList.isEmpty() ? null : amount ;
-//    }
 
-//  public boolean computeUserPortfolio(UserRegisteredDTO user) {
-//	List<PortfolioEntity> currentPortfolioList = this.portfolioRep.findLastPortfolioForUser(user.getId());
-//	List<PortfolioEntity> newPortfolioList = new ArrayList<>();
-//	for (PortfolioEntity element : currentPortfolioList) {
-//		BigDecimal units = element.getUnits();
-//		BigDecimal newValue = this.getValueForAsset(units, element.getAsset());
-//		if(newValue == null) {
-//			return false;
-//		}
-//		PortfolioEntity newElement = new PortfolioEntity();
-//		newElement.setAsset(element.getAsset());
-//		newElement.setAssetClass(element.getAssetClass());
-//		newElement.setUser(element.getUser());
-//		newElement.setUnits(units);
-//		newElement.setValue(newValue);
-//		newElement.setDate(LocalDate.now());
-//		newPortfolioList.add(newElement);
-//	}
-//	this.savePortfolio(newPortfolioList);
-//	return true;
-//}
+    public boolean computeUserPortfolio(UserEntity user) {
+    	List<PortfolioEntity> currentPortfolio = this.portfolioRep.findByUserAndDate(user, user.getLastUpdate());
+    	List<PortfolioEntity> newPortfolioList = new ArrayList<>();
+    	for (PortfolioEntity element : currentPortfolio) {
+    		BigDecimal units = element.getUnits();
+    		BigDecimal newValue = this.getValueForAsset(units, element.getAsset());
+    		if(newValue == null) {
+    			return false;
+    		}
+    		PortfolioEntity newElement = new PortfolioEntity();
+    		newElement.setAsset(element.getAsset());
+    		newElement.setAssetClass(element.getAssetClass());
+    		newElement.setUser(user);
+    		newElement.setUnits(units);
+    		newElement.setValue(newValue);
+    		newElement.setDate(LocalDate.now());
+    		newPortfolioList.add(newElement);
+    	}
+    	this.savePortfolio(newPortfolioList);
+    	return true;
+    }
+  
+    private BigDecimal getValueForAsset(BigDecimal units, AssetEntity asset) {
+    	FinancialDataEntity financialData = this.financialDataRep.findByAssetAndDate(asset, asset.getLastUpdate());
+    	if(financialData == null) {
+    		return null;
+    	}
+    	BigDecimal result = units.multiply(financialData.getValue());
+    	return result;
+    }
     
-    
-//    public void savePortfolio(List<PortfolioEntity> entities) {
-//    	for (PortfolioEntity entity : entities) {
-//    		PortfolioEntity savedEntity = this.portfolioRep.findByUserIdAndAssetIdAndDate(entity.getUser().getId(), entity.getAsset().getId(), LocalDate.now().toString());
-//    		if(savedEntity != null) {
-//	    		this.portfolioRep.delete(savedEntity);
-//	    	}
-//    		this.portfolioRep.save(entity);
-//		}
-//    }
-    
-//    private BigDecimal getValueForAsset(BigDecimal units, AssetEntity asset) {
-//    	FinancialDataEntity financialDataEntity = this.financialDataRep.findLastForAnAsset(asset.getId());
-//    	if(financialDataEntity == null) {
-//    		return null;
-//    	}
-//    	FinancialDataDTO financialData = this.financialDataConv.convertToDTO(financialDataEntity);
-//    	BigDecimal result = units.multiply(financialData.getValue());
-//    	return result;
-//    }
-    
+    public void savePortfolio(List<PortfolioEntity> entities) {
+    	for (PortfolioEntity entity : entities) {
+    		PortfolioEntity savedEntity = this.portfolioRep.findByUserAndAssetAndDate(entity.getUser(), entity.getAsset(), LocalDate.now());
+    		if(savedEntity != null) {
+	    		this.portfolioRep.delete(savedEntity);
+	    	}
+    		this.portfolioRep.save(entity);
+		}
+    }
+   
+    //TODO At this moment this method is unuseful
 //  public PortfolioDTO getUserPortfolioDate(PortfolioRequestForDateDTO request) {
 //		LocalDate date = LocalDate.parse(request.getDate());
 //		List<PortfolioEntity> entityList = this.portfolioRep.findByUserIdAndDate(request.getId(), date);
