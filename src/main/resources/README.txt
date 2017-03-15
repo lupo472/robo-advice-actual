@@ -43,6 +43,14 @@
 *		Response	[response(0/1), data(String/List<Capital>)]																*
 *		Note: 																												*
 *																															*
+******************************************** DefaultStrategyController ******************************************************
+*																															*
+* * getDefaultStrategySet																									*
+*		Header 		[token]																									*
+*		Body 		[]																										*
+*		Response	[response(1), data(List<DefaultStrategy>)]																*
+*		Note: 																												*
+*																															*
 *****************************************************************************************************************************
 
 
