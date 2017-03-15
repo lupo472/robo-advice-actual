@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { AssetService } from './asset.service';
 import { Strategy } from '../model/strategy';
 import { DefaultStrategy } from '../model/default-strategy';
+import { DefaultStrategies } from '../model/default-strategies';
 import { AssetClassStrategy } from '../model/asset-class-strategy';
 import { AssetClass } from '../model/asset-class';
 import { Cookie } from 'ng2-cookies';
@@ -15,7 +16,7 @@ import 'rxjs/add/operator/map';
 export class StrategyService {
   assetClassStrategy:AssetClassStrategy;
   defaultStrategy:DefaultStrategy;
-  defaultStrategies:DefaultStrategy[];
+  //defaultStrategies:DefaultStrategy[];
   assetClass:AssetClass;
   strategies:Map<number, AssetClassStrategy> = new Map<number, AssetClassStrategy>();
   strategy:Strategy;
@@ -23,7 +24,7 @@ export class StrategyService {
   maxPercentage:number;
   oldValue:number;
   result:any;
-
+  public defaultStrategies:DefaultStrategies = new DefaultStrategies();
   public strategySet = [];
 
   //isCustom:boolean;
@@ -36,7 +37,6 @@ export class StrategyService {
     this.strategies.set(4,new AssetClassStrategy(0,4,""));
     //this.extendedDefaultStrategy = new ExtendedDefaultStrategy();
     this.oldValue = 0;
-    this.defaultStrategies = [];
   }
 
   //SLIDER MAPPING
@@ -109,17 +109,16 @@ export class StrategyService {
   }
 
   assignStrategy(res) {
-    let defaultStrategies = [];
     res.data.forEach((item,i) => {
       let defaultStrategy = new DefaultStrategy(item.name);
       item.list.forEach((element, i) => {
         defaultStrategy.addAssetClassStrategy(new AssetClassStrategy(element.percentage,
       element.id,element.name));
       });
-      defaultStrategies.push(defaultStrategy);
+      this.defaultStrategies.addDefaultStrategy(defaultStrategy);
     });
-    defaultStrategies.push(new DefaultStrategy("custom"));
-    return defaultStrategies;
+    this.defaultStrategies.addDefaultStrategy(new DefaultStrategy("custom"));
+    console.log("DEFAULTSTRATEGIES",this.defaultStrategies.getDefaultStrategies());
   }
     // var arrayPercentage = [];
     // var arrayNull = [];

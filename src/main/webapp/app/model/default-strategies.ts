@@ -10,7 +10,7 @@ export class DefaultStrategies {
         this.defalutStrategies = defaultStrategies;
     }
 
-    addDefaultStrategies(defaultStrategy: DefaultStrategy): void {
+    addDefaultStrategy(defaultStrategy: DefaultStrategy): void {
         this.defalutStrategies.push(defaultStrategy);
     }
 

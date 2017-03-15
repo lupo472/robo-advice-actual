@@ -8,6 +8,7 @@ import { ModalDirective } from 'ng2-bootstrap/modal/modal.component';
 import { AssetClass } from '../model/asset-class';
 import { Strategy } from '../model/strategy';
 import { DefaultStrategy } from '../model/default-strategy';
+import { DefaultStrategies } from '../model/default-strategies';
 import { AssetClassStrategy } from '../model/asset-class-strategy';
 @Component({
     templateUrl: 'edit.component.html'
@@ -18,13 +19,14 @@ export class EditComponent implements OnInit, AfterViewInit {
     public sendStrategy: Strategy;
     public assetClassesStrategies: AssetClassStrategy[] = [];
     public assetClassStrategy: AssetClassStrategy;
-    public defaultStrategies: DefaultStrategy[] = [];
+    //public defaultStrategies: DefaultStrategy[] = [];
     //public defaultStrategy:DefaultStrategy;
     public assets = [];
     public selectedAsset = [];
     public selected = [];
     public currentStrategy: DefaultStrategy;
     public isDisabled = true;
+    public defaultStrategies:DefaultStrategies = new DefaultStrategies();
     //sumPercentage:number;
 
     @ViewChild('childModal') public childModal: ModalDirective;
@@ -47,7 +49,7 @@ export class EditComponent implements OnInit, AfterViewInit {
 
     ngOnInit(): void {
         this.AssetService.getAssetClassSet().subscribe((result) => this.getAssetClass(result));
-        this.StrategyService.getDefaultStrategySet().subscribe(res => this.getStrategy(res));
+        //this.StrategyService.getDefaultStrategySet().subscribe(res => this.getStrategy(res));
     }
 
     showDetails() {
@@ -64,7 +66,7 @@ export class EditComponent implements OnInit, AfterViewInit {
 
     //ASSIGN STRATEGIES
     getStrategy(res): void {
-        this.defaultStrategies = res;
+        this.defaultStrategies.setDefaultStrategies(res);
     }
 
     createDefaultStrategy(): void {
@@ -89,37 +91,37 @@ export class EditComponent implements OnInit, AfterViewInit {
         console.log(this.currentStrategy);
     }
 
-    setStrategy(i): void {
-        this.isDisabled = false;
-        this.currentStrategy = this.defaultStrategies[i];
-        console.log("assetClassStrategy");
-        console.log(this.currentStrategy);
-
-        this.assetClassesStrategies.forEach((item, i) => {
-            item.setPercentage(0);
-            console.log(item.getPercentage());
-            this.currentStrategy.list.forEach((element, j) => {
-                if (item.getId() == element.getId()) {
-                    item.setPercentage(element.getPercentage());
-                }
-            });
-        });
-
-        if (i == (this.defaultStrategies.length - 1)) {
-            this.isCustom = !this.isCustom;
-        } else {
-            this.isCustom = false;
-        }
-
-        this.defaultStrategies.forEach((item, index) => {
-            if (index == i) {
-                this.selected[index] = true;
-            } else {
-                this.selected[index] = false;
-            }
-        })
-
-    }
+    // setStrategy(i): void {
+    //     this.isDisabled = false;
+    //     this.currentStrategy = this.defaultStrategies[i];
+    //     console.log("assetClassStrategy");
+    //     console.log(this.currentStrategy);
+    //
+    //     this.assetClassesStrategies.forEach((item, i) => {
+    //         item.setPercentage(0);
+    //         console.log(item.getPercentage());
+    //         this.currentStrategy.list.forEach((element, j) => {
+    //             if (item.getId() == element.getId()) {
+    //                 item.setPercentage(element.getPercentage());
+    //             }
+    //         });
+    //     });
+    //
+    //     if (i == (this.defaultStrategies.length - 1)) {
+    //         this.isCustom = !this.isCustom;
+    //     } else {
+    //         this.isCustom = false;
+    //     }
+    //
+    //     this.defaultStrategies.forEach((item, index) => {
+    //         if (index == i) {
+    //             this.selected[index] = true;
+    //         } else {
+    //             this.selected[index] = false;
+    //         }
+    //     })
+    //
+    // }
 
     //ASSIGN ASSET CLASS
     public getAssetClass(result): void {
