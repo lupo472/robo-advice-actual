@@ -10,34 +10,17 @@ import {isNumber} from "util";
   template: '<router-outlet></router-outlet>'
 })
 export class AppComponent extends OnInit {
-  constructor(private UserService: UserService, private router: Router) {
-    super()
+
+  constructor(public UserService:UserService, public router:Router) {
+      super();
   }
 
   ngOnInit(): void {
-
-
-    if (Cookie.check('token')) {
-      this.UserService.setLogin({user:{
-        email: Cookie.get('email'), token: Cookie.get('token')
-      }});
-    } else {
-      Cookie.delete("token");
-      this.router.navigate(['pages/login']);
-    }
-
-
+      if(Cookie.check("token") && Cookie.check("email")){
+          this.UserService.setLogin({email: Cookie.get("email"), token: Cookie.get("token")});
+      }else{
+          this.router.navigate(['pages/login']);
+      }
   }
-
-  /* if(Cookie.check('id')){
-   this.UserService.setUser({user:{
-   id: Cookie.get('id'), email: "a@a", password: "aaaaaa"}});
-   }else{
-   console.log("Not Logged");
-
-   }*/
-
-  //this.user = this.UserService.getUser();
-
 
 }
