@@ -1,19 +1,24 @@
 import { Injectable, Inject } from '@angular/core';
 import { AppConfig } from './app.config';
-
+import { Cookie } from 'ng2-cookies';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
-import {Cookie} from "ng2-cookies";
 
 @Injectable()
 export class AppService {
+
   headers: Headers;
   opts: RequestOptions;
 
-  constructor(private http: Http) { }
+  constructor(private http: Http) {
+    // this.headers = new Headers();
+    // this.headers.append('Authorization',Cookie.get('token'));
+    // this.opts = new RequestOptions();
+    // opts.headers = headers;
+  }
 
   loginUser(user) {
-    return this.http.post(AppConfig.url + 'loginUser', user)
+    return this.http.post(AppConfig.url + 'loginUser',{email:'a@a',password:'aaaaa'})
       .map(response => response.json());
   }
 

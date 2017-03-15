@@ -17,12 +17,11 @@ export class AppComponent extends OnInit {
   ngOnInit(): void {
 
 
-    if (Cookie.check('id')) {
-      this.UserService.setUser({user:{
-        id: Cookie.get('id'), email: Cookie.get('email'), password: "aaaaa"
+    if (Cookie.check('token')) {
+      this.UserService.setLogin({user:{
+        email: Cookie.get('email'), token: Cookie.get('token')
       }});
     } else {
-      Cookie.delete("id");
       Cookie.delete("token");
       this.router.navigate(['pages/login']);
     }

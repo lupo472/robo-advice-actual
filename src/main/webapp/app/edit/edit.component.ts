@@ -69,8 +69,7 @@ export class EditComponent implements OnInit, AfterViewInit {
 
     createDefaultStrategy(): void {
         this.sendStrategy = new Strategy();
-        this.sendStrategy.setUserId(Cookie.get('id'));
-        this.sendStrategy.setStrategyArray(this.currentStrategy.list);
+        this.sendStrategy.setStrategyArray(this.currentStrategy.getStrategyArray());
         console.log(this.sendStrategy);
         this.AppService.setCustomStrategy(this.sendStrategy).subscribe(
             (res) => {
@@ -100,7 +99,7 @@ export class EditComponent implements OnInit, AfterViewInit {
             item.setPercentage(0);
             console.log(item.getPercentage());
             this.currentStrategy.list.forEach((element, j) => {
-                if (item.id == element.id) {
+                if (item.getId() == element.getId()) {
                     item.setPercentage(element.getPercentage());
                 }
             });

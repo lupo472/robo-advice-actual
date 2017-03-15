@@ -43,23 +43,23 @@ export class StrategyService {
   createAssetClassStrategy(id,oldValue) {
     console.log("++onStrategy");
       // console.log("oldValue " + oldValue);
-      if (this.strategies.get(id).percentage - oldValue + this.sumPercentage > 100) {
+      if (this.strategies.get(id).getPercentage() - oldValue + this.sumPercentage > 100) {
         if (this.maxPercentage !=0) {
-          if (this.strategies.get(id).percentage > oldValue) {
+          if (this.strategies.get(id).getPercentage() > oldValue) {
             this.strategies.get(id).setPercentage(this.maxPercentage + oldValue);
           } else {
             this.strategies.get(id).setPercentage(this.maxPercentage);
           }
         } else {
-          if (this.strategies.get(id).percentage > oldValue) {
+          if (this.strategies.get(id).getPercentage() > oldValue) {
               this.strategies.get(id).setPercentage(oldValue);
             }
         }
       }
-      this.strategies.set(this.strategies.get(id).id,this.strategies.get(id));
+      this.strategies.set(this.strategies.get(id).getId(),this.strategies.get(id));
       var sum = 0;
       this.strategies.forEach( (k,v) => [
-        sum += k.percentage
+        sum += k.getPercentage()
       ]);
       this.sumPercentage = sum;
       this.maxPercentage = 100 - this.sumPercentage;
@@ -94,7 +94,7 @@ export class StrategyService {
 
   setCustomStrategy() {
     this.strategy = new Strategy();
-    this.strategy.setUserId(Cookie.get('id'));
+    //this.strategy.setUserId(Cookie.get('id'));
     var array = [];
     this.strategies.forEach( (k,v) => [
       array.push(k)
@@ -113,7 +113,7 @@ export class StrategyService {
     res.data.forEach((item,i) => {
       let defaultStrategy = new DefaultStrategy(item.name);
       item.list.forEach((element, i) => {
-        defaultStrategy.setList(new AssetClassStrategy(element.percentage,
+        defaultStrategy.addAssetClassStrategy(new AssetClassStrategy(element.percentage,
       element.id,element.name));
       });
       defaultStrategies.push(defaultStrategy);
