@@ -18,9 +18,6 @@ public abstract class AbstractController {
 	protected AssetClassOperator assetClassOp;
 	
 	@Autowired
-	protected AssetOperator assetOp;
-	
-	@Autowired
 	protected DefaultStrategyOperator defaultStrategyOp;
 
 	@Autowired
