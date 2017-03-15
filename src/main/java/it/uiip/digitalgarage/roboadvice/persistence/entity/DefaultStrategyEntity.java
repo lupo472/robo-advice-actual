@@ -24,7 +24,7 @@ public @Data class DefaultStrategyEntity {
 	@Column(name = "name", nullable = false)
     private String name;
 	
-	@ManyToOne()
+	@ManyToOne
 	@JoinColumn(name = "id_asset_class", nullable = false)
 	private AssetClassEntity assetClass;
 	

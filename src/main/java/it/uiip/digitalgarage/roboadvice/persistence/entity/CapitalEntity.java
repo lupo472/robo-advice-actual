@@ -23,7 +23,7 @@ public @Data class CapitalEntity {
 	@GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 	
-	@ManyToOne()
+	@ManyToOne
 	@JoinColumn(name = "id_user", nullable = false)
     private UserEntity user;
 	

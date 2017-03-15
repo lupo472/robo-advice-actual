@@ -23,7 +23,7 @@ public @Data class FinancialDataEntity {
 	@GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 	
-	@ManyToOne()
+	@ManyToOne
 	@JoinColumn(name = "id_asset", nullable = false)
     private AssetEntity asset;
 	

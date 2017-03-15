@@ -22,7 +22,7 @@ public @Data class AssetEntity {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	
-	@ManyToOne()
+	@ManyToOne
 	@JoinColumn(name = "id_asset_class", nullable = false)
 	private AssetClassEntity assetClass;
 
