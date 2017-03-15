@@ -1,7 +1,6 @@
 package it.uiip.digitalgarage.roboadvice.logic.operator;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -12,7 +11,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
 import it.uiip.digitalgarage.roboadvice.service.dto.LoginDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.UserRegisteredDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.HashFunction;
 
 @Service
@@ -49,14 +47,9 @@ public class UserOperator extends AbstractOperator {
 		return !(this.userRep.findByEmail(email) == null);
 	}
 	
-	public List<UserRegisteredDTO> getAllUsers() {
+	public List<UserEntity> getAllUsers() {
 		List<UserEntity> entities = this.userRep.findAll();
-		List<UserRegisteredDTO> users = new ArrayList<>();
-		for(UserEntity entity : entities) {
-			UserRegisteredDTO user = (UserRegisteredDTO) this.userConv.convertToDTO(entity);
-			users.add(user);
-		}
-		return users;
+		return entities;
 	} 
 
 }

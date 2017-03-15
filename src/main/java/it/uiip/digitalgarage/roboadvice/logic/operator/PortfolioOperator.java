@@ -3,6 +3,8 @@ package it.uiip.digitalgarage.roboadvice.logic.operator;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.*;
 import it.uiip.digitalgarage.roboadvice.service.dto.*;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.*;
@@ -15,23 +17,17 @@ public class PortfolioOperator extends AbstractOperator {
 
     public PortfolioDTO getCurrentPortfolio(Authentication auth) {
 		UserEntity user = this.userRep.findByEmail(auth.getName());
-		List<PortfolioEntity> entityList = this.portfolioRep.findLastPortfolioForUser(user, user.getLastUpdate());
+		return this.getCurrentPortfolio(user);
+	}
+
+	public PortfolioDTO getCurrentPortfolio(UserEntity user) {
+		List<PortfolioEntity> entityList = this.portfolioRep.findLastPortfolioForUser(user.getId());
 		if(entityList.isEmpty()) {
 			return null;
 		}
 		PortfolioDTO response = this.portfolioWrap.wrapToDTO(entityList);
 		return response;
 	}
-
-    //TODO this method should accept a UserEntity!!!
-//	public PortfolioDTO getUserCurrentPortfolio(UserEntity user) {
-//		List<PortfolioEntity> entityList = this.portfolioRep.findLastPortfolioForUser(user.getId());
-//		if(entityList.isEmpty()) {
-//			return null;
-//		}
-//		PortfolioDTO response = this.portfolioWrap.wrapToDTO(entityList);
-//		return response;
-//	}
 
     public List<PortfolioDTO> getPortfolioForPeriod(PeriodRequestDTO request, Authentication auth){
 		UserEntity user = this.userRep.findByEmail(auth.getName());
@@ -62,26 +58,26 @@ public class PortfolioOperator extends AbstractOperator {
         return list;
     }
 
-  /*  public PortfolioDTO getUserPortfolioDate(PortfolioRequestForDateDTO request) {
-		LocalDate date = LocalDate.parse(request.getDate());
-		List<PortfolioEntity> entityList = this.portfolioRep.findByUserIdAndDate(request.getId(), date);
-		if(entityList.isEmpty()) {
-			return null;
-		}
-		PortfolioDTO response = this.portfolioWrap.wrapToDTO(entityList);
-    	return response;
-	}
-*/
-//    public boolean createUserPortfolio(UserRegisteredDTO user) {
-//    	CapitalEntity capitalEntity = this.capitalRep.findLast(user.getId());
-//    	if(capitalEntity == null) {
-//    		return false;
-//    	}
-//    	BigDecimal amount = capitalEntity.getAmount();
-//    	List<CustomStrategyEntity> strategyEntity = this.customStrategyRep.findByUserIdAndActive(user.getId(), true);
-//    	if(strategyEntity.isEmpty()) {
-//    		return false;
-//    	}
+//    public PortfolioDTO getUserPortfolioDate(PortfolioRequestForDateDTO request) {
+//		LocalDate date = LocalDate.parse(request.getDate());
+//		List<PortfolioEntity> entityList = this.portfolioRep.findByUserIdAndDate(request.getId(), date);
+//		if(entityList.isEmpty()) {
+//			return null;
+//		}
+//		PortfolioDTO response = this.portfolioWrap.wrapToDTO(entityList);
+//    	return response;
+//	}
+
+    public boolean createUserPortfolio(UserEntity user) {
+    	CapitalEntity capitalEntity = this.capitalRep.findByUserAndDate(user, user.getLastUpdate());
+    	if(capitalEntity == null) {
+    		return false;
+    	}
+    	BigDecimal amount = capitalEntity.getAmount();
+    	List<CustomStrategyEntity> strategyEntity = this.customStrategyRep.findByUserAndActive(user, true);
+    	if(strategyEntity.isEmpty()) {
+    		return false;
+    	}
 //    	CustomStrategyDTO strategy = this.customStrategyWrap.wrapToDTO(strategyEntity);
 //    	for (AssetClassStrategyDTO element : strategy.getList()) {
 //    		BigDecimal amountPerClass = amount.divide(new BigDecimal(100.00), 8, RoundingMode.HALF_UP).multiply(element.getPercentage());
@@ -90,8 +86,8 @@ public class PortfolioOperator extends AbstractOperator {
 //    		assetClass.setName(element.getName());
 //    		this.savePortfolioForAssetClass(assetClass, amountPerClass, user);
 //		}
-//    	return true;
-//    }
+    	return true;
+    }
     
 //    private void savePortfolioForAssetClass(AssetClassDTO assetClass, BigDecimal amount, UserRegisteredDTO user) {
 //    	List<AssetDTO> assets = this.assetConv.convertToDTO(this.assetRep.findByAssetClassId(assetClass.getId()));

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyResponseDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserRegisteredDTO;
@@ -33,16 +34,16 @@ public class SchedulingOperator extends AbstractOperator {
 	@Scheduled(cron = "0 25 12 * * *")
 	public void scheduleTask() {
 		quandlOp.updateFinancialDataSet();
-//		List<UserRegisteredDTO> users = userOp.getAllUsers();
-//		for (UserRegisteredDTO user : users) {
-//			PortfolioDTO currentPortfolio = portfolioOp.getUserCurrentPortfolio(user);
-//			if(currentPortfolio == null) {
-//				boolean created = portfolioOp.createUserPortfolio(user);
+		List<UserEntity> users = userOp.getAllUsers();
+		for (UserEntity user : users) {
+			PortfolioDTO currentPortfolio = portfolioOp.getCurrentPortfolio(user);
+			if(currentPortfolio == null) {
+				boolean created = portfolioOp.createUserPortfolio(user);
 //				if(created) {
 //					System.out.println("Created portfolio for user: " + user.getId());
 //				}
 //				continue;
-//			}
+			}
 //			capitalOp.computeCapital(user);
 ////			CustomStrategyResponseDTO strategy = customStrategyOp.getActiveStrategy(user);
 ////			if(strategy != null && customStrategyOp.getUserCustomStrategySet(user).size() > 1 && 
@@ -53,7 +54,7 @@ public class SchedulingOperator extends AbstractOperator {
 //					System.out.println("Re-created portfolio for user: " + user.getId());
 //				}
 //				continue;
-//			}
+			}
 //			boolean computed = portfolioOp.computeUserPortfolio(user);
 //			if(computed) {
 //				System.out.println("Computed portfolio for user: " + user.getId());
