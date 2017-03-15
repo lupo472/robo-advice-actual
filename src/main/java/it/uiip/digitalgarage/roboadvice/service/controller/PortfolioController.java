@@ -26,11 +26,11 @@ public class PortfolioController extends AbstractController {
     @RequestMapping("/getPortfolioForPeriod")
     @ResponseBody
     public GenericResponse<?> getPortfolioForPeriod(@Valid @RequestBody PeriodRequestDTO request, Authentication auth) {
-        List<PortfolioDTO> result = this.portfolioOp.getUserPortfolioPeriod(request, auth);
+        List<PortfolioDTO> result = this.portfolioOp.getPortfolioForPeriod(request, auth);
         if(result == null) {
             return new GenericResponse<String>(0, ControllerConstants.EMPTY_PORTFOLIO);
         }
-        return new GenericResponse<List<PortfolioDTO>>(1,result);
+        return new GenericResponse<List<PortfolioDTO>>(1, result);
     }
 
 /************************************************************************************************

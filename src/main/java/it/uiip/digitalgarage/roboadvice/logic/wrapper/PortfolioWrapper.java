@@ -20,7 +20,6 @@ public class PortfolioWrapper implements GenericWrapper<PortfolioEntity, Portfol
     public List<PortfolioEntity> unwrapToEntity(PortfolioDTO dto) {
     	List<PortfolioEntity> entityList = new ArrayList<>();
     	UserEntity user = new UserEntity();
-		user.setId(dto.getIdUser());
     	for (PortfolioElementDTO element : dto.getList()) {
 			PortfolioEntity entity = new PortfolioEntity();
 			AssetClassEntity assetClass = new AssetClassEntity();
@@ -39,7 +38,6 @@ public class PortfolioWrapper implements GenericWrapper<PortfolioEntity, Portfol
     	PortfolioDTO dto = new PortfolioDTO();
     	List<PortfolioElementDTO> elements = new ArrayList<>();
     	dto.setDate(entityList.get(0).getDate().toString());
-    	dto.setIdUser(entityList.get(0).getUser().getId());
     	createPortfolioElement(entityList, elements);
     	dto.setList(elements);
     	return dto;
