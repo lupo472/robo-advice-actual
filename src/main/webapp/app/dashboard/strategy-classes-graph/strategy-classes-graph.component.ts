@@ -28,21 +28,12 @@ export class StrategyClassesGraphComponent implements OnInit {
   getPortfolio(res) {
       if(res.response == 1) {
           this.dataset = res.dataset;
+          console.log("dataset returned: ", this.dataset);
           this.date = res.date;
 
           this.render = true;
       }
   }
-
-  public lineChartLabels = this.date;
-  public lineChartData = this.dataset;
-
-  //COLORS
-  public brandPrimary: string = '#20a8d8';
-  public brandSuccess: string = '#4dbd74';
-  public brandInfo: string = '#63c2de';
-  public brandWarning: string = '#f8cb00';
-  public brandDanger: string = '#f86c6b';
 
   //convert Hex to RGBA
   public convertHex(hex: string, opacity: number) {
