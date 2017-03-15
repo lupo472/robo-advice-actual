@@ -49,7 +49,7 @@ public abstract class AbstractOperator {
 	
 	protected GenericConverter<FinancialDataEntity, FinancialDataDTO> financialDataConv = new FinancialDataConverter();
 
-	protected GenericConverter<CapitalEntity, CapitalDTO> capitalConv = new CapitalConverter();
+	protected GenericConverter<CapitalEntity, CapitalRequestDTO> capitalConv = new CapitalConverter();
 		
 	protected GenericWrapper<PortfolioEntity, PortfolioDTO> portfolioWrap = new PortfolioWrapper();
 

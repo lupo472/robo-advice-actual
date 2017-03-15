@@ -31,9 +31,9 @@ public interface CapitalRepository extends PagingAndSortingRepository<CapitalEnt
 	@Query(value = UPDATE_CAPITAL, nativeQuery =  true)
 	public void updateCapital(Long userId, String date, BigDecimal amount);
 
-	public List<CapitalEntity> findByUserId(Long userId);
+	public List<CapitalEntity> findByUser(UserEntity user);
 
-	public List<CapitalEntity> findByUserIdAndDateBetween(Long userId, LocalDate finalDate, LocalDate initialDate);
+	public List<CapitalEntity> findByUserAndDateBetween(UserEntity user, LocalDate finalDate, LocalDate initialDate);
 
 
 }

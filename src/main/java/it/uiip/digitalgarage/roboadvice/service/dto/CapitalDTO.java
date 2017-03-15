@@ -1,16 +1,17 @@
 package it.uiip.digitalgarage.roboadvice.service.dto;
 
-import java.math.BigDecimal;
-
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 
-public @Data class CapitalDTO {
-	
+public @Data class CapitalDTO extends CapitalRequestDTO implements Comparable<CapitalDTO> {
+
 	@NotNull
-	@Min(1)
-	private BigDecimal amount;
+	private String date;
+
+	@Override
+	public int compareTo(CapitalDTO o){
+		return this.date.compareTo(o.getDate());
+	}
 
 }

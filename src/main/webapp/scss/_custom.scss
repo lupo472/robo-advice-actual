@@ -34,18 +34,13 @@
   }
 }
 
-// Navbar Item
-.navbar {
-  .card-block {
-    flex: 1 60%;
-  }
-}
-
+// Navbar
 .nav-item-custom {
-    position: relative;
-    padding: 20px;
-    min-width: 50%;
-  }
+  padding: 10%;
+}
+header.navbar .navbar-nav{
+  position: static;
+}
 
 // Arrow under dropdown menu
 .dropdown-toggle::after {
