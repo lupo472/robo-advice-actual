@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.CapitalEntity;
@@ -23,20 +24,26 @@ public class CapitalOperator extends AbstractOperator {
 	@Autowired
 	private PortfolioOperator portfolioOp;
 	
-	public CapitalResponseDTO getCurrentCapital(UserRegisteredDTO user) {
-		CapitalEntity entity = this.capitalRep.findLast(user.getId());
+	public CapitalResponseDTO getCurrentCapital(Authentication auth) {
+		UserEntity user = this.userRep.findByEmail(auth.getName());
+		CapitalEntity entity = this.capitalRep.findByUserAndDate(user, user.getLastUpdate());
 		if(entity == null) {
 			return null;
 		}
 		return (CapitalResponseDTO) this.capitalConv.convertToDTO(entity);
 	}
 	
-	public void addCapital(CapitalDTO capital) {
+	public boolean addCapital(CapitalDTO capital, Authentication auth) {
 		CapitalEntity entity = this.capitalConv.convertToEntity(capital);
+		UserEntity user = this.userRep.findByEmail(auth.getName());
+		if(user == null) {
+			return false;
+		}
+		entity.setUser(user);
 		entity.setDate(LocalDate.now());
-		CapitalEntity saved = this.capitalRep.findByUserIdAndDate(entity.getUser().getId(), entity.getDate());
+		CapitalEntity saved = this.capitalRep.findByUserAndDate(entity.getUser(), entity.getDate());
 		if(saved == null) {
-			saved = this.capitalRep.findLast(entity.getUser().getId());
+			saved = this.capitalRep.findByUserAndDate(user, user.getLastUpdate());
 			if(saved != null) {
 				entity.setAmount(entity.getAmount().add(saved.getAmount()));
 			}
@@ -45,6 +52,9 @@ public class CapitalOperator extends AbstractOperator {
 			BigDecimal newAmount = entity.getAmount().add(saved.getAmount());
 			this.capitalRep.updateCapital(entity.getUser().getId(), entity.getDate().toString(), newAmount);
 		}
+		user.setLastUpdate(LocalDate.now());
+		userRep.save(user);
+		return true;
 	}
 
 	public boolean computeCapital(UserRegisteredDTO user) {
@@ -59,7 +69,7 @@ public class CapitalOperator extends AbstractOperator {
 		capitalEntity.setUser(userEntity);
 		capitalEntity.setAmount(amount);
 		capitalEntity.setDate(currentDate);
-		CapitalEntity saved = this.capitalRep.findByUserIdAndDate(user.getId(), currentDate);
+		CapitalEntity saved = this.capitalRep.findByUserAndDate(userEntity, currentDate);
 		if(saved == null) {
 			this.capitalRep.save(capitalEntity);
 		} else {

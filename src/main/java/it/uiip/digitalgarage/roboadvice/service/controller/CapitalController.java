@@ -1,10 +1,9 @@
 package it.uiip.digitalgarage.roboadvice.service.controller;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import it.uiip.digitalgarage.roboadvice.service.dto.DataRequestDTO;
-import org.apache.tomcat.util.http.parser.Authorization;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,15 +26,19 @@ public class CapitalController extends AbstractController {
 	
 	@RequestMapping("/addCapital")
     @ResponseBody
-	public GenericResponse<?> addCapital(@Valid @RequestBody CapitalDTO capital) {
-		this.capitalOp.addCapital(capital);
-		return new GenericResponse<String>(1, ControllerConstants.DONE);
+	public GenericResponse<?> addCapital(@Valid @RequestBody CapitalDTO capital, Authentication auth) {
+		boolean done = this.capitalOp.addCapital(capital, auth);
+		if(done) {
+			return new GenericResponse<String>(1, ControllerConstants.DONE);
+		}
+		return new GenericResponse<String>(0, ControllerConstants.PROBLEM);
+		
 	}
 	
 	@RequestMapping("/getCurrentCapital")
     @ResponseBody
-	public GenericResponse<?> getCurrentCapital(@Valid @RequestBody UserRegisteredDTO user){
-		CapitalResponseDTO result = this.capitalOp.getCurrentCapital(user);
+	public GenericResponse<?> getCurrentCapital(Authentication auth) {
+		CapitalResponseDTO result = this.capitalOp.getCurrentCapital(auth);
 		if(result == null) {
 			return new GenericResponse<String>(0, ControllerConstants.ANY_CAPITAL);
 		}

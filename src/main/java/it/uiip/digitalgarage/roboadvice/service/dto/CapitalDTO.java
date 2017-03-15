@@ -8,9 +8,6 @@ import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 public @Data class CapitalDTO {
-
-	@NotNull
-	private Long idUser;
 	
 	@NotNull
 	@Min(1)

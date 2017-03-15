@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.uiip.digitalgarage.roboadvice.service.dto.LoginDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.UserRegisteredDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 
@@ -21,21 +20,21 @@ public class UserController extends AbstractController {
 	
 	@RequestMapping("/registerUser")
 	@ResponseBody
-	public GenericResponse<?> registerUser(@Valid @RequestBody UserDTO userDTO) {
-		if(!this.userOp.isRegistered(userDTO.getEmail())) {
-			UserRegisteredDTO registered = this.userOp.registerUser(userDTO);
-			return new GenericResponse<UserRegisteredDTO>(1, registered);
+	public GenericResponse<?> registerUser(@Valid @RequestBody UserDTO user) {
+		boolean done = this.userOp.registerUser(user);
+		if(done) {
+			return new GenericResponse<String>(1, ControllerConstants.DONE);
 		}
 		return new GenericResponse<String>(0, ControllerConstants.EMAIL_ALREADY_REGISTERED);		
 	}
 	
 	@RequestMapping("/loginUser")
 	@ResponseBody
-	public GenericResponse<?> loginUser(@Valid @RequestBody UserDTO userDTO) {
-		if(!this.userOp.isRegistered(userDTO.getEmail())) {
+	public GenericResponse<?> loginUser(@Valid @RequestBody UserDTO user) {
+		if(!this.userOp.isRegistered(user.getEmail())) {
 			return new GenericResponse<String>(0, ControllerConstants.EMAIL_NOT_REGISTERED);
 		}
-		LoginDTO login = this.userOp.loginUser(userDTO);
+		LoginDTO login = this.userOp.loginUser(user);
 		if(login == null) {
 			return new GenericResponse<String>(0, ControllerConstants.WRONG_PASSWORD);
 		}

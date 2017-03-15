@@ -1,0 +1,38 @@
+*****************************************************************************************************************************
+*																															*
+*													 Rest-API's																*
+*																															*
+************************************************** UserController ***********************************************************
+*																															*
+* * registerUser																											*
+*		Header 		[]																										*
+*		Body 		[User {email, password}]																				*
+*		Response	[response(0/1), data(String)]																			*
+*		Note: 	It is not necessary to return the user that has been registered												*
+*																															*
+*****************************************************************************************************************************	
+*																															*
+* * loginUser																												*
+*		Header		[]																										*
+*		Body		[User {email, password}]																				*
+*		Response	[response(0/1), data(String/Login{email, token})]														*
+*		Note:	It is not necessary to return the user, the front-end needs just the token and (but it's not strictly 		*
+*				necessary) the email																						*
+*																															*			
+************************************************ CapitalController **********************************************************
+*																															*
+* * addCapital																												*
+*		Header 		[token]																									*
+*		Body 		[Capital {amount}]																						*
+*		Response	[response(0/1), data(String)]																			*
+*		Note: 	This API may be called at the first login of the user, that is when the getCurrentCapital call fails		*
+*																															*
+*****************************************************************************************************************************
+*																															*
+* * getCurrentCapital																										*
+*		Header 		[token]																									*
+*		Body 		[]																										*
+*		Response	[response(0/1), data(Capital {amount, date}/String)]													*
+*		Note: 																												*
+*																															*
+*****************************************************************************************************************************
