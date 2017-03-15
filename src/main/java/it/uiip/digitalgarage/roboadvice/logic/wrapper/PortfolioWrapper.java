@@ -24,7 +24,6 @@ public class PortfolioWrapper implements GenericWrapper<PortfolioEntity, Portfol
 		user.setId(dto.getIdUser());
     	for (PortfolioElementDTO element : dto.getList()) {
 			PortfolioEntity entity = new PortfolioEntity();
-			
 			AssetClassEntity assetClass = new AssetClassEntity();
 			assetClass.setId(element.getId());
 			assetClass.setName(element.getName());
@@ -58,13 +57,11 @@ public class PortfolioWrapper implements GenericWrapper<PortfolioEntity, Portfol
 			}
 			element.setValue(sum);
 			BigDecimal percentage = sum.divide(totalCapital, 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100.00));
-			AssetClassStrategyDTO assetClassStrategy = new AssetClassStrategyDTO();
-			assetClassStrategy.setPercentage(percentage);			
-			assetClassStrategy.setId(idAssetClass);
-			assetClassStrategy.setName(map.get(idAssetClass).get(0).getAssetClass().getName());
+			element.setPercentage(percentage);			
 			element.setId(idAssetClass);
 			element.setName(map.get(idAssetClass).get(0).getAssetClass().getName());
-//			element.setAssetClassStrategy(assetClassStrategy);
+			element.setId(idAssetClass);
+			element.setName(map.get(idAssetClass).get(0).getAssetClass().getName());
 			elements.add(element);
 		}
 	}

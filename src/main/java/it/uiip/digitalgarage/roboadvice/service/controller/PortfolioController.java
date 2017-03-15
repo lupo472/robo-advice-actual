@@ -13,14 +13,24 @@ import java.util.List;
 @RestController
 public class PortfolioController extends AbstractController {
 
-    @RequestMapping("/getUserCurrentPortfolio")
+    @RequestMapping("/getCurrentPortfolio")
     @ResponseBody
-    public GenericResponse<?> getUserCurrentPortfolio(Authentication auth) {
+    public GenericResponse<?> getCurrentPortfolio(Authentication auth) {
         PortfolioDTO result = this.portfolioOp.getUserCurrentPortfolio(auth);
         if(result == null) {
     		return new GenericResponse<String>(0, ControllerConstants.EMPTY_PORTFOLIO);
     	}
         return new GenericResponse<PortfolioDTO>(1, result);
+    }
+    
+    @RequestMapping("/getPortfolioForPeriod")
+    @ResponseBody
+    public GenericResponse<?> getPortfolioForPeriod(@Valid @RequestBody PeriodRequestDTO request, Authentication auth) {
+        List<PortfolioDTO> result = this.portfolioOp.getUserPortfolioPeriod(request, auth);
+        if(result == null) {
+            return new GenericResponse<String>(0, ControllerConstants.EMPTY_PORTFOLIO);
+        }
+        return new GenericResponse<List<PortfolioDTO>>(1,result);
     }
 
 /************************************************************************************************
@@ -50,16 +60,6 @@ public class PortfolioController extends AbstractController {
  *   	return new GenericResponse<String>(0, ControllerConstants.PROBLEM);                     *
  *   }                                                                                          *
  *************************************************************************************************/
-
-    @RequestMapping("/getUserPortfolioPeriod")
-    @ResponseBody
-    public GenericResponse<?> getUserPortfolioPeriod(@Valid @RequestBody PeriodRequestDTO request, Authentication auth) {
-        List<PortfolioDTO> result = this.portfolioOp.getUserPortfolioPeriod(request, auth);
-        if(result == null) {
-            return new GenericResponse<String>(0, ControllerConstants.EMPTY_PORTFOLIO);
-        }
-        return new GenericResponse<List<PortfolioDTO>>(1,result);
-    }
 
 /****************************************************************************************************************
  * 										Deprecated Method								                        *
