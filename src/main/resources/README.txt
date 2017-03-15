@@ -56,7 +56,7 @@
 * * getDefaultStrategySet																									*
 *		Header 		[token]																									*
 *		Body 		[]																										*
-*		Response	[response(1), data(List<DefaultStrategy>)]																*
+*		Response	[response(1), data(List<AssetClass>)]																	*
 *		Note: 																												*
 *																															*
 *****************************************************************************************************************************
