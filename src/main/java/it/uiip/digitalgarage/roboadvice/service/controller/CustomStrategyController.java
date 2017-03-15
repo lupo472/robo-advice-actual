@@ -2,7 +2,6 @@ package it.uiip.digitalgarage.roboadvice.service.controller;
 
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyResponseDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.UserRegisteredDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 import org.springframework.security.core.Authentication;
@@ -28,11 +27,10 @@ public class CustomStrategyController extends AbstractController {
 		return new GenericResponse<String>(1, ControllerConstants.DONE);
     }
     
-    @RequestMapping("/getActiveUserCustomStrategy")
+    @RequestMapping("/getActiveStrategy")
     @ResponseBody
-    public GenericResponse<?> getUserCustomStrategyActive(@Valid @RequestBody UserRegisteredDTO user, Authentication request){
-    	CustomStrategyResponseDTO result = this.customStrategyOp.getActiveUserCustomStrategy(user);
-    	System.out.println(request.getPrincipal().toString());
+    public GenericResponse<?> getActiveStrategy(Authentication auth){
+    	CustomStrategyResponseDTO result = this.customStrategyOp.getActiveStrategy(auth);
     	if(result == null) {
     		return new GenericResponse<String>(0, ControllerConstants.ANY_ACTIVE_STRATEGY);
     	}

@@ -38,8 +38,9 @@ public class CustomStrategyOperator extends AbstractOperator{
     	return true;
     }
 
-    public CustomStrategyResponseDTO getActiveUserCustomStrategy(UserRegisteredDTO user){
-    	List<CustomStrategyEntity> entityList = this.customStrategyRep.findByUserIdAndActive(user.getId(), true);
+    public CustomStrategyResponseDTO getActiveStrategy(Authentication auth){
+    	UserEntity user = this.userRep.findByEmail(auth.getName());
+    	List<CustomStrategyEntity> entityList = this.customStrategyRep.findByUserAndActive(user, true);
     	if(entityList.isEmpty()) {
     		return null;
     	}

@@ -44,7 +44,7 @@ public class SchedulingOperator extends AbstractOperator {
 				continue;
 			}
 			capitalOp.computeCapital(user);
-			CustomStrategyResponseDTO strategy = customStrategyOp.getActiveUserCustomStrategy(user);
+			CustomStrategyResponseDTO strategy = customStrategyOp.getActiveStrategy(user);
 			if(strategy != null && customStrategyOp.getUserCustomStrategySet(user).size() > 1 && 
 					(strategy.getDate().equals(LocalDate.now().toString()) || 
 					 strategy.getDate().equals(LocalDate.now().minus(Period.ofDays(1)).toString()))) {
