@@ -51,8 +51,15 @@
 *		Response	[response(1), data(List<DefaultStrategy>)]																*
 *		Note: 																												*
 *																															*
+********************************************** AssetClassController *********************************************************
+*																															*
+* * getDefaultStrategySet																									*
+*		Header 		[token]																									*
+*		Body 		[]																										*
+*		Response	[response(1), data(List<DefaultStrategy>)]																*
+*		Note: 																												*
+*																															*
 *****************************************************************************************************************************
-
 
 
 

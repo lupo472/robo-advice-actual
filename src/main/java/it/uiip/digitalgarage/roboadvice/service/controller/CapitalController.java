@@ -57,7 +57,7 @@ public class CapitalController extends AbstractController {
 /************************************************************************************************
  * 										Test Method												*
  * ******************************************************************************************** *	
- * @RequestMapping("/computeCapital")															*
+ *  @RequestMapping("/computeCapital")															*
  *	@ResponseBody																				*
  *	public GenericResponse<?> computeCapital(@Valid @RequestBody UserRegisteredDTO user){		*
  *		boolean done = this.capitalOp.computeCapital(user);										*
