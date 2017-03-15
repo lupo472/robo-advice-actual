@@ -15,10 +15,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class PortfolioOperator extends AbstractOperator {
 
-	//TODO Modify repository so it search by user entity, not user id
-    public PortfolioDTO getUserCurrentPortfolio(Authentication auth) {
+    public PortfolioDTO getCurrentPortfolio(Authentication auth) {
 		UserEntity user = this.userRep.findByEmail(auth.getName());
-		List<PortfolioEntity> entityList = this.portfolioRep.findLastPortfolioForUser(user.getId());
+		List<PortfolioEntity> entityList = this.portfolioRep.findLastPortfolioForUser(user, user.getLastUpdate());
 		if(entityList.isEmpty()) {
 			return null;
 		}
@@ -26,6 +25,7 @@ public class PortfolioOperator extends AbstractOperator {
 		return response;
 	}
 
+    //TODO this method should accept a UserEntity!!!
 	public PortfolioDTO getUserCurrentPortfolio(UserRegisteredDTO user) {
 		List<PortfolioEntity> entityList = this.portfolioRep.findLastPortfolioForUser(user.getId());
 		if(entityList.isEmpty()) {
@@ -35,13 +35,12 @@ public class PortfolioOperator extends AbstractOperator {
 		return response;
 	}
 
-    public List<PortfolioDTO> getUserPortfolioPeriod(PeriodRequestDTO request, Authentication auth){
+    public List<PortfolioDTO> getPortfolioForPeriod(PeriodRequestDTO request, Authentication auth){
 		UserEntity user = this.userRep.findByEmail(auth.getName());
-		List<PortfolioEntity> entityList;
+		List<PortfolioEntity> entityList = null;
 		if(request.getPeriod() == 0){
 			entityList = this.portfolioRep.findByUser(user);
-		}
-		else {
+		} else {
 			LocalDate initialDate = LocalDate.now();
 			LocalDate finalDate = initialDate.minus(Period.ofDays(request.getPeriod() - 1));
 			entityList = this.portfolioRep.findByUserAndDateBetween(user, finalDate, initialDate);

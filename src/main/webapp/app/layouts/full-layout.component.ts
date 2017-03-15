@@ -19,8 +19,8 @@ export class FullLayoutComponent implements OnInit {
     }
 
     ngOnInit(): void {
-
         this.login = this.UserService.getLogin();
+        console.log("LOGIN NAVBAR", this.login);
         this.AppService.getCapitalForPeriod(0).subscribe(res => this.assignCapitalData(res));
     }
 
@@ -59,17 +59,19 @@ export class FullLayoutComponent implements OnInit {
 
     assignCapitalData(res) {
 
+        console.log("getCapitalForPeriod", res);
+
         if (res.response == 1) {
 
             let data = [];
             let date = [];
 
-            res.data.forEach((item, i) => {
+            res.data.forEach(item => {
                 data.push(item.amount);
                 date.push(item.date);
             });
 
-            this.capitalData = [{data: data, label: this.user.email}];
+            this.capitalData = [{data: data, label: this.login.getEmail()}];
             console.dir(this.capitalData);
             this.capitalLabels = date;
             console.dir(this.capitalLabels);

@@ -13,12 +13,8 @@ import {Login} from '../model/login';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor(private AppService: AppService, private UserService: UserService, private AssetService: AssetService, private router: Router, public StrategyService: StrategyService) { }
+  constructor() { }
 
-  login: Login;
-
-  ngOnInit() {
-    this.login = this.UserService.getLogin();
-  }
+  ngOnInit() { }
 
 }
