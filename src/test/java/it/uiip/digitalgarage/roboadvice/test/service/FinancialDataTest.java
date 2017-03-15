@@ -2,7 +2,6 @@ package it.uiip.digitalgarage.roboadvice.test.service;
 
 import it.uiip.digitalgarage.roboadvice.RoboadviceApplication;
 import it.uiip.digitalgarage.roboadvice.service.controller.FinancialDataController;
-import it.uiip.digitalgarage.roboadvice.service.dto.DataRequestDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 import org.junit.Test;
 import org.junit.runner.RunWith;

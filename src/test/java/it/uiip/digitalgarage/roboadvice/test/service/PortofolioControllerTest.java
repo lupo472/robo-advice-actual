@@ -11,8 +11,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import it.uiip.digitalgarage.roboadvice.RoboadviceApplication;
 import it.uiip.digitalgarage.roboadvice.service.controller.PortfolioController;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioRequestForDateDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.UserRegisteredDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 
