@@ -19,15 +19,15 @@ export class EditComponent implements OnInit, AfterViewInit {
     public sendStrategy: Strategy;
     public assetClassesStrategies: AssetClassStrategy[] = [];
     public assetClassStrategy: AssetClassStrategy;
-    //public defaultStrategies: DefaultStrategy[] = [];
-    //public defaultStrategy:DefaultStrategy;
+    public defaultStrategies: DefaultStrategy[] = [];
+    public assetClassStrategies: AssetClassStrategy[] = [];
+
     public assets = [];
     public selectedAsset = [];
     public selected = [];
     public currentStrategy: DefaultStrategy;
     public isDisabled = true;
-    public defaultStrategies:DefaultStrategies = new DefaultStrategies();
-    //sumPercentage:number;
+  
 
     @ViewChild('childModal') public childModal: ModalDirective;
 
@@ -48,25 +48,17 @@ export class EditComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit(): void {
-        this.AssetService.getAssetClassSet().subscribe((result) => this.getAssetClass(result));
-        //this.StrategyService.getDefaultStrategySet().subscribe(res => this.getStrategy(res));
+        this.AssetService.getAssetClassSet().subscribe((res) => this.getAssetClass(res));
+        this.StrategyService.getDefaultStrategySet().subscribe(res => this.getStrategy(res));
     }
 
     showDetails() {
         console.log("clicked");
     }
 
-    assignColour(id): string {
-        return this.AssetService.assignColour(id);
-    }
-    // resetCustomStrategy() : void {
-    //   this.isCustom = false;
-    //   this.StrategyService.resetCustomStrategy();
-    // }
-
     //ASSIGN STRATEGIES
     getStrategy(res): void {
-        this.defaultStrategies.setDefaultStrategies(res);
+        this.defaultStrategies = res.getDefaultStrategies();
     }
 
     createDefaultStrategy(): void {
@@ -124,8 +116,8 @@ export class EditComponent implements OnInit, AfterViewInit {
     // }
 
     //ASSIGN ASSET CLASS
-    public getAssetClass(result): void {
-        this.assetClassesStrategies = result;
+    public getAssetClass(res): void {
+        this.assetClassStrategies = res.getAssetClassStrategies();
         // console.log("this.assetClassesStrategies");
         // console.log(this.assetClassesStrategies);
     }

@@ -24,7 +24,7 @@ export class StrategyService {
   maxPercentage:number;
   oldValue:number;
   result:any;
-  public defaultStrategies:DefaultStrategies = new DefaultStrategies();
+  defaultStrategies:DefaultStrategies;
   public strategySet = [];
 
   //isCustom:boolean;
@@ -109,16 +109,10 @@ export class StrategyService {
   }
 
   assignStrategy(res) {
-    res.data.forEach((item,i) => {
-      let defaultStrategy = new DefaultStrategy(item.name);
-      item.list.forEach((element, i) => {
-        defaultStrategy.addAssetClassStrategy(new AssetClassStrategy(element.percentage,
-      element.id,element.name));
-      });
-      this.defaultStrategies.addDefaultStrategy(defaultStrategy);
-    });
-    this.defaultStrategies.addDefaultStrategy(new DefaultStrategy("custom"));
+    this.defaultStrategies = new DefaultStrategies();
+    this.defaultStrategies.createDefaultStrategies(res.data);
     console.log("DEFAULTSTRATEGIES",this.defaultStrategies.getDefaultStrategies());
+    return this.defaultStrategies;
   }
     // var arrayPercentage = [];
     // var arrayNull = [];

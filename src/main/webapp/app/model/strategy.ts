@@ -1,7 +1,7 @@
 import { AssetClassStrategy } from './asset-class-strategy';
 
 export class Strategy {
-    list: AssetClassStrategy[];
+    protected list: AssetClassStrategy[];
 
     constructor() {
     }
@@ -17,4 +17,10 @@ export class Strategy {
     getStrategyArray(): AssetClassStrategy[] {
         return this.list;
     }
+    // setCustomStrategyToSend(customStrategy:CustomStrategy){
+    //
+    // }
+    // setDefaultStrategyToSend(defaultStrategies:DefaultStrategies){
+    //   let strategies = defaultStrategies.getDefaultStrategies();
+    // }
 }

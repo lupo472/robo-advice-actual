@@ -8,7 +8,7 @@ export class DefaultStrategy extends Strategy {
         this.name = name;
         this.list = [];
     }
-    setName(name): void {
+    setName(name: string): void {
         this.name = name;
     }
     getName(): string {
