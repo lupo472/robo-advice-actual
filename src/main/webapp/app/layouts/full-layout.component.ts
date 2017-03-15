@@ -14,6 +14,7 @@ export class FullLayoutComponent implements OnInit {
     login: Login;
     user: User;
     check: number;
+    capital: number;
 
     constructor(private UserService: UserService, private AppService: AppService, private router: Router) {
     }
@@ -63,7 +64,7 @@ export class FullLayoutComponent implements OnInit {
 
         if (res.response == 1) {
 
-            let data = [];
+            let data:Array<number> = [];
             let date = [];
 
             res.data.forEach(item => {
@@ -72,9 +73,9 @@ export class FullLayoutComponent implements OnInit {
             });
 
             this.capitalData = [{data: data, label: this.login.getEmail()}];
-            console.dir(this.capitalData);
+            console.log("CAPITAL DATA: ", this.capitalData);
             this.capitalLabels = date;
-            console.dir(this.capitalLabels);
+            this.capital = data[data.length-1];
 
             this.isLoaded = true;
         } else {

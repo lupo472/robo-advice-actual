@@ -1,4 +1,4 @@
-import { AppService } from '../../services/app.service';
+import { AssetService } from '../../services/asset.service';
 import { UserService } from '../../services/user.service';
 import { Component, OnInit, Input, KeyValueChangeRecord } from '@angular/core';
 
@@ -9,10 +9,10 @@ import { Component, OnInit, Input, KeyValueChangeRecord } from '@angular/core';
 })
 export class StrategyClassesGraphComponent implements OnInit {
 
-  constructor(private AppService: AppService, private UserService: UserService) { }
+  constructor(private AssetService: AssetService, private UserService: UserService) { }
 
   login: any;
-  public portfolio = [];
+  public period = 30;
 
   public dataset = [];
   public date = [];
@@ -22,71 +22,16 @@ export class StrategyClassesGraphComponent implements OnInit {
 
   ngOnInit() {
     this.login = this.UserService.getLogin();
-    //this.AppService.getUserPortfolioPeriod(this.user.id, 30).subscribe(res => this.getPortfolio(res));
+    this.AssetService.getPortfolioForPeriod(this.period).subscribe(res => this.getPortfolio(res));
   }
 
   getPortfolio(res) {
-    if (res.response == 1) {
-      this.portfolio = res.data;
+      if(res.response == 1) {
+          this.dataset = res.dataset;
+          this.date = res.date;
 
-      let value = [];
-
-      let percentage = [];
-      let name = [];
-
-      this.portfolio.forEach((item, index) => {
-
-        let portfolioElem = item.list;
-
-        let tendency;
-
-        portfolioElem.forEach(element => {
-
-          let j = element.assetClassStrategy.id - 1;
-
-          if (value[j] == undefined) {
-            value[j] = [];
-          }
-
-          value[j][index] = element.value;
-          percentage[j] = element.assetClassStrategy.percentage;
-          name[j] = element.assetClassStrategy.name;
-            if(value[j][index] > value[j][index-1]){
-                tendency = "positive";
-            }else if(value[j][index] < value[j][index-1]) {
-                tendency = "negative";
-            }else{
-                tendency = "equal";
-            }
-
-          this.dataset[j] = { data: value[j],
-                              label: name[j],
-                              percentage: percentage[j],
-                              value: value[j][index] ,
-                              tendency:tendency
-                            };
-        });
-
-        this.date.push(item.date);
-      });
-
-      for(let iter = 0; iter < this.dataset.length-1; iter++){
-          console.log("Object: ",iter, this.dataset[iter]);
-          if(this.dataset[iter] == undefined){
-            console.log("splice");
-            this.dataset.splice(iter, 1);
-            iter = 0;
-          }
-        }
-
-    this.render = true;
-
-    }else{
-      this.response = res.data;
-    }
-
-    console.log("dataset: ", this.dataset);
-    console.log("date: ", this.date);
+          this.render = true;
+      }
   }
 
   public lineChartLabels = this.date;

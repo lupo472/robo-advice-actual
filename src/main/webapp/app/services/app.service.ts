@@ -54,25 +54,14 @@ export class AppService {
       .map(response => response.json());
   }
 
-  getUserCurrentPortfolio(id, email, password) {
+  getPortfolioForPeriod(period) {
     this.headers = new Headers();
     this.headers.append('Authorization',Cookie.get('token'));
     //this.headers.append('Access-Control-Allow-Credentials','true');
     //this.headers.append('Content-Type','application/json;charset=UTF-8');
     this.opts = new RequestOptions();
     this.opts.headers = this.headers;
-    return this.http.post(AppConfig.url + 'getUserCurrentPortfolio', { id: id, email: email, password: password },this.opts)
-      .map(response => response.json());
-  }
-
-  getUserPortfolioPeriod(id, period) {
-    this.headers = new Headers();
-    this.headers.append('Authorization',Cookie.get('token'));
-    //this.headers.append('Access-Control-Allow-Credentials','true');
-    //this.headers.append('Content-Type','application/json;charset=UTF-8');
-    this.opts = new RequestOptions();
-    this.opts.headers = this.headers;
-    return this.http.post(AppConfig.url + 'getUserPortfolioPeriod', { id: id, period: period },this.opts)
+    return this.http.post(AppConfig.url + 'getPortfolioForPeriod', { period: period },this.opts)
       .map(response => response.json());
   }
 

@@ -10,8 +10,12 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class AssetService {
 
-  constructor(private AppService:AppService) {
-  }
+  constructor(private AppService:AppService) { }
+
+  private portfolio:any;
+  private dataset:any;
+  private date:any;
+
   //REMAPPING ASSET CLASS
   getAssetClassSet() {
     return this.AppService.getAssetClassSet().map(res => this.assignAssetClass(res));
@@ -30,12 +34,69 @@ export class AssetService {
   }
 
   //REMAPPING PORTFOLIO
-  getUserCurrentPortfolio(){
-    return this.AppService.getUserCurrentPortfolio(18, 'a@a', 'aaaaa').map(res => this.assignPortfolio(res));
+  getPortfolioForPeriod(period) {
+    return this.AppService.getPortfolioForPeriod(period).map(res => this.mapPortfolio(res));
   }
 
-  assignPortfolio(res){
-    return res.data.list;
+  mapPortfolio(res){
+    if (res.response == 1) {
+      this.portfolio = res.data;
+
+      let value = [];
+
+      let percentage = [];
+      let name = [];
+
+      this.portfolio.forEach((item, index) => {
+
+        let portfolioElem = item.list;
+
+        let tendency;
+
+        portfolioElem.forEach(element => {
+
+          let j = element.assetClassStrategy.id - 1;
+
+          if (value[j] == undefined) {
+            value[j] = [];
+          }
+
+          value[j][index] = element.value;
+          percentage[j] = element.assetClassStrategy.percentage;
+          name[j] = element.assetClassStrategy.name;
+          if(value[j][index] > value[j][index-1]){
+            tendency = "positive";
+          }else if(value[j][index] < value[j][index-1]) {
+            tendency = "negative";
+          }else{
+            tendency = "equal";
+          }
+
+          this.dataset[j] = { data: value[j],
+            label: name[j],
+            percentage: percentage[j],
+            value: value[j][index] ,
+            tendency:tendency
+          };
+        });
+
+        this.date.push(item.date);
+      });
+
+      for(let iter = 0; iter < this.dataset.length-1; iter++){
+        console.log("Object: ",iter, this.dataset[iter]);
+        if(this.dataset[iter] == undefined){
+          console.log("splice");
+          this.dataset.splice(iter, 1);
+          iter = 0;
+        }
+      }
+    }
+
+    console.log("dataset: ", this.dataset);
+    console.log("date: ", this.date);
+
+    return {response: res.response, dataset: this.dataset, date: this.date}
   }
 
   //ASSIGN COLOUR
