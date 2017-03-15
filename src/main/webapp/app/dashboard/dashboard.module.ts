@@ -4,13 +4,12 @@ import { DropdownModule } from 'ng2-bootstrap/dropdown';
 import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './dashboard.component';
 import { DashboardRoutingModule } from './dashboard-routing.module';
-
 import { HttpModule,JsonpModule } from '@angular/http';
-
 import {AccordionModule} from 'primeng/primeng';     //accordion and accordion tab
 import { FormsModule } from '@angular/forms';
 import { StrategyGraphComponent } from './strategy-graph/strategy-graph.component';
 import { StrategyClassesGraphComponent } from './strategy-classes-graph/strategy-classes-graph.component';
+import {CalendarModule} from 'primeng/primeng';
 
 
 @NgModule({
@@ -22,7 +21,8 @@ import { StrategyClassesGraphComponent } from './strategy-classes-graph/strategy
     HttpModule,
     JsonpModule,
     AccordionModule,
-    FormsModule
+    FormsModule,
+    CalendarModule
   ],
   declarations: [
     DashboardComponent,

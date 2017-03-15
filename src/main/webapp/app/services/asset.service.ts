@@ -13,8 +13,7 @@ export class AssetService {
   constructor(private AppService:AppService) { }
 
   private portfolio:any;
-  private dataset = [];
-  private date = [];
+  private data:any = {};
 
   //REMAPPING ASSET CLASS
   getAssetClassSet() {
@@ -29,9 +28,6 @@ export class AssetService {
     });
     return assetClassesStrategies;
   }
-  assignFinancialData(res) {
-    return res.data;
-  }
 
   //REMAPPING PORTFOLIO
   getPortfolioForPeriod(period) {
@@ -41,14 +37,10 @@ export class AssetService {
   mapPortfolio(res){
     if (res.response == 1) {
       this.portfolio = new Portfolio(res.data);
-      this.dataset = this.portfolio.getDataset();
-      this.date = this.portfolio.getDate();
+      this.data = this.portfolio.getData();
     }
 
-    console.log("dataset: ", this.dataset);
-    console.log("date: ", this.date);
-
-    return {response: res.response, dataset: this.dataset, date: this.date}
+    return {response: res.response, data: this.data}
   }
 
   //ASSIGN COLOUR

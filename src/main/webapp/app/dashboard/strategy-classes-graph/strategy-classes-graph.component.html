@@ -1,48 +1,56 @@
 <div class="card">
 
-<div class="card-footer">
-		<ul>
-			<li *ngFor="let i of dataset">
-				<p class="text-uppercase font-weight-bold">{{i.label}}</p>
-				<strong>${{i.value}}</strong>
-				<i *ngIf="i.tendency=='positive'" class="fa fa-arrow-up" aria-hidden="true" style="color: green"></i>
-				<i *ngIf="i.tendency=='negative'" class="fa fa-arrow-down" aria-hidden="true" style="color: red"></i>
-				<i *ngIf="i.tendency=='equal'" class="fa fa-anchor" style="color: black"></i>
-				<hr>
-				<p>{{i.percentage}}%
-				</p>
+    <div class="card-footer">
+        <ul>
+            <li *ngFor="let i of data.datasets">
+                <p class="text-uppercase font-weight-bold">{{i.label}}</p>
+                <strong>${{i.value}}</strong>
+                <i *ngIf="i.tendency=='up'" class="fa fa-arrow-up" aria-hidden="true" style="color: green"></i>
+                <i *ngIf="i.tendency=='down'" class="fa fa-arrow-down" aria-hidden="true" style="color: red"></i>
+                <i *ngIf="i.tendency=='='" class="fa fa-anchor" style="color: black"></i>
+                <hr>
+                <p>{{i.percentage}}%
+                </p>
 
-				<div class="progress progress-xs mt-h">
-					<div class="progress-bar bg-success" role="progressbar"
-						[style.width.%]="i.percentage" aria-valuenow="40" aria-valuemin="0"
-						aria-valuemax="100"></div>
+                <div class="progress progress-xs mt-h">
+                    <div class="progress-bar bg-success" role="progressbar"
+                         [style.width.%]="i.percentage" aria-valuenow="40" aria-valuemin="0"
+                         aria-valuemax="100"></div>
 
-				</div>
-			</li>
-		</ul>
-	</div>
-
-	<div class="card-block">
-		<div class="row">
-			<div class="col-sm-5">
-				<h4 class="card-title mb-0">Asset Classes</h4>
-				<div class="small text-muted">Last 30 Days</div>
-			</div>
-			<!--/.col-->
-		</div>
-
-		 
-                <div *ngIf="render" class="chart-wrapper hidden-md-down">
-                    <canvas baseChart class="chart" [datasets]="dataset" [labels]="date"
-                            [options]="lineChartOptions" [colors]="lineChartColours" [legend]="lineChartLegend"
-                            [chartType]="lineChartType" (chartHover)="chartHovered($event)"
-                            (chartClick)="chartClicked($event)"></canvas>
                 </div>
-                <div class="card-block p-0 clearfix" *ngIf="!render">
-                <div class="h3 text-primary mb-0 pt-1">{{response}}</div>
-                </div>
-               
-           
-	</div>
-	
+            </li>
+        </ul>
+    </div>
+
+    <div class="card-block">
+        <div class="row">
+            <div class="col-sm-5">
+                <h4 class="card-title mb-0">Asset Classes</h4>
+                <div class="small text-muted">Last {{period}} Days</div>
+            </div>
+            <div class="col-sm-3">
+                <p-calendar [(ngModel)]="startdate"></p-calendar>
+            </div>
+            <div class="col-sm-1">
+                <i class="fa fa-search" (click)="setPeriod()"></i>
+            </div>
+            <!--/.col-->
+        </div>
+
+        <div *ngIf="render" class="chart-wrapper hidden-md-down">
+
+            <canvas baseChart class="chart"
+                    [options]="lineChartOptions"
+                    [chartType]="lineChartType"
+                    [data]="data"
+                    (chartHover)="chartHovered($event)"
+                    (chartClick)="chartClicked($event)"></canvas>
+        </div>
+        <div class="card-block p-0 clearfix" *ngIf="!render">
+            <div class="h3 text-primary mb-0 pt-1">{{response}}</div>
+        </div>
+
+
+    </div>
+
 </div>

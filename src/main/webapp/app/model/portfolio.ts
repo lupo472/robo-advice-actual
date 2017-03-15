@@ -1,20 +1,20 @@
 export class Portfolio {
 
-    private dataset = [];
-    private date = [];
+    private data = {};
 
     constructor(portfolio: any) {
 
-        let dataset = [];
-        let date = [];
+        let datasets = [];
+        let labels = [];
         let value = [];
         let percentage = [];
         let name = [];
 
+        let colors = ['#4dbd74', '#63c2de', '#f8cb00', '#f86c6b'];
+
         portfolio.forEach((item, index) => {
 
             let portfolioElem = item.list;
-            console.log("PORTFOLIOELEM: ", portfolioElem);
             let tendency;
 
             portfolioElem.forEach(element => {
@@ -29,44 +29,55 @@ export class Portfolio {
                 percentage[j] = element.percentage;
                 name[j] = element.name;
                 if (value[j][index] > value[j][index - 1]) {
-                    tendency = "positive";
+                    tendency = "up";
                 } else if (value[j][index] < value[j][index - 1]) {
-                    tendency = "negative";
+                    tendency = "down";
                 } else {
-                    tendency = "equal";
+                    tendency = "=";
                 }
 
-                dataset[j] = {
+                datasets[j] = {
                     data: value[j],
                     label: name[j],
+                    backgroundColor: this.convertHex(colors[j], 30),
+                    borderColor: colors[j],
+                    pointBackgroundColor: colors[j],
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgba(148,159,177,0.8)',
                     percentage: percentage[j],
                     value: value[j][index],
                     tendency: tendency
                 };
             });
 
-            date.push(item.date);
+            labels.push(item.date);
         });
 
-        for (let iter = 0; iter < dataset.length - 1; iter++) {
-            console.log("Object: ", iter, dataset[iter]);
-            if (dataset[iter] == undefined) {
+        for (let iter = 0; iter < datasets.length - 1; iter++) {
+            if (datasets[iter] == undefined) {
                 console.log("splice");
-                dataset.splice(iter, 1);
+                datasets.splice(iter, 1);
                 iter = 0;
             }
         }
 
-        this.dataset = dataset;
-        this.date = date;
+        this.data = {datasets: datasets, labels: labels};
+        console.log("DATA AFTER SPLICE: ", this.data);
     }
 
-    getDataset() {
-        return this.dataset;
+    getData() {
+        return this.data;
     }
 
-    getDate() {
-        return this.date;
-    }
+    //convert Hex to RGBA
+    public convertHex(hex: string, opacity: number) {
+        hex = hex.replace('#', '');
+        let r = parseInt(hex.substring(0, 2), 16);
+        let g = parseInt(hex.substring(2, 4), 16);
+        let b = parseInt(hex.substring(4, 6), 16);
 
+        let rgba = 'rgba(' + r + ',' + g + ',' + b + ',' + opacity / 100 + ')';
+        return rgba;
+    }
 }
