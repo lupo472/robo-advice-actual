@@ -1,47 +1,22 @@
 package it.uiip.digitalgarage.roboadvice.logic.converter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import it.uiip.digitalgarage.roboadvice.persistence.entity.CapitalEntity;
 import it.uiip.digitalgarage.roboadvice.service.dto.CapitalRequestDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CapitalDTO;
 
-public class CapitalConverter /*implements GenericConverter<CapitalEntity, CapitalRequestDTO>*/ {
+public class CapitalConverter {
 
-//	@Override
 	public CapitalEntity convertToEntity(CapitalRequestDTO dto) {
 		CapitalEntity entity = new CapitalEntity();
 		entity.setAmount(dto.getAmount());
 		return entity;
 	}
 
-//	@Override
 	public CapitalDTO convertToDTO(CapitalEntity entity) {
 		CapitalDTO dto = new CapitalDTO();
 		dto.setAmount(entity.getAmount());
 		dto.setDate(entity.getDate().toString());
 		return dto;
 	}
-
-//	@Override
-//	public List<CapitalEntity> convertToEntity(List<CapitalRequestDTO> dto) {
-//		List<CapitalEntity> entityList = new ArrayList<>();
-//		for (CapitalRequestDTO singleDTO : dto) {
-//			CapitalEntity entity = this.convertToEntity(singleDTO);
-//			entityList.add(entity);
-//		}
-//		return entityList;
-//	}
-
-//	@Override
-//	public List<CapitalRequestDTO> convertToDTO(List<CapitalEntity> entity) {
-//		List<CapitalRequestDTO> dtoList = new ArrayList<>();
-//		for (CapitalEntity singleEntity : entity) {
-//			CapitalRequestDTO dto = this.convertToDTO(singleEntity);
-//			dtoList.add(dto);
-//		}
-//		return dtoList;
-//	}
 	
 }

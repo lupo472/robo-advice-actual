@@ -43,9 +43,8 @@ public abstract class AbstractOperator {
 	
 	protected AssetClassConverter assetClassConv = new AssetClassConverter();
 	
-	protected GenericConverter<UserEntity, UserDTO> userConv = new UserConverter();
+	protected UserConverter userConv = new UserConverter();
 	
-//	protected GenericConverter<CapitalEntity, CapitalRequestDTO> capitalConv = new CapitalConverter();
 	protected CapitalConverter capitalConv = new CapitalConverter();	
 	
 	protected GenericWrapper<PortfolioEntity, PortfolioDTO> portfolioWrap = new PortfolioWrapper();
