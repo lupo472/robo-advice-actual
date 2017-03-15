@@ -1,39 +1,18 @@
 package it.uiip.digitalgarage.roboadvice.logic.wrapper;
 
-import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetClassEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.PortfolioEntity;
-import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioElementDTO;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PortfolioWrapper implements GenericWrapper<PortfolioEntity, PortfolioDTO> {
+public class PortfolioWrapper {
 
-    @Override
-    public List<PortfolioEntity> unwrapToEntity(PortfolioDTO dto) {
-    	List<PortfolioEntity> entityList = new ArrayList<>();
-    	UserEntity user = new UserEntity();
-    	for (PortfolioElementDTO element : dto.getList()) {
-			PortfolioEntity entity = new PortfolioEntity();
-			AssetClassEntity assetClass = new AssetClassEntity();
-			assetClass.setId(element.getId());
-			assetClass.setName(element.getName());
-			entity.setAssetClass(assetClass);
-			entity.setDate(LocalDate.parse(dto.getDate()));
-			entity.setUser(user);
-			entity.setValue(element.getValue());
-		}
-    	return entityList;
-    }
-
-    @Override
     public PortfolioDTO wrapToDTO(List<PortfolioEntity> entityList) {
     	PortfolioDTO dto = new PortfolioDTO();
     	List<PortfolioElementDTO> elements = new ArrayList<>();
