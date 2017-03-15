@@ -18,7 +18,7 @@ export class AppService {
   }
 
   loginUser(user) {
-    return this.http.post(AppConfig.url + 'loginUser',{email:'a@a',password:'aaaaa'})
+    return this.http.post(AppConfig.url + 'loginUser',user)
       .map(response => response.json());
   }
 
@@ -98,14 +98,14 @@ export class AppService {
       .map(response => response.json());
   }
 
-  getCapitalPeriod(id, period) {
+  getCapitalForPeriod(period) {
     this.headers = new Headers();
     this.headers.append('Authorization',Cookie.get('token'));
     //this.headers.append('Access-Control-Allow-Credentials','true');
     //this.headers.append('Content-Type','application/json;charset=UTF-8');
     this.opts = new RequestOptions();
     this.opts.headers = this.headers;
-    return this.http.post(AppConfig.url + 'getCapitalPeriod', { id: id, period: period },this.opts)
+    return this.http.post(AppConfig.url + 'getCapitalForPeriod', { period: period },this.opts)
       .map(response => response.json());
   }
 
