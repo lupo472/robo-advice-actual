@@ -9,35 +9,14 @@
         <a class="navbar-brand" href="#"></a>
     </div>-->
 
-    <ul class="nav navbar-nav ml-auto" *ngIf="!isLoaded">
-
-        <li class="nav-item-custom">
-            <a class="h3 text-primary text-center">{{response}}</a>
-        </li>
-    </ul>
-
-    <div class="card-block p-0" *ngIf="isLoaded">
-
-            <canvas baseChart class="chart" [datasets]="capitalData"
-                    [labels]="capitalLabels" [options]="socialChartOptions"
-                    [colors]="socialChartColours" [legend]="socialChartLegend"
-                    [chartType]="socialChartType" (chartHover)="chartHovered($event)"
-                    (chartClick)="chartClicked($event)"></canvas>
-
-    </div>
-
-    <ul class="nav navbar-nav ml-auto">
-
-        <li class="nav-item-custom" *ngIf="isLoaded">
-            <a class="h3 text-primary">${{user.capital}}</a>
-        </li>
+    <ul class="nav navbar-nav">
 
         <li class="nav-item dropdown" dropdown>
             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
                role="button" aria-haspopup="false" aria-expanded="false"
                dropdownToggle><img src="assets/img/favicon.png"
-                                   class="img-avatar hidden-md-down" alt="img-profile"></a>
-            <div class="dropdown-menu dropdown-menu-right" dropdownMenu
+                                   class="img-avatar" alt="img-profile"></a>
+            <div class="dropdown-menu dropdown-menu-left" dropdownMenu
                  aria-labelledby="simple-dropdown">
 
                 <div class="dropdown-header text-center">
@@ -50,11 +29,26 @@
                         class="fa fa-lock"></i> Logout</a>
             </div>
         </li>
-        <!-- <li class="nav-item hidden-md-down"><a
-            class="nav-link navbar-toggler aside-menu-toggler" href="#">&#9776;</a>
-        </li> -->
+
+        <li class="nav-item" *ngIf="!isLoaded">
+            <a class="h3 text-primary text-center " >{{response}}</a>
+        </li>
+        <li class="nav-item nav-item-custom" *ngIf="isLoaded">
+            <a class="h3 text-primary text-center">${{user.capital}}</a>
+        </li>
+
+
     </ul>
 
+    <div class="card-block p-0 hidden-xs-down" *ngIf="isLoaded">
+
+        <canvas baseChart class="chart" [datasets]="capitalData"
+                [labels]="capitalLabels" [options]="socialChartOptions"
+                [colors]="socialChartColours" [legend]="socialChartLegend"
+                [chartType]="socialChartType" (chartHover)="chartHovered($event)"
+                (chartClick)="chartClicked($event)"></canvas>
+
+    </div>
 </header>
 
 <div class="app-body">
