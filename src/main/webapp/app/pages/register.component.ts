@@ -9,14 +9,14 @@ import {Router} from "@angular/router";
 export class RegisterComponent {
 
   constructor(private UserService:UserService,private router:Router) { }
-  
+
   user:any = {};
-  
+
   public onSubmit(){
     if(this.user.password == this.user.password2){
-    this.UserService.registerUser(this.user).subscribe(res => 
+    this.UserService.registerUser(this.user).subscribe(res =>
       {if(res.response == 1){
-        this.UserService.addCapital().subscribe(res => console.log("CAPITAL ADDED"));
+        //this.UserService.addCapital().subscribe(res => console.log("CAPITAL ADDED"));
         this.router.navigate(['pages/login']);
         }else{
         alert("Username already existing");}
@@ -26,5 +26,5 @@ export class RegisterComponent {
       this.user.password = "";
       this.user.password2 = "";
     }
-  }  
+  }
 }

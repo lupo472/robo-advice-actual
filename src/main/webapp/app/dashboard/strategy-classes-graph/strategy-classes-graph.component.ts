@@ -11,7 +11,7 @@ export class StrategyClassesGraphComponent implements OnInit {
 
   constructor(private AppService: AppService, private UserService: UserService) { }
 
-  user: any;
+  login: any;
   public portfolio = [];
 
   public dataset = [];
@@ -21,8 +21,8 @@ export class StrategyClassesGraphComponent implements OnInit {
   public response:string = 'Data not yet available';
 
   ngOnInit() {
-    this.user = this.UserService.getUser();
-    this.AppService.getUserPortfolioPeriod(this.user.id, 30).subscribe(res => this.getPortfolio(res));
+    this.login = this.UserService.getLogin();
+    //this.AppService.getUserPortfolioPeriod(this.user.id, 30).subscribe(res => this.getPortfolio(res));
   }
 
   getPortfolio(res) {

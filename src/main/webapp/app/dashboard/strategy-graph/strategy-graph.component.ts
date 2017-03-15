@@ -20,8 +20,8 @@ export class StrategyGraphComponent implements OnInit {
 
   ngOnInit() {
 
-    var user = this.UserService.getUser();
-    this.AppService.getActiveStrategy(user,Cookie.get('token')).subscribe(res => this.getStrategy(res.data));
+    var login = this.UserService.getLogin();
+    //this.AppService.getActiveStrategy(user,Cookie.get('token')).subscribe(res => this.getStrategy(res.data));
   }
 
   getStrategy(res) {

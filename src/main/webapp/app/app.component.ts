@@ -18,8 +18,8 @@ export class AppComponent extends OnInit {
 
 
     if (Cookie.check('token')) {
-      this.UserService.setUser({user:{
-        id: 0, email: Cookie.get('email'), password: "aaaaa"
+      this.UserService.setLogin({user:{
+        email: Cookie.get('email'), token: Cookie.get('token')
       }});
     } else {
       Cookie.delete("token");

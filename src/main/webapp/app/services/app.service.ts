@@ -3,14 +3,12 @@ import { AppConfig } from './app.config';
 import { Cookie } from 'ng2-cookies';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
-import {Cookie} from "ng2-cookies";
 
 @Injectable()
 export class AppService {
 
   headers: Headers;
   opts: RequestOptions;
-
 
   constructor(private http: Http) {
     // this.headers = new Headers();

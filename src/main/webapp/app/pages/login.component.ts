@@ -9,10 +9,10 @@ import {isNumber} from "util";
 })
 export class LoginComponent {
   constructor(private UserService: UserService, private router: Router) {
-    if (Cookie.check('id')) {
+    if (Cookie.check('token')) {
       this.router.navigate(['dashboard']);
-        this.UserService.setUser({user:{
-            id: Cookie.get('id'), email: Cookie.get('email'), password: "aaaaa"
+        this.UserService.setLogin({login:{
+            email: Cookie.get('email'), token : Cookie.get('token')
         }});
     }
 
@@ -31,7 +31,7 @@ export class LoginComponent {
 
   public setCookie(data) {
     Cookie.set('token', data.token);
-    Cookie.set('email', data.user.email);
+    Cookie.set('email', data.email);
 
     this.router.navigate(['dashboard']);
   }
