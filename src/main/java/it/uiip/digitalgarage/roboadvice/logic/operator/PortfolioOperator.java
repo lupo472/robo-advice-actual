@@ -1,10 +1,6 @@
 package it.uiip.digitalgarage.roboadvice.logic.operator;
 
-import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetEntity;
-import it.uiip.digitalgarage.roboadvice.persistence.entity.CapitalEntity;
-import it.uiip.digitalgarage.roboadvice.persistence.entity.CustomStrategyEntity;
-import it.uiip.digitalgarage.roboadvice.persistence.entity.FinancialDataEntity;
-import it.uiip.digitalgarage.roboadvice.persistence.entity.PortfolioEntity;
+import it.uiip.digitalgarage.roboadvice.persistence.entity.*;
 import it.uiip.digitalgarage.roboadvice.service.dto.*;
 
 import java.math.BigDecimal;
@@ -13,13 +9,16 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.*;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PortfolioOperator extends AbstractOperator {
 
-    public PortfolioDTO getUserCurrentPortfolio(UserRegisteredDTO dto) {
-        List<PortfolioEntity> entityList = this.portfolioRep.findLastPortfolioForUser(dto.getId());
+	//TODO Modify repository so it search by user entity, not user id
+    public PortfolioDTO getUserCurrentPortfolio(Authentication auth) {
+    	UserEntity user = this.userRep.findByEmail(auth.getName());
+        List<PortfolioEntity> entityList = this.portfolioRep.findLastPortfolioForUser(user);
         if(entityList.isEmpty()) {
         	return null;
         }
@@ -27,15 +26,17 @@ public class PortfolioOperator extends AbstractOperator {
         return response;
     }
 
-    public List<PortfolioDTO> getUserPortfolioPeriod(DataRequestDTO request){
+	//TODO Modify repository so it search by user entity, not user id
+    public List<PortfolioDTO> getUserPortfolioPeriod(PeriodRequestDTO request, Authentication auth){
+		UserEntity user = this.userRep.findByEmail(auth.getName());
 		List<PortfolioEntity> entityList;
 		if(request.getPeriod() == 0){
-			entityList = this.portfolioRep.findByUserId(request.getId());
+			entityList = this.portfolioRep.findByUserId(user);
 		}
 		else {
 			LocalDate initialDate = LocalDate.now();
 			LocalDate finalDate = initialDate.minus(Period.ofDays(request.getPeriod() - 1));
-			entityList = this.portfolioRep.findByUserIdAndDateBetween(request.getId(), finalDate, initialDate);
+			entityList = this.portfolioRep.findByUserIdAndDateBetween(user, finalDate, initialDate);
 		}
 		if (entityList.isEmpty()) {
 			return null;

@@ -59,6 +59,22 @@
 *		Response	[response(1), data(List<AssetClass>)]																	*
 *		Note: 																												*
 *																															*
+********************************************** PortfolioController **********************************************************
+*                                                                                                                           *
+* * getUserCurrentPortfolio                                                                                                 *
+*       Header      [token]                                                                                                 *
+*       Body        []                                                                                                      *
+*       Response    [response(1), data(PortfolioDTO)]                                                                       *
+*       Note:                                                                                                               *
+*                                                                                                                           *
+*****************************************************************************************************************************
+*                                                                                                                           *
+* * getUserPortfolioPeriod                                                                                                  *
+*       Header      [token]                                                                                                 *
+*       Body        [Period {period}]                                                                                       *
+*       Response    [response(1), data(List<PortfolioDTO>)]                                                                 *
+*       Note:                                                                                                               *
+*                                                                                                                           *
 ******************************************** CustomStrategyController *******************************************************
 *																															*
 * * setCustomStrategy																										*
@@ -76,9 +92,4 @@
 *		Note: 																												*
 *																															*
 *****************************************************************************************************************************
-
-
-
-
-
 
