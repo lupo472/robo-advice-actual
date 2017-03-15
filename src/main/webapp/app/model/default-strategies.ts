@@ -4,6 +4,7 @@ import { DefaultStrategy } from './default-strategy';
 export class DefaultStrategies {
 
     private defaultStrategies: DefaultStrategy[] = [];
+    private currentDefaultStrategy: DefaultStrategy = new DefaultStrategy();
     public arrayPercentages: number[] = [];
     public arrayColor: string[] = [];
     public arrayColors: any[] = [];
@@ -25,7 +26,8 @@ export class DefaultStrategies {
     }
     createDefaultStrategies(data): void {
         data.forEach((item, i) => {
-            let defaultStrategy = new DefaultStrategy(item.name);
+            let defaultStrategy = new DefaultStrategy();
+            defaultStrategy.setName(item.name);
             item.list.forEach((element, i) => {
                 defaultStrategy.addAssetClassStrategy(new AssetClassStrategy(element.percentage,
                     element.id, element.name));
@@ -41,6 +43,13 @@ export class DefaultStrategies {
             this.arrayColors = [{ backgroundColor: this.arrayColor, borderWidth: 3 }];
         }
 
+    }
+    setCurrentDefaultStrategy(defaultStrategy: DefaultStrategy) {
+      this.currentDefaultStrategy = defaultStrategy;
+      console.log("DEFAULTSTRATEGY",this.currentDefaultStrategy);
+    }
+    getCurrentDefaultStrategy() : DefaultStrategy {
+      return this.currentDefaultStrategy;
     }
 
 }

@@ -15,7 +15,7 @@
 			</div> -->
 
 			<app-strategy-selector [name]="strategy.name" [selected]="selected[i]"
-			[strategy]="strategy" [id]="i" (click)="setStrategy(i)"></app-strategy-selector>
+			[strategy]="strategy" [id]="i" (click)="onSelect(strategy,i)"></app-strategy-selector>
 
 		</div>
 	</div>

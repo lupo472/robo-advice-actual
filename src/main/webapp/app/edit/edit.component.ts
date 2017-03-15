@@ -16,22 +16,16 @@ import { AssetClassStrategy } from '../model/asset-class-strategy';
 
 export class EditComponent implements OnInit, AfterViewInit {
     public isCustom: boolean;
-    public sendStrategy: Strategy;
-    public assetClassesStrategies: AssetClassStrategy[] = [];
-    public assetClassStrategy: AssetClassStrategy;
-    public defaultStrategies: DefaultStrategy[] = [];
+    public defaultStrategies: DefaultStrategy[]=[];
     public assetClassStrategies: AssetClassStrategy[] = [];
-
-    public assets = [];
-    public selectedAsset = [];
     public selected = [];
-    public currentStrategy: DefaultStrategy;
+    public currentStrategy:DefaultStrategy;
     public isDisabled = true;
-  
+
 
     @ViewChild('childModal') public childModal: ModalDirective;
 
-    constructor(public AppService: AppService, public AssetService: AssetService, public StrategyService: StrategyService, private router: Router) {
+    constructor(public AssetService: AssetService, public StrategyService: StrategyService, private router: Router) {
         this.isCustom = false;
     }
     public showChildModal(): void {
@@ -52,23 +46,20 @@ export class EditComponent implements OnInit, AfterViewInit {
         this.StrategyService.getDefaultStrategySet().subscribe(res => this.getStrategy(res));
     }
 
-    showDetails() {
-        console.log("clicked");
-    }
-
     //ASSIGN STRATEGIES
     getStrategy(res): void {
         this.defaultStrategies = res.getDefaultStrategies();
     }
+    //ASSIGN ASSET CLASS
+    getAssetClass(res): void {
+        this.assetClassStrategies = res.getAssetClassStrategies();
+    }
 
     createDefaultStrategy(): void {
-        this.sendStrategy = new Strategy();
-        this.sendStrategy.setStrategyArray(this.currentStrategy.getStrategyArray());
-        console.log(this.sendStrategy);
-        this.AppService.setCustomStrategy(this.sendStrategy).subscribe(
-            (res) => {
-                console.log(res);
-                this.router.navigate(['dashboard']);
+      this.StrategyService.createDefaultStrategy(
+        this.StrategyService.defaultStrategies.getCurrentDefaultStrategy()).subscribe(
+          (res) => {
+              this.router.navigate(['dashboard']);
             });
     }
     confirmStrategy(): void {
@@ -77,49 +68,17 @@ export class EditComponent implements OnInit, AfterViewInit {
                 this.router.navigate(['dashboard']);
             });
     }
-
-    onSelect(defaultStrategy: DefaultStrategy): void {
-        this.currentStrategy = defaultStrategy;
-        console.log(this.currentStrategy);
-    }
-
-    // setStrategy(i): void {
-    //     this.isDisabled = false;
-    //     this.currentStrategy = this.defaultStrategies[i];
-    //     console.log("assetClassStrategy");
-    //     console.log(this.currentStrategy);
-    //
-    //     this.assetClassesStrategies.forEach((item, i) => {
-    //         item.setPercentage(0);
-    //         console.log(item.getPercentage());
-    //         this.currentStrategy.list.forEach((element, j) => {
-    //             if (item.getId() == element.getId()) {
-    //                 item.setPercentage(element.getPercentage());
-    //             }
-    //         });
-    //     });
-    //
-    //     if (i == (this.defaultStrategies.length - 1)) {
-    //         this.isCustom = !this.isCustom;
-    //     } else {
-    //         this.isCustom = false;
-    //     }
-    //
-    //     this.defaultStrategies.forEach((item, index) => {
-    //         if (index == i) {
-    //             this.selected[index] = true;
-    //         } else {
-    //             this.selected[index] = false;
-    //         }
-    //     })
-    //
-    // }
-
-    //ASSIGN ASSET CLASS
-    public getAssetClass(res): void {
-        this.assetClassStrategies = res.getAssetClassStrategies();
-        // console.log("this.assetClassesStrategies");
-        // console.log(this.assetClassesStrategies);
+    onSelect(defaultStrategy: DefaultStrategy, i): void {
+      this.StrategyService.defaultStrategies.setCurrentDefaultStrategy(defaultStrategy);
+      this.assetClassStrategies = defaultStrategy.getStrategyArray();
+      this.isDisabled = false;
+      this.defaultStrategies.forEach((item,index)=>{
+        if (index == i) {
+          this.selected[index] = true;
+        } else {
+          this.selected[index] = false;
+        }
+      });
     }
 }
 

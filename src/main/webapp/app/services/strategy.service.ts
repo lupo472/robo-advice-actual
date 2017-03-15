@@ -26,6 +26,7 @@ export class StrategyService {
   result:any;
   defaultStrategies:DefaultStrategies;
   public strategySet = [];
+  public currentStrategy:DefaultStrategy;
 
   //isCustom:boolean;
   constructor(private AppService:AppService, private AssetService:AssetService) {
@@ -69,11 +70,10 @@ export class StrategyService {
       // console.log("maxPercentage" + this.maxPercentage);
       return this.strategies.get(id).getPercentage();
   }
-  resetCustomStrategy() {
-    this.strategies.forEach((item,index)=>{
-      item.setPercentage(0);
-      return item.getPercentage();
-    });
+
+  createDefaultStrategy(currentDefaultStrategy){
+    return this.AppService.setCustomStrategy(currentDefaultStrategy.sendCurrentStrategy()).map(res => console.log(res));
+    
   }
 
   // createDefaultStrategy(){

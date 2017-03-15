@@ -20,7 +20,7 @@ export class Strategy {
     // setCustomStrategyToSend(customStrategy:CustomStrategy){
     //
     // }
-    // setDefaultStrategyToSend(defaultStrategies:DefaultStrategies){
-    //   let strategies = defaultStrategies.getDefaultStrategies();
+    // setDefaultStrategyToSend(defaultStrategies:DefaultStrategies) {
+    //   this.list = defaultStrategy.getDefaultStrategies();
     // }
 }
