@@ -16,13 +16,12 @@ import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
 import it.uiip.digitalgarage.roboadvice.service.dto.CapitalRequestDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CapitalDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.PeriodRequestDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.UserRegisteredDTO;
 
 @Service
 public class CapitalOperator extends AbstractOperator {
 	
-	@Autowired
-	private PortfolioOperator portfolioOp;
+//	@Autowired
+//	private PortfolioOperator portfolioOp;
 	
 	public CapitalDTO getCurrentCapital(Authentication auth) {
 		UserEntity user = this.userRep.findByEmail(auth.getName());
@@ -80,25 +79,25 @@ public class CapitalOperator extends AbstractOperator {
 	}
 
 	//TODO Modify this method
-	public boolean computeCapital(UserRegisteredDTO user) {
-		CapitalEntity capitalEntity = new CapitalEntity();
-		UserEntity userEntity = new UserEntity();
-		BigDecimal amount = portfolioOp.evaluatePortfolio(user);
-		if(amount == null) {
-			return false;
-		}
-		LocalDate currentDate = LocalDate.now();
-		userEntity.setId(user.getId());
-		capitalEntity.setUser(userEntity);
-		capitalEntity.setAmount(amount);
-		capitalEntity.setDate(currentDate);
-		CapitalEntity saved = this.capitalRep.findByUserAndDate(userEntity, currentDate);
-		if(saved == null) {
-			this.capitalRep.save(capitalEntity);
-		} else {
-			this.capitalRep.updateCapital(user.getId(), currentDate.toString(), amount);
-		}
-		return true;
-	}
+//	public boolean computeCapital(UserRegisteredDTO user) {
+//		CapitalEntity capitalEntity = new CapitalEntity();
+//		UserEntity userEntity = new UserEntity();
+//		BigDecimal amount = portfolioOp.evaluatePortfolio(user);
+//		if(amount == null) {
+//			return false;
+//		}
+//		LocalDate currentDate = LocalDate.now();
+//		userEntity.setId(user.getId());
+//		capitalEntity.setUser(userEntity);
+//		capitalEntity.setAmount(amount);
+//		capitalEntity.setDate(currentDate);
+//		CapitalEntity saved = this.capitalRep.findByUserAndDate(userEntity, currentDate);
+//		if(saved == null) {
+//			this.capitalRep.save(capitalEntity);
+//		} else {
+//			this.capitalRep.updateCapital(user.getId(), currentDate.toString(), amount);
+//		}
+//		return true;
+//	}
 
 }
