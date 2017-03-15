@@ -2,6 +2,7 @@ package it.uiip.digitalgarage.roboadvice.persistence.repository;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.PortfolioEntity;
 
+import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
@@ -16,7 +17,7 @@ public interface PortfolioRepository extends PagingAndSortingRepository<Portfoli
 
     public List<PortfolioEntity> findByUserIdAndDate(Long idUser, LocalDate date);
 
-    public List<PortfolioEntity> findByUserIdAndDateBetween(Long idUser, LocalDate finalDate, LocalDate initialDate);
+    public List<PortfolioEntity> findByUserAndDateBetween(UserEntity user, LocalDate finalDate, LocalDate initialDate);
 
     static final String FIND_LAST_PORTFOLIO_FOR_USER = "SELECT * FROM portfolio "
 													 + "WHERE id_user = ?1 "
@@ -33,5 +34,5 @@ public interface PortfolioRepository extends PagingAndSortingRepository<Portfoli
     @Query(value = FIND_BY_USERID_ASSETID_AND_DATE, nativeQuery = true)
     public PortfolioEntity findByUserIdAndAssetIdAndDate(Long userId, Long assetId, String date);
 
-    public List<PortfolioEntity> findByUserId(Long userId);
+    public List<PortfolioEntity> findByUser(UserEntity user);
 }

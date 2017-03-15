@@ -26,17 +26,16 @@ public class PortfolioOperator extends AbstractOperator {
         return response;
     }
 
-	//TODO Modify repository so it search by user entity, not user id
     public List<PortfolioDTO> getUserPortfolioPeriod(PeriodRequestDTO request, Authentication auth){
 		UserEntity user = this.userRep.findByEmail(auth.getName());
 		List<PortfolioEntity> entityList;
 		if(request.getPeriod() == 0){
-			entityList = this.portfolioRep.findByUserId(user);
+			entityList = this.portfolioRep.findByUser(user);
 		}
 		else {
 			LocalDate initialDate = LocalDate.now();
 			LocalDate finalDate = initialDate.minus(Period.ofDays(request.getPeriod() - 1));
-			entityList = this.portfolioRep.findByUserIdAndDateBetween(user, finalDate, initialDate);
+			entityList = this.portfolioRep.findByUserAndDateBetween(user, finalDate, initialDate);
 		}
 		if (entityList.isEmpty()) {
 			return null;
