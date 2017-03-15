@@ -8,9 +8,6 @@ import java.util.List;
 public @Data class PortfolioDTO implements Comparable<PortfolioDTO> {
 
     @NotNull
-    private Long idUser;
-
-    @NotNull
     private List<PortfolioElementDTO> list;
 
     @NotNull

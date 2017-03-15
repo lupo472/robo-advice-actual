@@ -3,7 +3,6 @@ package it.uiip.digitalgarage.roboadvice.logic.wrapper;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetClassEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.PortfolioEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
-import it.uiip.digitalgarage.roboadvice.service.dto.AssetClassStrategyDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioElementDTO;
 
@@ -21,10 +20,8 @@ public class PortfolioWrapper implements GenericWrapper<PortfolioEntity, Portfol
     public List<PortfolioEntity> unwrapToEntity(PortfolioDTO dto) {
     	List<PortfolioEntity> entityList = new ArrayList<>();
     	UserEntity user = new UserEntity();
-		user.setId(dto.getIdUser());
     	for (PortfolioElementDTO element : dto.getList()) {
 			PortfolioEntity entity = new PortfolioEntity();
-			
 			AssetClassEntity assetClass = new AssetClassEntity();
 			assetClass.setId(element.getId());
 			assetClass.setName(element.getName());
@@ -41,7 +38,6 @@ public class PortfolioWrapper implements GenericWrapper<PortfolioEntity, Portfol
     	PortfolioDTO dto = new PortfolioDTO();
     	List<PortfolioElementDTO> elements = new ArrayList<>();
     	dto.setDate(entityList.get(0).getDate().toString());
-    	dto.setIdUser(entityList.get(0).getUser().getId());
     	createPortfolioElement(entityList, elements);
     	dto.setList(elements);
     	return dto;
@@ -58,13 +54,11 @@ public class PortfolioWrapper implements GenericWrapper<PortfolioEntity, Portfol
 			}
 			element.setValue(sum);
 			BigDecimal percentage = sum.divide(totalCapital, 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100.00));
-			AssetClassStrategyDTO assetClassStrategy = new AssetClassStrategyDTO();
-			assetClassStrategy.setPercentage(percentage);			
-			assetClassStrategy.setId(idAssetClass);
-			assetClassStrategy.setName(map.get(idAssetClass).get(0).getAssetClass().getName());
+			element.setPercentage(percentage);			
 			element.setId(idAssetClass);
 			element.setName(map.get(idAssetClass).get(0).getAssetClass().getName());
-//			element.setAssetClassStrategy(assetClassStrategy);
+			element.setId(idAssetClass);
+			element.setName(map.get(idAssetClass).get(0).getAssetClass().getName());
 			elements.add(element);
 		}
 	}

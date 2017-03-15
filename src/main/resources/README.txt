@@ -61,18 +61,18 @@
 *																															*
 ********************************************** PortfolioController **********************************************************
 *                                                                                                                           *
-* * getUserCurrentPortfolio                                                                                                 *
+* * getCurrentPortfolio                                                                                                 *
 *       Header      [token]                                                                                                 *
 *       Body        []                                                                                                      *
-*       Response    [response(1), data(PortfolioDTO)]                                                                       *
+*       Response    [response(0/1), data(String/PortfolioDTO)]                                                                       *
 *       Note:                                                                                                               *
 *                                                                                                                           *
 *****************************************************************************************************************************
 *                                                                                                                           *
-* * getUserPortfolioPeriod                                                                                                  *
+* * getPortfolioForPeriod                                                                                                  *
 *       Header      [token]                                                                                                 *
 *       Body        [Period {period}]                                                                                       *
-*       Response    [response(1), data(List<PortfolioDTO>)]                                                                 *
+*       Response    [response(0/1), data(String/List<PortfolioDTO>)]                                                                 *
 *       Note:                                                                                                               *
 *                                                                                                                           *
 ******************************************** CustomStrategyController *******************************************************
