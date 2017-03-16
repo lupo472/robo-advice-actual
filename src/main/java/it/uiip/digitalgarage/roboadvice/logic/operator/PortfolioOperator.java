@@ -86,7 +86,9 @@ public class PortfolioOperator extends AbstractOperator {
 				set.add(element);
 			}
 			dto.setDate(date);
-			dto.setList(new ArrayList<>(set));
+			List<PortfolioElementDTO> list = new ArrayList<>(set);
+			Collections.sort(list);
+			dto.setList(list);
 			result.add(dto);
 		}
 		Collections.sort(result);
