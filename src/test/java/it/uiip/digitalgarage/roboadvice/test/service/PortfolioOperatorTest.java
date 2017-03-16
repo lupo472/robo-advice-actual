@@ -2,8 +2,21 @@ package it.uiip.digitalgarage.roboadvice.test.service;
 
 import static org.junit.Assert.*;
 
+import it.uiip.digitalgarage.roboadvice.logic.operator.CustomStrategyOperator;
+import it.uiip.digitalgarage.roboadvice.logic.operator.PortfolioOperator;
+import it.uiip.digitalgarage.roboadvice.persistence.entity.CapitalEntity;
+import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
+import it.uiip.digitalgarage.roboadvice.persistence.repository.AssetRepository;
+import it.uiip.digitalgarage.roboadvice.persistence.repository.CapitalRepository;
+import it.uiip.digitalgarage.roboadvice.persistence.repository.CustomStrategyRepository;
+import it.uiip.digitalgarage.roboadvice.persistence.repository.PortfolioRepository;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -14,18 +27,55 @@ import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = RoboadviceApplication.class)
-public class PortofolioControllerTest {
+public class PortfolioOperatorTest {
 
 	/* TODO
 	 * Test: createUserPortfolio
 	 * Test: computeUserPortfolio
 	 * Test: getUserPortfolioPeriod
 	*/
-	
+
+	@InjectMocks
 	@Autowired
-	private PortfolioController portfolioCtrl;
+	private PortfolioOperator portfolioOp;
+
+	@Mock
+	private CapitalRepository capitalRep;
+
+	@Mock
+	private CustomStrategyRepository customStrategyRep;
+
+	@Mock
+	private PortfolioRepository portfolioRep;
+
+	@Mock
+	private AssetRepository assetRep;
+
+	@Before
+	public void setUpMock() {
+		MockitoAnnotations.initMocks(this);
+	}
+
+	@Test
+	public void createUserPortfolioTest() {
+		UserEntity user = new UserEntity();
+		user.setId(new Long(2));
+		user.setEmail("luca@antilici.it");
+		user.setPassword("pippo123");
+		user.setDate(LocalDate.now());
+		user.setLastUpdate(LocalDate.now());
+
+		CapitalEntity capitalEntity = new CapitalEntity();
+		capitalEntity.setId(new Long(12));
+		capitalEntity.setUser(user);
+		capitalEntity.setAmount(new BigDecimal(1236.34));
+		capitalEntity.setDate(LocalDate.now());
+	}
 	
 	@Test
 	public void getUserCurrentPortfolioOK() {

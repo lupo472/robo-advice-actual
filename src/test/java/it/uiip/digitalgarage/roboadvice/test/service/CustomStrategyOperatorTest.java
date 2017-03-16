@@ -31,7 +31,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -40,16 +39,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = RoboadviceApplication.class)
-public class CustomStrategyControllerTest {
-
-	/* TODO
-	 * Test: setCustomStrategy
-	 * Test: getUserCustomStrategySet
-	 * Test: getActiveUserCustomStrategy
-	*/
-
-    @Autowired
-    private CustomStrategyController customStrategyCtrl;
+public class CustomStrategyOperatorTest {
 
     @InjectMocks
     @Autowired
@@ -57,6 +47,9 @@ public class CustomStrategyControllerTest {
 
     @Mock
     private CustomStrategyRepository customStrategyRep;
+
+/*    @Mock
+    private CustomStrategyEntity mockEntity;*/
 
     @Mock
     private UserRepository userRep;
@@ -84,7 +77,6 @@ public class CustomStrategyControllerTest {
     @AfterClass
     public static void detachResources() {
         SecurityContextHolder.clearContext();
-        System.out.println("Cleared context");
     }
 
     @Before
@@ -93,6 +85,7 @@ public class CustomStrategyControllerTest {
         when(userRep.findByEmail("luca@antilici.it")).thenReturn(user);
 
     }
+
     @Test
     public void setCustomStrategySuccess() {
         CustomStrategyDTO dto = new CustomStrategyDTO();
@@ -123,10 +116,7 @@ public class CustomStrategyControllerTest {
 
         when(customStrategyRep.save(entityList)).thenReturn(entityList);
         boolean opResponse = this.customStrategyOp.setCustomStrategy(dto, auth);
-        GenericResponse<?> response = this.customStrategyCtrl.setCustomStrategy(dto, auth);
         assertTrue(opResponse);
-        assertEquals(1, response.getResponse());
-        assertEquals("done",response.getData());
     }
 
     @Test
@@ -189,7 +179,8 @@ public class CustomStrategyControllerTest {
         customStrategyEntity2.setDate(date);
         resultList.add(customStrategyEntity1);
         resultList.add(customStrategyEntity2);
-
+        //when(mockEntity.getDate()).thenReturn(LocalDate.now());
+        // List<CustomStrategyEntity> testLollo = Arrays.asList(mockEntity,mockEntity);
         when(customStrategyRep.findByUserAndDateBetween(user, LocalDate.now(), LocalDate.now())).thenReturn(resultList);
         List<CustomStrategyResponseDTO> response = this.customStrategyOp.getCustomStrategySet(auth, 1);
         verify(customStrategyRep).findByUserAndDateBetween(user, LocalDate.now(), LocalDate.now());
@@ -257,4 +248,5 @@ public class CustomStrategyControllerTest {
         assertEquals(2, response.get(1).getList().size());
 
     }
+
 }
