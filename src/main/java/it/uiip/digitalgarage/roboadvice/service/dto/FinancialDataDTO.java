@@ -1,25 +1,22 @@
 package it.uiip.digitalgarage.roboadvice.service.dto;
 
-import java.math.BigDecimal;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 
-public @Data class FinancialDataDTO implements Comparable<FinancialDataClassDTO> {
+public @Data class FinancialDataDTO implements Comparable<FinancialDataDTO> {
 	
 	@NotNull
-    private AssetDTO asset;
+	private AssetClassDTO assetClass;
 	
 	@NotNull
-    private BigDecimal value;
-	
-	@NotNull
-    private String date;
+	private List<FinancialDataElementDTO> list;
 
 	@Override
-	public int compareTo(FinancialDataClassDTO o) {
-		return this.date.compareTo(o.getDate());
+	public int compareTo(FinancialDataDTO o) {
+		return this.assetClass.compareTo(o.getAssetClass());
 	}
-	
+
 }

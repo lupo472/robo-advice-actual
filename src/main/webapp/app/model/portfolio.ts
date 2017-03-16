@@ -1,39 +1,83 @@
-import { PortfolioElem } from './portfolioElem';
-
 export class Portfolio {
 
-  private _idUser:number;
-  private _list:Array<PortfolioElem>;
-  private _date:string;
+    private data = {};
 
-  constructor(portfolio:any) {
-    this._idUser = portfolio._idUser;
-    this._list = portfolio._list;
-    this._date = portfolio._date;
-  }
-  get idUser(): number {
-    return this._idUser;
-  }
+    constructor(portfolio: any) {
 
-  set idUser(value: number) {
-    this._idUser = value;
-  }
+        let datasets = [];
+        let labels = [];
+        let value = [];
+        let percentage = [];
+        let name = [];
 
-  get list(): Array<PortfolioElem> {
-    return this._list;
-  }
+        let colors = ['#4dbd74', '#63c2de', '#f8cb00', '#f86c6b'];
 
-  set list(value: Array<PortfolioElem>) {
-    this._list = value;
-  }
+        portfolio.forEach((item, index) => {
 
-  get date(): string {
-    return this._date;
-  }
+            let portfolioElem = item.list;
+            let tendency;
 
-  set date(value: string) {
-    this._date = value;
-  }
+            portfolioElem.forEach(element => {
 
+                let j = element.id - 1;
 
+                if (value[j] == undefined) {
+                    value[j] = [];
+                }
+
+                value[j][index] = element.value;
+                percentage[j] = element.percentage;
+                name[j] = element.name;
+                if (value[j][index] > value[j][index - 1]) {
+                    tendency = "up";
+                } else if (value[j][index] < value[j][index - 1]) {
+                    tendency = "down";
+                } else {
+                    tendency = "=";
+                }
+
+                datasets[j] = {
+                    data: value[j],
+                    label: name[j],
+                    backgroundColor: this.convertHex(colors[j], 30),
+                    borderColor: colors[j],
+                    pointBackgroundColor: colors[j],
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgba(148,159,177,0.8)',
+                    percentage: percentage[j],
+                    value: value[j][index],
+                    tendency: tendency
+                };
+            });
+
+            labels.push(item.date);
+        });
+
+        for (let iter = 0; iter < datasets.length - 1; iter++) {
+            if (datasets[iter] == undefined) {
+                console.log("splice");
+                datasets.splice(iter, 1);
+                iter = 0;
+            }
+        }
+
+        this.data = {datasets: datasets, labels: labels};
+        console.log("DATA AFTER SPLICE: ", this.data);
+    }
+
+    getData() {
+        return this.data;
+    }
+
+    //convert Hex to RGBA
+    public convertHex(hex: string, opacity: number) {
+        hex = hex.replace('#', '');
+        let r = parseInt(hex.substring(0, 2), 16);
+        let g = parseInt(hex.substring(2, 4), 16);
+        let b = parseInt(hex.substring(4, 6), 16);
+
+        let rgba = 'rgba(' + r + ',' + g + ',' + b + ',' + opacity / 100 + ')';
+        return rgba;
+    }
 }

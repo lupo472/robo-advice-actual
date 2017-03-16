@@ -1,9 +1,11 @@
 package it.uiip.digitalgarage.roboadvice.persistence.entity;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,7 +23,7 @@ public @Data class AssetEntity {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	
-	@ManyToOne()
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_asset_class", nullable = false)
 	private AssetClassEntity assetClass;
 
@@ -36,5 +38,8 @@ public @Data class AssetEntity {
 	
 	@Column(name = "remarks_index", nullable = false)
 	private int remarksIndex;
+	
+	@Column(name = "last_update")
+	private LocalDate lastUpdate;
 	
 }

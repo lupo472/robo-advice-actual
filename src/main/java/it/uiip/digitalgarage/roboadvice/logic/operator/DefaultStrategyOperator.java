@@ -5,14 +5,12 @@ import java.util.*;
 import org.springframework.stereotype.Service;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.DefaultStrategyEntity;
-import it.uiip.digitalgarage.roboadvice.service.dto.AssetClassDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.AssetClassStrategyDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.DefaultStrategyDTO;
 
 @Service
 public class DefaultStrategyOperator extends AbstractOperator {
 
-	
 	/*
 	 * There is a forcing: the variable risk is 
 	 * computed assuming that in the database
@@ -25,7 +23,6 @@ public class DefaultStrategyOperator extends AbstractOperator {
 		int risk = 1;
 		for (DefaultStrategyEntity defaultStrategyEntity : defaultStrategySet) {
 			AssetClassStrategyDTO aCSB = new AssetClassStrategyDTO();
-			AssetClassDTO assetClass = new AssetClassDTO();
 			aCSB.setId(defaultStrategyEntity.getAssetClass().getId());
 			aCSB.setName(defaultStrategyEntity.getAssetClass().getName());
 			aCSB.setPercentage(defaultStrategyEntity.getPercentage());

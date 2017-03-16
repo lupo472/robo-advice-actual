@@ -61,18 +61,18 @@
 *																															*
 ********************************************** PortfolioController **********************************************************
 *                                                                                                                           *
-* * getCurrentPortfolio                                                                                                 *
+* * getCurrentPortfolio                                                                                                 	*
 *       Header      [token]                                                                                                 *
 *       Body        []                                                                                                      *
-*       Response    [response(0/1), data(String/PortfolioDTO)]                                                                       *
+*       Response    [response(0/1), data(String/PortfolioDTO)]                                                              *
 *       Note:                                                                                                               *
 *                                                                                                                           *
 *****************************************************************************************************************************
 *                                                                                                                           *
-* * getPortfolioForPeriod                                                                                                  *
+* * getPortfolioForPeriod                                                                                                   *
 *       Header      [token]                                                                                                 *
 *       Body        [Period {period}]                                                                                       *
-*       Response    [response(0/1), data(String/List<PortfolioDTO>)]                                                                 *
+*       Response    [response(0/1), data(String/List<PortfolioDTO>)]                                                        *
 *       Note:                                                                                                               *
 *                                                                                                                           *
 ******************************************** CustomStrategyController *******************************************************
@@ -88,8 +88,23 @@
 * * getActiveStrategy																										*
 *		Header 		[token]																									*
 *		Body 		[]																										*
-*		Response	[response(0/1), data(String/CustomStrategy {List<AssetClassStrategy>, active, date})]													*
+*		Response	[response(0/1), data(String/CustomStrategy {List<AssetClassStrategy>, active, date})]					*
 *		Note: 																												*
 *																															*
 *****************************************************************************************************************************
-
+*																															*
+* * getCustomStrategyHistory																								*
+*		Header 		[token]																									*
+*		Body 		[Period {period}]																						*
+*		Response	[response(0/1), data(String/List<CustomStrategy>)]														*
+*		Note: 																												*
+*																															*
+********************************************* FinancialDataController *******************************************************
+*																															*
+* * getFinancialData																										*
+*		Header 		[token]																									*
+*		Body 		[]                                      																*
+*		Response	[response(1), data(List<FinancialData>)]	    														*
+*		Note:   FinancialData contains the AssetClass and a List of FinancialDataElement {data, value}						*
+*																															*
+*****************************************************************************************************************************

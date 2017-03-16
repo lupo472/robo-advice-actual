@@ -8,7 +8,6 @@ import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.FinancialDataEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.quandl.QuandlDBInitializer;
 import it.uiip.digitalgarage.roboadvice.persistence.quandl.QuandlDBUpdater;
-import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataDTO;
 
 @Service
 public class QuandlOperator extends AbstractOperator {
@@ -17,25 +16,25 @@ public class QuandlOperator extends AbstractOperator {
 		List<AssetEntity> assets = (List<AssetEntity>) this.assetRep.findAll();
 		QuandlDBUpdater q = new QuandlDBUpdater();
 		for (AssetEntity asset : assets) {
-			List<FinancialDataDTO> list = q.getData(asset);
-			List<FinancialDataEntity> entities = this.financialDataConv.convertToEntity(list);
-			this.saveList(entities);
+			List<FinancialDataEntity> entities = q.getData(asset);
+			this.saveList(entities, asset);
 		}
 	}
 	
 	public void initializeFinancialDataSet() {
 		List<AssetEntity> assets = (List<AssetEntity>) this.assetRep.findAll();
 		QuandlDBInitializer q = new QuandlDBInitializer();
-		for (AssetEntity assetEntity : assets) {
-				List<FinancialDataDTO> list = q.getData(assetEntity);
-				List<FinancialDataEntity> entities = this.financialDataConv.convertToEntity(list);
-				this.saveList(entities);
+		for (AssetEntity asset : assets) {
+			List<FinancialDataEntity> entities = q.getData(asset);
+			this.saveList(entities, asset);
 		}
 	}
 	
-	private void saveList(List<FinancialDataEntity> list) {
+	private void saveList(List<FinancialDataEntity> list, AssetEntity asset) {
 		for (FinancialDataEntity financialData : list) {
-			if(financialDataRep.findByAssetIdAndDate(financialData.getAsset().getId(), financialData.getDate()).size() == 0) {
+			if(financialDataRep.findByAssetAndDate(asset, financialData.getDate()) == null) {
+				asset.setLastUpdate(financialData.getDate());
+				this.assetRep.save(asset);
 				financialDataRep.save(financialData);
 			}
 		}

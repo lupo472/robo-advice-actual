@@ -11,52 +11,55 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetClassEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.FinancialDataEntity;
-import it.uiip.digitalgarage.roboadvice.service.dto.DataRequestDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataClassDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataElementDTO;
 
 @Service
 public class FinancialDataOperator extends AbstractOperator {
 
-	public List<FinancialDataDTO> getFinancialDataSet() {
-		List<FinancialDataEntity> list =  this.financialDataRep.findAll();
-		return this.financialDataConv.convertToDTO(list);
+	public List<FinancialDataDTO> getFinancialDataSet(int period) {
+		List<FinancialDataDTO> result = new ArrayList<>();
+		List<AssetClassEntity> assetClassSet = this.assetClassRep.findAll();
+		for (AssetClassEntity assetClass : assetClassSet) {
+			List<FinancialDataElementDTO> list = this.getFinancialDataSetForAssetClass(assetClass, period);
+			FinancialDataDTO financialData = new FinancialDataDTO();
+			financialData.setAssetClass(this.assetClassConv.convertToDTO(assetClass));
+			financialData.setList(list);
+			result.add(financialData);
+		}
+		Collections.sort(result);
+		return result;
 	}
 	
-	public FinancialDataDTO findLast(DataRequestDTO request) {
-		FinancialDataEntity entity = null;
-		if(request.getPeriod() == 0) {
-			entity = this.financialDataRep.findLastForAnAsset(request.getId());
-		} else {
-			LocalDate date = LocalDate.now().minus(Period.ofDays(request.getPeriod()));
-			entity = this.financialDataRep.findLastForAnAssetBefore(request.getId(), date.toString());
-		}
-		if(entity == null) {
-			return null;
-		}
-		return this.financialDataConv.convertToDTO(entity);
+	private List<FinancialDataElementDTO> getFinancialDataSetForAssetClass(AssetClassEntity assetClass, int period) {
+		List<AssetEntity> assets = this.assetRep.findByAssetClass(assetClass);
+		Map<String, BigDecimal> map = createMap(period, assets);
+		List<FinancialDataElementDTO> result = computeResult(map);
+		return result;
 	}
-	
-	public List<FinancialDataClassDTO> getFinancialDataSetForAssetClass(DataRequestDTO request) {
-		List<AssetEntity> assets = this.assetRep.findByAssetClassId(request.getId());
+
+	private Map<String, BigDecimal> createMap(int period, List<AssetEntity> assets) {
 		Map<String, BigDecimal> map = new HashMap<>();
 		boolean interrupt = true;
-		if(request.getPeriod() == 0) {
+		if(period == 0) {
 			interrupt = false;
 		}
-		for (AssetEntity assetEntity : assets) {
+		for (AssetEntity asset : assets) {
 			int n = 0;
 			LocalDate entityDate = LocalDate.now();
 			BigDecimal entityValue = new BigDecimal(0);
+			boolean first = true;
 			while(true) {
-				if(interrupt && n >= request.getPeriod()) {
+				if(interrupt && n >= period) {
 					break;
 				}
-				LocalDate date = LocalDate.now().minus(Period.ofDays(n));				
-				if(date.isEqual(entityDate) || date.isBefore(entityDate)) {
-					FinancialDataEntity entity = this.financialDataRep.findLastForAnAssetBefore(assetEntity.getId(), date.toString());
+				LocalDate date = LocalDate.now().minus(Period.ofDays(n));
+				if(first || date.isBefore(entityDate)) {
+					FinancialDataEntity entity = this.financialDataRep.findTopByAssetAndDateLessThanEqualOrderByDateDesc(asset, date);
+					first = false;
 					if(entity == null) {
 						break;
 					}
@@ -70,32 +73,19 @@ public class FinancialDataOperator extends AbstractOperator {
 				n++;
 			}
 		}
-		List<FinancialDataClassDTO> result = computeResult(request, map);
-		return result;
+		return map;
 	}
 
-	private List<FinancialDataClassDTO> computeResult(DataRequestDTO request, Map<String, BigDecimal> map) {
-		List<FinancialDataClassDTO> result = new ArrayList<>();
+	private List<FinancialDataElementDTO> computeResult(Map<String, BigDecimal> map) {
+		List<FinancialDataElementDTO> result = new ArrayList<>();
 		for (String date : map.keySet()) {
-			FinancialDataClassDTO f = new FinancialDataClassDTO();
-			f.setAssetClass(this.assetClassConv.convertToDTO(this.assetClassRep.findById(request.getId())));
-			f.setDate(date);
-			f.setValue(map.get(date));
-			result.add(f);
+			FinancialDataElementDTO element = new FinancialDataElementDTO();
+			element.setDate(date);
+			element.setValue(map.get(date));
+			result.add(element);
 		}
 		Collections.sort(result);
 		return result;
-	}
-	
-	public List<FinancialDataDTO> getFinancialDataSetForAsset(DataRequestDTO request) {
-		List<FinancialDataEntity> list;
-		if(request.getPeriod() == 0) {
-			list = this.financialDataRep.findByAssetId(request.getId());
-		} else {
-			LocalDate date = LocalDate.now().minus(Period.ofDays(request.getPeriod()));
-			list =  this.financialDataRep.findByAssetIdForPeriod(request.getId(), date.toString());
-		}
-		return this.financialDataConv.convertToDTO(list);
-	}
+	}	
 	
 }
