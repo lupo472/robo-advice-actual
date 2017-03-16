@@ -4,7 +4,6 @@ import it.uiip.digitalgarage.roboadvice.persistence.entity.CustomStrategyEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyResponseDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.UserRegisteredDTO;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -40,6 +39,10 @@ public class CustomStrategyOperator extends AbstractOperator{
 
     public CustomStrategyResponseDTO getActiveStrategy(Authentication auth){
     	UserEntity user = this.userRep.findByEmail(auth.getName());
+    	return this.getActiveStrategy(user);
+    }
+    
+    public CustomStrategyResponseDTO getActiveStrategy(UserEntity user) {
     	List<CustomStrategyEntity> entityList = this.customStrategyRep.findByUserAndActive(user, true);
     	if(entityList.isEmpty()) {
     		return null;
@@ -48,21 +51,21 @@ public class CustomStrategyOperator extends AbstractOperator{
     	return result;
     }
     
-//    public List<CustomStrategyResponseDTO> getUserCustomStrategySet(UserRegisteredDTO user){
-//		List<CustomStrategyEntity> entityList = this.customStrategyRep.findByUserId(user.getId());
-//	    Map<String, List<CustomStrategyEntity>> map = new HashMap<>();
-//	    for (CustomStrategyEntity entity : entityList) {
-//			if(map.get(entity.getDate().toString()) == null) {
-//				map.put(entity.getDate().toString(), new ArrayList<>());
-//			}
-//			map.get(entity.getDate().toString()).add(entity);
-//		}
-//	    List<CustomStrategyResponseDTO> list = new ArrayList<>();
-//    	for (String date : map.keySet()) {
-//			CustomStrategyResponseDTO dto = (CustomStrategyResponseDTO) this.customStrategyWrap.wrapToDTO(map.get(date));
-//			list.add(dto);
-//		}
-//		return list;
-//    }
+    public List<CustomStrategyResponseDTO> getCustomStrategySet(UserEntity user){
+		List<CustomStrategyEntity> entityList = this.customStrategyRep.findByUserId(user.getId());
+	    Map<String, List<CustomStrategyEntity>> map = new HashMap<>();
+	    for (CustomStrategyEntity entity : entityList) {
+			if(map.get(entity.getDate().toString()) == null) {
+				map.put(entity.getDate().toString(), new ArrayList<>());
+			}
+			map.get(entity.getDate().toString()).add(entity);
+		}
+	    List<CustomStrategyResponseDTO> list = new ArrayList<>();
+    	for (String date : map.keySet()) {
+			CustomStrategyResponseDTO dto = (CustomStrategyResponseDTO) this.customStrategyWrap.wrapToDTO(map.get(date));
+			list.add(dto);
+		}
+		return list;
+    }
 
 }

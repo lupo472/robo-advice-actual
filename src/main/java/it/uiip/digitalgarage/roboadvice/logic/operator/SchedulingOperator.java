@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyResponseDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.UserRegisteredDTO;
 
 @Service
 public class SchedulingOperator extends AbstractOperator {
@@ -31,7 +30,7 @@ public class SchedulingOperator extends AbstractOperator {
 	@Autowired
 	private CustomStrategyOperator customStrategyOp;
 	
-	@Scheduled(cron = "0 31 14 * * *")
+	@Scheduled(cron = "0 0 10 * * *")
 	public void scheduleTask() {
 		quandlOp.updateFinancialDataSet();
 		List<UserEntity> users = userOp.getAllUsers();
@@ -44,25 +43,24 @@ public class SchedulingOperator extends AbstractOperator {
 				}
 				continue;
 			}
-			
-			
-			
-//			capitalOp.computeCapital(user);
-////			CustomStrategyResponseDTO strategy = customStrategyOp.getActiveStrategy(user);
-////			if(strategy != null && customStrategyOp.getUserCustomStrategySet(user).size() > 1 && 
-////					(strategy.getDate().equals(LocalDate.now().toString()) || 
-////					 strategy.getDate().equals(LocalDate.now().minus(Period.ofDays(1)).toString()))) {
-//				boolean recreated = portfolioOp.createUserPortfolio(user);
-//				if(recreated) {
-//					System.out.println("Re-created portfolio for user: " + user.getId());
-//				}
-//				continue;
+			boolean computed = capitalOp.computeCapital(user);
+			if(computed) {
+				System.out.println("Computed capital for user: " + user.getId());
 			}
-//			boolean computed = portfolioOp.computeUserPortfolio(user);
-//			if(computed) {
-//				System.out.println("Computed portfolio for user: " + user.getId());
-//			}
-//		}
+			CustomStrategyResponseDTO strategy = customStrategyOp.getActiveStrategy(user);
+			if(strategy != null && customStrategyOp.getCustomStrategySet(user).size() > 1 && 
+					(strategy.getDate().equals(LocalDate.now().toString()) || 
+					 strategy.getDate().equals(LocalDate.now().minus(Period.ofDays(1)).toString()))) {
+				boolean recreated = portfolioOp.createUserPortfolio(user);
+				if(recreated) {
+					System.out.println("Re-created portfolio for user: " + user.getId());
+				}
+				continue;
+			}
+			computed = portfolioOp.computeUserPortfolio(user);
+			if(computed) {
+				System.out.println("Computed portfolio for user: " + user.getId());
+			}
+		}
 	}
-
 }

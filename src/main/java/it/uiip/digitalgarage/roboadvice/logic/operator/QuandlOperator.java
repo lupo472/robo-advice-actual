@@ -1,6 +1,5 @@
 package it.uiip.digitalgarage.roboadvice.logic.operator;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -18,8 +17,6 @@ public class QuandlOperator extends AbstractOperator {
 		QuandlDBUpdater q = new QuandlDBUpdater();
 		for (AssetEntity asset : assets) {
 			List<FinancialDataEntity> entities = q.getData(asset);
-//			asset.setLastUpdate(LocalDate.now());
-//			this.assetRep.save(asset);
 			this.saveList(entities, asset);
 		}
 	}
