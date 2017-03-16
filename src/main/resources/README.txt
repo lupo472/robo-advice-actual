@@ -105,6 +105,6 @@
 *		Header 		[token]																									*
 *		Body 		[]                                      																*
 *		Response	[response(1), data(List<FinancialData>)]	    														*
-*		Note:   FinancialData contains the AssetClass and a List of FinancialDataElement {data, value}						*
+*		Note:   FinancialData contains the AssetClass and a list of FinancialDataElement {data, value}						*
 *																															*
 *****************************************************************************************************************************
