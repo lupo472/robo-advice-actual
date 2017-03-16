@@ -2,6 +2,8 @@ import { AssetClassStrategy } from './asset-class-strategy';
 
 export class Strategy {
     protected list: AssetClassStrategy[];
+    private date:string;
+    private active : boolean;
     public arrayPercentages: number[] = [];
     public arrayColor: string[] = [];
     public arrayColors: any[] = [];

@@ -3,7 +3,6 @@ import { Strategy } from './strategy';
 
 export class CustomStrategy extends Strategy {
   private assetClassStrategiesMap:Map<number, AssetClassStrategy> = new Map<number, AssetClassStrategy>();
-  private date:string;
   private sumPercentage:number;
   private maxPercentage:number;
   private oldValue:number;
