@@ -1,8 +1,6 @@
 package it.uiip.digitalgarage.roboadvice.logic.operator;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.*;
-import it.uiip.digitalgarage.roboadvice.persistence.model.AssetClassValue;
-import it.uiip.digitalgarage.roboadvice.persistence.model.TotalValue;
 import it.uiip.digitalgarage.roboadvice.service.dto.*;
 
 import java.math.BigDecimal;
@@ -27,8 +25,24 @@ public class PortfolioOperator extends AbstractOperator {
 		if(entityList.isEmpty()) {
 			return null;
 		}
-		PortfolioDTO response = this.portfolioWrap.wrapToDTO(entityList);
-		return response;
+		PortfolioDTO result = new PortfolioDTO();
+		LocalDate date = entityList.get(0).getDate();
+		result.setDate(date.toString());
+		BigDecimal total = this.portfolioRep.sumValues(user, date).getValue();
+		Set<PortfolioElementDTO> set = new HashSet<>();
+		for (PortfolioEntity entity : entityList) {
+			BigDecimal assetClassValue = this.portfolioRep.sumValuesForAssetClass(entity.getAssetClass(), user, date).getValue();
+			PortfolioElementDTO element = new PortfolioElementDTO();
+			element.setId(entity.getAssetClass().getId());
+			element.setName(entity.getAssetClass().getName());
+			element.setValue(assetClassValue);
+			element.setPercentage(assetClassValue.divide(total, 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100.00)));
+			set.add(element);
+		}
+		List<PortfolioElementDTO> list = new ArrayList<>(set);
+		Collections.sort(list);
+		result.setList(list);
+		return result;
 	}
 
     public List<PortfolioDTO> getPortfolioForPeriod(PeriodRequestDTO request, Authentication auth){
@@ -44,20 +58,21 @@ public class PortfolioOperator extends AbstractOperator {
 		if (entityList.isEmpty()) {
 			return null;
 		}
-		Map<String, List<PortfolioEntity>> map = new HashMap<>();
+		Map<String, Set<PortfolioEntity>> map = new HashMap<>();
 		for (PortfolioEntity entity : entityList) {
 			if(map.get(entity.getDate().toString()) == null) {
-				map.put(entity.getDate().toString(), new ArrayList<>());
+				map.put(entity.getDate().toString(), new HashSet<>());
 			}
 			map.get(entity.getDate().toString()).add(entity);
 		}
-		List<PortfolioDTO> list = new ArrayList<>();
-		for (String date : map.keySet()) {
-			PortfolioDTO dto = (PortfolioDTO) this.portfolioWrap.wrapToDTO(map.get(date));
-			list.add(dto);
-		}
-		Collections.sort(list);
-        return list;
+		List<PortfolioDTO> result = new ArrayList<>();
+//		List<PortfolioDTO> list = new ArrayList<>();
+//		for (String date : map.keySet()) {
+//			PortfolioDTO dto = (PortfolioDTO) this.portfolioWrap.wrapToDTO(map.get(date));
+//			list.add(dto);
+//		}
+//		Collections.sort(list);
+        return result;
     }
 
     public boolean createUserPortfolio(UserEntity user) {
@@ -158,12 +173,12 @@ public class PortfolioOperator extends AbstractOperator {
 		}
     }
     
-    public TotalValue getTotalValue(UserEntity user, LocalDate date) {
-    	return this.portfolioRep.sumValues(user, date);
-    }
-    
-    public AssetClassValue getAssetClassValue(AssetClassEntity assetClass, UserEntity user, LocalDate date) {
-    	return this.portfolioRep.sumValuesForAssetClass(assetClass, user, date); 
-    }
+//    public List<Value> getTotalValue(UserEntity user) {
+//    	return this.portfolioRep.sumValues(user);
+//    }
+//
+//    /*public AssetClassValue getAssetClassValue(AssetClassEntity assetClass, UserEntity user, LocalDate date) {
+//    	return this.portfolioRep.sumValuesForAssetClass(assetClass, user, date);
+//    }*/
     
 }
