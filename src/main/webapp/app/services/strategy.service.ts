@@ -38,6 +38,8 @@ export class StrategyService {
     //console.log("STRATEGIES",this.strategies.getStrategies());
     return this.strategies;
   }
-
+  getHistoryStrategies() {
+    return this.AppService.getHistoryStrategies().map(res => {return res});
+  }
 
 }

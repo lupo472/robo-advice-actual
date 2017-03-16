@@ -1,5 +1,6 @@
 import { Component, OnInit ,ViewChild} from '@angular/core';
 import {BaseChartDirective} from "ng2-charts";
+import {StrategyService} from "../../services/strategy.service";
 
 @Component({
   selector: 'app-hystory-strategy',
@@ -10,17 +11,18 @@ export class HystoryStrategyComponent implements OnInit {
 
   @ViewChild(BaseChartDirective) chart: BaseChartDirective;
 
-  strategies:any;
-  public period = 150;
+  public strategies:any ={};
+  public period = 30;
   public startdate: Date;
   public chartData=[];
   public dataclass=["bonds","forex","stocks","commodities"]; // da sostituire con il model
   public colorclass=["#4dbd74","#63c2de","#f8cb00","#f86c6b"]; // da sostituire con il model
   public labels=[];
   public dati=[];
+  public render: boolean = false;
 
 
-  res={
+  ress={
     "response": 1,
     "data": [
       {
@@ -100,27 +102,29 @@ export class HystoryStrategyComponent implements OnInit {
     ]
   };
 
-  constructor() {
+  constructor( private StrategyService: StrategyService) {
     this.startdate=new Date();
     this.startdate.setDate(this.startdate.getDate() - this.period);
     console.log("this.startdate: "+this.startdate);
   }
 
   ngOnInit() {
-    this.strategies = this.res;
-    this.getStrategies();
-
+    this.StrategyService.getHistoryStrategies().subscribe(res=>this.getStrategies(res));
+    // this.strategies = this.ress;
+    // this.getStrategies();
   }
 
   refreshData(){
     this.dati=[];
     this.chartData=[];
     this.labels=[];
-    this.getStrategies();
+    //this.getStrategies();
     //this.chart.chart.update();
   }
 
-  getStrategies(){
+  getStrategies(res){
+    this.strategies=res;
+    console.log("strategies: ",this.strategies);
     if(this.strategies.response == 1 ){
       this.strategies.data.forEach((strategy,i)=>{
         var beginning = new Date(strategy.date);
@@ -160,6 +164,7 @@ export class HystoryStrategyComponent implements OnInit {
     console.log("chartData: ",this.chartData);
 
     this.refreshChart();
+    this.render = true;
 
   }
 
