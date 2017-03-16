@@ -45,9 +45,6 @@ public abstract class AbstractOperator {
 	
 	@Autowired
 	protected CapitalConverter capitalConv;
-	
-	@Autowired
-	protected PortfolioWrapper portfolioWrap;
 
 	@Autowired
 	protected CustomStrategyWrapper customStrategyWrap;
