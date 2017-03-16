@@ -42,7 +42,8 @@
             <canvas baseChart class="chart"
                     [options]="lineChartOptions"
                     [chartType]="lineChartType"
-                    [data]="data"
+                    [datasets]="data.datasets"
+                    [labels]="data.labels"
                     (chartHover)="chartHovered($event)"
                     (chartClick)="chartClicked($event)"></canvas>
         </div>
