@@ -1,7 +1,6 @@
 package it.uiip.digitalgarage.roboadvice.service.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -23,29 +22,9 @@ public class FinancialDataController extends AbstractController {
 	@ResponseBody
 	public GenericResponse<?> getFinancialDataSet(@Valid @RequestBody PeriodRequestDTO period) {
 		List<FinancialDataDTO> result = this.financialDataOp.getFinancialDataSet(period.getPeriod());
-		
-//		List<FinancialDataClassDTO> result = this.financialDataOp.getFinancialDataSetForAssetClass(request);
 		return new GenericResponse<List<FinancialDataDTO>>(1, result);
-//		return null;
 	}
-	
-//	@RequestMapping("/getFinancialDataSet")
-//	@ResponseBody
-//	public GenericResponse<?> getFinancialDataSet() {
-//		List<FinancialDataDTO> result = this.financialDataOp.getFinancialDataSet();
-//		return new GenericResponse<List<FinancialDataDTO>>(1, result);
-//	}
-	
-//	@RequestMapping("/findLastFinancialDataForAsset")
-//	@ResponseBody
-//	public GenericResponse<?> findLastFinancialDataForAsset(@Valid @RequestBody DataRequestDTO request) {
-//		FinancialDataDTO result = this.financialDataOp.findLast(request);
-//		if(result == null) {
-//			return new GenericResponse<String>(0, ControllerConstants.NO_RESULTS);
-//		}
-//		return new GenericResponse<FinancialDataDTO>(1, result);
-//	}
-	
+		
 /************************************************************************************************
  * 										Test Method												*
  * ******************************************************************************************** *	
