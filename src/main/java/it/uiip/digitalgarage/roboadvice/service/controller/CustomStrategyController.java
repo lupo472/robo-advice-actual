@@ -1,6 +1,7 @@
 package it.uiip.digitalgarage.roboadvice.service.controller;
 
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyResponseDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.PeriodRequestDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -35,6 +38,16 @@ public class CustomStrategyController extends AbstractController {
     		return new GenericResponse<String>(0, ControllerConstants.ANY_ACTIVE_STRATEGY);
     	}
     	return new GenericResponse<CustomStrategyResponseDTO>(1, result);
+    }
+    
+    @RequestMapping("/getCustomStrategyHistory")
+    @ResponseBody
+    public GenericResponse<?> getCustomStrategyHistory(@RequestBody @Valid PeriodRequestDTO period, Authentication auth) {
+    	List<CustomStrategyResponseDTO> result = this.customStrategyOp.getCustomStrategySet(auth, period.getPeriod());
+    	if(result.isEmpty()) {
+    		return new GenericResponse<String>(0, ControllerConstants.ANY_STRATEGY_IN_PERIOD);
+    	}
+    	return new GenericResponse<List<CustomStrategyResponseDTO>>(1, result);
     }
  
 

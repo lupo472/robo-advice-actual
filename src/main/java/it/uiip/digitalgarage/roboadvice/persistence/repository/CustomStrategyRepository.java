@@ -26,7 +26,8 @@ public interface CustomStrategyRepository extends PagingAndSortingRepository<Cus
     
     public List<CustomStrategyEntity> findByUserAndDate(UserEntity user, LocalDate date);
 
-
     public List<CustomStrategyEntity> findByUserAndActive(UserEntity user, boolean active);
+    
+    public List<CustomStrategyEntity> findByUserAndDateBetween(UserEntity user, LocalDate start, LocalDate end);
         
 }

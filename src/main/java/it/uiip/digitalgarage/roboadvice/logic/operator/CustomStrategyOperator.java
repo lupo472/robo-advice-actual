@@ -6,6 +6,7 @@ import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyResponseDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyDTO;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -51,9 +52,20 @@ public class CustomStrategyOperator extends AbstractOperator{
     	return result;
     }
     
-    public List<CustomStrategyResponseDTO> getCustomStrategySet(UserEntity user){
-		List<CustomStrategyEntity> entityList = this.customStrategyRep.findByUserId(user.getId());
-	    Map<String, List<CustomStrategyEntity>> map = new HashMap<>();
+    public List<CustomStrategyResponseDTO> getCustomStrategySet(Authentication auth, int period) {
+    	UserEntity user = this.userRep.findByEmail(auth.getName());
+    	return this.getCustomStrategySet(user, period);
+    }
+    
+    public List<CustomStrategyResponseDTO> getCustomStrategySet(UserEntity user, int period){
+    	List<CustomStrategyEntity> entityList = new ArrayList<>();
+    	if(period == 0) {
+    		entityList = this.customStrategyRep.findByUserId(user.getId());
+    	} else {
+    		LocalDate start = LocalDate.now().minus(Period.ofDays(period - 1));
+    		entityList = this.customStrategyRep.findByUserAndDateBetween(user, start, LocalDate.now());
+    	}
+		Map<String, List<CustomStrategyEntity>> map = new HashMap<>();
 	    for (CustomStrategyEntity entity : entityList) {
 			if(map.get(entity.getDate().toString()) == null) {
 				map.put(entity.getDate().toString(), new ArrayList<>());
