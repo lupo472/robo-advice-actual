@@ -49,6 +49,7 @@ export class EditComponent implements OnInit, AfterViewInit {
 
     //ASSIGN STRATEGIES
     getStrategy(res): void {
+      console.log("startegiesSet", res);
         this.strategies = res.getStrategies();
     }
     //ASSIGN ASSET CLASS
