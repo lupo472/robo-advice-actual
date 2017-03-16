@@ -12,10 +12,12 @@
 
       <!--/.col-->
     </div>
-    <div class="chart-wrapper">
-      <canvas baseChart class="chart" [datasets]="barChartData" [labels]="barChartLabels"
-              [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType"
-              ></canvas>
+    <div *ngIf="render" class="chart-wrapper">
+      <div class="chart-wrapper">
+        <canvas baseChart class="chart" [datasets]="barChartData" [labels]="barChartLabels"
+                [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType"
+                ></canvas>
+      </div>
     </div>
   </div>
 </div>
