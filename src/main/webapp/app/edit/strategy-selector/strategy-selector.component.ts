@@ -1,7 +1,8 @@
 import { AppConfig } from '../../services/app.config';
-import { Component, OnInit, Input, OnChanges, SimpleChanges} from '@angular/core';
 import { StrategyService } from '../../services/strategy.service';
-import { AssetService } from '../../services/asset.service';
+import { Component, OnInit, Input, OnChanges, SimpleChanges} from '@angular/core';
+import { DefaultStrategies } from '../../model/default-strategies';
+import { Strategies } from '../../model/strategies';
 
 @Component({
     selector: 'app-strategy-selector',
@@ -20,36 +21,20 @@ export class StrategySelectorComponent implements OnInit, OnChanges {
     @Input() id;
     @Input() selected;
     @Input() strategy;
-    arrayPercentage: Array<number> = [];
-    arrayColor: Array<string> = [];
-    arrayColors: Array<any> = [];
-    arrayLabels: Array<string> = [];
-    constructor(private AssetService: AssetService) {
+    //strategies:Strategies;
+
+    constructor() {
 
     }
     ngOnInit() {
-        this.createChart();
+      //this.strategies = new Strategies();
+      //this.strategies.createStrategyForChart(this.strategy);
+      this.strategy.createChart();
     }
     ngOnChanges(changes: SimpleChanges) {
         // console.log("something changes");
         // console.log(changes);
-
     }
-    createChart(): void {
-        for (let assetClass of this.strategy.list) {
-            this.arrayPercentage.push(assetClass.percentage);
-            this.arrayLabels.push(assetClass.name);
-            this.arrayColor.push(this.assignColour(assetClass.id));
-            this.arrayColors = [{ backgroundColor: this.arrayColor, borderWidth: 3 }];
-        }
-    }
-    assignColour(id): string {
-        return this.AssetService.assignColour(id);
-    }
-    //  console.log("strategy inside");
-    //  console.log(this.arrayPercentage);
-    //  console.log(this.arrayColors);
-
 
 
     public chartHovered(e: any): void {

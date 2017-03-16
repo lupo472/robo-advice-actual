@@ -9,7 +9,7 @@ import { AssetClass } from '../../model/asset-class';
     styleUrls: ['./card-asset-class.component.scss']
 })
 
-export class CardAssetClassComponent implements OnInit {
+export class CardAssetClassComponent implements OnInit{
     @Input() value;
     @Input() lineChartData;
     @Input() lineChartLabels;
@@ -22,19 +22,23 @@ export class CardAssetClassComponent implements OnInit {
     @Input() percentage;
     @Input() color;
     @Input() reset;
+    @Output() updatePercentage = new EventEmitter();
     oldValue: number;
-    //strategies:Map<number, AssetClassStrategy> = new Map<number, AssetClassStrategy>();
     constructor(public StrategyService: StrategyService) { }
 
     ngOnInit() {
 
     }
-
+    // ngOnChanges(){
+    //
+    // }
     handleSlide(e) : void {
-        this.oldValue = this.StrategyService.strategies.get(this.id).getPercentage();
-        this.StrategyService.strategies.get(this.id).setName(this.value);
-        this.StrategyService.strategies.get(this.id).setPercentage(this.percentage);
-        this.percentage = this.StrategyService.createAssetClassStrategy(this.id, this.oldValue);
+        let currentAssetClassStrategy = this.StrategyService.customStrategy.getAssetClassStrategyMap().get(this.id);
+        this.oldValue = currentAssetClassStrategy.getPercentage();
+        currentAssetClassStrategy.setName(this.value);
+        currentAssetClassStrategy.setPercentage(this.percentage);
+        this.percentage = this.StrategyService.customStrategy.setPercentageWithSlider(this.id,this.oldValue);
+        //this.updatePercentage.emit({"percentage":this.percentage,"id":this.id});
     }
     // handleChange(e) {
     // }

@@ -165,16 +165,5 @@ public class PortfolioOperator extends AbstractOperator {
     public AssetClassValue getAssetClassValue(AssetClassEntity assetClass, UserEntity user, LocalDate date) {
     	return this.portfolioRep.sumValuesForAssetClass(assetClass, user, date); 
     }
-   
-    //TODO At this moment this method is unuseful
-//  public PortfolioDTO getUserPortfolioDate(PortfolioRequestForDateDTO request) {
-//		LocalDate date = LocalDate.parse(request.getDate());
-//		List<PortfolioEntity> entityList = this.portfolioRep.findByUserIdAndDate(request.getId(), date);
-//		if(entityList.isEmpty()) {
-//			return null;
-//		}
-//		PortfolioDTO response = this.portfolioWrap.wrapToDTO(entityList);
-//  	return response;
-//	}
     
 }
