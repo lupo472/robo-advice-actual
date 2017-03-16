@@ -40,6 +40,9 @@ public class AssetClassControllerTest {
     @Mock
     private AssetClassRepository assetClassRep;
 
+    @Autowired
+    private AssetClassController assetClassCtrl;
+
     private AssetClassDTO assetClassDTO;
     private AssetClassEntity assetClassEntity;
 
@@ -51,11 +54,6 @@ public class AssetClassControllerTest {
     }
     @Test
     public void getAssetClassSetSuccess() {
-        /*GenericResponse<?> response = this.assetClassCtrl.getAssetClassSet();
-        List<?> assetClass = (List<?>) response.getData();
-        assertEquals(1, response.getResponse());
-        assertFalse(assetClass.isEmpty());
-        assertTrue(assetClass.get(0) instanceof AssetClassDTO);*/
         List<AssetClassEntity> resultList = new ArrayList<>();
         AssetClassEntity assetClass1 = new AssetClassEntity();
         assetClass1.setId(new Long(1));
@@ -79,9 +77,10 @@ public class AssetClassControllerTest {
         resultList.add(assetClass5);
         assertNotNull(assetClassRep);
         when(assetClassRep.findAll()).thenReturn(resultList);
+        List<AssetClassDTO> serviceList = assetClassOp.getAssetClassSet();
+        GenericResponse<?> response = this.assetClassCtrl.getAssetClassSet();
+        List<?> assetClass = (List<?>) response.getData();
         assertEquals(5, assetClassRep.findAll().size());
-        List<AssetClassDTO> serviceList = new ArrayList<>();
-        serviceList = assetClassOp.getAssetClassSet();
         assertEquals(5, serviceList.size());
         assertEquals(new Long(1), serviceList.get(0).getId());
         assertEquals(new Long(2), serviceList.get(1).getId());
@@ -93,7 +92,10 @@ public class AssetClassControllerTest {
         assertEquals("stocks", serviceList.get(2).getName());
         assertEquals("commodities", serviceList.get(3).getName());
         assertEquals("dummy", serviceList.get(4).getName());
-
+        assertEquals(1, response.getResponse());
+        assertFalse(assetClass.isEmpty());
+        assertTrue(assetClass.get(0) instanceof AssetClassDTO);
+        assertEquals(5,assetClass.size());
     }
 
 }
