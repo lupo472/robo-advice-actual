@@ -15,6 +15,6 @@ public interface FinancialDataRepository extends PagingAndSortingRepository<Fina
 
 	public FinancialDataEntity findByAssetAndDate(AssetEntity asset, LocalDate date);
 	
-	public FinancialDataEntity findTop1ByAssetAndDateBefore(AssetEntity asset, LocalDate date);
+	public FinancialDataEntity findTopByAssetAndDateLessThanEqualOrderByDateDesc(AssetEntity asset, LocalDate date);
 	
 }

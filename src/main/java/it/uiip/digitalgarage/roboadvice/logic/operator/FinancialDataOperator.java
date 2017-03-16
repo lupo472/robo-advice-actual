@@ -24,8 +24,7 @@ public class FinancialDataOperator extends AbstractOperator {
 		List<FinancialDataDTO> result = new ArrayList<>();
 		List<AssetClassEntity> assetClassSet = this.assetClassRep.findAll();
 		for (AssetClassEntity assetClass : assetClassSet) {
-			List<FinancialDataElementDTO> list = this.getFinancialDataSetForAssetClass(assetClass, period);//null; //TODO
-//			List<FinancialDataDTO> financialDataSet = this.getFinancialDataSetForAssetClass(assetClass, period);
+			List<FinancialDataElementDTO> list = this.getFinancialDataSetForAssetClass(assetClass, period);
 			FinancialDataDTO financialData = new FinancialDataDTO();
 			financialData.setAssetClass(this.assetClassConv.convertToDTO(assetClass));
 			financialData.setList(list);
@@ -42,40 +41,19 @@ public class FinancialDataOperator extends AbstractOperator {
 		if(period == 0) {
 			interrupt = false;
 		}
-		for(AssetEntity asset : assets) {
+		for (AssetEntity asset : assets) {
 			int n = 0;
 			LocalDate entityDate = LocalDate.now();
 			BigDecimal entityValue = new BigDecimal(0);
-			while(true) {
-				if(interrupt && n >= period) {
-					break;
-				}
-				LocalDate date = LocalDate.now().minus(Period.ofDays(n));
-				if(date.isEqual(entityDate) || date.isBefore(entityDate)) {
-					FinancialDataEntity entity = this.financialDataRep.findTop1ByAssetAndDateBefore(asset, date);
-					if(entity == null) {
-						break;
-					}
-					entityDate = entity.getDate();
-					entityValue = entity.getValue();
-				}
-				if(map.get(date.toString()) == null) {
-					map.put(date.toString(), new BigDecimal(0));
-				}
-				map.put(date.toString(), map.get(date.toString()).add(entityValue));
-				n++;
-			}
+			FinancialDataEntity entity = this.financialDataRep.findTopByAssetAndDateLessThanEqualOrderByDateDesc(asset, entityDate);
+			System.out.println(entity.getDate() + " - " + entity.getAsset().getName() + " - " + entity.getValue());
 		}
-		List<FinancialDataElementDTO> result = new ArrayList<>();
-		for (String date : map.keySet()) {
-			FinancialDataElementDTO element = new FinancialDataElementDTO();
-//			financialData.setAssetClass(this.assetClassConv.convertToDTO(assetClass));
-			element.setDate(date);
-			element.setValue(map.get(date));
-			result.add(element);
-		}
-		Collections.sort(result);
-		return result;
+		
+		
+		
+		
+		
+		return null;
 	}
 	
 //	public List<FinancialDataClassDTO> getFinancialDataSetForAssetClass(DataRequestDTO request) {
