@@ -51,13 +51,15 @@ public class FinancialDataOperator extends AbstractOperator {
 			int n = 0;
 			LocalDate entityDate = LocalDate.now();
 			BigDecimal entityValue = new BigDecimal(0);
+			boolean first = true;
 			while(true) {
 				if(interrupt && n >= period) {
 					break;
 				}
 				LocalDate date = LocalDate.now().minus(Period.ofDays(n));
-				if(date.isEqual(entityDate) || date.isBefore(entityDate)) {
+				if(first || date.isBefore(entityDate)) {
 					FinancialDataEntity entity = this.financialDataRep.findTopByAssetAndDateLessThanEqualOrderByDateDesc(asset, date);
+					first = false;
 					if(entity == null) {
 						break;
 					}
