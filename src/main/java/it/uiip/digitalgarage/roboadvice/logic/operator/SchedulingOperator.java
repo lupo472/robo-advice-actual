@@ -48,7 +48,7 @@ public class SchedulingOperator extends AbstractOperator {
 				System.out.println("Computed capital for user: " + user.getId());
 			}
 			CustomStrategyResponseDTO strategy = customStrategyOp.getActiveStrategy(user);
-			if(strategy != null && customStrategyOp.getCustomStrategySet(user).size() > 1 && 
+			if(strategy != null && customStrategyOp.getCustomStrategySet(user, 0).size() > 1 && 
 					(strategy.getDate().equals(LocalDate.now().toString()) || 
 					 strategy.getDate().equals(LocalDate.now().minus(Period.ofDays(1)).toString()))) {
 				boolean recreated = portfolioOp.createUserPortfolio(user);
