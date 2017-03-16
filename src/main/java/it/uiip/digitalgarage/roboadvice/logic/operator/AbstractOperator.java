@@ -52,5 +52,5 @@ public abstract class AbstractOperator {
 
 	@Autowired
 	protected CustomStrategyWrapper customStrategyWrap;
-	
+
 }
