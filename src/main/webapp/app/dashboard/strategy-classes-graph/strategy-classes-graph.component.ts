@@ -17,8 +17,12 @@ export class StrategyClassesGraphComponent implements OnInit {
 
     login: any;
     public period = 30;
-    public startdate: Date;
+    public today:Date = new Date();
+    public startdate:Date;
     public data:any = {};
+
+    public assetClassDatasets = [];
+    public assetClassLabels = [];
 
     public render: boolean = false;
     public response: string = 'Data not yet available';
@@ -39,8 +43,7 @@ export class StrategyClassesGraphComponent implements OnInit {
     }
 
     setPeriod() {
-        let today = new Date();
-        let timeDiff = Math.abs(today.getTime() - this.startdate.getTime());
+        let timeDiff = Math.abs(this.today.getTime() - this.startdate.getTime());
         this.period = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
         this.AssetService.getPortfolioForPeriod(this.period).subscribe(res => this.getPortfolio(res));
@@ -74,4 +77,5 @@ export class StrategyClassesGraphComponent implements OnInit {
     };
 
     public lineChartType: string = 'line';
+    public assetClassType: string = 'bar';
 }
