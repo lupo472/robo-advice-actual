@@ -1,6 +1,40 @@
 <div class="card">
 
-    <div class="card-footer">
+    <!-- MOBILE VERSION -->
+    <div class="card-block hidden-sm-up">
+        <div class="row">
+            <div class="col-sm-5">
+                <h4 class="card-title mb-0">Asset Classes</h4>
+            </div>
+            <!--/.col-->
+        </div>
+        <hr>
+        <div *ngIf="render">
+            <ul>
+                <li class="asset-item" *ngFor="let i of data.datasets">
+                    <div class="float-left">
+                        <i *ngIf="i.tendency=='up'" class="fa fa-arrow-up" aria-hidden="true" style="color: green"></i>
+                        <i *ngIf="i.tendency=='down'" class="fa fa-arrow-down" aria-hidden="true"
+                           style="color: red"></i>
+                        <i *ngIf="i.tendency=='='" class="fa fa-anchor" style="color: black"></i>
+                    </div>
+                    <div class="float-right">
+                        <p>{{i.percentage}}%</p>
+                    </div>
+
+                    <p class="text-uppercase font-weight-bold">{{i.label}}</p>
+                    <p class="h5">${{i.value}}</p>
+
+                </li>
+            </ul>
+        </div>
+        <div class="card-block p-0 clearfix" *ngIf="!render">
+            <div class="h3 text-primary mb-0 pt-1">{{response}}</div>
+        </div>
+    </div>
+
+    <!-- DESKTOP VERSION -->
+    <div class="card-footer hidden-sm-down">
         <ul>
             <li *ngFor="let i of data.datasets">
                 <p class="text-uppercase font-weight-bold">{{i.label}}</p>
@@ -22,22 +56,19 @@
         </ul>
     </div>
 
-    <div class="card-block">
+    <div class="card-block hidden-sm-down">
         <div class="row">
-            <div class="col-sm-5">
+            <div class="col-5">
                 <h4 class="card-title mb-0">Asset Classes</h4>
                 <div class="small text-muted">Last {{period}} Days</div>
             </div>
-            <div class="col-sm-3">
-                <p-calendar [(ngModel)]="startdate"></p-calendar>
-            </div>
-            <div class="col-sm-1">
-                <i class="fa fa-search" (click)="setPeriod()"></i>
+            <div class="btn-group float-right">
+                <p-calendar [(ngModel)]="startdate" [maxDate]="today" [showIcon]="true" [placeholder]="'Start Date'" dateFormat="dd MM yy" (onSelect)="setPeriod()"></p-calendar>
             </div>
             <!--/.col-->
         </div>
 
-        <div *ngIf="render" class="chart-wrapper hidden-md-down">
+        <div *ngIf="render" class="chart-wrapper">
 
             <canvas baseChart class="chart"
                     [options]="lineChartOptions"

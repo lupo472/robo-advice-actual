@@ -1,0 +1,24 @@
+<div class="card">
+  <div class="card-block">
+    <div class="row">
+      <div class="col">
+        <h4 class="card-title mb-0">History</h4>
+        <div class="small text-muted">from {{date}}</div>
+      </div>
+      <div class="col col-sm-4 col-md-4">
+        <p-calendar [(ngModel)]="startdate" (ngModelChange)="refreshData($event)"></p-calendar>
+      </div>
+      <div class="col col-sm-2 col-md-2">
+        <i class="fa fa-search"></i>
+      </div>
+
+
+      <!--/.col-->
+    </div>
+    <div class="chart-wrapper">
+      <canvas baseChart class="chart" [datasets]="barChartData" [labels]="barChartLabels"
+              [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType"
+              ></canvas>
+    </div>
+  </div>
+</div>
