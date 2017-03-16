@@ -14,9 +14,7 @@ import it.uiip.digitalgarage.roboadvice.service.controller.CustomStrategyControl
 import it.uiip.digitalgarage.roboadvice.service.dto.*;
 import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -37,6 +35,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
@@ -62,11 +61,11 @@ public class CustomStrategyControllerTest {
     @Mock
     private UserRepository userRep;
 
-    private UserEntity user;
+    private static UserEntity user;
+    private static Authentication auth;
 
-    @Before
-    public void setUpMock() {
-        MockitoAnnotations.initMocks(this);
+    @BeforeClass
+    public static void setUpAuth() {
         user = new UserEntity();
         user.setId(new Long(2));
         user.setEmail("luca@antilici.it");
@@ -80,7 +79,17 @@ public class CustomStrategyControllerTest {
         User principal = new User("luca@antilici.it", "", authorities);
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(principal, "", authorities);
         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+        auth = SecurityContextHolder.getContext().getAuthentication();
+    }
+    @AfterClass
+    public static void detachResources() {
+        SecurityContextHolder.clearContext();
+        System.out.println("Cleared context");
+    }
 
+    @Before
+    public void setUpMock() {
+        MockitoAnnotations.initMocks(this);
         when(userRep.findByEmail("luca@antilici.it")).thenReturn(user);
 
     }
@@ -111,7 +120,7 @@ public class CustomStrategyControllerTest {
         dto.setList(dtoList);
         CustomStrategyWrapper wrapper = new CustomStrategyWrapper();
         List<CustomStrategyEntity> entityList = wrapper.unwrapToEntity(dto);
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
         when(customStrategyRep.save(entityList)).thenReturn(entityList);
         boolean opResponse = this.customStrategyOp.setCustomStrategy(dto, auth);
         GenericResponse<?> response = this.customStrategyCtrl.setCustomStrategy(dto, auth);
@@ -145,73 +154,107 @@ public class CustomStrategyControllerTest {
         customStrategyEntity2.setDate(LocalDate.now());
         resultList.add(customStrategyEntity1);
         resultList.add(customStrategyEntity2);
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
         when(customStrategyRep.findByUserAndActive(user,true)).thenReturn(resultList);
         CustomStrategyResponseDTO responseDTO = this.customStrategyOp.getActiveStrategy(auth);
+        verify(customStrategyRep).findByUserAndActive(user, true);
         assertTrue(responseDTO.isActive());
         assertEquals(LocalDate.now().toString(), responseDTO.getDate());
         assertFalse(responseDTO.getList().isEmpty());
     }
-    @After
-    public void detachResources() {
-        SecurityContextHolder.clearContext();
-        System.out.println("Cleared context");
-    }
-/*
 
     @Test
-    public void setCustomStrategyInvalidUser() throws Exception {
-        CustomStrategyDTO dto = new CustomStrategyDTO();
-        dto.setIdUser(new Long(0));
-        GenericResponse<?> response = this.customStrategyCtrl.setCustomStrategy(dto);
-        assertEquals(0,response.getResponse());
-        assertEquals(ControllerConstants.PROBLEM, response.getData());
-    }
+    public void getCustomStrategySetToday() {
+        LocalDate date = LocalDate.now();
+        List<CustomStrategyEntity> resultList = new ArrayList<>();
+        CustomStrategyEntity customStrategyEntity1 = new CustomStrategyEntity();
+        AssetClassEntity assetClassEntity1 = new AssetClassEntity();
+        assetClassEntity1.setId(new Long(2));
+        assetClassEntity1.setName("bonds");
+        customStrategyEntity1.setId(new Long(1));
+        customStrategyEntity1.setUser(user);
+        customStrategyEntity1.setAssetClass(assetClassEntity1);
+        customStrategyEntity1.setPercentage(new BigDecimal(55.50));
+        customStrategyEntity1.setActive(true);
+        customStrategyEntity1.setDate(date);
+        CustomStrategyEntity customStrategyEntity2 = new CustomStrategyEntity();
+        AssetClassEntity assetClassEntity2 = new AssetClassEntity();
+        assetClassEntity2.setId(new Long(4));
+        assetClassEntity2.setName("stocks");
+        customStrategyEntity2.setId(new Long(2));
+        customStrategyEntity2.setUser(user);
+        customStrategyEntity2.setAssetClass(assetClassEntity2);
+        customStrategyEntity2.setPercentage(new BigDecimal(44.50));
+        customStrategyEntity2.setActive(true);
+        customStrategyEntity2.setDate(date);
+        resultList.add(customStrategyEntity1);
+        resultList.add(customStrategyEntity2);
 
-    @Test
-    public void getUserCustomStrategySetValidUser() throws Exception {
-        UserRegisteredDTO user = new UserRegisteredDTO();
-        user.setId(new Long(23));
-        user.setEmail("test@case.it");
-        user.setPassword("12345");
-        GenericResponse<?> response = this.customStrategyCtrl.getUserCustomStrategySet(user);
-        List<?> list = (List<?>) response.getData();
-        assertEquals(1,response.getResponse());
-        assertFalse(list.isEmpty());
-    }
-
-    @Test
-    public void getUserCustomStrategySetInvalidUser() throws Exception {
-        UserRegisteredDTO user = new UserRegisteredDTO();
-        user.setId(new Long(0));
-        user.setEmail("test@case.it");
-        user.setPassword("12345");
-        GenericResponse<?> response = this.customStrategyCtrl.getUserCustomStrategySet(user);
-        assertEquals(ControllerConstants.ANY_STRATEGY, response.getData());
-        assertEquals(0, response.getResponse());
+        when(customStrategyRep.findByUserAndDateBetween(user, LocalDate.now(), LocalDate.now())).thenReturn(resultList);
+        List<CustomStrategyResponseDTO> response = this.customStrategyOp.getCustomStrategySet(auth, 1);
+        verify(customStrategyRep).findByUserAndDateBetween(user, LocalDate.now(), LocalDate.now());
+        assertFalse(response.isEmpty());
+        assertEquals(2, response.get(0).getList().size());
     }
 
     @Test
-    public void getUserCustomStrategyActiveValidUser() throws Exception {
-        UserRegisteredDTO dto = new UserRegisteredDTO();
-        dto.setId(new Long(35));
-        dto.setEmail("cristian.laurini@gmail");
-        dto.setPassword("cristianlaurini");
-        GenericResponse<?> response = this.customStrategyCtrl.getUserCustomStrategyActive(dto);
-        assertEquals(1, response.getResponse());
-        assertFalse(response.getData() == null);
-    }
+    public void getCustomStrategySetAll() {
+        LocalDate date1 = LocalDate.now();
+        List<CustomStrategyEntity> resultList = new ArrayList<>();
+        CustomStrategyEntity customStrategyEntity1_1 = new CustomStrategyEntity();
+        AssetClassEntity assetClassEntity1_1 = new AssetClassEntity();
+        assetClassEntity1_1.setId(new Long(2));
+        assetClassEntity1_1.setName("bonds");
+        customStrategyEntity1_1.setId(new Long(1));
+        customStrategyEntity1_1.setUser(user);
+        customStrategyEntity1_1.setAssetClass(assetClassEntity1_1);
+        customStrategyEntity1_1.setPercentage(new BigDecimal(55.50));
+        customStrategyEntity1_1.setActive(true);
+        customStrategyEntity1_1.setDate(date1);
+        CustomStrategyEntity cusomtrStrategyEntity1_2 = new CustomStrategyEntity();
+        AssetClassEntity assetClassEntity1_2 = new AssetClassEntity();
+        assetClassEntity1_2.setId(new Long(4));
+        assetClassEntity1_2.setName("stocks");
+        cusomtrStrategyEntity1_2.setId(new Long(2));
+        cusomtrStrategyEntity1_2.setUser(user);
+        cusomtrStrategyEntity1_2.setAssetClass(assetClassEntity1_2);
+        cusomtrStrategyEntity1_2.setPercentage(new BigDecimal(44.50));
+        cusomtrStrategyEntity1_2.setActive(true);
+        cusomtrStrategyEntity1_2.setDate(date1);
+        resultList.add(customStrategyEntity1_1);
+        resultList.add(cusomtrStrategyEntity1_2);
 
-    @Test
-    public void getUserCustomStrategyActiveInvalidUser() throws Exception {
-        UserRegisteredDTO dto = new UserRegisteredDTO();
-        dto.setId(new Long(0));
-        dto.setEmail("email@email");
-        dto.setPassword("12345");
-        GenericResponse<?> response = this.customStrategyCtrl.getUserCustomStrategyActive(dto);
-        assertEquals(0, response.getResponse());
-        assertEquals(ControllerConstants.ANY_ACTIVE_STRATEGY, response.getData());
-    }
-*/
+        LocalDate date2 = LocalDate.now().minusDays(2);
+        CustomStrategyEntity customStrategyEntity2_1 = new CustomStrategyEntity();
+        AssetClassEntity assetClassEntity2_1 = new AssetClassEntity();
+        assetClassEntity2_1.setId(new Long(2));
+        assetClassEntity2_1.setName("forex");
+        customStrategyEntity2_1.setId(new Long(1));
+        customStrategyEntity2_1.setUser(user);
+        customStrategyEntity2_1.setAssetClass(assetClassEntity2_1);
+        customStrategyEntity2_1.setPercentage(new BigDecimal(20));
+        customStrategyEntity2_1.setActive(true);
+        customStrategyEntity2_1.setDate(date2);
+        CustomStrategyEntity customStrategyEntity2_2 = new CustomStrategyEntity();
+        AssetClassEntity assetClassEntity2_2 = new AssetClassEntity();
+        assetClassEntity2_2.setId(new Long(4));
+        assetClassEntity2_2.setName("stocks");
+        customStrategyEntity2_2.setId(new Long(2));
+        customStrategyEntity2_2.setUser(user);
+        customStrategyEntity2_2.setAssetClass(assetClassEntity2_2);
+        customStrategyEntity2_2.setPercentage(new BigDecimal(80));
+        customStrategyEntity2_2.setActive(true);
+        customStrategyEntity2_2.setDate(date2);
+        resultList.add(customStrategyEntity2_1);
+        resultList.add(customStrategyEntity2_2);
 
+        when(customStrategyRep.findByUserAndDateBetween(user, date2, LocalDate.now())).thenReturn(resultList);
+        List<CustomStrategyResponseDTO> response = this.customStrategyOp.getCustomStrategySet(auth, 3);
+        verify(customStrategyRep).findByUserAndDateBetween(user, date2, LocalDate.now());
+        assertFalse(response.isEmpty());
+        assertEquals(2,response.size());
+        assertEquals(2, response.get(0).getList().size());
+        assertEquals(2, response.get(1).getList().size());
+
+    }
 }
