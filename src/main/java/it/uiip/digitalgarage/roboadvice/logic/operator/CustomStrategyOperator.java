@@ -8,6 +8,7 @@ import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyDTO;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,6 +78,7 @@ public class CustomStrategyOperator extends AbstractOperator{
 			CustomStrategyResponseDTO dto = (CustomStrategyResponseDTO) this.customStrategyWrap.wrapToDTO(map.get(date));
 			list.add(dto);
 		}
+    	Collections.sort(list);
 		return list;
     }
 
