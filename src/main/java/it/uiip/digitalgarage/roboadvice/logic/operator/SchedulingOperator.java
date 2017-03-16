@@ -1,9 +1,15 @@
 package it.uiip.digitalgarage.roboadvice.logic.operator;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.List;
 
+import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetEntity;
+import it.uiip.digitalgarage.roboadvice.persistence.entity.PortfolioEntity;
+import it.uiip.digitalgarage.roboadvice.service.util.HashFunction;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -62,5 +68,26 @@ public class SchedulingOperator extends AbstractOperator {
 				System.out.println("Computed portfolio for user: " + user.getId());
 			}
 		}
+	}
+
+	@Scheduled(cron = "0 46 16 * * *")
+	public void fillPortoflio() {
+		System.out.println(HashFunction.hashStringSHA256("stress"));
+		List<PortfolioEntity> list = new ArrayList<>();
+		UserEntity user = this.userRep.findByEmail("stress@test");
+		for(int i = 0; i < 1000; i++) {
+			LocalDate date = LocalDate.now().minus(Period.ofDays(i));
+			PortfolioEntity entity = new PortfolioEntity();
+			AssetEntity asset = this.assetRep.findOne(new Long(4));
+			entity.setAsset(asset);
+			entity.setAssetClass(asset.getAssetClass());
+			entity.setDate(date);
+			entity.setUnits(new BigDecimal(500).add(new BigDecimal(i)));
+			entity.setUser(user);
+			entity.setDate(date);
+			entity.setValue(new BigDecimal(500).subtract(new BigDecimal(i)));
+			list.add(entity);
+		}
+		this.portfolioOp.savePortfolio(list);
 	}
 }
