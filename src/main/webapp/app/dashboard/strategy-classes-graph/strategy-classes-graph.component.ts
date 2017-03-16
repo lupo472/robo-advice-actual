@@ -21,9 +21,6 @@ export class StrategyClassesGraphComponent implements OnInit {
     public startdate:Date;
     public data:any = {};
 
-    public assetClassDatasets = [];
-    public assetClassLabels = [];
-
     public render: boolean = false;
     public response: string = 'Data not yet available';
 
