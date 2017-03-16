@@ -6,19 +6,18 @@
         <div class="small text-muted">from {{date}}</div>
       </div>
       <div class="col col-sm-4 col-md-4">
-        <p-calendar [(ngModel)]="startdate" (ngModelChange)="refreshData($event)"></p-calendar>
-      </div>
-      <div class="col col-sm-2 col-md-2">
-        <i class="fa fa-search"></i>
+        <p-calendar [(ngModel)]="startdate" [showIcon]="true" (ngModelChange)="refreshData($event)"></p-calendar>
       </div>
 
 
       <!--/.col-->
     </div>
-    <div class="chart-wrapper">
-      <canvas baseChart class="chart" [datasets]="barChartData" [labels]="barChartLabels"
-              [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType"
-              ></canvas>
+    <div *ngIf="render" class="chart-wrapper">
+      <div class="chart-wrapper">
+        <canvas baseChart class="chart" [datasets]="barChartData" [labels]="barChartLabels"
+                [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType"
+                ></canvas>
+      </div>
     </div>
   </div>
 </div>
