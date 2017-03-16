@@ -45,15 +45,35 @@ public class FinancialDataOperator extends AbstractOperator {
 			int n = 0;
 			LocalDate entityDate = LocalDate.now();
 			BigDecimal entityValue = new BigDecimal(0);
-			FinancialDataEntity entity = this.financialDataRep.findTopByAssetAndDateLessThanEqualOrderByDateDesc(asset, entityDate);
-			System.out.println(entity.getDate() + " - " + entity.getAsset().getName() + " - " + entity.getValue());
+			while(true) {
+				if(interrupt && n >= period) {
+					break;
+				}
+				LocalDate date = LocalDate.now().minus(Period.ofDays(n));
+				if(date.isEqual(entityDate) || date.isBefore(entityDate)) {
+					FinancialDataEntity entity = this.financialDataRep.findTopByAssetAndDateLessThanEqualOrderByDateDesc(asset, date);
+					if(entity == null) {
+						break;
+					}
+					entityDate = entity.getDate();
+					entityValue = entity.getValue();
+				}
+				if(map.get(date.toString()) == null) {
+					map.put(date.toString(), new BigDecimal(0));
+				}
+				map.put(date.toString(), map.get(date.toString()).add(entityValue));
+				n++;
+			}
 		}
-		
-		
-		
-		
-		
-		return null;
+		List<FinancialDataElementDTO> result = new ArrayList<>();
+		for (String date : map.keySet()) {
+			FinancialDataElementDTO element = new FinancialDataElementDTO();
+			element.setDate(date);
+			element.setValue(map.get(date));
+			result.add(element);
+		}
+		Collections.sort(result);
+		return result;
 	}
 	
 //	public List<FinancialDataClassDTO> getFinancialDataSetForAssetClass(DataRequestDTO request) {
