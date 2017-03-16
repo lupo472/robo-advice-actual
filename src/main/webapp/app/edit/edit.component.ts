@@ -1,4 +1,4 @@
-import {Component, OnInit, Renderer, ViewChild, AfterViewInit} from '@angular/core';
+import {Component, OnInit, Renderer, ViewChild, AfterViewInit, NgZone} from '@angular/core';
 import { Router } from '@angular/router';
 import { AssetService } from '../services/asset.service';
 import { StrategyService } from '../services/strategy.service';
@@ -26,8 +26,8 @@ export class EditComponent implements OnInit, AfterViewInit {
 
     @ViewChild('childModal') public childModal: ModalDirective;
 
-    constructor(public AssetService: AssetService, public StrategyService: StrategyService, private router: Router) {
-        this.isCustom = false;
+    constructor(private _z:NgZone,public AssetService: AssetService, public StrategyService: StrategyService, private router: Router) {
+      this.isCustom = false;
     }
     public showChildModal(): void {
         this.childModal.show();
@@ -49,7 +49,6 @@ export class EditComponent implements OnInit, AfterViewInit {
 
     //ASSIGN STRATEGIES
     getStrategy(res): void {
-      console.log("startegiesSet", res);
         this.strategies = res.getStrategies();
     }
     //ASSIGN ASSET CLASS
@@ -58,8 +57,7 @@ export class EditComponent implements OnInit, AfterViewInit {
     }
 
     createStrategy(): void {
-        this.StrategyService.createStrategy(
-            this.StrategyService.strategies.getCurrentStrategy()).subscribe(
+        this.StrategyService.createStrategy(this.StrategyService.strategies.getCurrentStrategy()).subscribe(
             (res) => {
                 this.router.navigate(['dashboard']);
             });
@@ -68,16 +66,11 @@ export class EditComponent implements OnInit, AfterViewInit {
       this.isCustom = false;
     }
     //NOT WORKING trying to use angular change detection
-    // handleUpdatePercentage(obj){
-    //   this.strategies.forEach((item,index)=>{
-    //     if (item instanceof CustomStrategy){
-    //       this.strategy.addAssetClassStrategy(new AssetClassStrategy(obj.percentage,obj.id,""));
-    //       console.log("strategy",this.strategy);
-    //       this.strategies[index] = this.strategy;
-    //     }
-    //   });
-    //   }
-
+    handleUpdatePercentage(obj){
+      this._z.run(()=> {
+        this.StrategyService.customStrategy.rePaint();
+      });
+    }
     onSelect(strategy: Strategy, i): void {
         this.StrategyService.strategies.setCurrentStrategy(strategy);
         if (strategy instanceof CustomStrategy) {

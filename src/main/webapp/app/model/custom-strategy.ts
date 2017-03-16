@@ -24,6 +24,18 @@ export class CustomStrategy extends Strategy {
     });
     console.log("ASSETCLASSSTRATEGIESCUSTOM",this.list);
   }
+  rePaint(){
+    this.arrayPercentages = [];
+    this.arrayLabels = [];
+    this.arrayColor = [];
+    this.arrayColors = [];
+    let array = [];
+    this.assetClassStrategiesMap.forEach((item,index)=>{
+      array.push(item);
+    });
+    this.setStrategyArray(array);
+    this.createChart();
+  }
   sendStrategy(){
     let array = [];
     this.assetClassStrategiesMap.forEach((item,index)=>{
