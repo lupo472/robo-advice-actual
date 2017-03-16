@@ -1,6 +1,7 @@
 package it.uiip.digitalgarage.roboadvice.logic.operator;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.*;
+import it.uiip.digitalgarage.roboadvice.persistence.util.ValueMap;
 import it.uiip.digitalgarage.roboadvice.service.dto.*;
 
 import java.math.BigDecimal;
@@ -58,20 +59,38 @@ public class PortfolioOperator extends AbstractOperator {
 		if (entityList.isEmpty()) {
 			return null;
 		}
+		Map<LocalDate, BigDecimal> totalValueMap = ValueMap.getMap(this.portfolioRep.sumValues(user));
+		Map<Long, Map<LocalDate, BigDecimal>> assetClassMap = new HashMap<>();
 		Map<String, Set<PortfolioEntity>> map = new HashMap<>();
 		for (PortfolioEntity entity : entityList) {
+			if(assetClassMap.get(entity.getAssetClass().getId()) == null) {
+				assetClassMap.put(entity.getAssetClass().getId(), ValueMap.getMap(this.portfolioRep.sumValuesForAssetClass(entity.getAssetClass(), user)));
+			}
 			if(map.get(entity.getDate().toString()) == null) {
 				map.put(entity.getDate().toString(), new HashSet<>());
 			}
 			map.get(entity.getDate().toString()).add(entity);
 		}
 		List<PortfolioDTO> result = new ArrayList<>();
-//		List<PortfolioDTO> list = new ArrayList<>();
-//		for (String date : map.keySet()) {
-//			PortfolioDTO dto = (PortfolioDTO) this.portfolioWrap.wrapToDTO(map.get(date));
-//			list.add(dto);
-//		}
-//		Collections.sort(list);
+		for (String date : map.keySet()) {
+			PortfolioDTO dto = new PortfolioDTO();
+			List<PortfolioElementDTO> list = new ArrayList<>();
+			for (PortfolioEntity entity : map.get(date)) {
+				PortfolioElementDTO element = new PortfolioElementDTO();
+				element.setId(entity.getAssetClass().getId());
+				element.setName(entity.getAssetClass().getName());
+				BigDecimal value = assetClassMap.get(entity.getAssetClass().getId()).get(LocalDate.parse(date));
+				BigDecimal percentage = value.divide(totalValueMap.get(LocalDate.parse(date)), 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100.00));
+				element.setValue(value);
+				element.setPercentage(percentage);
+				list.add(element);
+			}
+			dto.setDate(date);
+			dto.setList(list);
+			Collections.sort(list);
+			result.add(dto);
+		}
+		Collections.sort(result);
         return result;
     }
 
@@ -172,13 +191,5 @@ public class PortfolioOperator extends AbstractOperator {
     		this.portfolioRep.save(entity);
 		}
     }
-    
-//    public List<Value> getTotalValue(UserEntity user) {
-//    	return this.portfolioRep.sumValues(user);
-//    }
-//
-//    /*public AssetClassValue getAssetClassValue(AssetClassEntity assetClass, UserEntity user, LocalDate date) {
-//    	return this.portfolioRep.sumValuesForAssetClass(assetClass, user, date);
-//    }*/
     
 }
