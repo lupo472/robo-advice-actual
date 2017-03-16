@@ -2,34 +2,31 @@ import {Component, OnInit, Renderer, ViewChild, AfterViewInit} from '@angular/co
 import { Router } from '@angular/router';
 import { AssetService } from '../services/asset.service';
 import { StrategyService } from '../services/strategy.service';
-import { AppService } from '../services/app.service';
 import { Cookie } from 'ng2-cookies';
 import { ModalDirective } from 'ng2-bootstrap/modal/modal.component';
-import { AssetClass } from '../model/asset-class';
-import { Strategy } from '../model/strategy';
 import { DefaultStrategy } from '../model/default-strategy';
+import { CustomStrategy } from '../model/custom-strategy';
+import { Strategy } from '../model/strategy';
 import { AssetClassStrategy } from '../model/asset-class-strategy';
+
 @Component({
     templateUrl: 'edit.component.html'
 })
 
 export class EditComponent implements OnInit, AfterViewInit {
     public isCustom: boolean;
-    public sendStrategy: Strategy;
-    public assetClassesStrategies: AssetClassStrategy[] = [];
-    public assetClassStrategy: AssetClassStrategy;
-    public defaultStrategies: DefaultStrategy[] = [];
-    //public defaultStrategy:DefaultStrategy;
-    public assets = [];
-    public selectedAsset = [];
+    public strategies: Strategy[] = [];
+    public assetClassStrategies: AssetClassStrategy[] = [];
     public selected = [];
-    public currentStrategy: DefaultStrategy;
     public isDisabled = true;
-    //sumPercentage:number;
+    reset = false;
+    array = [];
+    //strategy:Strategy = new Strategy();
+
 
     @ViewChild('childModal') public childModal: ModalDirective;
 
-    constructor(public AppService: AppService, public AssetService: AssetService, public StrategyService: StrategyService, private router: Router) {
+    constructor(public AssetService: AssetService, public StrategyService: StrategyService, private router: Router) {
         this.isCustom = false;
     }
     public showChildModal(): void {
@@ -46,86 +43,56 @@ export class EditComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit(): void {
-        this.AssetService.getAssetClassSet().subscribe((result) => this.getAssetClass(result));
+        this.AssetService.getAssetClassSet().subscribe((res) => this.getAssetClass(res));
         this.StrategyService.getDefaultStrategySet().subscribe(res => this.getStrategy(res));
     }
 
-    showDetails() {
-        console.log("clicked");
-    }
-
-    assignColour(id): string {
-        return this.AssetService.assignColour(id);
-    }
-    // resetCustomStrategy() : void {
-    //   this.isCustom = false;
-    //   this.StrategyService.resetCustomStrategy();
-    // }
-
     //ASSIGN STRATEGIES
     getStrategy(res): void {
-        this.defaultStrategies = res;
+        this.strategies = res.getStrategies();
+    }
+    //ASSIGN ASSET CLASS
+    getAssetClass(res): void {
+        this.assetClassStrategies = res.getAssetClassStrategies();
     }
 
-    createDefaultStrategy(): void {
-        this.sendStrategy = new Strategy();
-        this.sendStrategy.setStrategyArray(this.currentStrategy.getStrategyArray());
-        console.log(this.sendStrategy);
-        this.AppService.setCustomStrategy(this.sendStrategy).subscribe(
-            (res) => {
-                console.log(res);
-                this.router.navigate(['dashboard']);
-            });
-    }
-    confirmStrategy(): void {
-        this.StrategyService.setCustomStrategy().subscribe(
+    createStrategy(): void {
+        this.StrategyService.createStrategy(
+            this.StrategyService.strategies.getCurrentStrategy()).subscribe(
             (res) => {
                 this.router.navigate(['dashboard']);
             });
     }
-
-    onSelect(defaultStrategy: DefaultStrategy): void {
-        this.currentStrategy = defaultStrategy;
-        console.log(this.currentStrategy);
+    resetSlider(){
+      this.isCustom = false;
     }
+    //NOT WORKING trying to use angular change detection
+    // handleUpdatePercentage(obj){
+    //   this.strategies.forEach((item,index)=>{
+    //     if (item instanceof CustomStrategy){
+    //       this.strategy.addAssetClassStrategy(new AssetClassStrategy(obj.percentage,obj.id,""));
+    //       console.log("strategy",this.strategy);
+    //       this.strategies[index] = this.strategy;
+    //     }
+    //   });
+    //   }
 
-    setStrategy(i): void {
-        this.isDisabled = false;
-        this.currentStrategy = this.defaultStrategies[i];
-        console.log("assetClassStrategy");
-        console.log(this.currentStrategy);
-
-        this.assetClassesStrategies.forEach((item, i) => {
-            item.setPercentage(0);
-            console.log(item.getPercentage());
-            this.currentStrategy.list.forEach((element, j) => {
-                if (item.getId() == element.getId()) {
-                    item.setPercentage(element.getPercentage());
-                }
-            });
-        });
-
-        if (i == (this.defaultStrategies.length - 1)) {
-            this.isCustom = !this.isCustom;
+    onSelect(strategy: Strategy, i): void {
+        this.StrategyService.strategies.setCurrentStrategy(strategy);
+        if (strategy instanceof CustomStrategy) {
+          this.isCustom = true;
         } else {
-            this.isCustom = false;
+          this.isCustom = false;
         }
-
-        this.defaultStrategies.forEach((item, index) => {
+        this.assetClassStrategies = strategy.getStrategyArray();
+        this.isDisabled = false;
+        this.strategies.forEach((item, index) => {
             if (index == i) {
                 this.selected[index] = true;
             } else {
                 this.selected[index] = false;
             }
-        })
-
-    }
-
-    //ASSIGN ASSET CLASS
-    public getAssetClass(result): void {
-        this.assetClassesStrategies = result;
-        // console.log("this.assetClassesStrategies");
-        // console.log(this.assetClassesStrategies);
+        });
     }
 }
 

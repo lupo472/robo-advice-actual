@@ -1,168 +1,173 @@
 <div class="animated fadeIn">
 
-	<!-- STRATEGIES ROW -->
-	<div class="row">
+    <!-- STRATEGIES ROW -->
+    <div class="row">
 
-		<div class="col-sm-6 col-md-4 col-lg-2" *ngFor="let strategy of defaultStrategies; let i = index">
+        <div class="col-sm-6 col-md-4 col-lg-2" *ngFor="let strategy of strategies; let i = index">
 
+            <app-strategy-selector [name]="strategy.name" [selected]="selected[i]"
+                                   [strategy]="strategy" [id]="i"
+                                   (click)="onSelect(strategy,i)"></app-strategy-selector>
 
-			<!-- <app-strategy-selector [name]="strategy.name" [data]="asset.percentage"
-					[labels]="strategy.name" [colors]="asset.color" [id]="strategy[i]"
-					></app-strategy-selector> -->
-			<!-- {{asset.percentage}} -->
-			<!-- <app-strategy-selector [name]="strategy.name" [id]="i" [strategy]="strategy">
-				</app-strategy-selector>
-			</div> -->
+        </div>
 
-			<app-strategy-selector [name]="strategy.name" [selected]="selected[i]"
-			[strategy]="strategy" [id]="i" (click)="setStrategy(i)"></app-strategy-selector>
-
-		</div>
-	</div>
+    </div>
 
 
-	<!-- ASSET CLASS ROW -->
-	<div class="row">
-		<div class="col-sm-12 col-md-6 col-lg-3" *ngFor="let assets of assetClassesStrategies; let i = index;">
-			<app-card-asset-class [value]="assets.name" 
-			[isCustom]="isCustom" [id]="assets.id"
-			[percentage]="assets.percentage"
-			[color]="assignColour(assets.id)" [lineChartLabels]="lineChartLabels" [lineChartOptions]="lineChartOptions"
-							[lineChartColours]="lineChartColours" [lineChartType]="lineChartType"
-							[reset]="reset">
-				</app-card-asset-class>
-		</div>
-	</div>
-		<div class="col-12 text-center" *ngIf="!isCustom">
-			<button type="button" class="btn btn-success" (click)="createDefaultStrategy()" [disabled]="isDisabled">Select Strategy</button>
-		</div>
-		<div class="col-12 text-center" *ngIf="isCustom">
+    <!-- ASSET CLASS ROW -->
+    <div class="row">
 
-			<button type="button" class="btn btn-danger" (click)="isCustom = false">Cancel</button>
+        <div class="col-sm-12 col-md-6 col-lg-3" *ngFor="let assets of assetClassStrategies; let i = index;">
+            <app-card-asset-class [value]="assets.name"
+                                  [isCustom]="isCustom" [id]="assets.id"
+                                  [percentage]="assets.percentage"
+                                  [color]="assets.assignColour()" [lineChartLabels]="lineChartLabels"
+                                  [lineChartOptions]="lineChartOptions"
+                                  [lineChartColours]="lineChartColours" [lineChartType]="lineChartType"
+                                  [reset]="reset"
+                                  (updatePercentage)="handleUpdatePercentage($event)">
+            </app-card-asset-class>
+        </div>
 
-			<button type="button" class="btn btn-success" (click)="confirmStrategy()" [disabled]="StrategyService.sumPercentage < 100">Create</button>
-		</div>
+    </div>
+    <div class="col-12 text-center" *ngIf="!isCustom">
+        <button type="button" class="btn btn-success" (click)="createStrategy()" [disabled]="isDisabled">Select
+            Strategy
+        </button>
+    </div>
+    <div class="col-12 text-center" *ngIf="isCustom">
 
-	<!-- <button type="button" (click)="showData()">show data</button> -->
+        <button type="button" class="btn btn-danger" (click)="resetSlider()">Cancel</button>
 
+        <button type="button" class="btn btn-success" (click)="createStrategy()"
+                [disabled]="StrategyService.customStrategy.sumPercentage < 100">Create
+        </button>
+    </div>
+
+    <!-- <button type="button" (click)="showData()">show data</button> -->
 
 </div>
+<div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-primary modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Welcome to the financial Jungle!</h4>
+                <button type="button" class="close" (click)="hideChildModal()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
 
-<div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-primary modal-lg" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h4 class="modal-title">Welcome to the financial Jungle!</h4>
-				<button type="button" class="close" (click)="hideChildModal()" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
+                <carousel [interval]=false>
+                    <slide>
 
-				<carousel [interval]=false>
-					<slide>
-
-						<div class="col-md-12 col-sm-12">
-							<div class="row">
-								<div class="col-md-8 col-sm-8">
-									<img src="assets/img/animals/turtle.jpg" class="img-avatar" width="100%" alt="turtle">
-								</div>
-								<div class="col-md-4 col-sm-4">
-									<div class="h2 font-weight-bold">Turtle</div>
-									<div>No need to hurry, slow incomes in a safe way!</div>
-									<hr>
-									<div class="h4">Your Strategy:</div>
-									<div class="h1">Bonds</div>
-								</div>
-							</div>
-						</div>
-
-
-					</slide>
-					<slide>
-
-						<div class="col-md-12 col-sm-12">
-							<div class="row">
-								<div class="col-md-8 col-sm-8">
-									<img src="assets/img/animals/giraffe.jpg" class="img-avatar" width="100%" alt="giraffe">
-								</div>
-								<div class="col-md-4 col-sm-4">
-									<div class="h2 font-weight-bold">Giraffe</div>
-									<div>Keep safe incomes but crane your neck to some risk</div>
-									<hr>
-									<div class="h4">Your Strategy:</div>
-									<div class="h1">Income</div>
-								</div>
-							</div>
-						</div>
-
-					</slide>
-					<slide>
-
-						<div class="col-md-12 col-sm-12">
-							<div class="row">
-								<div class="col-md-8 col-sm-8">
-									<img src="assets/img/animals/eagle.jpg" class="img-avatar" width="100%" alt="eagle">
-
-								</div>
-								<div class="col-md-4 col-sm-4">
-									<div class="h2 font-weight-bold">Eagle</div>
-									<div>Balance your flight but keep an eagle eye on risky investments</div>
-									<hr>
-									<div class="h4">Your Strategy:</div>
-									<div class="h1">Balanced</div>
-								</div>
-							</div>
-						</div>
-
-					</slide>
-					<slide>
-
-						<div class="col-md-12 col-sm-12">
-							<div class="row">
-								<div class="col-md-8 col-sm-8">
-									<img src="assets/img/animals/leopard.jpg" class="img-avatar" width="100%" alt="leopard">
-								</div>
-								<div class="col-md-4 col-sm-4">
-									<div class="h2 font-weight-bold">Leopard</div>
-									<div>Climbing the trees is not easy but it can be a good point of view</div>
-									<hr>
-									<div class="h4">Your Strategy:</div>
-									<div class="h1">Growth</div>
-								</div>
-							</div>
-						</div>
+                        <div class="col-md-12 col-sm-12">
+                            <div class="row">
+                                <div class="col-md-8 col-sm-8">
+                                    <img src="assets/img/animals/turtle.jpg" class="img-avatar" width="100%"
+                                         alt="turtle">
+                                </div>
+                                <div class="col-md-4 col-sm-4">
+                                    <div class="h2 font-weight-bold">Turtle</div>
+                                    <div>No need to hurry, slow incomes in a safe way!</div>
+                                    <hr>
+                                    <div class="h4">Your Strategy:</div>
+                                    <div class="h1">Bonds</div>
+                                </div>
+                            </div>
+                        </div>
 
 
-					</slide>
-					<slide>
+                    </slide>
+                    <slide>
 
-						<div class="col-md-12 col-sm-12">
-							<div class="row">
-								<div class="col-md-8 col-sm-8">
-									<img src="assets/img/animals/lion.jpg" class="img-avatar" width="100%" alt="lion">
-								</div>
-								<div class="col-md-4 col-sm-4">
-									<div class="h2 font-weight-bold">Lion</div>
-									<div>Be the king of the forest is not easy but gives you a big power</div>
-									<hr>
-									<div class="h4">Your Strategy:</div>
-									<div class="h1">Stocks</div>
-								</div>
-							</div>
-						</div>
+                        <div class="col-md-12 col-sm-12">
+                            <div class="row">
+                                <div class="col-md-8 col-sm-8">
+                                    <img src="assets/img/animals/giraffe.jpg" class="img-avatar" width="100%"
+                                         alt="giraffe">
+                                </div>
+                                <div class="col-md-4 col-sm-4">
+                                    <div class="h2 font-weight-bold">Giraffe</div>
+                                    <div>Keep safe incomes but crane your neck to some risk</div>
+                                    <hr>
+                                    <div class="h4">Your Strategy:</div>
+                                    <div class="h1">Income</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </slide>
+                    <slide>
+
+                        <div class="col-md-12 col-sm-12">
+                            <div class="row">
+                                <div class="col-md-8 col-sm-8">
+                                    <img src="assets/img/animals/eagle.jpg" class="img-avatar" width="100%"
+                                         alt="eagle">
+
+                                </div>
+                                <div class="col-md-4 col-sm-4">
+                                    <div class="h2 font-weight-bold">Eagle</div>
+                                    <div>Balance your flight but keep an eagle eye on risky investments</div>
+                                    <hr>
+                                    <div class="h4">Your Strategy:</div>
+                                    <div class="h1">Balanced</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </slide>
+                    <slide>
+
+                        <div class="col-md-12 col-sm-12">
+                            <div class="row">
+                                <div class="col-md-8 col-sm-8">
+                                    <img src="assets/img/animals/leopard.jpg" class="img-avatar" width="100%"
+                                         alt="leopard">
+                                </div>
+                                <div class="col-md-4 col-sm-4">
+                                    <div class="h2 font-weight-bold">Leopard</div>
+                                    <div>Climbing the trees is not easy but it can be a good point of view</div>
+                                    <hr>
+                                    <div class="h4">Your Strategy:</div>
+                                    <div class="h1">Growth</div>
+                                </div>
+                            </div>
+                        </div>
 
 
-					</slide>
-				</carousel>
+                    </slide>
+                    <slide>
 
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" (click)="hideChildModal()">Let's Start!</button>
-			</div>
-		</div>
-		<!-- /.modal-content -->
-	</div>
-	<!-- /.modal-dialog -->
+                        <div class="col-md-12 col-sm-12">
+                            <div class="row">
+                                <div class="col-md-8 col-sm-8">
+                                    <img src="assets/img/animals/lion.jpg" class="img-avatar" width="100%"
+                                         alt="lion">
+                                </div>
+                                <div class="col-md-4 col-sm-4">
+                                    <div class="h2 font-weight-bold">Lion</div>
+                                    <div>Be the king of the forest is not easy but gives you a big power</div>
+                                    <hr>
+                                    <div class="h4">Your Strategy:</div>
+                                    <div class="h1">Stocks</div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </slide>
+                </carousel>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" (click)="hideChildModal()">Let's Start!</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
