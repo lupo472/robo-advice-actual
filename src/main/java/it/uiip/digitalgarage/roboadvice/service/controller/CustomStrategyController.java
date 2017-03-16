@@ -50,19 +50,4 @@ public class CustomStrategyController extends AbstractController {
     	return new GenericResponse<List<CustomStrategyResponseDTO>>(1, result);
     }
  
-
-/********************************************************************************************************
- * 						THIS METHOD WILL BE NECESSARY													*
- ********************************************************************************************************
- * 	@RequestMapping("/getUserCustomStrategySet")														*
- * 	@ResponseBody																						*
- * 	public GenericResponse<?> getUserCustomStrategySet(@Valid @RequestBody UserRegisteredDTO user){		*
- * 		List<CustomStrategyResponseDTO> result = this.customStrategyOp.getUserCustomStrategySet(user);	*
- * 		if(result.isEmpty()) {																			*
- * 			return new GenericResponse<String>(0, ControllerConstants.ANY_STRATEGY);					*
- * 		}																								*
- *     	return new GenericResponse<List<CustomStrategyResponseDTO>>(1, result);							*
- * 	}																									*
- ********************************************************************************************************/
-
 }
