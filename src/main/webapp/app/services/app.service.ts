@@ -119,6 +119,16 @@ export class AppService {
     return this.http.post(AppConfig.url + 'getActiveUserCustomStrategy', user, this.opts)
       .map(response => response.json());
   }
+  getHistoryStrategies() {
+    this.headers = new Headers();
+    this.headers.append('Authorization',Cookie.get('token'));
+    //this.headers.append('Access-Control-Allow-Credentials','true');
+    //this.headers.append('Content-Type','application/json;charset=UTF-8');
+    this.opts = new RequestOptions();
+    this.opts.headers = this.headers;
+    return this.http.post(AppConfig.url + 'getCustomStrategyHistory', {Period:'0'}, this.opts)
+        .map(response => response.json());
+  }
   authenticateUser(id, token) {
     return this.http.post(AppConfig.url + 'authenticate', { id: id, token: token })
       .map(response => response.json());

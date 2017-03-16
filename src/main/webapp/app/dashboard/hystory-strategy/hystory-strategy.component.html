@@ -6,10 +6,7 @@
         <div class="small text-muted">from {{date}}</div>
       </div>
       <div class="col col-sm-4 col-md-4">
-        <p-calendar [(ngModel)]="startdate" (ngModelChange)="refreshData($event)"></p-calendar>
-      </div>
-      <div class="col col-sm-2 col-md-2">
-        <i class="fa fa-search"></i>
+        <p-calendar [(ngModel)]="startdate" [showIcon]="true" (ngModelChange)="refreshData($event)"></p-calendar>
       </div>
 
 
