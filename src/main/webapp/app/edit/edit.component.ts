@@ -2,24 +2,22 @@ import {Component, OnInit, Renderer, ViewChild, AfterViewInit} from '@angular/co
 import { Router } from '@angular/router';
 import { AssetService } from '../services/asset.service';
 import { StrategyService } from '../services/strategy.service';
-import { AppService } from '../services/app.service';
 import { Cookie } from 'ng2-cookies';
 import { ModalDirective } from 'ng2-bootstrap/modal/modal.component';
-import { AssetClass } from '../model/asset-class';
-import { Strategy } from '../model/strategy';
 import { DefaultStrategy } from '../model/default-strategy';
-import { DefaultStrategies } from '../model/default-strategies';
+import { CustomStrategy } from '../model/custom-strategy';
+import { Strategy } from '../model/strategy';
 import { AssetClassStrategy } from '../model/asset-class-strategy';
+
 @Component({
     templateUrl: 'edit.component.html'
 })
 
 export class EditComponent implements OnInit, AfterViewInit {
     public isCustom: boolean;
-    public defaultStrategies: DefaultStrategy[]=[];
+    public strategies: Strategy[] = [];
     public assetClassStrategies: AssetClassStrategy[] = [];
     public selected = [];
-    public currentStrategy:DefaultStrategy;
     public isDisabled = true;
 
 
@@ -48,7 +46,7 @@ export class EditComponent implements OnInit, AfterViewInit {
 
     //ASSIGN STRATEGIES
     getStrategy(res): void {
-        this.defaultStrategies = res.getDefaultStrategies();
+        this.strategies = res;
     }
     //ASSIGN ASSET CLASS
     getAssetClass(res): void {
@@ -56,29 +54,34 @@ export class EditComponent implements OnInit, AfterViewInit {
     }
 
     createDefaultStrategy(): void {
-      this.StrategyService.createDefaultStrategy(
-        this.StrategyService.defaultStrategies.getCurrentDefaultStrategy()).subscribe(
-          (res) => {
-              this.router.navigate(['dashboard']);
-            });
-    }
-    confirmStrategy(): void {
-        this.StrategyService.setCustomStrategy().subscribe(
+        this.StrategyService.createDefaultStrategy(
+            this.StrategyService.defaultStrategies.getCurrentDefaultStrategy()).subscribe(
             (res) => {
                 this.router.navigate(['dashboard']);
             });
     }
-    onSelect(defaultStrategy: DefaultStrategy, i): void {
-      this.StrategyService.defaultStrategies.setCurrentDefaultStrategy(defaultStrategy);
-      this.assetClassStrategies = defaultStrategy.getStrategyArray();
-      this.isDisabled = false;
-      this.defaultStrategies.forEach((item,index)=>{
-        if (index == i) {
-          this.selected[index] = true;
+    // confirmStrategy(): void {
+    //     this.StrategyService.setCustomStrategy().subscribe(
+    //         (res) => {
+    //             this.router.navigate(['dashboard']);
+    //         });
+    // }
+    onSelect(strategy: Strategy, i): void {
+        this.StrategyService.strats.setCurrentStrategy(strategy);
+        if (strategy instanceof CustomStrategy) {
+          this.isCustom = true;
         } else {
-          this.selected[index] = false;
+          this.isCustom = false;
         }
-      });
+        this.assetClassStrategies = strategy.getStrategyArray();
+        this.isDisabled = false;
+        this.strategies.forEach((item, index) => {
+            if (index == i) {
+                this.selected[index] = true;
+            } else {
+                this.selected[index] = false;
+            }
+        });
     }
 }
 

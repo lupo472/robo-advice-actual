@@ -23,7 +23,6 @@ export class CardAssetClassComponent implements OnInit {
     @Input() color;
     @Input() reset;
     oldValue: number;
-    //strategies:Map<number, AssetClassStrategy> = new Map<number, AssetClassStrategy>();
     constructor(public StrategyService: StrategyService) { }
 
     ngOnInit() {
@@ -31,10 +30,11 @@ export class CardAssetClassComponent implements OnInit {
     }
 
     handleSlide(e) : void {
-        this.oldValue = this.StrategyService.strategies.get(this.id).getPercentage();
-        this.StrategyService.strategies.get(this.id).setName(this.value);
-        this.StrategyService.strategies.get(this.id).setPercentage(this.percentage);
-        this.percentage = this.StrategyService.createAssetClassStrategy(this.id, this.oldValue);
+        let currentAssetClassStrategy = this.StrategyService.customStrategy.getAssetClassStrategyMap().get(this.id);
+        this.oldValue = currentAssetClassStrategy.getPercentage();
+        currentAssetClassStrategy.setName(this.value);
+        currentAssetClassStrategy.setPercentage(this.percentage);
+        this.percentage = this.StrategyService.customStrategy.setPercentageWithSlider(this.id,this.oldValue);
     }
     // handleChange(e) {
     // }
