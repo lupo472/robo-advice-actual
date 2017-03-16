@@ -3,8 +3,7 @@ import { Strategy } from './strategy';
 
 export class CustomStrategy extends Strategy {
   private assetClassStrategiesMap:Map<number, AssetClassStrategy> = new Map<number, AssetClassStrategy>();
-  //private list:AssetClassStrategy[] = [];
-  // private date:string;
+  private date:string;
   private sumPercentage:number;
   private maxPercentage:number;
   private oldValue:number;
@@ -26,11 +25,22 @@ export class CustomStrategy extends Strategy {
     });
     console.log("ASSETCLASSSTRATEGIESCUSTOM",this.list);
   }
+  sendStrategy(){
+    let array = [];
+    this.assetClassStrategiesMap.forEach((item,index)=>{
+      if (item.getPercentage() > 0) {
+        array.push(item);
+      }
+    });
+    return {"list":array};
+  }
   getStrategyArray(): AssetClassStrategy[] {
-    //this.createAssetClassStrategies();
     return this.list;
   }
   populateMap(){
+    // assetClassStrategies.forEach(()=>{
+    //   console.log(item);
+    // });
     this.assetClassStrategiesMap.set(1,new AssetClassStrategy(0,1,""));
     this.assetClassStrategiesMap.set(2,new AssetClassStrategy(0,2,""));
     this.assetClassStrategiesMap.set(3,new AssetClassStrategy(0,3,""));
@@ -53,7 +63,7 @@ export class CustomStrategy extends Strategy {
             currentSlider.setPercentage(oldValue);
           }
       }
-
+    }
     this.assetClassStrategiesMap.set(currentSlider.getId(),currentSlider);
     var sum = 0;
     this.assetClassStrategiesMap.forEach( (item,index) => [
@@ -61,26 +71,10 @@ export class CustomStrategy extends Strategy {
     ]);
     this.sumPercentage = sum;
     this.maxPercentage = 100 - this.sumPercentage;
-
-    // console.log(this.strategies);
-    // console.log("sumPercentage" + this.sumPercentage);
-    // console.log("maxPercentage" + this.maxPercentage);
+    console.log("MAP",this.assetClassStrategiesMap);
     return currentSlider.getPercentage();
   }
-  // createAssetClassStrategies(data) {
-  //   data.forEach((item,index)=>{
-  //     this.assetClassStrategies.set(item.id,
-  //       this.addAssetClassStrategy(0,item.id,""));
-  //   });
-  // }
-  // addAssetClassStrategy(percentage,id,name){
-  //   return new AssetClassStrategy(percentage,id,name);
-  // }
-  // getAssetClassStrategies(){
-  //
-  // }
   getName(): string {
     return this.name;
   }
-
 }

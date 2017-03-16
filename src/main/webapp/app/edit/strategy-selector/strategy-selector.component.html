@@ -17,9 +17,9 @@
 	<div class="card-block text-center">
 		<div class="text-uppercase font-weight-bold">{{name}}</div>
 		<div class="chart-wrapper">
-			<canvas baseChart class="chart" [data]="defaultStrategies.arrayPercentages"
-			[labels]="defaultStrategies.arrayLabels"
-				[options]="strategyOptions" [colors]="defaultStrategies.arrayColors"
+			<canvas baseChart class="chart" [data]="strategy.arrayPercentages"
+			[labels]="strategy.arrayLabels"
+				[options]="strategyOptions" [colors]="strategy.arrayColors"
 				[legend]="strategyLegend" [chartType]="strategyType"
 				(chartHover)="chartHovered($event)"></canvas>
 

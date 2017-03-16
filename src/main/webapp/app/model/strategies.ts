@@ -5,22 +5,15 @@ import { DefaultStrategy } from './default-strategy';
 export class Strategies {
   private strategies:Strategy[] = [];
   private currentStrategy: Strategy = new Strategy();
-  public arrayPercentages: number[] = [];
-  public arrayColor: string[] = [];
-  public arrayColors: any[] = [];
-  public arrayLabels: string[] = [];
 
   constructor() {
   }
-
   setStrategies(strategies: Strategy[]): void {
       this.strategies = strategies;
   }
-
   addStrategy(strategy: Strategy): void {
       this.strategies.push(strategy);
   }
-
   getStrategies(): Strategy[] {
       return this.strategies;
   }
@@ -34,15 +27,6 @@ export class Strategies {
           });
           this.addStrategy(defaultStrategy);
       });
-  }
-  createStrategyForChart(strategy): void {
-      for (let assetClassStrategy of strategy.list) {
-          this.arrayPercentages.push(assetClassStrategy.percentage);
-          this.arrayLabels.push(assetClassStrategy.name);
-          this.arrayColor.push(assetClassStrategy.assignColour());
-          this.arrayColors = [{ backgroundColor: this.arrayColor, borderWidth: 3 }];
-      }
-
   }
   setCurrentStrategy(strategy: Strategy) {
     this.currentStrategy = strategy;

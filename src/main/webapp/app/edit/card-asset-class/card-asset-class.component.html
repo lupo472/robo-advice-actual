@@ -15,6 +15,8 @@
 						(chartClick)="chartClicked($event)"></canvas>
 				</div> -->
 	<div class="card-block" *ngIf="isCustom">
-		<p-slider [(ngModel)]="percentage" [min]="0" [max]="100" (onSlideEnd)="handleSlide($event)" (click)="handleSlide($event)"></p-slider>
+		<p-slider [(ngModel)]="percentage" [min]="0" [max]="100"
+		(onSlideEnd)="handleSlide($event)" (click)="handleSlide($event)"
+		></p-slider>
 	</div>
 </div>

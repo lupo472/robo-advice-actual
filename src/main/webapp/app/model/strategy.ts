@@ -2,8 +2,13 @@ import { AssetClassStrategy } from './asset-class-strategy';
 
 export class Strategy {
     protected list: AssetClassStrategy[];
+    public arrayPercentages: number[] = [];
+    public arrayColor: string[] = [];
+    public arrayColors: any[] = [];
+    public arrayLabels: string[] = [];
 
     constructor() {
+      this.list = [];
     }
 
     setStrategyArray(strategyArray: AssetClassStrategy[]): void {
@@ -17,10 +22,16 @@ export class Strategy {
     getStrategyArray(): AssetClassStrategy[] {
         return this.list;
     }
-    // setCustomStrategyToSend(customStrategy:CustomStrategy){
-    //
-    // }
-    // setDefaultStrategyToSend(defaultStrategies:DefaultStrategies) {
-    //   this.list = defaultStrategy.getDefaultStrategies();
-    // }
+    sendStrategy() {
+      return {"list":this.list}
+    }
+    createChart(){
+      for (let assetClassStrategy of this.list) {
+          this.arrayPercentages.push(assetClassStrategy.getPercentage());
+          this.arrayLabels.push(assetClassStrategy.getName());
+          this.arrayColor.push(assetClassStrategy.assignColour());
+          this.arrayColors = [{ backgroundColor: this.arrayColor, borderWidth: 3 }];
+      }
+    }
+
 }

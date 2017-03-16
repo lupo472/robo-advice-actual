@@ -14,8 +14,5 @@ export class DefaultStrategy extends Strategy {
     getName(): string {
         return this.name;
     }
-    sendCurrentStrategy(){
-      return {"list":this.list}
-    }
 
 }

@@ -19,6 +19,9 @@ export class EditComponent implements OnInit, AfterViewInit {
     public assetClassStrategies: AssetClassStrategy[] = [];
     public selected = [];
     public isDisabled = true;
+    reset = false;
+    array = [];
+    //strategy:Strategy = new Strategy();
 
 
     @ViewChild('childModal') public childModal: ModalDirective;
@@ -46,28 +49,36 @@ export class EditComponent implements OnInit, AfterViewInit {
 
     //ASSIGN STRATEGIES
     getStrategy(res): void {
-        this.strategies = res;
+        this.strategies = res.getStrategies();
     }
     //ASSIGN ASSET CLASS
     getAssetClass(res): void {
         this.assetClassStrategies = res.getAssetClassStrategies();
     }
 
-    createDefaultStrategy(): void {
-        this.StrategyService.createDefaultStrategy(
-            this.StrategyService.defaultStrategies.getCurrentDefaultStrategy()).subscribe(
+    createStrategy(): void {
+        this.StrategyService.createStrategy(
+            this.StrategyService.strategies.getCurrentStrategy()).subscribe(
             (res) => {
                 this.router.navigate(['dashboard']);
             });
     }
-    // confirmStrategy(): void {
-    //     this.StrategyService.setCustomStrategy().subscribe(
-    //         (res) => {
-    //             this.router.navigate(['dashboard']);
-    //         });
-    // }
+    resetSlider(){
+      this.isCustom = false;
+    }
+    //NOT WORKING trying to use angular change detection
+    // handleUpdatePercentage(obj){
+    //   this.strategies.forEach((item,index)=>{
+    //     if (item instanceof CustomStrategy){
+    //       this.strategy.addAssetClassStrategy(new AssetClassStrategy(obj.percentage,obj.id,""));
+    //       console.log("strategy",this.strategy);
+    //       this.strategies[index] = this.strategy;
+    //     }
+    //   });
+    //   }
+
     onSelect(strategy: Strategy, i): void {
-        this.StrategyService.strats.setCurrentStrategy(strategy);
+        this.StrategyService.strategies.setCurrentStrategy(strategy);
         if (strategy instanceof CustomStrategy) {
           this.isCustom = true;
         } else {

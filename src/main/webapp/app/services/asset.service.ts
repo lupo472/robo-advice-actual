@@ -37,13 +37,4 @@ export class AssetService {
     return res.data.list;
   }
 
-  //ASSIGN COLOUR
-  // assignColour(id){
-  //   switch(id){
-  //       case 1: return "#4dbd74";
-  //       case 2: return "#63c2de";
-  //       case 3: return "#f8cb00";
-  //       case 4: return "#f86c6b";
-  //       }
-  // }
 }
