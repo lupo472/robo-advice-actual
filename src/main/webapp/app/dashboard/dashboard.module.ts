@@ -11,6 +11,7 @@ import {AccordionModule} from 'primeng/primeng';     //accordion and accordion t
 import { FormsModule } from '@angular/forms';
 import { StrategyGraphComponent } from './strategy-graph/strategy-graph.component';
 import { StrategyClassesGraphComponent } from './strategy-classes-graph/strategy-classes-graph.component';
+import { HystoryStrategyComponent } from './hystory-strategy/hystory-strategy.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { StrategyClassesGraphComponent } from './strategy-classes-graph/strategy
   declarations: [
     DashboardComponent,
     StrategyGraphComponent,
-    StrategyClassesGraphComponent
+    StrategyClassesGraphComponent,
+    HystoryStrategyComponent
   ]
 })
 export class DashboardModule { }
