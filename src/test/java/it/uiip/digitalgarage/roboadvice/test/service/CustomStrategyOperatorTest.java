@@ -224,7 +224,7 @@ public class CustomStrategyOperatorTest {
         customStrategyEntity2_1.setUser(user);
         customStrategyEntity2_1.setAssetClass(assetClassEntity2_1);
         customStrategyEntity2_1.setPercentage(new BigDecimal(20));
-        customStrategyEntity2_1.setActive(true);
+        customStrategyEntity2_1.setActive(false);
         customStrategyEntity2_1.setDate(date2);
         CustomStrategyEntity customStrategyEntity2_2 = new CustomStrategyEntity();
         AssetClassEntity assetClassEntity2_2 = new AssetClassEntity();
@@ -234,7 +234,7 @@ public class CustomStrategyOperatorTest {
         customStrategyEntity2_2.setUser(user);
         customStrategyEntity2_2.setAssetClass(assetClassEntity2_2);
         customStrategyEntity2_2.setPercentage(new BigDecimal(80));
-        customStrategyEntity2_2.setActive(true);
+        customStrategyEntity2_2.setActive(false);
         customStrategyEntity2_2.setDate(date2);
         resultList.add(customStrategyEntity2_1);
         resultList.add(customStrategyEntity2_2);
