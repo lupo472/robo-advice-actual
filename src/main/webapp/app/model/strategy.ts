@@ -1,4 +1,5 @@
 import { AssetClassStrategy } from './asset-class-strategy';
+import {AssetClass} from "./asset-class";
 
 export class Strategy {
     protected list: AssetClassStrategy[];
@@ -9,8 +10,12 @@ export class Strategy {
     public arrayColors: any[] = [];
     public arrayLabels: string[] = [];
 
-    constructor() {
+    constructor(data?:any) {
       this.list = [];
+
+      if(data){
+          this.setActiveStrategy(data);
+      }
     }
 
     setStrategyArray(strategyArray: AssetClassStrategy[]): void {
@@ -29,6 +34,7 @@ export class Strategy {
     }
     createChart(){
       for (let assetClassStrategy of this.list) {
+          console.log("ASSETCLALLSLA", assetClassStrategy);
           this.arrayPercentages.push(assetClassStrategy.getPercentage());
           this.arrayLabels.push(assetClassStrategy.getName());
           this.arrayColor.push(assetClassStrategy.assignColour());
@@ -36,4 +42,30 @@ export class Strategy {
       }
     }
 
+    getChartData(){
+        this.createChart();
+        let dataToReturn = {labels: this.arrayLabels,
+                            datasets: [
+                                {data: this.arrayPercentages,
+                                    backgroundColor: this.arrayColors[0].backgroundColor,
+                                borderWidth: this.arrayColors[0].borderWidth}]};
+        console.log("DATAELABORATED: ", dataToReturn)
+        return dataToReturn;
+    }
+
+    setActiveStrategy(data){
+        this.date = data.date;
+        this.active = data.active;
+
+        let list:AssetClassStrategy[] = [];
+
+        for (let item of data.list){
+            let itemToPush = new AssetClassStrategy(item.percentage, item.id, item.name);
+            list.push(itemToPush);
+        }
+
+        this.setStrategyArray(list);
+
+        console.log("LIST: ",this.getStrategyArray())
+    }
 }

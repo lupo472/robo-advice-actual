@@ -13,25 +13,21 @@ export class StrategyGraphComponent implements OnInit {
   public labels: Array<string> = [];
   public datasets: Array<number> = [];
   public date: string;
+  public colors:Array<any> = [];
 
   public render: boolean = false;
 
   ngOnInit() {
 
-    this.StrategyService.getHistoryStrategies().subscribe(res => this.getStrategy(res));
+    this.StrategyService.getActiveStrategy().subscribe(res => this.getStrategy(res));
   }
 
-  getStrategy(res) {
+  getStrategy(data) {
+    console.log("DATA IN COMPONENT:", data);
 
-    let index = res.data.length - 1;
-    let i = res.labels.length -1;
-
-    this.datasets = [res.data[index]];
-    console.log("STRATEGTDATA:", this.datasets);
-    this.labels = res.labels;
-    console.log("STRATEGTLABELS:", this.labels);
-    this.date = res.labels[index];
-    console.log("STRATEGTDATE:", this.date);
+    this.labels = data.labels;
+    this.datasets = data.datasets;
+    this.colors = data.colors;
 
     this.render = true;
 
@@ -65,13 +61,7 @@ export class StrategyGraphComponent implements OnInit {
 
 
   // Pie
-  public colors = [
-    {
-      backgroundColor: [this.brandSuccess,
-      this.brandInfo,
-      this.brandWarning,
-      this.brandDanger], borderWidth: 3
-    }];
+
   public strategyOptions: any = {
     maintainAspectRatio: false,
     cutoutPercentage: 20,

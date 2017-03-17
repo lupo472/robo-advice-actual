@@ -19,7 +19,8 @@ export class StrategyService {
   historyStrategies:Strategies;
   currentStrategy:DefaultStrategy;
   dataHistory:any=[];
-  private period=30;
+  period:number = 30;
+  activeStrategy:Strategy;
 
   constructor(private AppService:AppService, private AssetService:AssetService) {
   }
@@ -46,7 +47,7 @@ export class StrategyService {
     if(res.response == 1 ) {
       this.historyStrategies = new Strategies();
       this.dataHistory=res.data;
-      var startdate=new Date();
+      let startdate=new Date();
       startdate.setDate(startdate.getDate() - this.period);
       return this.historyStrategies.createChartDataHistory(res.data, startdate);
     }
@@ -55,4 +56,15 @@ export class StrategyService {
     return this.historyStrategies.createChartDataHistory(this.dataHistory,startdate);
   }
 
+  getActiveStrategy(){
+    return this.AppService.getActiveStrategy().map(res => this.setActiveStrategy(res));
+  }
+
+  setActiveStrategy(res){
+    if(res.response == 1) {
+      this.activeStrategy = new Strategy(res.data);
+      
+      return this.activeStrategy.getChartData();
+    }
+  }
 }
