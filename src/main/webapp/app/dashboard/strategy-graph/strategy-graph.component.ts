@@ -1,7 +1,6 @@
-import { AppService } from '../../services/app.service';
+import { StrategyService } from '../../services/strategy.service';
 import { UserService } from '../../services/user.service';
 import { Component, OnInit } from '@angular/core';
-import {Cookie} from "ng2-cookies";
 
 @Component({
   selector: 'app-strategy-graph',
@@ -10,7 +9,7 @@ import {Cookie} from "ng2-cookies";
 })
 export class StrategyGraphComponent implements OnInit {
 
-  constructor(private AppService: AppService, private UserService: UserService) { }
+  constructor(private StrategyService: StrategyService, private UserService: UserService) { }
 
   public labels: Array<string> = [];
   public data: Array<number> = [];
@@ -20,8 +19,7 @@ export class StrategyGraphComponent implements OnInit {
 
   ngOnInit() {
 
-    var login = this.UserService.getLogin();
-    //this.AppService.getActiveStrategy(user,Cookie.get('token')).subscribe(res => this.getStrategy(res.data));
+    this.StrategyService.getHistoryStrategies().subscribe(res => this.getStrategy(res.data));
   }
 
   getStrategy(res) {
