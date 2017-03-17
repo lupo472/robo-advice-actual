@@ -6,9 +6,6 @@ export class Strategies {
   private strategies:Strategy[] = [];
   private currentStrategy: Strategy = new Strategy();
 
-
-    public period = 30;
-    public startdate: Date;
     public chartData=[];
     public dataclass=["bonds","forex","stocks","commodities"]; // da sostituire con il model
     public colorclass=["#4dbd74","#63c2de","#f8cb00","#f86c6b"]; // da sostituire con il model
@@ -16,9 +13,8 @@ export class Strategies {
     public dati=[];
     public render: boolean = false;
 
-  constructor() {
-      this.startdate=new Date();
-  }
+  constructor() {  }
+
   setStrategies(strategies: Strategy[]): void {
       this.strategies = strategies;
   }
@@ -47,12 +43,12 @@ export class Strategies {
     return this.currentStrategy;
   }
 
-    createChartDataHistory(data: any) {
-        console.log("data nel model: ",data)
+    createChartDataHistory(data: any, startdate:Date) {
+        console.log("data nel model: ",data);
         data.forEach((strategy,i)=>{
             var beginning = new Date(strategy.date);
-            console.log("this.startdate :"+this.startdate);
-            if(beginning>=this.startdate){
+            console.log("this.startdate :"+startdate);
+            if(beginning>=startdate){
                 console.log("strategia compresa nell'intervallo, date:"+beginning);
                 this.labels.push(strategy.date);
                 strategy.list.forEach((classe,j)=>{

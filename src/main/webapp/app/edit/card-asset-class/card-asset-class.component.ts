@@ -29,21 +29,18 @@ export class CardAssetClassComponent implements OnInit{
     ngOnInit() {
 
     }
-    // ngOnChanges(){
-    //
-    // }
+
     handleSlide(e) : void {
         let currentAssetClassStrategy = this.StrategyService.customStrategy.getAssetClassStrategyMap().get(this.id);
         this.oldValue = currentAssetClassStrategy.getPercentage();
         currentAssetClassStrategy.setName(this.value);
         currentAssetClassStrategy.setPercentage(this.percentage);
         this.percentage = this.StrategyService.customStrategy.setPercentageWithSlider(this.id,this.oldValue);
-        //this.updatePercentage.emit({"percentage":this.percentage,"id":this.id});
+        this.updatePercentage.emit();
     }
     // handleChange(e) {
     // }
     // assignFinancialData(){
     //
     // }
-
 }

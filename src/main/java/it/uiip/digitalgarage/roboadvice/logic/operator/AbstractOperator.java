@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import it.uiip.digitalgarage.roboadvice.logic.converter.*;
 import it.uiip.digitalgarage.roboadvice.logic.wrapper.CustomStrategyWrapper;
-import it.uiip.digitalgarage.roboadvice.logic.wrapper.PortfolioWrapper;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.*;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.AssetClassRepository;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.AssetRepository;
@@ -46,9 +45,6 @@ public abstract class AbstractOperator {
 	
 	@Autowired
 	protected CapitalConverter capitalConv;
-	
-	@Autowired
-	protected PortfolioWrapper portfolioWrap;
 
 	@Autowired
 	protected CustomStrategyWrapper customStrategyWrap;

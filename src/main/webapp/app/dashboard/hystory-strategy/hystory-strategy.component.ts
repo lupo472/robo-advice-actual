@@ -118,50 +118,11 @@ export class HystoryStrategyComponent implements OnInit {
     this.dati=[];
     this.chartData=[];
     this.labels=[];
-    //this.getStrategies();
-    //this.chart.chart.update();
+    let res=this.StrategyService.refreshHistory(this.startdate);
+    this.getStrategies(res);
   }
 
   getStrategies(res){
-/*    this.strategies=res;
-    console.log("strategies: ",this.strategies);
-    if(this.strategies.response == 1 ){
-      this.strategies.data.forEach((strategy,i)=>{
-        var beginning = new Date(strategy.date);
-        console.log("this.startdate :"+this.startdate);
-        if(beginning>=this.startdate){
-          console.log("strategia compresa nell'intervallo, date:"+beginning);
-          this.labels.push(strategy.date);
-          strategy.list.forEach((classe,j)=>{
-            var idClasse=classe.id;
-            if(this.dati[idClasse-1]==undefined){
-              this.dati[idClasse-1]=new Array(this.strategies.data.length);
-            }
-            this.dati[idClasse-1][i]=classe.percentage;
-          })
-        }
-      })
-      for(var k=0;k<this.dataclass.length;k++){
-        if(this.dati[k]==undefined){
-          this.dati[k]=new Array(this.labels.length);
-        }
-      }
-
-    }
-    console.log("PRIMA DEGLI ZERI ",this.dati);
-    //INSERIMENTO ZERI
-    for(var i=0;i<this.dati.length;i++){
-      for(var j=0;j<this.dati[i].length;j++){
-        if(this.dati[i][j]==undefined){
-          this.dati[i][j]=0;
-        }
-      }
-    }console.log("DOPO GLI ZERI ",this.dati);
-
-    for(var i=0;i<this.dati.length;i++){
-      this.chartData.push({data: this.dati[i], label:this.dataclass[i], backgroundColor: this.colorclass[i]});
-    }
-    console.log("chartData: ",this.chartData);*/
 
     this.chartData=res.data;
     this.labels=res.labels;
@@ -187,10 +148,11 @@ export class HystoryStrategyComponent implements OnInit {
     scaleShowVerticalLines: false,
     responsive: true
   };
-  public barChartLabels:string[] = this.labels;
+
   public barChartType:string = 'bar';
   public barChartLegend:boolean = true;
-  public barChartData:any[] = this.chartData;
+/*  public barChartData:any[] = this.chartData;
+  public barChartLabels:string[] = this.labels;*/
 
 
 }

@@ -1,4 +1,4 @@
-import {Component, OnInit, Renderer, ViewChild, AfterViewInit} from '@angular/core';
+import {Component, OnInit, Renderer, ViewChild, AfterViewInit, NgZone} from '@angular/core';
 import { Router } from '@angular/router';
 import { AssetService } from '../services/asset.service';
 import { StrategyService } from '../services/strategy.service';
@@ -21,62 +21,51 @@ export class EditComponent implements OnInit, AfterViewInit {
     public isDisabled = true;
     reset = false;
     array = [];
-    //strategy:Strategy = new Strategy();
-
-
     @ViewChild('childModal') public childModal: ModalDirective;
 
-    constructor(public AssetService: AssetService, public StrategyService: StrategyService, private router: Router) {
-        this.isCustom = false;
+    constructor(private _z:NgZone,public AssetService: AssetService, public StrategyService: StrategyService, private router: Router) {
+      this.isCustom = false;
     }
     public showChildModal(): void {
         this.childModal.show();
     }
-
     public hideChildModal(): void {
         this.childModal.hide();
     }
     ngAfterViewInit() {
         // viewChild is set after the view has been initialized
         this.childModal.show();
-
     }
-
     ngOnInit(): void {
         this.AssetService.getAssetClassSet().subscribe((res) => this.getAssetClass(res));
-        this.StrategyService.getDefaultStrategySet().subscribe(res => this.getStrategy(res));
     }
-
     //ASSIGN STRATEGIES
     getStrategy(res): void {
         this.strategies = res.getStrategies();
     }
     //ASSIGN ASSET CLASS
     getAssetClass(res): void {
+        this.StrategyService.getDefaultStrategySet().subscribe(res => this.getStrategy(res));
         this.assetClassStrategies = res.getAssetClassStrategies();
     }
-
     createStrategy(): void {
-        this.StrategyService.createStrategy(
-            this.StrategyService.strategies.getCurrentStrategy()).subscribe(
+        this.StrategyService.createStrategy(this.StrategyService.strategies.getCurrentStrategy()).subscribe(
             (res) => {
                 this.router.navigate(['dashboard']);
             });
     }
     resetSlider(){
       this.isCustom = false;
+      let currentStrategy = this.StrategyService.strategies.getCurrentStrategy();
+      if (currentStrategy instanceof CustomStrategy) {
+        currentStrategy.resetSlider();
+      }
     }
-    //NOT WORKING trying to use angular change detection
-    // handleUpdatePercentage(obj){
-    //   this.strategies.forEach((item,index)=>{
-    //     if (item instanceof CustomStrategy){
-    //       this.strategy.addAssetClassStrategy(new AssetClassStrategy(obj.percentage,obj.id,""));
-    //       console.log("strategy",this.strategy);
-    //       this.strategies[index] = this.strategy;
-    //     }
-    //   });
-    //   }
-
+    handleUpdatePercentage(){
+      this._z.run(()=> {
+        this.StrategyService.customStrategy.rePaint();
+      });
+    }
     onSelect(strategy: Strategy, i): void {
         this.StrategyService.strategies.setCurrentStrategy(strategy);
         if (strategy instanceof CustomStrategy) {

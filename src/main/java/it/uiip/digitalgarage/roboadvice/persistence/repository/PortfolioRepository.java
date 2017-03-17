@@ -4,9 +4,8 @@ import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetClassEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.PortfolioEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
-import it.uiip.digitalgarage.roboadvice.persistence.model.AssetClassValue;
-import it.uiip.digitalgarage.roboadvice.persistence.model.TotalValue;
 
+import it.uiip.digitalgarage.roboadvice.persistence.util.Value;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
@@ -19,19 +18,34 @@ import java.util.List;
 @Transactional
 public interface PortfolioRepository extends PagingAndSortingRepository<PortfolioEntity, Long> {
     
-	static final String SUM_VALUES = "SELECT NEW it.uiip.digitalgarage.roboadvice.persistence.model.TotalValue"
-										+ "(SUM(p.value)) FROM PortfolioEntity p "
-										+ "WHERE p.user = ?1 AND p.date = ?2";
-	
-	static final String SUM_VALUES_ASSET_CLASS = "SELECT NEW it.uiip.digitalgarage.roboadvice.persistence.model.AssetClassValue"
-												+ "(p.assetClass, SUM(p.value)) FROM PortfolioEntity p "
+	static final String SUM_VALUES = "SELECT NEW it.uiip.digitalgarage.roboadvice.persistence.util.Value"
+										+ "(p.date, SUM(p.value)) FROM PortfolioEntity p "
+										+ "WHERE p.user = ?1 GROUP BY p.date";
+
+	static final String SUM_VALUES_DATE = "SELECT NEW it.uiip.digitalgarage.roboadvice.persistence.util.Value"
+											+ "(p.date, SUM(p.value)) FROM PortfolioEntity p "
+											+ "WHERE p.user = ?1 AND p.date = ?2";
+
+	static final String SUM_VALUES_ASSET_CLASS = "SELECT NEW it.uiip.digitalgarage.roboadvice.persistence.util.Value"
+													+ "(p.date, SUM(p.value)) FROM PortfolioEntity p "
+													+ "WHERE p.user = ?2 AND p.assetClass = ?1 "
+													+ "GROUP BY p.date";
+
+	static final String SUM_VALUES_ASSET_CLASS_DATE = "SELECT NEW it.uiip.digitalgarage.roboadvice.persistence.util.Value"
+												+ "(p.date, SUM(p.value)) FROM PortfolioEntity p "
 												+ "WHERE p.user = ?2 AND p.date = ?3 AND p.assetClass = ?1";
 	
 	@Query(value = SUM_VALUES)
-	public TotalValue sumValues(UserEntity user, LocalDate date); 
-	
+	public List<Value> sumValues(UserEntity user);
+
+	@Query(value = SUM_VALUES_DATE)
+	public Value sumValues(UserEntity user, LocalDate date);
+
 	@Query(value = SUM_VALUES_ASSET_CLASS)
-	public AssetClassValue sumValuesForAssetClass(AssetClassEntity assetClass, UserEntity user, LocalDate date);
+	public List<Value> sumValuesForAssetClass(AssetClassEntity assetClass, UserEntity user);
+	
+	@Query(value = SUM_VALUES_ASSET_CLASS_DATE)
+	public Value sumValuesForAssetClass(AssetClassEntity assetClass, UserEntity user, LocalDate date);
 	
 	public List<PortfolioEntity> findByUser(UserEntity user);
     

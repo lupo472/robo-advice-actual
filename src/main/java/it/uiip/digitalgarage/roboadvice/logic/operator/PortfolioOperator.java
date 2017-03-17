@@ -1,8 +1,7 @@
 package it.uiip.digitalgarage.roboadvice.logic.operator;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.*;
-import it.uiip.digitalgarage.roboadvice.persistence.model.AssetClassValue;
-import it.uiip.digitalgarage.roboadvice.persistence.model.TotalValue;
+import it.uiip.digitalgarage.roboadvice.persistence.util.ValueMap;
 import it.uiip.digitalgarage.roboadvice.service.dto.*;
 
 import java.math.BigDecimal;
@@ -27,8 +26,24 @@ public class PortfolioOperator extends AbstractOperator {
 		if(entityList.isEmpty()) {
 			return null;
 		}
-		PortfolioDTO response = this.portfolioWrap.wrapToDTO(entityList);
-		return response;
+		PortfolioDTO result = new PortfolioDTO();
+		LocalDate date = entityList.get(0).getDate();
+		result.setDate(date.toString());
+		BigDecimal total = this.portfolioRep.sumValues(user, date).getValue();
+		Set<PortfolioElementDTO> set = new HashSet<>();
+		for (PortfolioEntity entity : entityList) {
+			BigDecimal assetClassValue = this.portfolioRep.sumValuesForAssetClass(entity.getAssetClass(), user, date).getValue();
+			PortfolioElementDTO element = new PortfolioElementDTO();
+			element.setId(entity.getAssetClass().getId());
+			element.setName(entity.getAssetClass().getName());
+			element.setValue(assetClassValue);
+			element.setPercentage(assetClassValue.divide(total, 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100.00)));
+			set.add(element);
+		}
+		List<PortfolioElementDTO> list = new ArrayList<>(set);
+		Collections.sort(list);
+		result.setList(list);
+		return result;
 	}
 
     public List<PortfolioDTO> getPortfolioForPeriod(PeriodRequestDTO request, Authentication auth){
@@ -44,20 +59,40 @@ public class PortfolioOperator extends AbstractOperator {
 		if (entityList.isEmpty()) {
 			return null;
 		}
-		Map<String, List<PortfolioEntity>> map = new HashMap<>();
+		Map<LocalDate, BigDecimal> totalValueMap = ValueMap.getMap(this.portfolioRep.sumValues(user));
+		Map<Long, Map<LocalDate, BigDecimal>> assetClassMap = new HashMap<>();
+		Map<String, Set<PortfolioEntity>> map = new HashMap<>();
 		for (PortfolioEntity entity : entityList) {
+			if(assetClassMap.get(entity.getAssetClass().getId()) == null) {
+				assetClassMap.put(entity.getAssetClass().getId(), ValueMap.getMap(this.portfolioRep.sumValuesForAssetClass(entity.getAssetClass(), user)));
+			}
 			if(map.get(entity.getDate().toString()) == null) {
-				map.put(entity.getDate().toString(), new ArrayList<>());
+				map.put(entity.getDate().toString(), new HashSet<>());
 			}
 			map.get(entity.getDate().toString()).add(entity);
 		}
-		List<PortfolioDTO> list = new ArrayList<>();
+		List<PortfolioDTO> result = new ArrayList<>();
 		for (String date : map.keySet()) {
-			PortfolioDTO dto = (PortfolioDTO) this.portfolioWrap.wrapToDTO(map.get(date));
-			list.add(dto);
+			PortfolioDTO dto = new PortfolioDTO();
+			Set<PortfolioElementDTO> set = new HashSet<>();
+			for (PortfolioEntity entity : map.get(date)) {
+				PortfolioElementDTO element = new PortfolioElementDTO();
+				element.setId(entity.getAssetClass().getId());
+				element.setName(entity.getAssetClass().getName());
+				BigDecimal value = assetClassMap.get(entity.getAssetClass().getId()).get(LocalDate.parse(date));
+				BigDecimal percentage = value.divide(totalValueMap.get(LocalDate.parse(date)), 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100.00));
+				element.setValue(value);
+				element.setPercentage(percentage);
+				set.add(element);
+			}
+			dto.setDate(date);
+			List<PortfolioElementDTO> list = new ArrayList<>(set);
+			Collections.sort(list);
+			dto.setList(list);
+			result.add(dto);
 		}
-		Collections.sort(list);
-        return list;
+		Collections.sort(result);
+        return result;
     }
 
     public boolean createUserPortfolio(UserEntity user) {
@@ -156,14 +191,6 @@ public class PortfolioOperator extends AbstractOperator {
 	    	}
     		this.portfolioRep.save(entity);
 		}
-    }
-    
-    public TotalValue getTotalValue(UserEntity user, LocalDate date) {
-    	return this.portfolioRep.sumValues(user, date);
-    }
-    
-    public AssetClassValue getAssetClassValue(AssetClassEntity assetClass, UserEntity user, LocalDate date) {
-    	return this.portfolioRep.sumValuesForAssetClass(assetClass, user, date); 
     }
     
 }
