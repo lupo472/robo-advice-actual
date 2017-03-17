@@ -2,9 +2,6 @@ package it.uiip.digitalgarage.roboadvice.test.service;
 
 import it.uiip.digitalgarage.roboadvice.RoboadviceApplication;
 import it.uiip.digitalgarage.roboadvice.service.controller.CapitalController;
-import it.uiip.digitalgarage.roboadvice.service.dto.CapitalResponseDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.DataRequestDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.UserRegisteredDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 import org.junit.Test;
@@ -19,7 +16,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = RoboadviceApplication.class)
-public class CapitalControllerTest {
+public class CapitalOperatorTest {
 
 	/* TODO
 	 * Test: addCapital
