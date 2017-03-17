@@ -21,6 +21,10 @@ import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataElementDTO;
 @Service
 public class FinancialDataOperator extends AbstractOperator {
 
+	/*
+	* This method is not used.
+	* TODO: Improve performance if necessary
+	*/
 	@Cacheable("financialDataSet")
 	public List<FinancialDataDTO> getFinancialDataSet(int period) {
 		List<FinancialDataDTO> result = new ArrayList<>();

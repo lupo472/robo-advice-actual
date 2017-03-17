@@ -11,7 +11,6 @@ import it.uiip.digitalgarage.roboadvice.service.dto.AssetClassDTO;
 @Service
 public class AssetClassOperator extends AbstractOperator {
 
-	@Cacheable("assetClassSet")
 	public List<AssetClassDTO> getAssetClassSet() {
 		List<AssetClassEntity> list = this.assetClassRep.findAll();
 		return this.assetClassConv.convertToDTO(list);
