@@ -1,15 +1,12 @@
 package it.uiip.digitalgarage.roboadvice.test.service;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.when;
 
 import it.uiip.digitalgarage.roboadvice.logic.operator.CustomStrategyOperator;
 import it.uiip.digitalgarage.roboadvice.logic.operator.PortfolioOperator;
-import it.uiip.digitalgarage.roboadvice.persistence.entity.CapitalEntity;
-import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
-import it.uiip.digitalgarage.roboadvice.persistence.repository.AssetRepository;
-import it.uiip.digitalgarage.roboadvice.persistence.repository.CapitalRepository;
-import it.uiip.digitalgarage.roboadvice.persistence.repository.CustomStrategyRepository;
-import it.uiip.digitalgarage.roboadvice.persistence.repository.PortfolioRepository;
+import it.uiip.digitalgarage.roboadvice.persistence.entity.*;
+import it.uiip.digitalgarage.roboadvice.persistence.repository.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -29,6 +26,8 @@ import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = RoboadviceApplication.class)
@@ -56,71 +55,166 @@ public class PortfolioOperatorTest {
 	@Mock
 	private AssetRepository assetRep;
 
+	@Mock
+	private FinancialDataRepository financialDataRep;
+
+	private UserEntity user;
+
 	@Before
 	public void setUpMock() {
 		MockitoAnnotations.initMocks(this);
-	}
-
-	@Test
-	public void createUserPortfolioTest() {
-		UserEntity user = new UserEntity();
+		user = new UserEntity();
 		user.setId(new Long(2));
 		user.setEmail("luca@antilici.it");
 		user.setPassword("pippo123");
 		user.setDate(LocalDate.now());
-		user.setLastUpdate(LocalDate.now());
+		user.setLastUpdate(LocalDate.now().minusDays(1));
+	}
+
+	@Test
+	public void createUserPortfolioSuccess() {
 
 		CapitalEntity capitalEntity = new CapitalEntity();
 		capitalEntity.setId(new Long(12));
 		capitalEntity.setUser(user);
 		capitalEntity.setAmount(new BigDecimal(1236.34));
-		capitalEntity.setDate(LocalDate.now());
+		capitalEntity.setDate(LocalDate.now().minusDays(1));
+
+		List<CustomStrategyEntity> customStrategyEntityList = new ArrayList<>();
+		CustomStrategyEntity customStrategyEntity1 = new CustomStrategyEntity();
+		AssetClassEntity assetClassEntity1 = new AssetClassEntity();
+		assetClassEntity1.setId(new Long(1));
+		assetClassEntity1.setName("bonds");
+		customStrategyEntity1.setId(new Long(1));
+		customStrategyEntity1.setUser(user);
+		customStrategyEntity1.setAssetClass(assetClassEntity1);
+		customStrategyEntity1.setPercentage(new BigDecimal(55.50));
+		customStrategyEntity1.setActive(true);
+		customStrategyEntity1.setDate(LocalDate.now());
+		CustomStrategyEntity customStrategyEntity2 = new CustomStrategyEntity();
+		AssetClassEntity assetClassEntity2 = new AssetClassEntity();
+		assetClassEntity2.setId(new Long(3));
+		assetClassEntity2.setName("stocks");
+		customStrategyEntity2.setId(new Long(2));
+		customStrategyEntity2.setUser(user);
+		customStrategyEntity2.setAssetClass(assetClassEntity2);
+		customStrategyEntity2.setPercentage(new BigDecimal(44.50));
+		customStrategyEntity2.setActive(true);
+		customStrategyEntity2.setDate(LocalDate.now());
+		customStrategyEntityList.add(customStrategyEntity1);
+		customStrategyEntityList.add(customStrategyEntity2);
+
+		AssetEntity assetEntity1 = new AssetEntity();
+		assetEntity1.setId(new Long(2));
+		assetEntity1.setAssetClass(assetClassEntity1);
+		assetEntity1.setName("Ultra U.S. Treasury Bond Futures");
+		assetEntity1.setDataSource("CHRIS/CME_UL1");
+		assetEntity1.setPercentage(new BigDecimal(20.00));
+		assetEntity1.setRemarksIndex(1);
+		assetEntity1.setLastUpdate(LocalDate.now().minusDays(1));
+		AssetEntity assetEntity2 = new AssetEntity();
+		assetEntity2.setId(new Long(8));
+		assetEntity2.setAssetClass(assetClassEntity2);
+		assetEntity2.setName("Microsoft");
+		assetEntity2.setDataSource("WIKI/MSFT");
+		assetEntity2.setPercentage(new BigDecimal(35.00));
+		assetEntity2.setRemarksIndex(11);
+		assetEntity2.setLastUpdate(LocalDate.now().minusDays(1));
+
+		List<AssetEntity> assetList1 = new ArrayList<>();
+		assetList1.add(assetEntity1);
+		List<AssetEntity> assetList2 = new ArrayList<>();
+		assetList2.add(assetEntity2);
+
+		when(capitalRep.findByUserAndDate(user, user.getLastUpdate())).thenReturn(capitalEntity);
+		when(customStrategyRep.findByUserAndActive(user, true)).thenReturn(customStrategyEntityList);
+		when(assetRep.findByAssetClass(assetClassEntity1)).thenReturn(assetList1);
+		when(assetRep.findByAssetClass(assetClassEntity2)).thenReturn(assetList2);
+		boolean response = portfolioOp.createUserPortfolio(user);
+		assertTrue(response);
 	}
-	
+
 	@Test
-	public void getUserCurrentPortfolioOK() {
-//		UserRegisteredDTO user = new UserRegisteredDTO();
-//		user.setId(new Long(35));
-//		user.setEmail("cristian.laurini@gmail.com");
-//		user.setPassword("cristianlaurini");
-//		GenericResponse<?> response = this.portfolioCtrl.getUserCurrentPortfolio(user);
-//		PortfolioDTO portfolio = (PortfolioDTO) response.getData();
-//		assertEquals(1, response.getResponse());
-//		assertEquals(new Long(35), portfolio.getIdUser());
-//		assertEquals(true, portfolio.getList().size() > 0);
+	public void createUserPortfolioFailNullLastUpdate() {
+		when(capitalRep.findByUserAndDate(user, user.getLastUpdate())).thenReturn(null);
+		boolean response = portfolioOp.createUserPortfolio(user);
+		assertFalse(response);
 	}
-	
+
 	@Test
-	public void getUserCurrentPortfolioProblem() {
-//		UserRegisteredDTO user = new UserRegisteredDTO();
-//		user.setId(new Long(15));
-//		user.setEmail("criidd@a");
-//		user.setPassword("ceaaaaaa");
-//		GenericResponse<?> response = this.portfolioCtrl.getUserCurrentPortfolio(user);
-//		assertEquals(0, response.getResponse());
-//		assertEquals(ControllerConstants.EMPTY_PORTFOLIO, response.getData());
+	public void createUserPortfolioFailNullCustomStrategy() {
+		CapitalEntity capitalEntity = new CapitalEntity();
+		capitalEntity.setId(new Long(12));
+		capitalEntity.setUser(user);
+		capitalEntity.setAmount(new BigDecimal(1236.34));
+		capitalEntity.setDate(LocalDate.now().minusDays(1));
+		List<CustomStrategyEntity> customStrategyEntityList = new ArrayList<>();
+		when(capitalRep.findByUserAndDate(user, user.getLastUpdate())).thenReturn(capitalEntity);
+		when(customStrategyRep.findByUserAndActive(user, true)).thenReturn(customStrategyEntityList);
+		boolean response = portfolioOp.createUserPortfolio(user);
+		assertFalse(response);
 	}
-	
-	public void getUserPortfolioDateOK() {
-//		PortfolioRequestForDateDTO request = new PortfolioRequestForDateDTO();
-//		request.setId(new Long(35));
-//		request.setDate("2017-03-07");
-//		GenericResponse<?> response = this.portfolioCtrl.getUserPortfolioDate(request);
-//		PortfolioDTO portfolio = (PortfolioDTO) response.getData();
-//		assertEquals(1, response.getResponse());
-//		assertEquals(new Long(35), portfolio.getIdUser());
-//		assertEquals("2017-03-07", portfolio.getDate());
-//		assertEquals(13, portfolio.getList().size());
-	}
-	
+
 	@Test
-	public void getUserPortfolioDateProblem() {
-//		PortfolioRequestForDateDTO request = new PortfolioRequestForDateDTO();
-//		request.setId(new Long(15));
-//		request.setDate("2017-03-07");
-//		GenericResponse<?> response = this.portfolioCtrl.getUserPortfolioDate(request);
-//		assertEquals(0, response.getResponse());
-//		assertEquals(ControllerConstants.EMPTY_PORTFOLIO, response.getData());
+	public void computeUserPortfolioSucces() {
+		AssetClassEntity assetClassEntity1 = new AssetClassEntity();
+		assetClassEntity1.setId(new Long(1));
+		assetClassEntity1.setName("bonds");
+		AssetClassEntity assetClassEntity2 = new AssetClassEntity();
+		assetClassEntity2.setId(new Long(3));
+		assetClassEntity2.setName("stocks");
+		AssetEntity assetEntity1 = new AssetEntity();
+		assetEntity1.setId(new Long(2));
+		assetEntity1.setAssetClass(assetClassEntity1);
+		assetEntity1.setName("Ultra U.S. Treasury Bond Futures");
+		assetEntity1.setDataSource("CHRIS/CME_UL1");
+		assetEntity1.setPercentage(new BigDecimal(20.00));
+		assetEntity1.setRemarksIndex(1);
+		assetEntity1.setLastUpdate(LocalDate.now().minusDays(1));
+		AssetEntity assetEntity2 = new AssetEntity();
+		assetEntity2.setId(new Long(8));
+		assetEntity2.setAssetClass(assetClassEntity2);
+		assetEntity2.setName("Microsoft");
+		assetEntity2.setDataSource("WIKI/MSFT");
+		assetEntity2.setPercentage(new BigDecimal(35.00));
+		assetEntity2.setRemarksIndex(11);
+		assetEntity2.setLastUpdate(LocalDate.now().minusDays(1));
+
+		PortfolioEntity portfolioEntity1 = new PortfolioEntity();
+		portfolioEntity1.setId(new Long(1));
+		portfolioEntity1.setUser(user);
+		portfolioEntity1.setAsset(assetEntity1);
+		portfolioEntity1.setAssetClass(assetClassEntity1);
+		portfolioEntity1.setUnits(new BigDecimal(10.50));
+		portfolioEntity1.setValue(new BigDecimal(1296.2954));
+		portfolioEntity1.setDate(LocalDate.now().minusDays(1));
+		PortfolioEntity portfolioEntity2 = new PortfolioEntity();
+		portfolioEntity2.setId(new Long(2));
+		portfolioEntity2.setUser(user);
+		portfolioEntity2.setAsset(assetEntity2);
+		portfolioEntity2.setAssetClass(assetClassEntity2);
+		portfolioEntity2.setUnits(new BigDecimal(11.4567));
+		portfolioEntity2.setValue(new BigDecimal(515.5515));
+		portfolioEntity2.setDate(LocalDate.now().minusDays(1));
+		List<PortfolioEntity> portfolio = new ArrayList<>();
+		portfolio.add(portfolioEntity1);
+		portfolio.add(portfolioEntity2);
+		FinancialDataEntity financialDataEntity1 = new FinancialDataEntity();
+		financialDataEntity1.setId(new Long(1));
+		financialDataEntity1.setAsset(assetEntity1);
+		financialDataEntity1.setValue(new BigDecimal(150.09));
+		financialDataEntity1.setDate(LocalDate.now().minusDays(1));
+		FinancialDataEntity financialDataEntity2 = new FinancialDataEntity();
+		financialDataEntity2.setId(new Long(1));
+		financialDataEntity2.setAsset(assetEntity1);
+		financialDataEntity2.setValue(new BigDecimal(50.23));
+		financialDataEntity2.setDate(LocalDate.now().minusDays(1));
+
+		when(portfolioRep.findByUserAndDate(user, user.getLastUpdate())).thenReturn(portfolio);
+		when(financialDataRep.findByAssetAndDate(assetEntity1,assetEntity1.getLastUpdate())).thenReturn(financialDataEntity1);
+		when(financialDataRep.findByAssetAndDate(assetEntity2,assetEntity2.getLastUpdate())).thenReturn(financialDataEntity2);
+		boolean response = portfolioOp.computeUserPortfolio(user);
+		assertTrue(response);
 	}
 	
 }
