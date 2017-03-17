@@ -10,7 +10,7 @@
     </div>
     <div class="chart-wrapper" *ngIf="render">
       <canvas baseChart class="chart" [datasets]="datasets" [labels]="labels"
-      			[options]="strategyOptions" [colors]="colors"
+      			[options]="strategyOptions"
               [chartType]="pieChartType" (chartHover)="chartHovered($event)"
               (chartClick)="chartClicked($event)"></canvas>
     </div>

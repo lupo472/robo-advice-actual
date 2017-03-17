@@ -34,7 +34,6 @@ export class Strategy {
     }
     createChart(){
       for (let assetClassStrategy of this.list) {
-          console.log("ASSETCLALLSLA", assetClassStrategy);
           this.arrayPercentages.push(assetClassStrategy.getPercentage());
           this.arrayLabels.push(assetClassStrategy.getName());
           this.arrayColor.push(assetClassStrategy.assignColour());

@@ -27,7 +27,6 @@ export class StrategyGraphComponent implements OnInit {
 
     this.labels = data.labels;
     this.datasets = data.datasets;
-    this.colors = data.colors;
 
     this.render = true;
 

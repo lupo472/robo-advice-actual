@@ -63,7 +63,7 @@ export class StrategyService {
   setActiveStrategy(res){
     if(res.response == 1) {
       this.activeStrategy = new Strategy(res.data);
-      
+
       return this.activeStrategy.getChartData();
     }
   }
