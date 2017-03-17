@@ -35,7 +35,7 @@ public class SchedulingOperator extends AbstractOperator {
 	@Autowired
 	private CustomStrategyOperator customStrategyOp;
 	
-	@Scheduled(cron = "0 25 11 * * *")
+	@Scheduled(cron = "0 24 12 * * *")
 	public void scheduleTask() {
 		Long start = System.currentTimeMillis();
 		quandlOp.updateFinancialDataSet();
@@ -49,6 +49,10 @@ public class SchedulingOperator extends AbstractOperator {
 				if(created) {
 					System.out.println("Created portfolio for user: " + user.getId());
 				}
+				continue;
+			}
+			if(user.getLastUpdate().isEqual(LocalDate.now())) {
+				System.out.println("Skipped computation for user: " + user.getId());
 				continue;
 			}
 			boolean computed = capitalOp.computeCapital(user);
@@ -74,16 +78,19 @@ public class SchedulingOperator extends AbstractOperator {
 		System.out.println("Scheduling computation in " + (end - start) + " ms");
 	}
 
-	@Scheduled(cron = "0 32 11 * * *")
-	public void fillDB() {
+	/************************************************************************************
+	 * 								Test Method											*
+	 ************************************************************************************
+	@Scheduled(cron = "0 14 13 * * *")
+	public void fillDBUser() {
 		Long start = System.currentTimeMillis();
 		UserEntity user;
-		for(int i = 1; i < 15000; i++) {
+		for(int i = 1; i < 50000; i++) {
 			user = new UserEntity();
 			user.setLastUpdate(LocalDate.now());
 			user.setPassword(HashFunction.hashStringSHA256("stress"));
 			user.setDate(LocalDate.now());
-			user.setEmail(i + "a@stress");
+			user.setEmail(i + "b@stress");
 			this.userRep.save(user);
 			CapitalRequestDTO capital = new CapitalRequestDTO();
 			capital.setAmount(new BigDecimal(10).add(new BigDecimal(i)));
@@ -116,5 +123,6 @@ public class SchedulingOperator extends AbstractOperator {
 		Long end = System.currentTimeMillis();
 		System.out.println("Fill DB computation in " + (end - start) + " ms");
 	}
+	 ************************************************************************************/
 
 }
