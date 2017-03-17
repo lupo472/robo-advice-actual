@@ -17,6 +17,7 @@
 	<div class="card-block" *ngIf="isCustom">
 		<p-slider [(ngModel)]="percentage" [min]="0" [max]="100"
 		(onSlideEnd)="handleSlide($event)" (click)="handleSlide($event)"
+		(updatePercentage)="handleUpdatePercentage($event)"
 		></p-slider>
 	</div>
 </div>

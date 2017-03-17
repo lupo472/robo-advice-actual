@@ -31,11 +31,9 @@ export class StrategyService {
   assignStrategy(res) {
     this.strategies = new Strategies();
     this.customStrategy = new CustomStrategy();
-    //this.customStrategy.populateMap(this.AssetService.assetClassStrategies.getAssetClassStrategies());
-    this.customStrategy.populateMap();
+    this.customStrategy.populateMap(this.AssetService.assetClassStrategies.getAssetClassStrategies());
     this.strategies.createStrategies(res.data);
     this.strategies.addStrategy(this.customStrategy);
-    //console.log("STRATEGIES",this.strategies.getStrategies());
     return this.strategies;
   }
   getHistoryStrategies() {
