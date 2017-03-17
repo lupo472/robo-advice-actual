@@ -58,17 +58,13 @@ export class EditComponent implements OnInit, AfterViewInit {
       this.isCustom = false;
       let currentStrategy = this.StrategyService.strategies.getCurrentStrategy();
       if (currentStrategy instanceof CustomStrategy) {
-        currentStrategy.getAssetClassStrategyMap().forEach((item,index)=>{
-          item.setPercentage(0);
-        });
-      currentStrategy.rePaint();
+        currentStrategy.resetSlider();
       }
     }
     handleUpdatePercentage(){
       this._z.run(()=> {
         this.StrategyService.customStrategy.rePaint();
       });
-      console.log("fanculo",this.StrategyService.strategies.getCurrentStrategy());
     }
     onSelect(strategy: Strategy, i): void {
         this.StrategyService.strategies.setCurrentStrategy(strategy);

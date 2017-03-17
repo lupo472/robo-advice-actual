@@ -79,6 +79,12 @@ export class CustomStrategy extends Strategy {
     console.log("MAP",this.assetClassStrategiesMap);
     return currentSlider.getPercentage();
   }
+  resetSlider(){
+      this.getAssetClassStrategyMap().forEach((item,index)=>{
+        item.setPercentage(0);
+      });
+    this.rePaint();
+  }
   getName(): string {
     return this.name;
   }
