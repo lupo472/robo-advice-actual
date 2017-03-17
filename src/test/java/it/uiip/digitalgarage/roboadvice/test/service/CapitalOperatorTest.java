@@ -1,15 +1,25 @@
 package it.uiip.digitalgarage.roboadvice.test.service;
 
 import it.uiip.digitalgarage.roboadvice.RoboadviceApplication;
+import it.uiip.digitalgarage.roboadvice.logic.operator.CapitalOperator;
+import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
+import it.uiip.digitalgarage.roboadvice.persistence.repository.CapitalRepository;
+import it.uiip.digitalgarage.roboadvice.persistence.repository.FinancialDataRepository;
+import it.uiip.digitalgarage.roboadvice.persistence.repository.UserRepository;
 import it.uiip.digitalgarage.roboadvice.service.controller.CapitalController;
 import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -25,8 +35,37 @@ public class CapitalOperatorTest {
 	 * Test: getCapitalPeriod
 	*/
 
+    @InjectMocks
     @Autowired
-    private CapitalController capitalCtrl;
+    private CapitalOperator capitalOp;
+
+    @Mock
+    private CapitalRepository capitalRep;
+
+    @Mock
+    private UserRepository userRep;
+
+    @Mock
+    private FinancialDataRepository financialDataRep;
+
+    private UserEntity user;
+
+    @Before
+    public void setUpMock() {
+        MockitoAnnotations.initMocks(this);
+        user = new UserEntity();
+        user.setId(new Long(2));
+        user.setEmail("luca@antilici.it");
+        user.setPassword("pippo123");
+        user.setDate(LocalDate.now());
+        user.setLastUpdate(LocalDate.now().minusDays(1));
+    }
+
+    @Test
+    public void computeCapitalSuccess() {
+
+    }
+
 
 //    @Test
 //    public void getCurrentCapitalValidUser() {
