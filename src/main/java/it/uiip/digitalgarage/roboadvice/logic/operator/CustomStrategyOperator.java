@@ -21,23 +21,27 @@ public class CustomStrategyOperator extends AbstractOperator{
 
     public boolean setCustomStrategy(CustomStrategyDTO request, Authentication auth) {
     	UserEntity user = this.userRep.findByEmail(auth.getName());
-    	if(user == null){
-    		return false;
+    	return this.setCustomStrategy(request, user);
+    }
+
+    public boolean setCustomStrategy(CustomStrategyDTO request, UserEntity user) {
+		if(user == null){
+			return false;
 		}
-    	this.customStrategyRep.setStrategyInactive(user);
-    	List<CustomStrategyEntity> todayStrategySet = this.customStrategyRep.findByUserAndDate(user, LocalDate.now());
-    	if(todayStrategySet.size() > 0) {
-    		this.customStrategyRep.delete(todayStrategySet);
-    	}
-    	List<CustomStrategyEntity> entityList = this.customStrategyWrap.unwrapToEntity(request);
-    	for (CustomStrategyEntity entity : entityList) {
+		this.customStrategyRep.setStrategyInactive(user);
+		List<CustomStrategyEntity> todayStrategySet = this.customStrategyRep.findByUserAndDate(user, LocalDate.now());
+		if(todayStrategySet.size() > 0) {
+			this.customStrategyRep.delete(todayStrategySet);
+		}
+		List<CustomStrategyEntity> entityList = this.customStrategyWrap.unwrapToEntity(request);
+		for (CustomStrategyEntity entity : entityList) {
 			entity.setUser(user);
 			entity.setActive(true);
 			entity.setDate(LocalDate.now());
 		}
 		this.customStrategyRep.save(entityList);
-    	return true;
-    }
+		return true;
+	}
 
     public CustomStrategyResponseDTO getActiveStrategy(Authentication auth){
     	UserEntity user = this.userRep.findByEmail(auth.getName());
