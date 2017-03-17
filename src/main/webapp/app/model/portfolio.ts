@@ -54,6 +54,16 @@ export class Portfolio {
             labels.push(item.date);
         });
 
+        for (let i = 0; i < value.length; i++) {
+            for (let j = 0; j < value[i].length; j++) {
+                if (value[i][j] == undefined) {
+                    value[i][j] = 0;
+                }
+            }
+
+            datasets[i].data = value[i];
+        }
+
         let datasplice = [];
 
         for (let iter = 0; iter < datasets.length - 1; iter++) {

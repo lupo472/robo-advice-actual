@@ -49,7 +49,7 @@ export class Strategy {
                                     backgroundColor: this.arrayColors[0].backgroundColor,
                                 borderWidth: this.arrayColors[0].borderWidth}],
                             colors: this.arrayColors};
-        console.log("DATAELABORATED: ", dataToReturn)
+
         return dataToReturn;
     }
 
@@ -66,6 +66,5 @@ export class Strategy {
 
         this.setStrategyArray(list);
 
-        console.log("LIST: ",this.getStrategyArray())
     }
 }
