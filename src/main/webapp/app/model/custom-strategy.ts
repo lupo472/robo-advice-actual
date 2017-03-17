@@ -14,15 +14,11 @@ export class CustomStrategy extends Strategy {
     this.list = [];
     this.sumPercentage = 0;
     this.maxPercentage = 100;
-    this.populateMap();
-    this.createAssetClassStrategies();
   }
   createAssetClassStrategies(){
     this.assetClassStrategiesMap.forEach((item,index)=>{
       this.list.push(item);
-      console.log("item",item);
     });
-    console.log("ASSETCLASSSTRATEGIESCUSTOM",this.list);
   }
   rePaint(){
     this.arrayPercentages = [];
@@ -48,14 +44,12 @@ export class CustomStrategy extends Strategy {
   getStrategyArray(): AssetClassStrategy[] {
     return this.list;
   }
-  populateMap(){
-    // assetClassStrategies.forEach(()=>{
-    //   console.log(item);
-    // });
-    this.assetClassStrategiesMap.set(1,new AssetClassStrategy(0,1,""));
-    this.assetClassStrategiesMap.set(2,new AssetClassStrategy(0,2,""));
-    this.assetClassStrategiesMap.set(3,new AssetClassStrategy(0,3,""));
-    this.assetClassStrategiesMap.set(4,new AssetClassStrategy(0,4,""));
+  populateMap(assetClassStrategies:AssetClassStrategy[]){
+    assetClassStrategies.forEach((item,index)=> {
+      this.assetClassStrategiesMap.set(item.getId(),
+      new AssetClassStrategy(item.getPercentage(),item.getId(),item.getName()));
+    });
+    this.createAssetClassStrategies();
   }
   getAssetClassStrategyMap(){
     return this.assetClassStrategiesMap;

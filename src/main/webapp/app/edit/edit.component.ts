@@ -44,7 +44,7 @@ export class EditComponent implements OnInit, AfterViewInit {
 
     ngOnInit(): void {
         this.AssetService.getAssetClassSet().subscribe((res) => this.getAssetClass(res));
-        this.StrategyService.getDefaultStrategySet().subscribe(res => this.getStrategy(res));
+        //this.StrategyService.getDefaultStrategySet().subscribe(res => this.getStrategy(res));
     }
 
     //ASSIGN STRATEGIES
@@ -53,6 +53,7 @@ export class EditComponent implements OnInit, AfterViewInit {
     }
     //ASSIGN ASSET CLASS
     getAssetClass(res): void {
+        this.StrategyService.getDefaultStrategySet().subscribe(res => this.getStrategy(res));
         this.assetClassStrategies = res.getAssetClassStrategies();
     }
 
