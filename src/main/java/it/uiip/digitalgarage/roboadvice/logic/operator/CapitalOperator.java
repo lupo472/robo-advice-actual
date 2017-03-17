@@ -55,8 +55,12 @@ public class CapitalOperator extends AbstractOperator {
 	}
 	
 	public boolean addCapital(CapitalRequestDTO capital, Authentication auth) {
-		CapitalEntity entity = this.capitalConv.convertToEntity(capital);
 		UserEntity user = this.userRep.findByEmail(auth.getName());
+		return this.addCapital(capital, user);
+	}
+
+	public boolean addCapital(CapitalRequestDTO capital, UserEntity user) {
+		CapitalEntity entity = this.capitalConv.convertToEntity(capital);
 		if(user == null) {
 			return false;
 		}

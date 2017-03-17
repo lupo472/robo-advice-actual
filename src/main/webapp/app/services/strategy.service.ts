@@ -16,7 +16,10 @@ export class StrategyService {
   strategies:Strategies;
   customStrategy:CustomStrategy;
   array:Strategy[];
+  historyStrategies:Strategies;
   currentStrategy:DefaultStrategy;
+  dataHistory:any=[];
+  private period=30;
 
   constructor(private AppService:AppService, private AssetService:AssetService) {
   }
@@ -31,15 +34,25 @@ export class StrategyService {
   assignStrategy(res) {
     this.strategies = new Strategies();
     this.customStrategy = new CustomStrategy();
-    //this.customStrategy.populateMap(this.AssetService.assetClassStrategies.getAssetClassStrategies());
-    this.customStrategy.populateMap();
+    this.customStrategy.populateMap(this.AssetService.assetClassStrategies.getAssetClassStrategies());
     this.strategies.createStrategies(res.data);
     this.strategies.addStrategy(this.customStrategy);
-    //console.log("STRATEGIES",this.strategies.getStrategies());
     return this.strategies;
   }
   getHistoryStrategies() {
-    return this.AppService.getHistoryStrategies().map(res => {return res});
+    return this.AppService.getHistoryStrategies().map(res => this.mapHistory(res));
+  }
+  mapHistory(res){
+    if(res.response == 1 ) {
+      this.historyStrategies = new Strategies();
+      this.dataHistory=res.data;
+      var startdate=new Date();
+      startdate.setDate(startdate.getDate() - this.period);
+      return this.historyStrategies.createChartDataHistory(res.data, startdate);
+    }
+  }
+  refreshHistory(startdate){
+    return this.historyStrategies.createChartDataHistory(this.dataHistory,startdate);
   }
 
 }

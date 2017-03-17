@@ -1,6 +1,6 @@
 import { AppConfig } from '../../services/app.config';
 import { StrategyService } from '../../services/strategy.service';
-import { Component, OnInit, Input, OnChanges, SimpleChanges} from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { DefaultStrategies } from '../../model/default-strategies';
 import { Strategies } from '../../model/strategies';
 
@@ -9,7 +9,7 @@ import { Strategies } from '../../model/strategies';
     templateUrl: './strategy-selector.component.html',
     styleUrls: ['./strategy-selector.component.scss']
 })
-export class StrategySelectorComponent implements OnInit, OnChanges {
+export class StrategySelectorComponent implements OnInit {
 
     @Input() data;
     @Input() labels;
@@ -21,19 +21,12 @@ export class StrategySelectorComponent implements OnInit, OnChanges {
     @Input() id;
     @Input() selected;
     @Input() strategy;
-    //strategies:Strategies;
 
     constructor() {
 
     }
     ngOnInit() {
-      //this.strategies = new Strategies();
-      //this.strategies.createStrategyForChart(this.strategy);
       this.strategy.createChart();
-    }
-    ngOnChanges(changes: SimpleChanges) {
-        // console.log("something changes");
-        // console.log(changes);
     }
 
 

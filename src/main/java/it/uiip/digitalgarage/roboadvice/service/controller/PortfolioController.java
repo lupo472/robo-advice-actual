@@ -32,16 +32,6 @@ public class PortfolioController extends AbstractController {
         }
         return new GenericResponse<List<PortfolioDTO>>(1, result);
     }
-    
-//  @RequestMapping("/getUserPortfolioDate")                                                                   
-//  @ResponseBody                                                                                              
-//  public GenericResponse<?> getUserPortfolioDate(@Valid @RequestBody PortfolioRequestForDateDTO request){    
-//      PortfolioDTO result = this.portfolioOp.getUserPortfolioDate(request);                                  
-//      if(result == null) {                                                                                   
-//          return new GenericResponse<String>(0, ControllerConstants.EMPTY_PORTFOLIO);                        
-//      }                                                                                                      
-//      return new GenericResponse<PortfolioDTO>(1, result);                                                   
-//  }
 
 /************************************************************************************************
  * 										Test Method												*
