@@ -21,9 +21,6 @@ export class EditComponent implements OnInit, AfterViewInit {
     public isDisabled = true;
     reset = false;
     array = [];
-    //strategy:Strategy = new Strategy();
-
-
     @ViewChild('childModal') public childModal: ModalDirective;
 
     constructor(private _z:NgZone,public AssetService: AssetService, public StrategyService: StrategyService, private router: Router) {
@@ -32,21 +29,16 @@ export class EditComponent implements OnInit, AfterViewInit {
     public showChildModal(): void {
         this.childModal.show();
     }
-
     public hideChildModal(): void {
         this.childModal.hide();
     }
     ngAfterViewInit() {
         // viewChild is set after the view has been initialized
         this.childModal.show();
-
     }
-
     ngOnInit(): void {
         this.AssetService.getAssetClassSet().subscribe((res) => this.getAssetClass(res));
-        //this.StrategyService.getDefaultStrategySet().subscribe(res => this.getStrategy(res));
     }
-
     //ASSIGN STRATEGIES
     getStrategy(res): void {
         this.strategies = res.getStrategies();
@@ -56,7 +48,6 @@ export class EditComponent implements OnInit, AfterViewInit {
         this.StrategyService.getDefaultStrategySet().subscribe(res => this.getStrategy(res));
         this.assetClassStrategies = res.getAssetClassStrategies();
     }
-
     createStrategy(): void {
         this.StrategyService.createStrategy(this.StrategyService.strategies.getCurrentStrategy()).subscribe(
             (res) => {
@@ -65,12 +56,19 @@ export class EditComponent implements OnInit, AfterViewInit {
     }
     resetSlider(){
       this.isCustom = false;
+      let currentStrategy = this.StrategyService.strategies.getCurrentStrategy();
+      if (currentStrategy instanceof CustomStrategy) {
+        currentStrategy.getAssetClassStrategyMap().forEach((item,index)=>{
+          item.setPercentage(0);
+        });
+      currentStrategy.rePaint();
+      }
     }
-    //NOT WORKING trying to use angular change detection
-    handleUpdatePercentage(obj){
+    handleUpdatePercentage(){
       this._z.run(()=> {
         this.StrategyService.customStrategy.rePaint();
       });
+      console.log("fanculo",this.StrategyService.strategies.getCurrentStrategy());
     }
     onSelect(strategy: Strategy, i): void {
         this.StrategyService.strategies.setCurrentStrategy(strategy);
