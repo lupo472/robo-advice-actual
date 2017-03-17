@@ -1,5 +1,4 @@
 import { StrategyService } from '../../services/strategy.service';
-import { UserService } from '../../services/user.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -9,32 +8,33 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StrategyGraphComponent implements OnInit {
 
-  constructor(private StrategyService: StrategyService, private UserService: UserService) { }
+  constructor(private StrategyService: StrategyService) { }
 
   public labels: Array<string> = [];
-  public data: Array<number> = [];
+  public datasets: Array<number> = [];
   public date: string;
 
   public render: boolean = false;
 
   ngOnInit() {
 
-    this.StrategyService.getHistoryStrategies().subscribe(res => this.getStrategy(res.data));
+    this.StrategyService.getHistoryStrategies().subscribe(res => this.getStrategy(res));
   }
 
   getStrategy(res) {
-    if(res.response == 1) {
-      let resdata = res.data;
 
-      this.date = resdata.date;
+    let index = res.data.length - 1;
+    let i = res.labels.length -1;
 
-      resdata.list.forEach((item, index) => {
-        this.labels[index] = item.name;
-        this.data[index] = item.percentage;
-      });
+    this.datasets = [res.data[index]];
+    console.log("STRATEGTDATA:", this.datasets);
+    this.labels = res.labels;
+    console.log("STRATEGTLABELS:", this.labels);
+    this.date = res.labels[index];
+    console.log("STRATEGTDATE:", this.date);
 
-      this.render = true;
-    }
+    this.render = true;
+
   }
 
   public brandPrimary: string = '#20a8d8';
