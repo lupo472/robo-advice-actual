@@ -36,9 +36,12 @@ public class SchedulingOperator extends AbstractOperator {
 	@Autowired
 	private CustomStrategyOperator customStrategyOp;
 	
-	@Scheduled(cron = "0 0 10 * * *")
+	@Scheduled(cron = "0 54 10 * * *")
 	public void scheduleTask() {
+		Long start = System.currentTimeMillis();
 		quandlOp.updateFinancialDataSet();
+		Long middle = System.currentTimeMillis();
+		System.out.println("Quandl computation in " + (middle - start) + " ms");
 		List<UserEntity> users = userOp.getAllUsers();
 		for (UserEntity user : users) {
 			PortfolioDTO currentPortfolio = portfolioOp.getCurrentPortfolio(user);
@@ -68,26 +71,8 @@ public class SchedulingOperator extends AbstractOperator {
 				System.out.println("Computed portfolio for user: " + user.getId());
 			}
 		}
+		Long end = System.currentTimeMillis();
+		System.out.println("Scheduling computation in " + (end - start) + " ms");
 	}
 
-	@Scheduled(cron = "0 46 16 * * *")
-	public void fillPortoflio() {
-		System.out.println(HashFunction.hashStringSHA256("stress"));
-		List<PortfolioEntity> list = new ArrayList<>();
-		UserEntity user = this.userRep.findByEmail("stress@test");
-		for(int i = 0; i < 1000; i++) {
-			LocalDate date = LocalDate.now().minus(Period.ofDays(i));
-			PortfolioEntity entity = new PortfolioEntity();
-			AssetEntity asset = this.assetRep.findOne(new Long(4));
-			entity.setAsset(asset);
-			entity.setAssetClass(asset.getAssetClass());
-			entity.setDate(date);
-			entity.setUnits(new BigDecimal(500).add(new BigDecimal(i)));
-			entity.setUser(user);
-			entity.setDate(date);
-			entity.setValue(new BigDecimal(500).subtract(new BigDecimal(i)));
-			list.add(entity);
-		}
-		this.portfolioOp.savePortfolio(list);
-	}
 }
