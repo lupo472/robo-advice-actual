@@ -2,6 +2,7 @@ package it.uiip.digitalgarage.roboadvice.logic.operator;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetEntity;
@@ -11,7 +12,8 @@ import it.uiip.digitalgarage.roboadvice.persistence.quandl.QuandlDBUpdater;
 
 @Service
 public class QuandlOperator extends AbstractOperator {
-	
+
+	@CacheEvict(value = "financialDataSet", allEntries = true)
 	public void updateFinancialDataSet() {
 		List<AssetEntity> assets = (List<AssetEntity>) this.assetRep.findAll();
 		QuandlDBUpdater q = new QuandlDBUpdater();
@@ -20,7 +22,8 @@ public class QuandlOperator extends AbstractOperator {
 			this.saveList(entities, asset);
 		}
 	}
-	
+
+	@CacheEvict(value = "financialDataSet", allEntries = true)
 	public void initializeFinancialDataSet() {
 		List<AssetEntity> assets = (List<AssetEntity>) this.assetRep.findAll();
 		QuandlDBInitializer q = new QuandlDBInitializer();

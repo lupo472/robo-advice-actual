@@ -10,17 +10,21 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.*;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PortfolioOperator extends AbstractOperator {
 
+	@Cacheable("currentPortfolio")
     public PortfolioDTO getCurrentPortfolio(Authentication auth) {
 		UserEntity user = this.userRep.findByEmail(auth.getName());
 		return this.getCurrentPortfolio(user);
 	}
 
+	@Cacheable("currentPortfolio")
 	public PortfolioDTO getCurrentPortfolio(UserEntity user) {
 		List<PortfolioEntity> entityList = this.portfolioRep.findByUserAndDate(user, user.getLastUpdate());
 		if(entityList.isEmpty()) {
@@ -46,6 +50,7 @@ public class PortfolioOperator extends AbstractOperator {
 		return result;
 	}
 
+	@Cacheable("portfolioHistory")
     public List<PortfolioDTO> getPortfolioForPeriod(PeriodRequestDTO request, Authentication auth){
 		UserEntity user = this.userRep.findByEmail(auth.getName());
 		List<PortfolioEntity> entityList = null;
@@ -95,6 +100,7 @@ public class PortfolioOperator extends AbstractOperator {
         return result;
     }
 
+    @CacheEvict(value = {"currentPortfolio", "portfolioHistory"}, allEntries = true)
     public boolean createUserPortfolio(UserEntity user) {
     	CapitalEntity capitalEntity = this.capitalRep.findByUserAndDate(user, user.getLastUpdate());
     	if(capitalEntity == null) {
@@ -152,6 +158,7 @@ public class PortfolioOperator extends AbstractOperator {
     	return amount;
     }
 
+	@CacheEvict(value = {"currentPortfolio", "portfolioHistory"}, allEntries = true)
     public boolean computeUserPortfolio(UserEntity user) {
     	List<PortfolioEntity> currentPortfolio = this.portfolioRep.findByUserAndDate(user, user.getLastUpdate());
     	List<PortfolioEntity> newPortfolioList = new ArrayList<>();
@@ -182,7 +189,8 @@ public class PortfolioOperator extends AbstractOperator {
     	BigDecimal result = units.multiply(financialData.getValue());
     	return result;
     }
-    
+
+	@CacheEvict(value = {"currentPortfolio", "portfolioHistory"}, allEntries = true)
     public void savePortfolio(List<PortfolioEntity> entities) {
     	for (PortfolioEntity entity : entities) {
     		PortfolioEntity savedEntity = this.portfolioRep.findByUserAndAssetAndDate(entity.getUser(), entity.getAsset(), LocalDate.now());

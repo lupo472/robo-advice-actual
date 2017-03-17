@@ -2,6 +2,7 @@ package it.uiip.digitalgarage.roboadvice.logic.operator;
 
 import java.util.*;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.DefaultStrategyEntity;
@@ -16,6 +17,7 @@ public class DefaultStrategyOperator extends AbstractOperator {
 	 * computed assuming that in the database
 	 * the strategies are ordered by risk.
 	*/
+	@Cacheable("defaultStrategies")
 	public List<DefaultStrategyDTO> getDefaultStrategySet() {
 		List<DefaultStrategyEntity> defaultStrategySet = this.defaultStrategyRep.findAll();
 		Map<String, List<AssetClassStrategyDTO>> map = new HashMap<>();
