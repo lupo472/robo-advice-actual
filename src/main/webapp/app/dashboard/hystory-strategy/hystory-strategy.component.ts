@@ -123,7 +123,7 @@ export class HystoryStrategyComponent implements OnInit {
   }
 
   getStrategies(res){
-    this.strategies=res;
+/*    this.strategies=res;
     console.log("strategies: ",this.strategies);
     if(this.strategies.response == 1 ){
       this.strategies.data.forEach((strategy,i)=>{
@@ -161,8 +161,12 @@ export class HystoryStrategyComponent implements OnInit {
     for(var i=0;i<this.dati.length;i++){
       this.chartData.push({data: this.dati[i], label:this.dataclass[i], backgroundColor: this.colorclass[i]});
     }
-    console.log("chartData: ",this.chartData);
+    console.log("chartData: ",this.chartData);*/
 
+    this.chartData=res.data;
+    this.labels=res.labels;
+    console.log("this.chartData: ",this.chartData);
+    console.log("this.labels :",this.labels);
     this.refreshChart();
     this.render = true;
 

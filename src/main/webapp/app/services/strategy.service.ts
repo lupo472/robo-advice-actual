@@ -16,6 +16,7 @@ export class StrategyService {
   strategies:Strategies;
   customStrategy:CustomStrategy;
   array:Strategy[];
+  historyStrategies:Strategies;
   currentStrategy:DefaultStrategy;
 
   constructor(private AppService:AppService, private AssetService:AssetService) {
@@ -39,7 +40,13 @@ export class StrategyService {
     return this.strategies;
   }
   getHistoryStrategies() {
-    return this.AppService.getHistoryStrategies().map(res => {return res});
+    return this.AppService.getHistoryStrategies().map(res => this.mapHistory(res));
+  }
+  mapHistory(res){
+    if(res.response == 1 ) {
+      this.historyStrategies = new Strategies();
+      return this.historyStrategies.createChartDataHistory(res.data);
+    }
   }
 
 }
