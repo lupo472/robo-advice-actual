@@ -13,11 +13,9 @@
       <!--/.col-->
     </div>
     <div *ngIf="render" class="chart-wrapper">
-      <div class="chart-wrapper">
-        <canvas baseChart class="chart" [datasets]="barChartData" [labels]="barChartLabels"
+        <canvas baseChart class="chart" [datasets]="chartData" [labels]="labels"
                 [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType"
                 ></canvas>
-      </div>
     </div>
   </div>
 </div>
