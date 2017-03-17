@@ -47,7 +47,8 @@ export class Strategy {
                             datasets: [
                                 {data: this.arrayPercentages,
                                     backgroundColor: this.arrayColors[0].backgroundColor,
-                                borderWidth: this.arrayColors[0].borderWidth}]};
+                                borderWidth: this.arrayColors[0].borderWidth}],
+                            colors: this.arrayColors};
         console.log("DATAELABORATED: ", dataToReturn)
         return dataToReturn;
     }
