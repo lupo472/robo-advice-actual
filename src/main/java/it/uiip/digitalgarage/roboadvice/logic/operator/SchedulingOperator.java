@@ -35,7 +35,7 @@ public class SchedulingOperator extends AbstractOperator {
 	@Autowired
 	private CustomStrategyOperator customStrategyOp;
 	
-	@Scheduled(cron = "0 24 12 * * *")
+	@Scheduled(cron = "0 0 10 * * *")
 	public void scheduleTask() {
 		Long start = System.currentTimeMillis();
 		quandlOp.updateFinancialDataSet();
