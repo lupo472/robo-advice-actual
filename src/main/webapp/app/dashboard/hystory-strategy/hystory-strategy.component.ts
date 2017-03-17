@@ -119,6 +119,7 @@ export class HystoryStrategyComponent implements OnInit {
     this.chartData=[];
     this.labels=[];
     let res=this.StrategyService.refreshHistory(this.startdate);
+    console.log("res refresh", res);
     this.getStrategies(res);
   }
 

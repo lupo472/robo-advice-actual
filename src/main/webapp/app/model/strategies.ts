@@ -44,6 +44,8 @@ export class Strategies {
   }
 
     createChartDataHistory(data: any, startdate:Date) {
+        this.chartData=[];
+        this.labels=[];
         console.log("data nel model: ",data);
         data.forEach((strategy,i)=>{
             var beginning = new Date(strategy.date);
