@@ -3,12 +3,10 @@ package it.uiip.digitalgarage.roboadvice.test.service;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
-import it.uiip.digitalgarage.roboadvice.logic.operator.CustomStrategyOperator;
 import it.uiip.digitalgarage.roboadvice.logic.operator.PortfolioOperator;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.*;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.*;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -20,13 +18,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import it.uiip.digitalgarage.roboadvice.RoboadviceApplication;
-import it.uiip.digitalgarage.roboadvice.service.controller.PortfolioController;
-import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioDTO;
-import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
-import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +58,7 @@ public class PortfolioOperatorTest {
 	private AssetEntity assetEntity2;
 	private FinancialDataEntity financialDataEntity1;
 	private FinancialDataEntity financialDataEntity2;
-	private List<PortfolioEntity> portfolio;
+	private List<PortfolioEntity> oldPortfolio;
 
 	@Before
 	public void setUpMock() {
@@ -127,9 +120,9 @@ public class PortfolioOperatorTest {
 		portfolioEntity2.setUnits(new BigDecimal(11.4567));
 		portfolioEntity2.setValue(new BigDecimal(515.5515));
 		portfolioEntity2.setDate(LocalDate.now().minusDays(1));
-		portfolio = new ArrayList<>();
-		portfolio.add(portfolioEntity1);
-		portfolio.add(portfolioEntity2);
+		oldPortfolio = new ArrayList<>();
+		oldPortfolio.add(portfolioEntity1);
+		oldPortfolio.add(portfolioEntity2);
 	}
 
 	@Test
@@ -218,7 +211,7 @@ public class PortfolioOperatorTest {
 		savedPortfolio.setValue(new BigDecimal("1575.9450000000000358113538823090493679046630859375"));
 		savedPortfolio.setDate(LocalDate.now());
 
-		when(portfolioRep.findByUserAndDate(user, user.getLastUpdate())).thenReturn(portfolio);
+		when(portfolioRep.findByUserAndDate(user, user.getLastUpdate())).thenReturn(oldPortfolio);
 		when(financialDataRep.findByAssetAndDate(assetEntity1,assetEntity1.getLastUpdate())).thenReturn(financialDataEntity1);
 		when(financialDataRep.findByAssetAndDate(assetEntity2,assetEntity2.getLastUpdate())).thenReturn(financialDataEntity2);
 		boolean response = portfolioOp.computeUserPortfolio(user);
@@ -228,7 +221,7 @@ public class PortfolioOperatorTest {
 
 	@Test
 	public void computeUserPortfolioNullAssetFinancialData() {
-		when(portfolioRep.findByUserAndDate(user, user.getLastUpdate())).thenReturn(portfolio);
+		when(portfolioRep.findByUserAndDate(user, user.getLastUpdate())).thenReturn(oldPortfolio);
 		when(financialDataRep.findByAssetAndDate(assetEntity1,assetEntity1.getLastUpdate())).thenReturn(null);
 		when(financialDataRep.findByAssetAndDate(assetEntity2,assetEntity2.getLastUpdate())).thenReturn(null);
 		boolean response = portfolioOp.computeUserPortfolio(user);
