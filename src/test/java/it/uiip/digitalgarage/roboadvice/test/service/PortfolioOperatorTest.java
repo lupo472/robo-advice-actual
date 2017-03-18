@@ -65,6 +65,7 @@ public class PortfolioOperatorTest {
 	private AssetEntity assetEntity2;
 	private FinancialDataEntity financialDataEntity1;
 	private FinancialDataEntity financialDataEntity2;
+	private List<PortfolioEntity> portfolio;
 
 	@Before
 	public void setUpMock() {
@@ -109,6 +110,26 @@ public class PortfolioOperatorTest {
 		financialDataEntity2.setAsset(assetEntity1);
 		financialDataEntity2.setValue(new BigDecimal(50.23));
 		financialDataEntity2.setDate(LocalDate.now().minusDays(1));
+
+		PortfolioEntity portfolioEntity1 = new PortfolioEntity();
+		portfolioEntity1.setId(new Long(1));
+		portfolioEntity1.setUser(user);
+		portfolioEntity1.setAsset(assetEntity1);
+		portfolioEntity1.setAssetClass(assetClassEntity1);
+		portfolioEntity1.setUnits(new BigDecimal(10.50));
+		portfolioEntity1.setValue(new BigDecimal(1296.2954));
+		portfolioEntity1.setDate(LocalDate.now().minusDays(1));
+		PortfolioEntity portfolioEntity2 = new PortfolioEntity();
+		portfolioEntity2.setId(new Long(2));
+		portfolioEntity2.setUser(user);
+		portfolioEntity2.setAsset(assetEntity2);
+		portfolioEntity2.setAssetClass(assetClassEntity2);
+		portfolioEntity2.setUnits(new BigDecimal(11.4567));
+		portfolioEntity2.setValue(new BigDecimal(515.5515));
+		portfolioEntity2.setDate(LocalDate.now().minusDays(1));
+		portfolio = new ArrayList<>();
+		portfolio.add(portfolioEntity1);
+		portfolio.add(portfolioEntity2);
 	}
 
 	@Test
@@ -188,31 +209,31 @@ public class PortfolioOperatorTest {
 
 	@Test
 	public void computeUserPortfolioSucces() {
-		PortfolioEntity portfolioEntity1 = new PortfolioEntity();
-		portfolioEntity1.setId(new Long(1));
-		portfolioEntity1.setUser(user);
-		portfolioEntity1.setAsset(assetEntity1);
-		portfolioEntity1.setAssetClass(assetClassEntity1);
-		portfolioEntity1.setUnits(new BigDecimal(10.50));
-		portfolioEntity1.setValue(new BigDecimal(1296.2954));
-		portfolioEntity1.setDate(LocalDate.now().minusDays(1));
-		PortfolioEntity portfolioEntity2 = new PortfolioEntity();
-		portfolioEntity2.setId(new Long(2));
-		portfolioEntity2.setUser(user);
-		portfolioEntity2.setAsset(assetEntity2);
-		portfolioEntity2.setAssetClass(assetClassEntity2);
-		portfolioEntity2.setUnits(new BigDecimal(11.4567));
-		portfolioEntity2.setValue(new BigDecimal(515.5515));
-		portfolioEntity2.setDate(LocalDate.now().minusDays(1));
-		List<PortfolioEntity> portfolio = new ArrayList<>();
-		portfolio.add(portfolioEntity1);
-		portfolio.add(portfolioEntity2);
+		PortfolioEntity savedPortfolio = new PortfolioEntity();
+		savedPortfolio.setId(null);
+		savedPortfolio.setUser(user);
+		savedPortfolio.setAsset(assetEntity1);
+		savedPortfolio.setAssetClass(assetClassEntity1);
+		savedPortfolio.setUnits(new BigDecimal(10.50));
+		savedPortfolio.setValue(new BigDecimal("1575.9450000000000358113538823090493679046630859375"));
+		savedPortfolio.setDate(LocalDate.now());
 
 		when(portfolioRep.findByUserAndDate(user, user.getLastUpdate())).thenReturn(portfolio);
 		when(financialDataRep.findByAssetAndDate(assetEntity1,assetEntity1.getLastUpdate())).thenReturn(financialDataEntity1);
 		when(financialDataRep.findByAssetAndDate(assetEntity2,assetEntity2.getLastUpdate())).thenReturn(financialDataEntity2);
 		boolean response = portfolioOp.computeUserPortfolio(user);
+		verify(portfolioRep).save(savedPortfolio);
 		assertTrue(response);
+	}
+
+	@Test
+	public void computeUserPortfolioNullAssetFinancialData() {
+		when(portfolioRep.findByUserAndDate(user, user.getLastUpdate())).thenReturn(portfolio);
+		when(financialDataRep.findByAssetAndDate(assetEntity1,assetEntity1.getLastUpdate())).thenReturn(null);
+		when(financialDataRep.findByAssetAndDate(assetEntity2,assetEntity2.getLastUpdate())).thenReturn(null);
+		boolean response = portfolioOp.computeUserPortfolio(user);
+		assertFalse(response);
+
 	}
 	
 }
