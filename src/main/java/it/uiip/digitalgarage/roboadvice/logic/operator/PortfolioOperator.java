@@ -27,6 +27,7 @@ public class PortfolioOperator extends AbstractOperator {
 	@Cacheable("currentPortfolio")
 	public PortfolioDTO getCurrentPortfolio(UserEntity user) {
 		List<PortfolioEntity> entityList = this.portfolioRep.findByUserAndDate(user, user.getLastUpdate());
+		SchedulingOperator.count++; //TODO remove counting
 		if(entityList.isEmpty()) {
 			return null;
 		}
@@ -34,9 +35,11 @@ public class PortfolioOperator extends AbstractOperator {
 		LocalDate date = entityList.get(0).getDate();
 		result.setDate(date.toString());
 		BigDecimal total = this.portfolioRep.sumValues(user, date).getValue();
+		SchedulingOperator.count++; //TODO remove counting
 		Set<PortfolioElementDTO> set = new HashSet<>();
 		for (PortfolioEntity entity : entityList) {
 			BigDecimal assetClassValue = this.portfolioRep.sumValuesForAssetClass(entity.getAssetClass(), user, date).getValue();
+			SchedulingOperator.count++; //TODO remove counting
 			PortfolioElementDTO element = new PortfolioElementDTO();
 			element.setId(entity.getAssetClass().getId());
 			element.setName(entity.getAssetClass().getName());
@@ -100,31 +103,33 @@ public class PortfolioOperator extends AbstractOperator {
         return result;
     }
 
-    /*TODO: migliorare prestazioni
-	 *    	La chiamata findByUserAndStrategy è superflua dal momento che lo scheduler
-	 *    	carica già la strategia attiva e può dunque passarla a questo metodo.
-     */
+	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory"}, allEntries = true)
+	public boolean createUserPortfolio(UserEntity user) {
+		CapitalEntity capitalEntity = this.capitalRep.findByUserAndDate(user, user.getLastUpdate());
+		if(capitalEntity == null) {
+			return false;
+		}
+		BigDecimal amount = capitalEntity.getAmount();
+		List<CustomStrategyEntity> strategyEntity = this.customStrategyRep.findByUserAndActive(user, true);
+		return this.createUserPortfolio(user, strategyEntity);
+	}
+
     @CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory"}, allEntries = true)
-    public boolean createUserPortfolio(UserEntity user) {
+    public boolean createUserPortfolio(UserEntity user, List<CustomStrategyEntity> strategyEntity) {
+		if(strategyEntity.isEmpty()) {
+			return false;
+		}
     	CapitalEntity capitalEntity = this.capitalRep.findByUserAndDate(user, user.getLastUpdate());
-		//TODO remove counting
-		SchedulingOperator.count++;
+		SchedulingOperator.count++; //TODO remove counting
     	if(capitalEntity == null) {
     		return false;
     	}
     	BigDecimal amount = capitalEntity.getAmount();
-    	List<CustomStrategyEntity> strategyEntity = this.customStrategyRep.findByUserAndActive(user, true);
-		//TODO remove counting
-		SchedulingOperator.count++;
-    	if(strategyEntity.isEmpty()) {
-    		return false;
-    	}
     	for (CustomStrategyEntity strategy : strategyEntity) {
 			BigDecimal amountPerClass = amount.divide(new BigDecimal(100.00), 8, RoundingMode.HALF_UP).multiply(strategy.getPercentage());
 			AssetClassEntity assetClass = strategy.getAssetClass();
 			this.savePortfolioForAssetClass(assetClass, user, amountPerClass);
-			//TODO remove counting
-			SchedulingOperator.count++;
+			SchedulingOperator.count++; //TODO remove counting
 		}
     	return true;
     }

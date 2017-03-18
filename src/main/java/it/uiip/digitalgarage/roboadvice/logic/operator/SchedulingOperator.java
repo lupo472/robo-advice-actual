@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetEntity;
+import it.uiip.digitalgarage.roboadvice.persistence.entity.CustomStrategyEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.PortfolioEntity;
 import it.uiip.digitalgarage.roboadvice.service.dto.*;
 import it.uiip.digitalgarage.roboadvice.service.util.HashFunction;
@@ -39,23 +40,21 @@ public class SchedulingOperator extends AbstractOperator {
 	public static int quandl;
 
 	//TODO: verificare i miglioramenti prestazionali suggeriti nei todo
-	@Scheduled(cron = "0 34 1 * * *")
+	@Scheduled(cron = "0 36 20 * * *")
 	public void scheduleTask() {
 		count = 0;
 		quandl = 0;
 		Long start = System.currentTimeMillis();
-		//TODO uncomment
-		//quandlOp.updateFinancialDataSet();
+		//quandlOp.updateFinancialDataSet(); TODO uncomment
 		Long middle = System.currentTimeMillis();
 		List<UserEntity> users = userOp.getAllUsers();
-		//TODO remove counting
-		SchedulingOperator.count++;
+		SchedulingOperator.count++; //TODO remove counting
 		for (UserEntity user : users) {
 			PortfolioDTO currentPortfolio = portfolioOp.getCurrentPortfolio(user);
-			//TODO remove counting
-			SchedulingOperator.count++;
 			if(currentPortfolio == null) {
-				boolean created = portfolioOp.createUserPortfolio(user);
+				List<CustomStrategyEntity> strategy = this.customStrategyRep.findByUserAndActive(user, true);
+				SchedulingOperator.count++; //TODO remove counting
+				boolean created = portfolioOp.createUserPortfolio(user, strategy);
 				if(created) {
 					System.out.println("Created portfolio for user: " + user.getId());
 				}
@@ -69,16 +68,14 @@ public class SchedulingOperator extends AbstractOperator {
 			if(computed) {
 				System.out.println("Computed capital for user: " + user.getId());
 			}
-			CustomStrategyResponseDTO strategy = customStrategyOp.getActiveStrategy(user);
-			//TODO remove counting
-			SchedulingOperator.count++;
 			//TODO la chiamata getCustomStrategySet potrebbe essere troppo dispendiosa.
-			if(strategy != null && customStrategyOp.getCustomStrategySet(user, 0).size() > 1 && 
-					(strategy.getDate().equals(LocalDate.now().toString()) || 
-					 strategy.getDate().equals(LocalDate.now().minus(Period.ofDays(1)).toString()))) {
-				//TODO remove counting
-				SchedulingOperator.count++;
-				boolean recreated = portfolioOp.createUserPortfolio(user);
+			List<CustomStrategyEntity> strategy = this.customStrategyRep.findByUserAndActive(user, true);
+			SchedulingOperator.count++; //TODO remove counting
+			if(strategy != null && customStrategyOp.getCustomStrategySet(user, 0).size() > 1 &&
+					(strategy.get(0).getDate().equals(LocalDate.now()) ||
+					 strategy.get(0).getDate().equals(LocalDate.now().minus(Period.ofDays(1))))) {
+				SchedulingOperator.count++; //TODO remove counting
+				boolean recreated = portfolioOp.createUserPortfolio(user, strategy);
 				if(recreated) {
 					System.out.println("Re-created portfolio for user: " + user.getId());
 				}
@@ -100,17 +97,17 @@ public class SchedulingOperator extends AbstractOperator {
 
 	/************************************************************************************
 	 * 								Test Method											*
-	 ************************************************************************************
-	@Scheduled(cron = "0 14 13 * * *")
+	 ************************************************************************************/
+	@Scheduled(cron = "0 2 20 * * *")
 	public void fillDBUser() {
 		Long start = System.currentTimeMillis();
 		UserEntity user;
-		for(int i = 1; i < 50000; i++) {
+		for(int i = 1; i < 10000; i++) {
 			user = new UserEntity();
 			user.setLastUpdate(LocalDate.now());
 			user.setPassword(HashFunction.hashStringSHA256("stress"));
 			user.setDate(LocalDate.now());
-			user.setEmail(i + "b@stress");
+			user.setEmail(i + "@stress");
 			this.userRep.save(user);
 			CapitalRequestDTO capital = new CapitalRequestDTO();
 			capital.setAmount(new BigDecimal(10).add(new BigDecimal(i)));
@@ -143,6 +140,6 @@ public class SchedulingOperator extends AbstractOperator {
 		Long end = System.currentTimeMillis();
 		System.out.println("Fill DB computation in " + (end - start) + " ms");
 	}
-	 ************************************************************************************/
+	 /************************************************************************************/
 
 }
