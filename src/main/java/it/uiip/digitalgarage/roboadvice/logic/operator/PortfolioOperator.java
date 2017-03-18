@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PortfolioOperator extends AbstractOperator {
 
+	//TODO verificare che la cache sia diversificata per utente
 	@Cacheable("currentPortfolio")
     public PortfolioDTO getCurrentPortfolio(Authentication auth) {
 		UserEntity user = this.userRep.findByEmail(auth.getName());
@@ -100,14 +101,22 @@ public class PortfolioOperator extends AbstractOperator {
         return result;
     }
 
+    /*TODO: migliorare prestazioni
+	 *    	La chiamata findByUserAndStrategy è superflua dal momento che lo scheduler
+	 *    	carica già la strategia attiva e può dunque passarla a questo metodo.
+     */
     @CacheEvict(value = {"currentPortfolio", "portfolioHistory"}, allEntries = true)
     public boolean createUserPortfolio(UserEntity user) {
     	CapitalEntity capitalEntity = this.capitalRep.findByUserAndDate(user, user.getLastUpdate());
+		//TODO remove counting
+		SchedulingOperator.count++;
     	if(capitalEntity == null) {
     		return false;
     	}
     	BigDecimal amount = capitalEntity.getAmount();
     	List<CustomStrategyEntity> strategyEntity = this.customStrategyRep.findByUserAndActive(user, true);
+		//TODO remove counting
+		SchedulingOperator.count++;
     	if(strategyEntity.isEmpty()) {
     		return false;
     	}
@@ -115,6 +124,8 @@ public class PortfolioOperator extends AbstractOperator {
 			BigDecimal amountPerClass = amount.divide(new BigDecimal(100.00), 8, RoundingMode.HALF_UP).multiply(strategy.getPercentage());
 			AssetClassEntity assetClass = strategy.getAssetClass();
 			this.savePortfolioForAssetClass(assetClass, user, amountPerClass);
+			//TODO remove counting
+			SchedulingOperator.count++;
 		}
     	return true;
     }
@@ -143,24 +154,41 @@ public class PortfolioOperator extends AbstractOperator {
 		BigDecimal units = amount.divide(financialData.getValue(), 8, RoundingMode.HALF_UP);
 		return units;
     }
-    
+
+    /* TODO: migliorare prestazioni
+     * 		 Ogni volta viene fatta una query per caricare il corretto financialData.
+     * 		 Tutto ciò viene ripetuto per ogni utente e per ogni asset nel suo portfolio.
+     * 		 E' possibile ottenere una sola volta la lista dei financialDataEntity
+     * 		 correnti dal database e salvarli in una mappa da cui prenderli all'occorrenza.
+     */
+
     public BigDecimal evaluatePortfolio(UserEntity user) {
     	List<PortfolioEntity> currentPortfolio = this.portfolioRep.findByUserAndDate(user, user.getLastUpdate());
+		//TODO remove counting
+		SchedulingOperator.count++;
     	if(currentPortfolio.isEmpty()) {
     		return null;
     	}
     	BigDecimal amount = new BigDecimal(0);
     	for (PortfolioEntity element : currentPortfolio) {
 			FinancialDataEntity data = this.financialDataRep.findByAssetAndDate(element.getAsset(), element.getAsset().getLastUpdate());
+			//TODO remove counting
+			SchedulingOperator.count++;
 			BigDecimal amountPerAsset = element.getUnits().multiply(data.getValue());
 			amount = amount.add(amountPerAsset);
 		}
     	return amount;
     }
 
+    /*TODO: migliorare prestazioni
+	 *    	Il currentPortfolio viene già computato dallo scheduler e può dunque essere
+	 *    	ottenuto come parametro o cachato, evitando una query.
+     */
 	@CacheEvict(value = {"currentPortfolio", "portfolioHistory"}, allEntries = true)
     public boolean computeUserPortfolio(UserEntity user) {
     	List<PortfolioEntity> currentPortfolio = this.portfolioRep.findByUserAndDate(user, user.getLastUpdate());
+		//TODO remove counting
+		SchedulingOperator.count++;
     	List<PortfolioEntity> newPortfolioList = new ArrayList<>();
     	for (PortfolioEntity element : currentPortfolio) {
     		BigDecimal units = element.getUnits();
@@ -178,6 +206,8 @@ public class PortfolioOperator extends AbstractOperator {
     		newPortfolioList.add(newElement);
     	}
     	this.savePortfolio(newPortfolioList);
+		//TODO remove counting
+		SchedulingOperator.count++;
     	return true;
     }
   

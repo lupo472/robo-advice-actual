@@ -34,16 +34,26 @@ public class SchedulingOperator extends AbstractOperator {
 	
 	@Autowired
 	private CustomStrategyOperator customStrategyOp;
-	
-	@Scheduled(cron = "0 0 10 * * *")
+
+	public static int count;
+	public static int quandl;
+
+	//TODO: verificare i miglioramenti prestazionali suggeriti nei todo
+	@Scheduled(cron = "0 34 1 * * *")
 	public void scheduleTask() {
+		count = 0;
+		quandl = 0;
 		Long start = System.currentTimeMillis();
-		quandlOp.updateFinancialDataSet();
+		//TODO uncomment
+		//quandlOp.updateFinancialDataSet();
 		Long middle = System.currentTimeMillis();
-		System.out.println("Quandl computation in " + (middle - start) + " ms");
 		List<UserEntity> users = userOp.getAllUsers();
+		//TODO remove counting
+		SchedulingOperator.count++;
 		for (UserEntity user : users) {
 			PortfolioDTO currentPortfolio = portfolioOp.getCurrentPortfolio(user);
+			//TODO remove counting
+			SchedulingOperator.count++;
 			if(currentPortfolio == null) {
 				boolean created = portfolioOp.createUserPortfolio(user);
 				if(created) {
@@ -60,9 +70,14 @@ public class SchedulingOperator extends AbstractOperator {
 				System.out.println("Computed capital for user: " + user.getId());
 			}
 			CustomStrategyResponseDTO strategy = customStrategyOp.getActiveStrategy(user);
+			//TODO remove counting
+			SchedulingOperator.count++;
+			//TODO la chiamata getCustomStrategySet potrebbe essere troppo dispendiosa.
 			if(strategy != null && customStrategyOp.getCustomStrategySet(user, 0).size() > 1 && 
 					(strategy.getDate().equals(LocalDate.now().toString()) || 
 					 strategy.getDate().equals(LocalDate.now().minus(Period.ofDays(1)).toString()))) {
+				//TODO remove counting
+				SchedulingOperator.count++;
 				boolean recreated = portfolioOp.createUserPortfolio(user);
 				if(recreated) {
 					System.out.println("Re-created portfolio for user: " + user.getId());
@@ -75,7 +90,12 @@ public class SchedulingOperator extends AbstractOperator {
 			}
 		}
 		Long end = System.currentTimeMillis();
-		System.out.println("Scheduling computation in " + (end - start) + " ms");
+		System.out.println("Quandl: " + quandl + " queries");
+		System.out.println("Scheduling: " + count + " queries");
+		System.out.println("Total: " + (count + quandl) + " queries");
+		System.out.println("Quandl computation in " + (middle - start) + " ms");
+		System.out.println("Scheduling computation in " + (end - middle) + " ms");
+		System.out.println("Total computation in " + (end - start) + " ms");
 	}
 
 	/************************************************************************************

@@ -91,6 +91,11 @@ public class CapitalOperator extends AbstractOperator {
 		return true;
 	}
 
+	/*TODO: migliorare prestazioni
+	 *		La chiamata a evaluatePortfolio è chiaramente poco efficiente.
+	 *		Oltre al miglioramento lì descritto è possibile passare il currentPortfolio
+	 *		a tale metodo, prendendolo dallo Scheduler in modo da non doverlo ricomputare.
+	 */
 	@CacheEvict(value = {"currentCapital", "capitalHistory"}, allEntries = true)
 	public boolean computeCapital(UserEntity user) {
 		CapitalEntity capital = new CapitalEntity();
@@ -103,14 +108,22 @@ public class CapitalOperator extends AbstractOperator {
 		capital.setAmount(amount);
 		capital.setDate(currentDate);
 		CapitalEntity saved = this.capitalRep.findByUserAndDate(user, currentDate);
+		//TODO remove counting
+		SchedulingOperator.count++;
 		if(saved == null) {
 			this.capitalRep.save(capital);
+			//TODO remove counting
+			SchedulingOperator.count++;
 		} else {
 			saved.setAmount(amount);
 			this.capitalRep.save(saved);
+			//TODO remove counting
+			SchedulingOperator.count++;
 		}
 		user.setLastUpdate(currentDate);
 		this.userRep.save(user);
+		//TODO remove counting
+		SchedulingOperator.count++;
 		return true;
 	}
 
