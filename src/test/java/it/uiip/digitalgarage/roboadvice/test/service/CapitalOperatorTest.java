@@ -155,6 +155,13 @@ public class CapitalOperatorTest {
 
     }
 
+    @Test
+    public void computeCapitalNullPortfolio() {
+        doReturn(null).when(portfolioOp).evaluatePortfolio(user);
+        boolean response = capitalOp.computeCapital(user);
+        assertFalse(response);
+    }
+
 
 //    @Test
 //    public void getCurrentCapitalValidUser() {

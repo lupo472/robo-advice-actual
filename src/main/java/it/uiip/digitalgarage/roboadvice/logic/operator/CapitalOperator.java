@@ -27,7 +27,7 @@ public class CapitalOperator extends AbstractOperator {
 	@Autowired
 	private PortfolioOperator portfolioOp;
 
-	//@Cacheable("currentCapital")
+	@Cacheable("currentCapital")
 	public CapitalDTO getCurrentCapital(Authentication auth) {
 		UserEntity user = this.userRep.findByEmail(auth.getName());
 		CapitalEntity entity = this.capitalRep.findByUserAndDate(user, user.getLastUpdate());
@@ -37,7 +37,7 @@ public class CapitalOperator extends AbstractOperator {
 		return (CapitalDTO) this.capitalConv.convertToDTO(entity);
 	}
 
-	//@Cacheable("capitalHistory")
+	@Cacheable("capitalHistory")
 	public List<CapitalDTO> getCapitalPeriod(PeriodRequestDTO request, Authentication auth) {
 		UserEntity user = this.userRep.findByEmail(auth.getName());
 		List<CapitalDTO> response = new ArrayList<CapitalDTO>();
@@ -60,13 +60,13 @@ public class CapitalOperator extends AbstractOperator {
 		return  response;
 	}
 
-	//@CacheEvict(value = {"currentCapital", "capitalHistory"}, allEntries = true)
+	@CacheEvict(value = {"currentCapital", "capitalHistory"}, allEntries = true)
 	public boolean addCapital(CapitalRequestDTO capital, Authentication auth) {
 		UserEntity user = this.userRep.findByEmail(auth.getName());
 		return this.addCapital(capital, user);
 	}
 
-	//@CacheEvict(value = {"currentCapital", "capitalHistory"}, allEntries = true)
+	@CacheEvict(value = {"currentCapital", "capitalHistory"}, allEntries = true)
 	public boolean addCapital(CapitalRequestDTO capital, UserEntity user) {
 		CapitalEntity entity = this.capitalConv.convertToEntity(capital);
 		if(user == null) {
@@ -91,7 +91,7 @@ public class CapitalOperator extends AbstractOperator {
 		return true;
 	}
 
-	//@CacheEvict(value = {"currentCapital", "capitalHistory"}, allEntries = true)
+	@CacheEvict(value = {"currentCapital", "capitalHistory"}, allEntries = true)
 	public boolean computeCapital(UserEntity user) {
 		CapitalEntity capital = new CapitalEntity();
 		BigDecimal amount = portfolioOp.evaluatePortfolio(user);
