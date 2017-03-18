@@ -60,13 +60,13 @@ public class CapitalOperator extends AbstractOperator {
 		return  response;
 	}
 
-	@CacheEvict(value = {"currentCapital", "capitalHistory"}, allEntries = true)
+	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory"}, allEntries = true)
 	public boolean addCapital(CapitalRequestDTO capital, Authentication auth) {
 		UserEntity user = this.userRep.findByEmail(auth.getName());
 		return this.addCapital(capital, user);
 	}
 
-	@CacheEvict(value = {"currentCapital", "capitalHistory"}, allEntries = true)
+	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory"}, allEntries = true)
 	public boolean addCapital(CapitalRequestDTO capital, UserEntity user) {
 		CapitalEntity entity = this.capitalConv.convertToEntity(capital);
 		if(user == null) {
@@ -96,7 +96,7 @@ public class CapitalOperator extends AbstractOperator {
 	 *		Oltre al miglioramento lì descritto è possibile passare il currentPortfolio
 	 *		a tale metodo, prendendolo dallo Scheduler in modo da non doverlo ricomputare.
 	 */
-	@CacheEvict(value = {"currentCapital", "capitalHistory"}, allEntries = true)
+	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory"}, allEntries = true)
 	public boolean computeCapital(UserEntity user) {
 		CapitalEntity capital = new CapitalEntity();
 		BigDecimal amount = portfolioOp.evaluatePortfolio(user);

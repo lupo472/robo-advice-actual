@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class PortfolioOperator extends AbstractOperator {
 
-	//TODO verificare che la cache sia diversificata per utente
 	@Cacheable("currentPortfolio")
     public PortfolioDTO getCurrentPortfolio(Authentication auth) {
 		UserEntity user = this.userRep.findByEmail(auth.getName());
@@ -105,7 +104,7 @@ public class PortfolioOperator extends AbstractOperator {
 	 *    	La chiamata findByUserAndStrategy è superflua dal momento che lo scheduler
 	 *    	carica già la strategia attiva e può dunque passarla a questo metodo.
      */
-    @CacheEvict(value = {"currentPortfolio", "portfolioHistory"}, allEntries = true)
+    @CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory"}, allEntries = true)
     public boolean createUserPortfolio(UserEntity user) {
     	CapitalEntity capitalEntity = this.capitalRep.findByUserAndDate(user, user.getLastUpdate());
 		//TODO remove counting
@@ -184,7 +183,7 @@ public class PortfolioOperator extends AbstractOperator {
 	 *    	Il currentPortfolio viene già computato dallo scheduler e può dunque essere
 	 *    	ottenuto come parametro o cachato, evitando una query.
      */
-	@CacheEvict(value = {"currentPortfolio", "portfolioHistory"}, allEntries = true)
+	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory"}, allEntries = true)
     public boolean computeUserPortfolio(UserEntity user) {
     	List<PortfolioEntity> currentPortfolio = this.portfolioRep.findByUserAndDate(user, user.getLastUpdate());
 		//TODO remove counting
@@ -220,7 +219,7 @@ public class PortfolioOperator extends AbstractOperator {
     	return result;
     }
 
-	@CacheEvict(value = {"currentPortfolio", "portfolioHistory"}, allEntries = true)
+	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory"}, allEntries = true)
     public void savePortfolio(List<PortfolioEntity> entities) {
     	for (PortfolioEntity entity : entities) {
     		PortfolioEntity savedEntity = this.portfolioRep.findByUserAndAssetAndDate(entity.getUser(), entity.getAsset(), LocalDate.now());
