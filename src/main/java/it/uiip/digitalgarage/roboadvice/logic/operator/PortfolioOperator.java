@@ -189,10 +189,9 @@ public class PortfolioOperator extends AbstractOperator {
 	 *    	ottenuto come parametro o cachato, evitando una query.
      */
 	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory"}, allEntries = true)
-    public boolean computeUserPortfolio(UserEntity user) {
-    	List<PortfolioEntity> currentPortfolio = this.portfolioRep.findByUserAndDate(user, user.getLastUpdate());
-		//TODO remove counting
-		SchedulingOperator.count++;
+    public boolean computeUserPortfolio(UserEntity user, List<PortfolioEntity> currentPortfolio) {
+//    	List<PortfolioEntity> currentPortfolio = this.portfolioRep.findByUserAndDate(user, user.getLastUpdate());
+//		SchedulingOperator.count++; //TODO remove counting
     	List<PortfolioEntity> newPortfolioList = new ArrayList<>();
     	for (PortfolioEntity element : currentPortfolio) {
     		BigDecimal units = element.getUnits();

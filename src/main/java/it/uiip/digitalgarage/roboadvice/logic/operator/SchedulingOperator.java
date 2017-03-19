@@ -40,12 +40,12 @@ public class SchedulingOperator extends AbstractOperator {
 	public static int quandl;
 
 	//TODO: verificare i miglioramenti prestazionali suggeriti nei todo
-	@Scheduled(cron = "0 58 0 * * *")
+	@Scheduled(cron = "0 10900'0 19 * * *")
 	public void scheduleTask() {
 		count = 0;
 		quandl = 0;
 		Long start = System.currentTimeMillis();
-		//quandlOp.updateFinancialDataSet(); TODO uncomment
+		//quandlOp.updateFinancialDataSet(); //TODO uncomment
 		Long middle = System.currentTimeMillis();
 		List<UserEntity> users = userOp.getAllUsers();
 		SchedulingOperator.count++; //TODO remove counting
@@ -83,7 +83,7 @@ public class SchedulingOperator extends AbstractOperator {
 				continue;
 			}
 			//TODO controllare bug nel compute!
-			computed = portfolioOp.computeUserPortfolio(user);
+			computed = portfolioOp.computeUserPortfolio(user, currentPortfolio);
 			if(computed) {
 				System.out.println("Computed portfolio for user: " + user.getId());
 			}
