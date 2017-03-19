@@ -8,9 +8,7 @@ import it.uiip.digitalgarage.roboadvice.persistence.repository.CapitalRepository
 import it.uiip.digitalgarage.roboadvice.persistence.repository.FinancialDataRepository;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.PortfolioRepository;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.UserRepository;
-import it.uiip.digitalgarage.roboadvice.service.controller.CapitalController;
-import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
-import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
+import it.uiip.digitalgarage.roboadvice.service.dto.CapitalRequestDTO;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,7 +38,6 @@ public class CapitalOperatorTest {
 	/* TODO
 	 * Test: addCapital
 	 * Test: getCurrentCapital
-	 * Test: computeCapital
 	 * Test: getCapitalPeriod
 	*/
 
@@ -75,20 +72,20 @@ public class CapitalOperatorTest {
     public void setUpMock() {
         MockitoAnnotations.initMocks(this);
         user = new UserEntity();
-        user.setId(new Long(2));
+        user.setId(2L);
         user.setEmail("luca@antilici.it");
         user.setPassword("pippo123");
         user.setDate(LocalDate.now());
         user.setLastUpdate(LocalDate.now().minusDays(1));
 
         assetClassEntity1 = new AssetClassEntity();
-        assetClassEntity1.setId(new Long(1));
+        assetClassEntity1.setId(1L);
         assetClassEntity1.setName("bonds");
         assetClassEntity2 = new AssetClassEntity();
-        assetClassEntity2.setId(new Long(3));
+        assetClassEntity2.setId(3L);
         assetClassEntity2.setName("stocks");
         assetEntity1 = new AssetEntity();
-        assetEntity1.setId(new Long(2));
+        assetEntity1.setId(2L);
         assetEntity1.setAssetClass(assetClassEntity1);
         assetEntity1.setName("Ultra U.S. Treasury Bond Futures");
         assetEntity1.setDataSource("CHRIS/CME_UL1");
@@ -96,7 +93,7 @@ public class CapitalOperatorTest {
         assetEntity1.setRemarksIndex(1);
         assetEntity1.setLastUpdate(LocalDate.now().minusDays(1));
         assetEntity2 = new AssetEntity();
-        assetEntity2.setId(new Long(8));
+        assetEntity2.setId(8L);
         assetEntity2.setAssetClass(assetClassEntity2);
         assetEntity2.setName("Microsoft");
         assetEntity2.setDataSource("WIKI/MSFT");
@@ -105,21 +102,21 @@ public class CapitalOperatorTest {
         assetEntity2.setLastUpdate(LocalDate.now().minusDays(1));
 
         financialDataEntity1 = new FinancialDataEntity();
-        financialDataEntity1.setId(new Long(1));
+        financialDataEntity1.setId(1L);
         financialDataEntity1.setAsset(assetEntity1);
         financialDataEntity1.setValue(new BigDecimal(150.09));
         financialDataEntity1.setDate(LocalDate.now().minusDays(1));
         financialDataEntity2 = new FinancialDataEntity();
-        financialDataEntity2.setId(new Long(1));
+        financialDataEntity2.setId(1L);
         financialDataEntity2.setAsset(assetEntity1);
         financialDataEntity2.setValue(new BigDecimal(50.23));
         financialDataEntity2.setDate(LocalDate.now().minusDays(1));
     }
 
     @Test
-    public void computeCapitalSuccess() {
+    public void computeCapitalTestSuccess() {
         PortfolioEntity portfolioEntity1 = new PortfolioEntity();
-        portfolioEntity1.setId(new Long(1));
+        portfolioEntity1.setId(1L);
         portfolioEntity1.setUser(user);
         portfolioEntity1.setAsset(assetEntity1);
         portfolioEntity1.setAssetClass(assetClassEntity1);
@@ -127,7 +124,7 @@ public class CapitalOperatorTest {
         portfolioEntity1.setValue(new BigDecimal(1296.2954));
         portfolioEntity1.setDate(LocalDate.now());
         PortfolioEntity portfolioEntity2 = new PortfolioEntity();
-        portfolioEntity2.setId(new Long(2));
+        portfolioEntity2.setId(2L);
         portfolioEntity2.setUser(user);
         portfolioEntity2.setAsset(assetEntity2);
         portfolioEntity2.setAssetClass(assetClassEntity2);
@@ -156,12 +153,36 @@ public class CapitalOperatorTest {
     }
 
     @Test
-    public void computeCapitalNullPortfolio() {
+    public void computeCapitalTestNullPortfolio() {
         doReturn(null).when(portfolioOp).evaluatePortfolio(user);
         boolean response = capitalOp.computeCapital(user);
         assertFalse(response);
     }
 
+    @Test
+    public void addCapitalTestUpdateSameDayCapital() {
+        CapitalRequestDTO capitalRequestDTO = new CapitalRequestDTO();
+        capitalRequestDTO.setAmount(new BigDecimal("10123.4545"));
+
+        CapitalEntity oldCapital = new CapitalEntity();
+        oldCapital.setId(null);
+        oldCapital.setUser(user);
+        oldCapital.setAmount(new BigDecimal("13000.56"));
+        oldCapital.setDate(LocalDate.now());
+
+        CapitalEntity updatedCapital = new CapitalEntity();
+        updatedCapital.setId(null);
+        updatedCapital.setDate(LocalDate.now());
+        updatedCapital.setUser(user);
+        updatedCapital.setAmount(new BigDecimal("23124.0145"));
+
+        when(capitalRep.findByUserAndDate(user, LocalDate.now())).thenReturn(oldCapital);
+        when(capitalRep.save(updatedCapital)).thenReturn(updatedCapital);
+
+        boolean response = capitalOp.addCapital(capitalRequestDTO, user);
+        verify(capitalRep).save(updatedCapital);
+        assertTrue(response);
+    }
 
 //    @Test
 //    public void getCurrentCapitalValidUser() {
