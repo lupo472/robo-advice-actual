@@ -19,10 +19,10 @@ public class Mapper {
 		return map;
 	}
 
-	public static Map<AssetEntity, FinancialDataEntity> getMapFinancialData(List<FinancialDataEntity> data) {
-		Map<AssetEntity, FinancialDataEntity> map = new HashMap<>();
+	public static Map<Long, FinancialDataEntity> getMapFinancialData(List<FinancialDataEntity> data) {
+		Map<Long, FinancialDataEntity> map = new HashMap<>();
 		for(FinancialDataEntity financialData : data) {
-			map.put(financialData.getAsset(), financialData);
+			map.put(financialData.getAsset().getId(), financialData);
 		}
 		return map;
 	}
