@@ -40,7 +40,7 @@ public class SchedulingOperator extends AbstractOperator {
 	public static int quandl;
 
 	//TODO: verificare i miglioramenti prestazionali suggeriti nei todo
-	@Scheduled(cron = "0 36 20 * * *")
+	@Scheduled(cron = "0 58 0 * * *")
 	public void scheduleTask() {
 		count = 0;
 		quandl = 0;
@@ -50,8 +50,9 @@ public class SchedulingOperator extends AbstractOperator {
 		List<UserEntity> users = userOp.getAllUsers();
 		SchedulingOperator.count++; //TODO remove counting
 		for (UserEntity user : users) {
-			PortfolioDTO currentPortfolio = portfolioOp.getCurrentPortfolio(user);
-			if(currentPortfolio == null) {
+			List<PortfolioEntity> currentPortfolio = this.portfolioRep.findByUserAndDate(user, user.getLastUpdate());
+			SchedulingOperator.count++; //TODO remove counting
+			if(currentPortfolio.isEmpty()) {
 				List<CustomStrategyEntity> strategy = this.customStrategyRep.findByUserAndActive(user, true);
 				SchedulingOperator.count++; //TODO remove counting
 				boolean created = portfolioOp.createUserPortfolio(user, strategy);
@@ -71,7 +72,7 @@ public class SchedulingOperator extends AbstractOperator {
 			//TODO la chiamata getCustomStrategySet potrebbe essere troppo dispendiosa.
 			List<CustomStrategyEntity> strategy = this.customStrategyRep.findByUserAndActive(user, true);
 			SchedulingOperator.count++; //TODO remove counting
-			if(strategy != null && customStrategyOp.getCustomStrategySet(user, 0).size() > 1 &&
+			if(!strategy.isEmpty() && customStrategyOp.getCustomStrategySet(user, 0).size() > 1 &&
 					(strategy.get(0).getDate().equals(LocalDate.now()) ||
 					 strategy.get(0).getDate().equals(LocalDate.now().minus(Period.ofDays(1))))) {
 				SchedulingOperator.count++; //TODO remove counting
@@ -81,6 +82,7 @@ public class SchedulingOperator extends AbstractOperator {
 				}
 				continue;
 			}
+			//TODO controllare bug nel compute!
 			computed = portfolioOp.computeUserPortfolio(user);
 			if(computed) {
 				System.out.println("Computed portfolio for user: " + user.getId());
