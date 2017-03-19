@@ -6,8 +6,12 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
+import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetEntity;
+import it.uiip.digitalgarage.roboadvice.persistence.entity.FinancialDataEntity;
+import it.uiip.digitalgarage.roboadvice.persistence.util.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.annotation.CacheEvict;
@@ -91,15 +95,25 @@ public class CapitalOperator extends AbstractOperator {
 		return true;
 	}
 
+	public boolean computeCapital(UserEntity user) {
+		List<AssetEntity> assets = this.assetRep.findAll();
+		List<FinancialDataEntity> list = new ArrayList<>();
+		for(AssetEntity asset : assets) {
+			list.add(financialDataRep.findByAssetAndDate(asset, asset.getLastUpdate()));
+		}
+		Map<Long, FinancialDataEntity> financialDataMap = Mapper.getMapFinancialData(list);
+		return this.computeCapital(user, financialDataMap);
+	}
+
 	/*TODO: migliorare prestazioni
 	 *		La chiamata a evaluatePortfolio è chiaramente poco efficiente.
 	 *		Oltre al miglioramento lì descritto è possibile passare il currentPortfolio
 	 *		a tale metodo, prendendolo dallo Scheduler in modo da non doverlo ricomputare.
 	 */
 	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory"}, allEntries = true)
-	public boolean computeCapital(UserEntity user) {
+	public boolean computeCapital(UserEntity user, Map<Long, FinancialDataEntity> map) {
 		CapitalEntity capital = new CapitalEntity();
-		BigDecimal amount = portfolioOp.evaluatePortfolio(user);
+		BigDecimal amount = portfolioOp.evaluatePortfolio(user, map);
 		if(amount == null) {
 			return false;
 		}
@@ -112,18 +126,15 @@ public class CapitalOperator extends AbstractOperator {
 		SchedulingOperator.count++;
 		if(saved == null) {
 			this.capitalRep.save(capital);
-			//TODO remove counting
-			SchedulingOperator.count++;
+			SchedulingOperator.count++; //TODO remove counting
 		} else {
 			saved.setAmount(amount);
 			this.capitalRep.save(saved);
-			//TODO remove counting
-			SchedulingOperator.count++;
+			SchedulingOperator.count++; //TODO remove counting
 		}
 		user.setLastUpdate(currentDate);
 		this.userRep.save(user);
-		//TODO remove counting
-		SchedulingOperator.count++;
+		SchedulingOperator.count++; //TODO remove counting
 		return true;
 	}
 

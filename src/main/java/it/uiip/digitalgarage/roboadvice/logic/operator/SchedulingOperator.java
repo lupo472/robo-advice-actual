@@ -5,18 +5,16 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetEntity;
-import it.uiip.digitalgarage.roboadvice.persistence.entity.CustomStrategyEntity;
-import it.uiip.digitalgarage.roboadvice.persistence.entity.PortfolioEntity;
+import it.uiip.digitalgarage.roboadvice.persistence.entity.*;
+import it.uiip.digitalgarage.roboadvice.persistence.util.Mapper;
 import it.uiip.digitalgarage.roboadvice.service.dto.*;
 import it.uiip.digitalgarage.roboadvice.service.util.HashFunction;
 import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
-import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
 
 @Service
 public class SchedulingOperator extends AbstractOperator {
@@ -40,7 +38,7 @@ public class SchedulingOperator extends AbstractOperator {
 	public static int quandl;
 
 	//TODO: verificare i miglioramenti prestazionali suggeriti nei todo
-	@Scheduled(cron = "0 43 23 * * *")
+	@Scheduled(cron = "0 43 0 * * *")
 	public void scheduleTask() {
 		count = 0;
 		quandl = 0;
@@ -48,6 +46,12 @@ public class SchedulingOperator extends AbstractOperator {
 		//quandlOp.updateFinancialDataSet(); //TODO uncomment
 		Long middle = System.currentTimeMillis();
 		List<UserEntity> users = userOp.getAllUsers();
+		List<AssetEntity> assets = this.assetRep.findAll();
+		List<FinancialDataEntity> list = new ArrayList<>();
+		for(AssetEntity asset : assets) {
+			list.add(financialDataRep.findByAssetAndDate(asset, asset.getLastUpdate()));
+		}
+		Map<Long, FinancialDataEntity> financialDataMap = Mapper.getMapFinancialData(list);
 		SchedulingOperator.count++; //TODO remove counting
 		for (UserEntity user : users) {
 			List<PortfolioEntity> currentPortfolio = this.portfolioRep.findByUserAndDate(user, user.getLastUpdate());
@@ -65,7 +69,7 @@ public class SchedulingOperator extends AbstractOperator {
 				System.out.println("Skipped computation for user: " + user.getId());
 				continue;
 			}
-			boolean computed = capitalOp.computeCapital(user);
+			boolean computed = capitalOp.computeCapital(user, financialDataMap);
 			if(computed) {
 				System.out.println("Computed capital for user: " + user.getId());
 			}
@@ -82,7 +86,6 @@ public class SchedulingOperator extends AbstractOperator {
 				}
 				continue;
 			}
-			//TODO controllare bug nel compute!
 			computed = portfolioOp.computeUserPortfolio(user, currentPortfolio);
 			if(computed) {
 				System.out.println("Computed portfolio for user: " + user.getId());
@@ -100,7 +103,7 @@ public class SchedulingOperator extends AbstractOperator {
 	/************************************************************************************
 	 * 								Test Method											*
 	 ************************************************************************************/
-	@Scheduled(cron = "0 2 20 * * *")
+	@Scheduled(cron = "0 54 0 * * *")
 	public void fillDBUser() {
 		Long start = System.currentTimeMillis();
 		UserEntity user;
@@ -147,7 +150,7 @@ public class SchedulingOperator extends AbstractOperator {
 	/************************************************************************************
 	 * 								Test Method											*
 	 ************************************************************************************/
-	@Scheduled(cron = "0 25 23 * * *")
+	@Scheduled(cron = "0 49 0 * * *")
 	public void modifyDB() {
 		Long start = System.currentTimeMillis();
 		List<UserEntity> users = this.userRep.findAll();

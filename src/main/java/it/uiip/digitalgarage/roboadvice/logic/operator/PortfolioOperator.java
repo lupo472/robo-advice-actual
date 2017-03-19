@@ -159,25 +159,33 @@ public class PortfolioOperator extends AbstractOperator {
 		return units;
     }
 
+	public BigDecimal evaluatePortfolio(UserEntity user) {
+		List<AssetEntity> assets = this.assetRep.findAll();
+		List<FinancialDataEntity> list = new ArrayList<>();
+		for(AssetEntity asset : assets) {
+			list.add(financialDataRep.findByAssetAndDate(asset, asset.getLastUpdate()));
+		}
+		Map<Long, FinancialDataEntity> financialDataMap = Mapper.getMapFinancialData(list);
+		return this.evaluatePortfolio(user, financialDataMap);
+	}
+
     /* TODO: migliorare prestazioni
      * 		 Ogni volta viene fatta una query per caricare il corretto financialData.
      * 		 Tutto ciò viene ripetuto per ogni utente e per ogni asset nel suo portfolio.
      * 		 E' possibile ottenere una sola volta la lista dei financialDataEntity
      * 		 correnti dal database e salvarli in una mappa da cui prenderli all'occorrenza.
      */
-
-    public BigDecimal evaluatePortfolio(UserEntity user) {
+    //TODO passare il currentPortfolio da sopra
+    public BigDecimal evaluatePortfolio(UserEntity user, Map<Long, FinancialDataEntity> map) {
     	List<PortfolioEntity> currentPortfolio = this.portfolioRep.findByUserAndDate(user, user.getLastUpdate());
-		//TODO remove counting
-		SchedulingOperator.count++;
+		SchedulingOperator.count++; //TODO remove counting
     	if(currentPortfolio.isEmpty()) {
     		return null;
     	}
     	BigDecimal amount = new BigDecimal(0);
     	for (PortfolioEntity element : currentPortfolio) {
-			FinancialDataEntity data = this.financialDataRep.findByAssetAndDate(element.getAsset(), element.getAsset().getLastUpdate());
-			//TODO remove counting
-			SchedulingOperator.count++;
+			FinancialDataEntity data = map.get(element.getAsset().getId());
+//			SchedulingOperator.count++; //TODO remove counting
 			BigDecimal amountPerAsset = element.getUnits().multiply(data.getValue());
 			amount = amount.add(amountPerAsset);
 		}
@@ -190,16 +198,26 @@ public class PortfolioOperator extends AbstractOperator {
 		return this.computeUserPortfolio(user, currentPortfolio);
 	}
 
+	public boolean computeUserPortfolio(UserEntity user, List<PortfolioEntity> currentPortfolio) {
+		List<AssetEntity> assets = this.assetRep.findAll();
+		List<FinancialDataEntity> list = new ArrayList<>();
+		for(AssetEntity asset : assets) {
+			list.add(financialDataRep.findByAssetAndDate(asset, asset.getLastUpdate()));
+		}
+		Map<Long, FinancialDataEntity> financialDataMap = Mapper.getMapFinancialData(list);
+		return this.computeUserPortfolio(user, currentPortfolio, financialDataMap);
+	}
+
     /*TODO: migliorare prestazioni
 	 *    	Il currentPortfolio viene già computato dallo scheduler e può dunque essere
 	 *    	ottenuto come parametro o cachato, evitando una query.
      */
 	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory"}, allEntries = true)
-    public boolean computeUserPortfolio(UserEntity user, List<PortfolioEntity> currentPortfolio) {
+    public boolean computeUserPortfolio(UserEntity user, List<PortfolioEntity> currentPortfolio, Map<Long, FinancialDataEntity> map) {
     	List<PortfolioEntity> newPortfolioList = new ArrayList<>();
     	for (PortfolioEntity element : currentPortfolio) {
     		BigDecimal units = element.getUnits();
-    		BigDecimal newValue = this.getValueForAsset(units, element.getAsset());
+    		BigDecimal newValue = this.getValueForAsset(units, element.getAsset(), map);
     		if(newValue == null) {
     			return false;
     		}
@@ -219,9 +237,9 @@ public class PortfolioOperator extends AbstractOperator {
 
     //TODO 	questi financial data vengono ricaricati ogni volta.
 	//	   	Sono al massimo 13, quindi sarebbe meglio tenerli all'interno di una mappa.
-    private BigDecimal getValueForAsset(BigDecimal units, AssetEntity asset) {
-    	FinancialDataEntity financialData = this.financialDataRep.findByAssetAndDate(asset, asset.getLastUpdate());
-    	SchedulingOperator.count++; //TODO remove counting
+    private BigDecimal getValueForAsset(BigDecimal units, AssetEntity asset, Map<Long, FinancialDataEntity> map) {
+    	FinancialDataEntity financialData = map.get(asset.getId());
+//    	SchedulingOperator.count++; //TODO remove counting
     	if(financialData == null) {
     		return null;
     	}

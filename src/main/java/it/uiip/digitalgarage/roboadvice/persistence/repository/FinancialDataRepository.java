@@ -14,8 +14,6 @@ import it.uiip.digitalgarage.roboadvice.persistence.entity.FinancialDataEntity;
 @Transactional
 public interface FinancialDataRepository extends PagingAndSortingRepository<FinancialDataEntity, Long> {
 
-	public List<FinancialDataEntity> findByDate(LocalDate date);
-
 	public FinancialDataEntity findByAssetAndDate(AssetEntity asset, LocalDate date);
 	
 	public FinancialDataEntity findTopByAssetAndDateLessThanEqualOrderByDateDesc(AssetEntity asset, LocalDate date);
