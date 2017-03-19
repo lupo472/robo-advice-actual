@@ -40,7 +40,7 @@ public class SchedulingOperator extends AbstractOperator {
 	public static int quandl;
 
 	//TODO: verificare i miglioramenti prestazionali suggeriti nei todo
-	@Scheduled(cron = "0 10900'0 19 * * *")
+	@Scheduled(cron = "0 43 23 * * *")
 	public void scheduleTask() {
 		count = 0;
 		quandl = 0;
@@ -108,7 +108,7 @@ public class SchedulingOperator extends AbstractOperator {
 			user = new UserEntity();
 			user.setLastUpdate(LocalDate.now());
 			user.setPassword(HashFunction.hashStringSHA256("stress"));
-			user.setDate(LocalDate.now());
+			user.setDate(LocalDate.now().minus(Period.ofDays(1)));
 			user.setEmail(i + "@stress");
 			this.userRep.save(user);
 			CapitalRequestDTO capital = new CapitalRequestDTO();
@@ -143,5 +143,26 @@ public class SchedulingOperator extends AbstractOperator {
 		System.out.println("Fill DB computation in " + (end - start) + " ms");
 	}
 	 /************************************************************************************/
+
+	/************************************************************************************
+	 * 								Test Method											*
+	 ************************************************************************************/
+	@Scheduled(cron = "0 25 23 * * *")
+	public void modifyDB() {
+		Long start = System.currentTimeMillis();
+		List<UserEntity> users = this.userRep.findAll();
+		for (UserEntity user: users) {
+			user.setLastUpdate(LocalDate.now().minus(Period.ofDays(1)));
+			this.userRep.save(user);
+		}
+		List<PortfolioEntity> portfolios = (List<PortfolioEntity>) this.portfolioRep.findAll();
+		for(PortfolioEntity portfolio : portfolios) {
+			portfolio.setDate(LocalDate.now().minus(Period.ofDays(1)));
+			this.portfolioRep.save(portfolio);
+		}
+		Long end = System.currentTimeMillis();
+		System.out.println("Modified DB computation in " + (end - start) + " ms");
+	}
+	/************************************************************************************/
 
 }

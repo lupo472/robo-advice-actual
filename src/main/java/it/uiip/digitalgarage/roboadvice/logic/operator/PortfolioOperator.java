@@ -184,6 +184,12 @@ public class PortfolioOperator extends AbstractOperator {
     	return amount;
     }
 
+	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory"}, allEntries = true)
+	public boolean computeUserPortfolio(UserEntity user) {
+		List<PortfolioEntity> currentPortfolio = this.portfolioRep.findByUserAndDate(user, user.getLastUpdate());
+		return this.computeUserPortfolio(user, currentPortfolio);
+	}
+
     /*TODO: migliorare prestazioni
 	 *    	Il currentPortfolio viene già computato dallo scheduler e può dunque essere
 	 *    	ottenuto come parametro o cachato, evitando una query.
