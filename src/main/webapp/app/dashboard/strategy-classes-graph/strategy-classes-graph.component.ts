@@ -74,10 +74,9 @@ export class StrategyClassesGraphComponent implements OnInit {
     // lineChart
     public lineChartOptions: any = {
         animation: false,
-        responsive: true,
-        legend: true
+        responsive: true
     };
 
     public lineChartType: string = 'line';
-    public assetClassType: string = 'bar';
+    public legend: boolean = false;
 }

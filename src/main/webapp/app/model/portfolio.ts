@@ -63,7 +63,7 @@ export class Portfolio {
                         value[i][j] = 0;
                     }
                 }
-                
+
                 datasets[i].data = value[i];
             }
         }
