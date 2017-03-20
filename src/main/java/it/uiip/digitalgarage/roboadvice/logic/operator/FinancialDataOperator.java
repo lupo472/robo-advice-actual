@@ -3,11 +3,7 @@ package it.uiip.digitalgarage.roboadvice.logic.operator;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -21,14 +17,18 @@ import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataElementDTO;
 @Service
 public class FinancialDataOperator extends AbstractOperator {
 
+	private static int count;
+
 	/*
 	* This method is not used.
 	* TODO: Improve performance if necessary
 	*/
 	@Cacheable("financialDataSet")
 	public List<FinancialDataDTO> getFinancialDataSet(int period) {
+		count = 0;
 		List<FinancialDataDTO> result = new ArrayList<>();
 		List<AssetClassEntity> assetClassSet = this.assetClassRep.findAll();
+		count++; //TODO remove
 		for (AssetClassEntity assetClass : assetClassSet) {
 			List<FinancialDataElementDTO> list = this.getFinancialDataSetForAssetClass(assetClass, period);
 			FinancialDataDTO financialData = new FinancialDataDTO();
@@ -37,11 +37,13 @@ public class FinancialDataOperator extends AbstractOperator {
 			result.add(financialData);
 		}
 		Collections.sort(result);
+		System.out.println("Totale di " + count + " queries");
 		return result;
 	}
 	
 	private List<FinancialDataElementDTO> getFinancialDataSetForAssetClass(AssetClassEntity assetClass, int period) {
 		List<AssetEntity> assets = this.assetRep.findByAssetClass(assetClass);
+		count++; //TODO remove
 		Map<String, BigDecimal> map = createMap(period, assets);
 		List<FinancialDataElementDTO> result = computeResult(map);
 		return result;
@@ -53,7 +55,19 @@ public class FinancialDataOperator extends AbstractOperator {
 		if(period == 0) {
 			interrupt = false;
 		}
+		LocalDate startDate = null;
+		if(period != 0) {
+			startDate = LocalDate.now().minus(Period.ofDays(period));
+		}
+		List<FinancialDataEntity> list;
 		for (AssetEntity asset : assets) {
+			if(period != 0) {
+				list = this.financialDataRep.findByAssetAndDateGreaterThanOrderByDateDesc(asset, startDate);
+			} else {
+				list = this.financialDataRep.findByAsset(asset);
+			}
+			Collections.sort(list);
+
 			int n = 0;
 			LocalDate entityDate = LocalDate.now();
 			BigDecimal entityValue = new BigDecimal(0);
@@ -62,13 +76,18 @@ public class FinancialDataOperator extends AbstractOperator {
 				if(interrupt && n >= period) {
 					break;
 				}
+
 				LocalDate date = LocalDate.now().minus(Period.ofDays(n));
 				if(first || date.isBefore(entityDate)) {
-					FinancialDataEntity entity = this.financialDataRep.findTopByAssetAndDateLessThanEqualOrderByDateDesc(asset, date);
-					first = false;
-					if(entity == null) {
+					if(list.size() == 0) {
 						break;
 					}
+					FinancialDataEntity entity = list.get(list.size() - 1);//this.financialDataRep.findTopByAssetAndDateLessThanEqualOrderByDateDesc(asset, date);
+//					count++; //TODO remove
+					System.out.println("Grandezza " + list.size());
+					System.out.println("Elemento " + entity.getDate().toString());
+					list.remove(entity);
+					first = false;
 					entityDate = entity.getDate();
 					entityValue = entity.getValue();
 				}

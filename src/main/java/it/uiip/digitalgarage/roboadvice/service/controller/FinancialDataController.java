@@ -25,6 +25,7 @@ public class FinancialDataController extends AbstractController {
 		List<FinancialDataDTO> result = this.financialDataOp.getFinancialDataSet(period.getPeriod());
 		Long end = System.currentTimeMillis();
 		System.out.println("GetFinancialDataSet in " + (end - start) + " ms");
+		System.out.println(((end - start) / 1000 / 60) + " min");
 		return new GenericResponse<List<FinancialDataDTO>>(1, result);
 	}
 		
