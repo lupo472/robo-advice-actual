@@ -22,7 +22,9 @@ import it.uiip.digitalgarage.roboadvice.RoboadviceApplication;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = RoboadviceApplication.class)
@@ -59,6 +61,11 @@ public class PortfolioOperatorTest {
 	private FinancialDataEntity financialDataEntity1;
 	private FinancialDataEntity financialDataEntity2;
 	private List<PortfolioEntity> oldPortfolio;
+	private List<CustomStrategyEntity> customStrategyEntityList;
+	private Map<Long, List<AssetEntity>> mapAssets;
+	private Map<Long, FinancialDataEntity> mapFD;
+	private List<AssetEntity> assetList1;
+	private List<AssetEntity> assetList2;
 
 	@Before
 	public void setUpMock() {
@@ -100,7 +107,7 @@ public class PortfolioOperatorTest {
 		financialDataEntity1.setDate(LocalDate.now().minusDays(1));
 		financialDataEntity2 = new FinancialDataEntity();
 		financialDataEntity2.setId(new Long(1));
-		financialDataEntity2.setAsset(assetEntity1);
+		financialDataEntity2.setAsset(assetEntity2);
 		financialDataEntity2.setValue(new BigDecimal(50.23));
 		financialDataEntity2.setDate(LocalDate.now().minusDays(1));
 
@@ -123,110 +130,108 @@ public class PortfolioOperatorTest {
 		oldPortfolio = new ArrayList<>();
 		oldPortfolio.add(portfolioEntity1);
 		oldPortfolio.add(portfolioEntity2);
+
+		customStrategyEntityList = new ArrayList<>();
+		CustomStrategyEntity customStrategyEntity1 = new CustomStrategyEntity();
+		customStrategyEntity1.setId(new Long(1));
+		customStrategyEntity1.setUser(user);
+		customStrategyEntity1.setAssetClass(assetClassEntity1);
+		customStrategyEntity1.setPercentage(new BigDecimal(55.50));
+		customStrategyEntity1.setActive(true);
+		customStrategyEntity1.setDate(LocalDate.now());
+		CustomStrategyEntity customStrategyEntity2 = new CustomStrategyEntity();
+		customStrategyEntity2.setId(new Long(2));
+		customStrategyEntity2.setUser(user);
+		customStrategyEntity2.setAssetClass(assetClassEntity2);
+		customStrategyEntity2.setPercentage(new BigDecimal(44.50));
+		customStrategyEntity2.setActive(true);
+		customStrategyEntity2.setDate(LocalDate.now());
+		customStrategyEntityList.add(customStrategyEntity1);
+		customStrategyEntityList.add(customStrategyEntity2);
+
+		assetList1 = new ArrayList<>();
+		assetList1.add(assetEntity1);
+		assetList2 = new ArrayList<>();
+		assetList2.add(assetEntity2);
+
+		mapAssets = new HashMap<>();
+		mapAssets.put(assetClassEntity1.getId(), assetList1);
+		mapAssets.put(assetClassEntity2.getId(), assetList2);
+
+		mapFD = new HashMap<>();
+		mapFD.put(assetEntity1.getId(), financialDataEntity1);
+		mapFD.put(assetEntity2.getId(), financialDataEntity2);
 	}
 
 	@Test
-	public void createUserPortfolioSuccess() {
+	public void createUserPortfolioTestCapitalNotEmpty() {
 
-//		CapitalEntity capitalEntity = new CapitalEntity();
-//		capitalEntity.setId(new Long(12));
-//		capitalEntity.setUser(user);
-//		capitalEntity.setAmount(new BigDecimal(1236.34));
-//		capitalEntity.setDate(LocalDate.now().minusDays(1));
-//
-//		List<CustomStrategyEntity> customStrategyEntityList = new ArrayList<>();
-//		CustomStrategyEntity customStrategyEntity1 = new CustomStrategyEntity();
-//		customStrategyEntity1.setId(new Long(1));
-//		customStrategyEntity1.setUser(user);
-//		customStrategyEntity1.setAssetClass(assetClassEntity1);
-//		customStrategyEntity1.setPercentage(new BigDecimal(55.50));
-//		customStrategyEntity1.setActive(true);
-//		customStrategyEntity1.setDate(LocalDate.now());
-//		CustomStrategyEntity customStrategyEntity2 = new CustomStrategyEntity();
-//		customStrategyEntity2.setId(new Long(2));
-//		customStrategyEntity2.setUser(user);
-//		customStrategyEntity2.setAssetClass(assetClassEntity2);
-//		customStrategyEntity2.setPercentage(new BigDecimal(44.50));
-//		customStrategyEntity2.setActive(true);
-//		customStrategyEntity2.setDate(LocalDate.now());
-//		customStrategyEntityList.add(customStrategyEntity1);
-//		customStrategyEntityList.add(customStrategyEntity2);
-//
-//		BigDecimal amountPerAsset = new BigDecimal("137.23374000");
-//		BigDecimal units = new BigDecimal("0.91434299");
-//		PortfolioEntity portfolioEntity = new PortfolioEntity();
-//		portfolioEntity.setId(null);
-//		portfolioEntity.setUser(user);
-//		portfolioEntity.setAsset(assetEntity1);
-//		portfolioEntity.setAssetClass(assetClassEntity1);
-//		portfolioEntity.setDate(LocalDate.now());
-//		portfolioEntity.setValue(amountPerAsset);
-//		portfolioEntity.setUnits(units);
-//
-//		List<AssetEntity> assetList1 = new ArrayList<>();
-//		assetList1.add(assetEntity1);
-//		List<AssetEntity> assetList2 = new ArrayList<>();
-//		assetList2.add(assetEntity2);
-//
-//		when(capitalRep.findByUserAndDate(user, user.getLastUpdate())).thenReturn(capitalEntity);
-//		when(customStrategyRep.findByUserAndActive(user, true)).thenReturn(customStrategyEntityList);
-//		when(assetRep.findByAssetClass(assetClassEntity1)).thenReturn(assetList1);
-//		when(assetRep.findByAssetClass(assetClassEntity2)).thenReturn(assetList2);
-//		when(financialDataRep.findByAssetAndDate(assetEntity1,assetEntity1.getLastUpdate())).thenReturn(financialDataEntity1);
-//		when(financialDataRep.findByAssetAndDate(assetEntity2,assetEntity2.getLastUpdate())).thenReturn(financialDataEntity2);
-//		boolean response = portfolioOp.createUserPortfolio(user);
-//		verify(portfolioRep).save(portfolioEntity);
-//		assertTrue(response);
+		CapitalEntity capitalEntity = new CapitalEntity();
+		capitalEntity.setId(new Long(12));
+		capitalEntity.setUser(user);
+		capitalEntity.setAmount(new BigDecimal(1236.34));
+		capitalEntity.setDate(LocalDate.now().minusDays(1));
+
+		BigDecimal amountPerAsset = new BigDecimal("137.23374000");
+		BigDecimal units = new BigDecimal("0.91434299");
+		PortfolioEntity portfolioEntity = new PortfolioEntity();
+		portfolioEntity.setId(null);
+		portfolioEntity.setUser(user);
+		portfolioEntity.setAsset(assetEntity1);
+		portfolioEntity.setAssetClass(assetClassEntity1);
+		portfolioEntity.setDate(LocalDate.now());
+		portfolioEntity.setValue(amountPerAsset);
+		portfolioEntity.setUnits(units);
+
+		when(capitalRep.findByUserAndDate(user, user.getLastUpdate())).thenReturn(capitalEntity);
+		when(customStrategyRep.findByUserAndActive(user, true)).thenReturn(customStrategyEntityList);
+		when(assetRep.findByAssetClass(assetClassEntity1)).thenReturn(assetList1);
+		when(assetRep.findByAssetClass(assetClassEntity2)).thenReturn(assetList2);
+		when(financialDataRep.findByAssetAndDate(assetEntity1,assetEntity1.getLastUpdate())).thenReturn(financialDataEntity1);
+		when(financialDataRep.findByAssetAndDate(assetEntity2,assetEntity2.getLastUpdate())).thenReturn(financialDataEntity2);
+		when(portfolioRep.findByUserAndAssetAndDate(user, assetEntity1, LocalDate.now())).thenReturn(portfolioEntity);
+		boolean response = portfolioOp.createUserPortfolio(user, customStrategyEntityList, capitalEntity, mapAssets, mapFD);
+		verify(portfolioRep).save(portfolioEntity);
+		assertTrue(response);
 	}
 
 	@Test
 	public void createUserPortfolioFailNullLastUpdate() {
-//		when(capitalRep.findByUserAndDate(user, user.getLastUpdate())).thenReturn(null);
-//		boolean response = portfolioOp.createUserPortfolio(user);
-//		assertFalse(response);
+		boolean response = portfolioOp.createUserPortfolio(user, customStrategyEntityList, null, mapAssets, mapFD);
+		assertFalse(response);
 	}
 
 	@Test
 	public void createUserPortfolioFailNullCustomStrategy() {
-//		CapitalEntity capitalEntity = new CapitalEntity();
-//		capitalEntity.setId(new Long(12));
-//		capitalEntity.setUser(user);
-//		capitalEntity.setAmount(new BigDecimal(1236.34));
-//		capitalEntity.setDate(LocalDate.now().minusDays(1));
-//		List<CustomStrategyEntity> customStrategyEntityList = new ArrayList<>();
-//		when(capitalRep.findByUserAndDate(user, user.getLastUpdate())).thenReturn(capitalEntity);
-//		when(customStrategyRep.findByUserAndActive(user, true)).thenReturn(customStrategyEntityList);
-//		boolean response = portfolioOp.createUserPortfolio(user);
-//		assertFalse(response);
+		CapitalEntity capitalEntity = new CapitalEntity();
+		capitalEntity.setId(new Long(12));
+		capitalEntity.setUser(user);
+		capitalEntity.setAmount(new BigDecimal(1236.34));
+		capitalEntity.setDate(LocalDate.now().minusDays(1));
+		List<CustomStrategyEntity> customStrategyEntityList = new ArrayList<>();
+		when(capitalRep.findByUserAndDate(user, user.getLastUpdate())).thenReturn(capitalEntity);
+		when(customStrategyRep.findByUserAndActive(user, true)).thenReturn(customStrategyEntityList);
+		boolean response = portfolioOp.createUserPortfolio(user, customStrategyEntityList, capitalEntity, mapAssets, mapFD );
+		assertFalse(response);
 	}
 
 	@Test
 	public void computeUserPortfolioSucces() {
-//		PortfolioEntity savedPortfolio = new PortfolioEntity();
-//		savedPortfolio.setId(null);
-//		savedPortfolio.setUser(user);
-//		savedPortfolio.setAsset(assetEntity1);
-//		savedPortfolio.setAssetClass(assetClassEntity1);
-//		savedPortfolio.setUnits(new BigDecimal(10.50));
-//		savedPortfolio.setValue(new BigDecimal("1575.9450000000000358113538823090493679046630859375"));
-//		savedPortfolio.setDate(LocalDate.now());
-//
-//		when(portfolioRep.findByUserAndDate(user, user.getLastUpdate())).thenReturn(oldPortfolio);
-//		when(financialDataRep.findByAssetAndDate(assetEntity1,assetEntity1.getLastUpdate())).thenReturn(financialDataEntity1);
-//		when(financialDataRep.findByAssetAndDate(assetEntity2,assetEntity2.getLastUpdate())).thenReturn(financialDataEntity2);
-//		boolean response = portfolioOp.computeUserPortfolio(user);
-//		verify(portfolioRep).save(savedPortfolio);
-//		assertTrue(response);
-	}
+		PortfolioEntity savedPortfolio = new PortfolioEntity();
+		savedPortfolio.setId(null);
+		savedPortfolio.setUser(user);
+		savedPortfolio.setAsset(assetEntity1);
+		savedPortfolio.setAssetClass(assetClassEntity1);
+		savedPortfolio.setUnits(new BigDecimal(10.50));
+		savedPortfolio.setValue(new BigDecimal("1575.9450000000000358113538823090493679046630859375"));
+		savedPortfolio.setDate(LocalDate.now());
 
-	@Test
-	public void computeUserPortfolioNullAssetFinancialData() {
-//		when(portfolioRep.findByUserAndDate(user, user.getLastUpdate())).thenReturn(oldPortfolio);
-//		when(financialDataRep.findByAssetAndDate(assetEntity1,assetEntity1.getLastUpdate())).thenReturn(null);
-//		when(financialDataRep.findByAssetAndDate(assetEntity2,assetEntity2.getLastUpdate())).thenReturn(null);
-//		boolean response = portfolioOp.computeUserPortfolio(user);
-//		assertFalse(response);
-
+		when(portfolioRep.findByUserAndDate(user, user.getLastUpdate())).thenReturn(oldPortfolio);
+		when(financialDataRep.findByAssetAndDate(assetEntity1,assetEntity1.getLastUpdate())).thenReturn(financialDataEntity1);
+		when(financialDataRep.findByAssetAndDate(assetEntity2,assetEntity2.getLastUpdate())).thenReturn(financialDataEntity2);
+		boolean response = portfolioOp.computeUserPortfolio(user, oldPortfolio, mapFD);
+		verify(portfolioRep).save(savedPortfolio);
+		assertTrue(response);
 	}
 	
 }
