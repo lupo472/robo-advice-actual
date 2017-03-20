@@ -79,7 +79,7 @@ public class PortfolioOperator extends AbstractOperator {
 		List<PortfolioDTO> result = new ArrayList<>();
 		for (String date : map.keySet()) {
 			PortfolioDTO dto = new PortfolioDTO();
-			Set<PortfolioElementDTO> set = new HashSet<>();
+			Map<Long, PortfolioElementDTO> portfolioMap = new HashMap<>();
 			for (PortfolioEntity entity : map.get(date)) {
 				PortfolioElementDTO element = new PortfolioElementDTO();
 				element.setId(entity.getAssetClass().getId());
@@ -88,10 +88,10 @@ public class PortfolioOperator extends AbstractOperator {
 				BigDecimal percentage = value.divide(totalMap.get(LocalDate.parse(date)), 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100.00));
 				element.setValue(value);
 				element.setPercentage(percentage);
-				set.add(element);
+				portfolioMap.put(entity.getAssetClass().getId(), element);
 			}
 			dto.setDate(date);
-			List<PortfolioElementDTO> list = new ArrayList<>(set);
+			List<PortfolioElementDTO> list = new ArrayList<>(portfolioMap.values());
 			Collections.sort(list);
 			dto.setList(list);
 			result.add(dto);

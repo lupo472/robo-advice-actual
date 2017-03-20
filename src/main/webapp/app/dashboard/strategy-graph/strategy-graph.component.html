@@ -14,5 +14,6 @@
               [chartType]="pieChartType" (chartHover)="chartHovered($event)"
               (chartClick)="chartClicked($event)"></canvas>
     </div>
+    <div class="h3 text-primary" *ngIf="!render">Select a Strategy</div>
   </div>
 </div>
