@@ -29,8 +29,8 @@ describe('StrategyService', () => {
    expect(appService.getAssetClassSet().length).toBe(2);
    }));*/
 
-  it('#getDefaultStrategySet should return 2 strategies', inject([AppService,,AssetService], (appService,assetService) => {
-    expect(appService.getDefaultStrategySet().length).toBe(2);
+  it('#getDefaultStrategySet should return 2 strategies', inject([AppService,AssetService], (appService,assetService) => {
+    expect(service.getDefaultStrategySet().subscribe(res => console.log("strategies",res.getStrategies())));
   }));
 
 

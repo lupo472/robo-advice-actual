@@ -54,6 +54,20 @@ export class Portfolio {
             labels.push(item.date);
         });
 
+        console.log("DATA MAPPED BEFORE: ", datasets);
+
+        for (let i = 0; i < value.length; i++) {
+            if (value[i] != undefined) {
+                for (let j = 0; j < value[i].length; j++) {
+                    if (value[i][j] == undefined) {
+                        value[i][j] = 0;
+                    }
+                }
+                
+                datasets[i].data = value[i];
+            }
+        }
+
         let datasplice = [];
 
         for (let iter = 0; iter < datasets.length - 1; iter++) {

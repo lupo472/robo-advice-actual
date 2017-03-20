@@ -22,8 +22,8 @@ export class FullLayoutComponent implements OnInit {
     ngOnInit(): void {
         this.login = this.UserService.getLogin();
         console.log("LOGIN NAVBAR", this.login);
-        this.AppService.getCapitalForPeriod(0).subscribe(res => console.log(res));
-            //this.assignCapitalData(res));
+        this.AppService.getCapitalForPeriod(0).subscribe(res => this.assignCapitalData(res));
+           
     }
 
     public isLoaded: boolean = false;
