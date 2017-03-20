@@ -6,13 +6,18 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 
+import it.uiip.digitalgarage.roboadvice.persistence.entity.*;
+import it.uiip.digitalgarage.roboadvice.persistence.util.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import it.uiip.digitalgarage.roboadvice.persistence.entity.CapitalEntity;
-import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
 import it.uiip.digitalgarage.roboadvice.service.dto.CapitalRequestDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CapitalDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.PeriodRequestDTO;
@@ -22,7 +27,8 @@ public class CapitalOperator extends AbstractOperator {
 	
 	@Autowired
 	private PortfolioOperator portfolioOp;
-	
+
+	@Cacheable("currentCapital")
 	public CapitalDTO getCurrentCapital(Authentication auth) {
 		UserEntity user = this.userRep.findByEmail(auth.getName());
 		CapitalEntity entity = this.capitalRep.findByUserAndDate(user, user.getLastUpdate());
@@ -31,7 +37,8 @@ public class CapitalOperator extends AbstractOperator {
 		}
 		return (CapitalDTO) this.capitalConv.convertToDTO(entity);
 	}
-	
+
+	@Cacheable("capitalHistory")
 	public List<CapitalDTO> getCapitalPeriod(PeriodRequestDTO request, Authentication auth) {
 		UserEntity user = this.userRep.findByEmail(auth.getName());
 		List<CapitalDTO> response = new ArrayList<CapitalDTO>();
@@ -53,10 +60,16 @@ public class CapitalOperator extends AbstractOperator {
 		Collections.sort(response);
 		return  response;
 	}
-	
+
+	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory"}, allEntries = true)
 	public boolean addCapital(CapitalRequestDTO capital, Authentication auth) {
-		CapitalEntity entity = this.capitalConv.convertToEntity(capital);
 		UserEntity user = this.userRep.findByEmail(auth.getName());
+		return this.addCapital(capital, user);
+	}
+
+	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory"}, allEntries = true)
+	public boolean addCapital(CapitalRequestDTO capital, UserEntity user) {
+		CapitalEntity entity = this.capitalConv.convertToEntity(capital);
 		if(user == null) {
 			return false;
 		}
@@ -78,10 +91,22 @@ public class CapitalOperator extends AbstractOperator {
 		userRep.save(user);
 		return true;
 	}
-	
+
 	public boolean computeCapital(UserEntity user) {
+		List<AssetEntity> assets = this.assetRep.findAll();
+		List<FinancialDataEntity> list = new ArrayList<>();
+		for(AssetEntity asset : assets) {
+			list.add(financialDataRep.findByAssetAndDate(asset, asset.getLastUpdate()));
+		}
+		List<PortfolioEntity> currentPortfolio = this.portfolioRep.findByUserAndDate(user, user.getLastUpdate());
+		Map<Long, FinancialDataEntity> financialDataMap = Mapper.getMapFinancialData(list);
+		return this.computeCapital(user, financialDataMap, currentPortfolio);
+	}
+
+	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory"}, allEntries = true)
+	public boolean computeCapital(UserEntity user, Map<Long, FinancialDataEntity> map, List<PortfolioEntity> currentPortfolio) {
 		CapitalEntity capital = new CapitalEntity();
-		BigDecimal amount = portfolioOp.evaluatePortfolio(user);
+		BigDecimal amount = portfolioOp.evaluatePortfolio(user, map, currentPortfolio);
 		if(amount == null) {
 			return false;
 		}
@@ -90,14 +115,18 @@ public class CapitalOperator extends AbstractOperator {
 		capital.setAmount(amount);
 		capital.setDate(currentDate);
 		CapitalEntity saved = this.capitalRep.findByUserAndDate(user, currentDate);
+		SchedulingOperator.count++; //TODO remove counting
 		if(saved == null) {
 			this.capitalRep.save(capital);
+			SchedulingOperator.count++; //TODO remove counting
 		} else {
 			saved.setAmount(amount);
 			this.capitalRep.save(saved);
+			SchedulingOperator.count++; //TODO remove counting
 		}
 		user.setLastUpdate(currentDate);
 		this.userRep.save(user);
+		SchedulingOperator.count++; //TODO remove counting
 		return true;
 	}
 

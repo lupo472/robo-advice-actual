@@ -13,38 +13,48 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CustomStrategyOperator extends AbstractOperator{
 
+	@CacheEvict(value = {"activeStrategy", "strategies"}, allEntries = true)
     public boolean setCustomStrategy(CustomStrategyDTO request, Authentication auth) {
     	UserEntity user = this.userRep.findByEmail(auth.getName());
-    	if(user == null){
-    		return false;
+    	return this.setCustomStrategy(request, user);
+    }
+
+	@CacheEvict(value = {"activeStrategy", "strategies"}, allEntries = true)
+    public boolean setCustomStrategy(CustomStrategyDTO request, UserEntity user) {
+		if(user == null){
+			return false;
 		}
-    	this.customStrategyRep.setStrategyInactive(user);
-    	List<CustomStrategyEntity> todayStrategySet = this.customStrategyRep.findByUserAndDate(user, LocalDate.now());
-    	if(todayStrategySet.size() > 0) {
-    		this.customStrategyRep.delete(todayStrategySet);
-    	}
-    	List<CustomStrategyEntity> entityList = this.customStrategyWrap.unwrapToEntity(request);
-    	for (CustomStrategyEntity entity : entityList) {
+		this.customStrategyRep.setStrategyInactive(user);
+		List<CustomStrategyEntity> todayStrategySet = this.customStrategyRep.findByUserAndDate(user, LocalDate.now());
+		if(todayStrategySet.size() > 0) {
+			this.customStrategyRep.delete(todayStrategySet);
+		}
+		List<CustomStrategyEntity> entityList = this.customStrategyWrap.unwrapToEntity(request);
+		for (CustomStrategyEntity entity : entityList) {
 			entity.setUser(user);
 			entity.setActive(true);
 			entity.setDate(LocalDate.now());
 		}
 		this.customStrategyRep.save(entityList);
-    	return true;
-    }
+		return true;
+	}
 
+	@Cacheable("activeStrategy")
     public CustomStrategyResponseDTO getActiveStrategy(Authentication auth){
     	UserEntity user = this.userRep.findByEmail(auth.getName());
     	return this.getActiveStrategy(user);
     }
-    
-    public CustomStrategyResponseDTO getActiveStrategy(UserEntity user) {
+
+	@Cacheable("activeStrategy")
+	public CustomStrategyResponseDTO getActiveStrategy(UserEntity user) {
     	List<CustomStrategyEntity> entityList = this.customStrategyRep.findByUserAndActive(user, true);
     	if(entityList.isEmpty()) {
     		return null;
@@ -52,12 +62,14 @@ public class CustomStrategyOperator extends AbstractOperator{
     	CustomStrategyResponseDTO result = (CustomStrategyResponseDTO) this.customStrategyWrap.wrapToDTO(entityList);
     	return result;
     }
-    
+
+    @Cacheable("strategies")
     public List<CustomStrategyResponseDTO> getCustomStrategySet(Authentication auth, int period) {
     	UserEntity user = this.userRep.findByEmail(auth.getName());
     	return this.getCustomStrategySet(user, period);
     }
-    
+
+	@Cacheable("strategies")
     public List<CustomStrategyResponseDTO> getCustomStrategySet(UserEntity user, int period){
     	List<CustomStrategyEntity> entityList = new ArrayList<>();
     	if(period == 0) {

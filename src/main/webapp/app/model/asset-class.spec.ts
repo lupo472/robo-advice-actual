@@ -9,14 +9,21 @@ describe('AssetClass', () => {
     expect(assetClass.getId()).toEqual(1);
     expect(assetClass.getName()).toEqual('custom');
   });
-  it('should set the name to the assetClass', ()=>{
-    let assetClass = new AssetClass(1,'custom');
-    assetClass.setName("newCustom");
-    expect(assetClass.getName()).toEqual("newCustom");
-  });
+
   it('should assign the rigth colour', ()=>{
     let assetClass = new AssetClass(1,'custom');
     let colour = assetClass.assignColour();
     expect(colour).toEqual("#4dbd74");
+
+  });
+  it('should accept values in the set methods', ()=>{
+    let assetClass = new AssetClass();
+    assetClass.setId(1);
+    assetClass.setName("custom");
+    let id = assetClass.getId();
+    let name= assetClass.getName();
+    expect(id).toEqual(1);
+    expect(name).toEqual('custom');
+
   });
 });

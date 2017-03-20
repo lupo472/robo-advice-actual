@@ -9,8 +9,8 @@
       <!--/.col-->
     </div>
     <div class="chart-wrapper" *ngIf="render">
-      <canvas baseChart class="chart" [data]="data" [labels]="labels"
-      			[options]="strategyOptions" [colors]="colors"
+      <canvas baseChart class="chart" [datasets]="datasets" [labels]="labels" [colors]="colors"
+      			[options]="strategyOptions"
               [chartType]="pieChartType" (chartHover)="chartHovered($event)"
               (chartClick)="chartClicked($event)"></canvas>
     </div>
