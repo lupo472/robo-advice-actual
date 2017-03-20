@@ -104,20 +104,15 @@ public class CapitalOperator extends AbstractOperator {
 		capital.setAmount(amount);
 		capital.setDate(currentDate);
 		CapitalEntity saved = this.capitalRep.findByUserAndDate(user, currentDate);
-		SchedulingOperator.count++; //TODO remove counting
 		if(saved == null) {
 			this.capitalRep.save(capital);
-			SchedulingOperator.count++; //TODO remove counting
 			user.setLastUpdate(currentDate);
 			this.userRep.save(user);
-			SchedulingOperator.count++; //TODO remove counting
 			return capital;
 		}
 		saved.setAmount(amount);
 		this.capitalRep.save(saved);
-		SchedulingOperator.count++; //TODO remove counting
 		this.userRep.save(user);
-		SchedulingOperator.count++; //TODO remove counting
 		return saved;
 	}
 
