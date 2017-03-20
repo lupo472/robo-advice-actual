@@ -38,7 +38,7 @@ public class SchedulingOperator extends AbstractOperator {
 	public static int quandl;
 
 	//TODO: verificare i miglioramenti prestazionali suggeriti nei todo
-	@Scheduled(cron = "0 27 1 * * *")
+	@Scheduled(cron = "0 14 8 * * *")
 	public void scheduleTask() {
 		count = 0;
 		quandl = 0;
@@ -47,7 +47,9 @@ public class SchedulingOperator extends AbstractOperator {
 		Long middle = System.currentTimeMillis();
 		List<UserEntity> users = userOp.getAllUsers();
 		SchedulingOperator.count++; //TODO remove counting
-		List<AssetEntity> assets = this.assetRep.findAll();List<FinancialDataEntity> list = new ArrayList<>();
+		List<AssetEntity> assets = this.assetRep.findAll();
+		Map<Long, List<AssetEntity>> mapAssets = Mapper.getMapAssets(assets);
+		List<FinancialDataEntity> list = new ArrayList<>();
 		SchedulingOperator.count++; //TODO remove counting
 		for(AssetEntity asset : assets) {
 			list.add(financialDataRep.findByAssetAndDate(asset, asset.getLastUpdate()));
@@ -60,7 +62,7 @@ public class SchedulingOperator extends AbstractOperator {
 			if(currentPortfolio.isEmpty()) {
 				List<CustomStrategyEntity> strategy = this.customStrategyRep.findByUserAndActive(user, true);
 				SchedulingOperator.count++; //TODO remove counting
-				boolean created = portfolioOp.createUserPortfolio(user, strategy);
+				boolean created = portfolioOp.createUserPortfolio(user, strategy, mapAssets);
 				if(created) {
 					System.out.println("Created portfolio for user: " + user.getId());
 				}
@@ -70,7 +72,7 @@ public class SchedulingOperator extends AbstractOperator {
 				System.out.println("Skipped computation for user: " + user.getId());
 				continue;
 			}
-			boolean computed = capitalOp.computeCapital(user, financialDataMap);
+			boolean computed = capitalOp.computeCapital(user, financialDataMap, currentPortfolio);
 			if(computed) {
 				System.out.println("Computed capital for user: " + user.getId());
 			}
@@ -81,7 +83,7 @@ public class SchedulingOperator extends AbstractOperator {
 					(strategy.get(0).getDate().equals(LocalDate.now()) ||
 					 strategy.get(0).getDate().equals(LocalDate.now().minus(Period.ofDays(1))))) {
 				SchedulingOperator.count++; //TODO remove counting
-				boolean recreated = portfolioOp.createUserPortfolio(user, strategy);
+				boolean recreated = portfolioOp.createUserPortfolio(user, strategy, mapAssets);
 				if(recreated) {
 					System.out.println("Re-created portfolio for user: " + user.getId());
 				}
@@ -104,7 +106,7 @@ public class SchedulingOperator extends AbstractOperator {
 	/************************************************************************************
 	 * 								Test Method											*
 	 ************************************************************************************/
-	@Scheduled(cron = "0 54 0 * * *")
+	@Scheduled(cron = "0 9 8 * * *")
 	public void fillDBUser() {
 		Long start = System.currentTimeMillis();
 		UserEntity user;

@@ -9,8 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetEntity;
-import it.uiip.digitalgarage.roboadvice.persistence.entity.FinancialDataEntity;
+import it.uiip.digitalgarage.roboadvice.persistence.entity.*;
 import it.uiip.digitalgarage.roboadvice.persistence.util.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
@@ -19,8 +18,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import it.uiip.digitalgarage.roboadvice.persistence.entity.CapitalEntity;
-import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
 import it.uiip.digitalgarage.roboadvice.service.dto.CapitalRequestDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CapitalDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.PeriodRequestDTO;
@@ -101,17 +98,13 @@ public class CapitalOperator extends AbstractOperator {
 		for(AssetEntity asset : assets) {
 			list.add(financialDataRep.findByAssetAndDate(asset, asset.getLastUpdate()));
 		}
+		List<PortfolioEntity> currentPortfolio = this.portfolioRep.findByUserAndDate(user, user.getLastUpdate());
 		Map<Long, FinancialDataEntity> financialDataMap = Mapper.getMapFinancialData(list);
-		return this.computeCapital(user, financialDataMap);
+		return this.computeCapital(user, financialDataMap, currentPortfolio);
 	}
 
-	/*TODO: migliorare prestazioni
-	 *		La chiamata a evaluatePortfolio è chiaramente poco efficiente.
-	 *		Oltre al miglioramento lì descritto è possibile passare il currentPortfolio
-	 *		a tale metodo, prendendolo dallo Scheduler in modo da non doverlo ricomputare.
-	 */
 	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory"}, allEntries = true)
-	public boolean computeCapital(UserEntity user, Map<Long, FinancialDataEntity> map) {
+	public boolean computeCapital(UserEntity user, Map<Long, FinancialDataEntity> map, List<PortfolioEntity> currentPortfolio) {
 		CapitalEntity capital = new CapitalEntity();
 		BigDecimal amount = portfolioOp.evaluatePortfolio(user, map);
 		if(amount == null) {
@@ -122,8 +115,7 @@ public class CapitalOperator extends AbstractOperator {
 		capital.setAmount(amount);
 		capital.setDate(currentDate);
 		CapitalEntity saved = this.capitalRep.findByUserAndDate(user, currentDate);
-		//TODO remove counting
-		SchedulingOperator.count++;
+		SchedulingOperator.count++; //TODO remove counting
 		if(saved == null) {
 			this.capitalRep.save(capital);
 			SchedulingOperator.count++; //TODO remove counting
