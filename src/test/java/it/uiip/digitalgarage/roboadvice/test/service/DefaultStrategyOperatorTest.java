@@ -36,7 +36,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = RoboadviceApplication.class)
-public class DefaultStrategyControllerTest {
+public class DefaultStrategyOperatorTest {
 
     @InjectMocks
     @Autowired
