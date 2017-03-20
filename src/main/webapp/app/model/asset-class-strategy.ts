@@ -7,9 +7,11 @@ export class AssetClassStrategy extends AssetClass {
         super(id, name);
         this.percentage = percentage;
     }
+
     setPercentage(percentage: number): void {
         this.percentage = percentage;
     }
+
     getPercentage(): number {
         return this.percentage;
     }
