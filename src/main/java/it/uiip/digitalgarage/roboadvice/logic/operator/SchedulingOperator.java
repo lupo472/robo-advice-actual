@@ -111,7 +111,7 @@ public class SchedulingOperator extends AbstractOperator {
 	/************************************************************************************
 	 * 								Test Method											*
 	 ************************************************************************************/
-	@Scheduled(cron = "0 47 8 * * *")
+	@Scheduled(cron = "0 58 11 * * *")
 	public void fillDBUser() {
 		Long start = System.currentTimeMillis();
 		UserEntity user;

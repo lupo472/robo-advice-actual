@@ -124,9 +124,11 @@ public class PortfolioOperator extends AbstractOperator {
     private void savePortfolioForAssetClass(AssetClassEntity assetClass, UserEntity user, BigDecimal amount,
 											Map<Long, List<AssetEntity>> mapAssets, Map<Long, FinancialDataEntity> mapFD) {
     	List<AssetEntity> assets = mapAssets.get(assetClass.getId());
+    	List<PortfolioEntity> portfolioList = this.portfolioRep.findByUser(user);
+		Map<Long, PortfolioEntity> portfolioMap =Mapper.getMapPortfolio(portfolioList);
     	for (AssetEntity asset : assets) {
-			PortfolioEntity savedEntity = this.portfolioRep.findByUserAndAssetAndDate(user, asset, LocalDate.now());
-			SchedulingOperator.count++; //TODO remove counting
+			PortfolioEntity savedEntity = portfolioMap.get(asset.getId());
+//			SchedulingOperator.count++; //TODO remove counting
 			PortfolioEntity entity = new PortfolioEntity();
 			if(savedEntity != null) {
 				entity = savedEntity;
