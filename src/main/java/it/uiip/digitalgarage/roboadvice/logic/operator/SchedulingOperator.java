@@ -37,7 +37,7 @@ public class SchedulingOperator extends AbstractOperator {
 	public static int count;
 	public static int quandl;
 
-	@Scheduled(cron = "0 14 8 * * *")
+	@Scheduled(cron = "0 33 9 * * *")
 	public void scheduleTask() {
 		count = 0;
 		quandl = 0;
@@ -55,6 +55,17 @@ public class SchedulingOperator extends AbstractOperator {
 			SchedulingOperator.count++; //TODO remove counting
 		}
 		Map<Long, FinancialDataEntity> financialDataMap = Mapper.getMapFinancialData(list);
+		userComputation(users, mapAssets, financialDataMap);
+		Long end = System.currentTimeMillis();
+		System.out.println("Quandl: " + quandl + " queries");
+		System.out.println("Scheduling: " + count + " queries");
+		System.out.println("Total: " + (count + quandl) + " queries");
+		System.out.println("Quandl computation in " + (middle - start) + " ms");
+		System.out.println("Scheduling computation in " + (end - middle) + " ms");
+		System.out.println("Total computation in " + (end - start) + " ms");
+	}
+
+	private void userComputation(List<UserEntity> users, Map<Long, List<AssetEntity>> mapAssets, Map<Long, FinancialDataEntity> financialDataMap) {
 		for (UserEntity user : users) {
 			List<PortfolioEntity> currentPortfolio = this.portfolioRep.findByUserAndDate(user, user.getLastUpdate());
 			SchedulingOperator.count++; //TODO remove counting
@@ -92,13 +103,6 @@ public class SchedulingOperator extends AbstractOperator {
 				System.out.println("Computed portfolio for user: " + user.getId());
 			}
 		}
-		Long end = System.currentTimeMillis();
-		System.out.println("Quandl: " + quandl + " queries");
-		System.out.println("Scheduling: " + count + " queries");
-		System.out.println("Total: " + (count + quandl) + " queries");
-		System.out.println("Quandl computation in " + (middle - start) + " ms");
-		System.out.println("Scheduling computation in " + (end - middle) + " ms");
-		System.out.println("Total computation in " + (end - start) + " ms");
 	}
 
 	/************************************************************************************
@@ -151,7 +155,7 @@ public class SchedulingOperator extends AbstractOperator {
 	/************************************************************************************
 	 * 								Test Method											*
 	 ************************************************************************************/
-	@Scheduled(cron = "0 14 1 * * *")
+	@Scheduled(cron = "0 28 9 * * *")
 	public void modifyDB() {
 		Long start = System.currentTimeMillis();
 		List<UserEntity> users = this.userRep.findAll();
@@ -162,8 +166,18 @@ public class SchedulingOperator extends AbstractOperator {
 		List<PortfolioEntity> portfolios = (List<PortfolioEntity>) this.portfolioRep.findAll();
 		for(PortfolioEntity portfolio : portfolios) {
 			portfolio.setDate(LocalDate.now().minus(Period.ofDays(1)));
-			this.portfolioRep.save(portfolio);
 		}
+		this.portfolioRep.save(portfolios);
+		List<CapitalEntity> capitals = (List<CapitalEntity>) this.capitalRep.findAll();
+		for(CapitalEntity capital : capitals) {
+			capital.setDate(LocalDate.now().minus(Period.ofDays(1)));
+		}
+		this.capitalRep.save(capitals);
+		List<CustomStrategyEntity> strategyEntities = this.customStrategyRep.findAll();
+		for(CustomStrategyEntity s : strategyEntities) {
+			s.setDate(LocalDate.now().minus(Period.ofDays(3)));
+		}
+		this.customStrategyRep.save(strategyEntities);
 		Long end = System.currentTimeMillis();
 		System.out.println("Modified DB computation in " + (end - start) + " ms");
 	}
