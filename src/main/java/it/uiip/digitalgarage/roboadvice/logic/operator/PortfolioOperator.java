@@ -104,19 +104,6 @@ public class PortfolioOperator extends AbstractOperator {
     }
 
 	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory"}, allEntries = true)
-	public boolean createUserPortfolio(UserEntity user, List<CustomStrategyEntity> strategyEntity,
-									   Map<Long, List<AssetEntity>> mapAssets, Map<Long, FinancialDataEntity> mapFD) {
-		if(strategyEntity.isEmpty()) {
-			return false;
-		}
-		CapitalEntity capitalEntity = this.capitalRep.findByUserAndDate(user, user.getLastUpdate());
-		SchedulingOperator.count++; //TODO remove counting
-		return this.createUserPortfolio(user, strategyEntity, capitalEntity, mapAssets, mapFD);
-	}
-
-
-
-	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory"}, allEntries = true)
     public boolean createUserPortfolio(UserEntity user, List<CustomStrategyEntity> strategyEntity, CapitalEntity capital,
 									   Map<Long, List<AssetEntity>> mapAssets, Map<Long, FinancialDataEntity> mapFD) {
 		if(strategyEntity.isEmpty()) {

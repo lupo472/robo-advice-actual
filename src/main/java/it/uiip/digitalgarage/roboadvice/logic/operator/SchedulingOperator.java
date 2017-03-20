@@ -73,7 +73,10 @@ public class SchedulingOperator extends AbstractOperator {
 			if(currentPortfolio.isEmpty()) {
 				List<CustomStrategyEntity> strategy = this.customStrategyRep.findByUserAndActive(user, true);
 				SchedulingOperator.count++; //TODO remove counting
-				boolean created = portfolioOp.createUserPortfolio(user, strategy, mapAssets, financialDataMap);
+				CapitalEntity capitalEntity = this.capitalRep.findByUserAndDate(user, user.getLastUpdate());
+				SchedulingOperator.count++; //TODO remove counting
+
+				boolean created = portfolioOp.createUserPortfolio(user, strategy, capitalEntity, mapAssets, financialDataMap);
 				if(created) {
 					System.out.println("Created portfolio for user: " + user.getId());
 				}
