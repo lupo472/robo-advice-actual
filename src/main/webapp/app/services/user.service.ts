@@ -23,7 +23,6 @@ export class UserService {
   //SET AND GET USER
   setLogin(data) {
     this.login = new Login(data);
-    console.log("LOGIN RECEIVED: ", this.login);
     //this.AppService.getCurrentCapital(res.user,res.token).subscribe(res => this.setCapital(res));
     //this.AppService.getActiveStrategy(res.user,res.token).subscribe(res => this.setStrategy(res));
 
