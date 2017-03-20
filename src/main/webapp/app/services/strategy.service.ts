@@ -22,7 +22,6 @@ export class StrategyService {
   activeStrategy:Strategy;
 
   constructor(private AppService:AppService, private AssetService:AssetService) {
-    
   }
   // CREATE A NEW STRATEGY
   createStrategy(currentStrategy){
