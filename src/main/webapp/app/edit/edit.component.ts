@@ -73,6 +73,7 @@ export class EditComponent implements OnInit, AfterViewInit {
         } else {
           this.isCustom = false;
         }
+        //this.AssetService.assetClassStrategies
         this.assetClassStrategies = strategy.getStrategyArray();
         this.isDisabled = false;
         this.strategies.forEach((item, index) => {

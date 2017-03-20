@@ -30,13 +30,11 @@ export class StrategyService {
   // STRATEGY JSON REMAPPING
   getDefaultStrategySet() {
     return this.AppService.getDefaultStrategySet().map(res => this.assignStrategy(res));
-        //console.log(res));
-        //this.assignStrategy(res));
   }
   assignStrategy(res) {
     this.strategies = new Strategies();
-    this.customStrategy = new CustomStrategy();
-    this.customStrategy.populateMap(this.AssetService.assetClassStrategies.getAssetClassStrategies());
+    this.customStrategy = new CustomStrategy(this.AssetService.assetClassStrategies.getAssetClassStrategies());
+    this.customStrategy.populateMap();
     this.strategies.createStrategies(res);
     this.strategies.addStrategy(this.customStrategy);
     return this.strategies;

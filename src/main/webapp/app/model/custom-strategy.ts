@@ -7,9 +7,11 @@ export class CustomStrategy extends Strategy {
   private maxPercentage:number;
   private oldValue:number;
   private name:string;
+  private customList:AssetClassStrategy[];
 
-  constructor() {
+  constructor(customList) {
     super();
+    this.customList = customList;
     this.name = "custom";
     this.list = [];
     this.sumPercentage = 0;
@@ -42,10 +44,13 @@ export class CustomStrategy extends Strategy {
     return {"list":array};
   }
   getStrategyArray(): AssetClassStrategy[] {
+    this.list.forEach((item,index)=>{
+      console.log("item",item);
+    });
     return this.list;
   }
-  populateMap(assetClassStrategies:AssetClassStrategy[]){
-    assetClassStrategies.forEach((item,index)=> {
+  populateMap(){
+    this.customList.forEach((item,index)=> {
       this.assetClassStrategiesMap.set(item.getId(),
       new AssetClassStrategy(item.getPercentage(),item.getId(),item.getName()));
     });

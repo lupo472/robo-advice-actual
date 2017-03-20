@@ -29,9 +29,13 @@ describe('StrategyService', () => {
    expect(appService.getAssetClassSet().length).toBe(2);
    }));*/
 
-  it('#getDefaultStrategySet should return 2 strategies', inject([AppService,AssetService], (appService,assetService) => {
-    expect(service.getDefaultStrategySet().subscribe(res => console.log("strategies",res.getStrategies())));
-  }));
+  /*it('#getDefaultStrategySet should return 2 strategies', inject([AppService,AssetService], (appService,assetService) => {
+    let assignStrategy;
+
+    service.getDefaultStrategySet().subscribe(res => {
+    expect(res).toBeDefined();
+    });
+  }));*/
 
 
   /*it('should return, by default, an empty object', inject([StrategyService], (service: StrategyService) => {
