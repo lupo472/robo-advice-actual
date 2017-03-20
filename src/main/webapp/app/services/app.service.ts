@@ -85,14 +85,14 @@ export class AppService {
       .map(response => response.json());
   }
 
-  addCapital(id, amount) {
+  addCapital(amount) {
     this.headers = new Headers();
     this.headers.append('Authorization',Cookie.get('token'));
     //this.headers.append('Access-Control-Allow-Credentials','true');
     //this.headers.append('Content-Type','application/json;charset=UTF-8');
     this.opts = new RequestOptions();
     this.opts.headers = this.headers;
-    return this.http.post(AppConfig.url + 'addCapital', { idUser: id, amount: amount },this.opts)
+    return this.http.post(AppConfig.url + 'addCapital', { amount: amount },this.opts)
       .map(response => response.json());
   }
 
@@ -103,7 +103,7 @@ export class AppService {
     //this.headers.append('Content-Type','application/json;charset=UTF-8');
     this.opts = new RequestOptions();
     this.opts.headers = this.headers;
-    return this.http.post(AppConfig.url + 'getCurrentCapital',this.opts)
+    return this.http.post(AppConfig.url + 'getCurrentCapital', {}, this.opts)
       .map(response => response.json());
   }
 
