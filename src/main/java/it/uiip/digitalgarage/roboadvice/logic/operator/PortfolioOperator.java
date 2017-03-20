@@ -123,18 +123,29 @@ public class PortfolioOperator extends AbstractOperator {
 		return this.createUserPortfolio(user, strategyEntity, mapAssets, financialDataMap);
 	}
 
-    @CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory"}, allEntries = true)
-    public boolean createUserPortfolio(UserEntity user, List<CustomStrategyEntity> strategyEntity,
+	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory"}, allEntries = true)
+	public boolean createUserPortfolio(UserEntity user, List<CustomStrategyEntity> strategyEntity,
 									   Map<Long, List<AssetEntity>> mapAssets, Map<Long, FinancialDataEntity> mapFD) {
 		if(strategyEntity.isEmpty()) {
 			return false;
 		}
-    	CapitalEntity capitalEntity = this.capitalRep.findByUserAndDate(user, user.getLastUpdate());
+		CapitalEntity capitalEntity = this.capitalRep.findByUserAndDate(user, user.getLastUpdate());
 		SchedulingOperator.count++; //TODO remove counting
-    	if(capitalEntity == null) {
+		return this.createUserPortfolio(user, strategyEntity, mapAssets, mapFD);
+	}
+
+
+
+	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory"}, allEntries = true)
+    public boolean createUserPortfolio(UserEntity user, List<CustomStrategyEntity> strategyEntity, CapitalEntity capital,
+									   Map<Long, List<AssetEntity>> mapAssets, Map<Long, FinancialDataEntity> mapFD) {
+		if(strategyEntity.isEmpty()) {
+			return false;
+		}
+    	if(capital == null) {
     		return false;
     	}
-    	BigDecimal amount = capitalEntity.getAmount();
+    	BigDecimal amount = capital.getAmount();
     	for (CustomStrategyEntity strategy : strategyEntity) {
 			BigDecimal amountPerClass = amount.divide(new BigDecimal(100.00), 8, RoundingMode.HALF_UP).multiply(strategy.getPercentage());
 			AssetClassEntity assetClass = strategy.getAssetClass();
@@ -146,7 +157,6 @@ public class PortfolioOperator extends AbstractOperator {
     private void savePortfolioForAssetClass(AssetClassEntity assetClass, UserEntity user, BigDecimal amount,
 											Map<Long, List<AssetEntity>> mapAssets, Map<Long, FinancialDataEntity> mapFD) {
     	List<AssetEntity> assets = mapAssets.get(assetClass.getId());
-//		SchedulingOperator.count++; //TODO remove counting
     	for (AssetEntity asset : assets) {
 			PortfolioEntity savedEntity = this.portfolioRep.findByUserAndAssetAndDate(user, asset, LocalDate.now());
 			SchedulingOperator.count++; //TODO remove counting
@@ -168,26 +178,12 @@ public class PortfolioOperator extends AbstractOperator {
 
     private BigDecimal getUnitsForAsset(AssetEntity asset, BigDecimal amount, Map<Long, FinancialDataEntity> map) {
     	FinancialDataEntity financialData = map.get(asset.getId());
-//		SchedulingOperator.count++; //TODO remove counting
 		BigDecimal units = amount.divide(financialData.getValue(), 8, RoundingMode.HALF_UP);
 		return units;
     }
 
-	public BigDecimal evaluatePortfolio(UserEntity user) {
-		List<AssetEntity> assets = this.assetRep.findAll();
-		List<FinancialDataEntity> list = new ArrayList<>();
-		for(AssetEntity asset : assets) {
-			list.add(financialDataRep.findByAssetAndDate(asset, asset.getLastUpdate()));
-		}
-		Map<Long, FinancialDataEntity> financialDataMap = Mapper.getMapFinancialData(list);
-		List<PortfolioEntity> currentPortfolio = this.portfolioRep.findByUserAndDate(user, user.getLastUpdate());
-		return this.evaluatePortfolio(user, financialDataMap, currentPortfolio);
-	}
-
     public BigDecimal evaluatePortfolio(UserEntity user, Map<Long, FinancialDataEntity> map, List<PortfolioEntity> currentPortfolio) {
-//    	List<PortfolioEntity> currentPortfolio = this.portfolioRep.findByUserAndDate(user, user.getLastUpdate());
-//		SchedulingOperator.count++; //TODO remove counting
-    	if(currentPortfolio.isEmpty()) {
+		if(currentPortfolio.isEmpty()) {
     		return null;
     	}
     	BigDecimal amount = new BigDecimal(0);

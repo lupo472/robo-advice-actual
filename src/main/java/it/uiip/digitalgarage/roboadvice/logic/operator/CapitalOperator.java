@@ -92,7 +92,7 @@ public class CapitalOperator extends AbstractOperator {
 		return true;
 	}
 
-	public boolean computeCapital(UserEntity user) {
+	public CapitalEntity computeCapital(UserEntity user) {
 		List<AssetEntity> assets = this.assetRep.findAll();
 		List<FinancialDataEntity> list = new ArrayList<>();
 		for(AssetEntity asset : assets) {
@@ -104,11 +104,11 @@ public class CapitalOperator extends AbstractOperator {
 	}
 
 	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory"}, allEntries = true)
-	public boolean computeCapital(UserEntity user, Map<Long, FinancialDataEntity> map, List<PortfolioEntity> currentPortfolio) {
+	public CapitalEntity computeCapital(UserEntity user, Map<Long, FinancialDataEntity> map, List<PortfolioEntity> currentPortfolio) {
 		CapitalEntity capital = new CapitalEntity();
 		BigDecimal amount = portfolioOp.evaluatePortfolio(user, map, currentPortfolio);
 		if(amount == null) {
-			return false;
+			return null;
 		}
 		LocalDate currentDate = LocalDate.now();
 		capital.setUser(user);
@@ -119,15 +119,17 @@ public class CapitalOperator extends AbstractOperator {
 		if(saved == null) {
 			this.capitalRep.save(capital);
 			SchedulingOperator.count++; //TODO remove counting
-		} else {
-			saved.setAmount(amount);
-			this.capitalRep.save(saved);
+			user.setLastUpdate(currentDate);
+			this.userRep.save(user);
 			SchedulingOperator.count++; //TODO remove counting
+			return capital;
 		}
-		user.setLastUpdate(currentDate);
+		saved.setAmount(amount);
+		this.capitalRep.save(saved);
+		SchedulingOperator.count++; //TODO remove counting
 		this.userRep.save(user);
 		SchedulingOperator.count++; //TODO remove counting
-		return true;
+		return saved;
 	}
 
 }
