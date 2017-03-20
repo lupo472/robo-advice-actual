@@ -16,6 +16,8 @@ public class QuandlOperator extends AbstractOperator {
 	@CacheEvict(value = "financialDataSet", allEntries = true)
 	public void updateFinancialDataSet() {
 		List<AssetEntity> assets = (List<AssetEntity>) this.assetRep.findAll();
+		//TODO remove counting
+		SchedulingOperator.quandl++;
 		QuandlDBUpdater q = new QuandlDBUpdater();
 		for (AssetEntity asset : assets) {
 			List<FinancialDataEntity> entities = q.getData(asset);
@@ -32,13 +34,20 @@ public class QuandlOperator extends AbstractOperator {
 			this.saveList(entities, asset);
 		}
 	}
-	
+
+	//TODO prestazioni: la chiamata findByAssetAndDate è necessaria?
 	private void saveList(List<FinancialDataEntity> list, AssetEntity asset) {
 		for (FinancialDataEntity financialData : list) {
 			if(financialDataRep.findByAssetAndDate(asset, financialData.getDate()) == null) {
+				//TODO remove counting
+				SchedulingOperator.quandl++;
 				asset.setLastUpdate(financialData.getDate());
 				this.assetRep.save(asset);
+				//TODO remove counting
+				SchedulingOperator.quandl++;
 				financialDataRep.save(financialData);
+				//TODO remove counting
+				SchedulingOperator.quandl++;
 			}
 		}
 	}

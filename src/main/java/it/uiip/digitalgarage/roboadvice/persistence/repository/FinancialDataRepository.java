@@ -1,6 +1,7 @@
 package it.uiip.digitalgarage.roboadvice.persistence.repository;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
