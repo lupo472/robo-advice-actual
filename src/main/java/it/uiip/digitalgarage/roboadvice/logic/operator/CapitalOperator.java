@@ -92,17 +92,6 @@ public class CapitalOperator extends AbstractOperator {
 		return true;
 	}
 
-	public CapitalEntity computeCapital(UserEntity user) {
-		List<AssetEntity> assets = this.assetRep.findAll();
-		List<FinancialDataEntity> list = new ArrayList<>();
-		for(AssetEntity asset : assets) {
-			list.add(financialDataRep.findByAssetAndDate(asset, asset.getLastUpdate()));
-		}
-		List<PortfolioEntity> currentPortfolio = this.portfolioRep.findByUserAndDate(user, user.getLastUpdate());
-		Map<Long, FinancialDataEntity> financialDataMap = Mapper.getMapFinancialData(list);
-		return this.computeCapital(user, financialDataMap, currentPortfolio);
-	}
-
 	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory"}, allEntries = true)
 	public CapitalEntity computeCapital(UserEntity user, Map<Long, FinancialDataEntity> map, List<PortfolioEntity> currentPortfolio) {
 		CapitalEntity capital = new CapitalEntity();

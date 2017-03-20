@@ -104,26 +104,6 @@ public class PortfolioOperator extends AbstractOperator {
     }
 
 	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory"}, allEntries = true)
-	public boolean createUserPortfolio(UserEntity user) {
-		CapitalEntity capitalEntity = this.capitalRep.findByUserAndDate(user, user.getLastUpdate());
-		if(capitalEntity == null) {
-			return false;
-		}
-		BigDecimal amount = capitalEntity.getAmount();
-		List<CustomStrategyEntity> strategyEntity = this.customStrategyRep.findByUserAndActive(user, true);
-		List<AssetEntity> assets = this.assetRep.findAll();
-		Map<Long, List<AssetEntity>> mapAssets = Mapper.getMapAssets(assets);
-		List<FinancialDataEntity> list = new ArrayList<>();
-		SchedulingOperator.count++; //TODO remove counting
-		for(AssetEntity asset : assets) {
-			list.add(financialDataRep.findByAssetAndDate(asset, asset.getLastUpdate()));
-			SchedulingOperator.count++; //TODO remove counting
-		}
-		Map<Long, FinancialDataEntity> financialDataMap = Mapper.getMapFinancialData(list);
-		return this.createUserPortfolio(user, strategyEntity, mapAssets, financialDataMap);
-	}
-
-	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory"}, allEntries = true)
 	public boolean createUserPortfolio(UserEntity user, List<CustomStrategyEntity> strategyEntity,
 									   Map<Long, List<AssetEntity>> mapAssets, Map<Long, FinancialDataEntity> mapFD) {
 		if(strategyEntity.isEmpty()) {
@@ -131,7 +111,7 @@ public class PortfolioOperator extends AbstractOperator {
 		}
 		CapitalEntity capitalEntity = this.capitalRep.findByUserAndDate(user, user.getLastUpdate());
 		SchedulingOperator.count++; //TODO remove counting
-		return this.createUserPortfolio(user, strategyEntity, mapAssets, mapFD);
+		return this.createUserPortfolio(user, strategyEntity, capitalEntity, mapAssets, mapFD);
 	}
 
 
@@ -194,18 +174,6 @@ public class PortfolioOperator extends AbstractOperator {
 		}
     	return amount;
     }
-
-	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory"}, allEntries = true)
-	public boolean computeUserPortfolio(UserEntity user) {
-		List<PortfolioEntity> currentPortfolio = this.portfolioRep.findByUserAndDate(user, user.getLastUpdate());
-		List<AssetEntity> assets = this.assetRep.findAll();
-		List<FinancialDataEntity> list = new ArrayList<>();
-		for(AssetEntity asset : assets) {
-			list.add(financialDataRep.findByAssetAndDate(asset, asset.getLastUpdate()));
-		}
-		Map<Long, FinancialDataEntity> financialDataMap = Mapper.getMapFinancialData(list);
-		return this.computeUserPortfolio(user, currentPortfolio, financialDataMap);
-	}
 
     @CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory"}, allEntries = true)
     public boolean computeUserPortfolio(UserEntity user, List<PortfolioEntity> currentPortfolio, Map<Long, FinancialDataEntity> map) {
