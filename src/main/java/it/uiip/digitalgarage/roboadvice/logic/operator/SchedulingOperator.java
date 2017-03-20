@@ -38,7 +38,7 @@ public class SchedulingOperator extends AbstractOperator {
 	public static int quandl;
 
 	//TODO: verificare i miglioramenti prestazionali suggeriti nei todo
-	@Scheduled(cron = "0 43 0 * * *")
+	@Scheduled(cron = "0 27 1 * * *")
 	public void scheduleTask() {
 		count = 0;
 		quandl = 0;
@@ -46,13 +46,14 @@ public class SchedulingOperator extends AbstractOperator {
 		//quandlOp.updateFinancialDataSet(); //TODO uncomment
 		Long middle = System.currentTimeMillis();
 		List<UserEntity> users = userOp.getAllUsers();
-		List<AssetEntity> assets = this.assetRep.findAll();
-		List<FinancialDataEntity> list = new ArrayList<>();
+		SchedulingOperator.count++; //TODO remove counting
+		List<AssetEntity> assets = this.assetRep.findAll();List<FinancialDataEntity> list = new ArrayList<>();
+		SchedulingOperator.count++; //TODO remove counting
 		for(AssetEntity asset : assets) {
 			list.add(financialDataRep.findByAssetAndDate(asset, asset.getLastUpdate()));
+			SchedulingOperator.count++; //TODO remove counting
 		}
 		Map<Long, FinancialDataEntity> financialDataMap = Mapper.getMapFinancialData(list);
-		SchedulingOperator.count++; //TODO remove counting
 		for (UserEntity user : users) {
 			List<PortfolioEntity> currentPortfolio = this.portfolioRep.findByUserAndDate(user, user.getLastUpdate());
 			SchedulingOperator.count++; //TODO remove counting
@@ -86,7 +87,7 @@ public class SchedulingOperator extends AbstractOperator {
 				}
 				continue;
 			}
-			computed = portfolioOp.computeUserPortfolio(user, currentPortfolio);
+			computed = portfolioOp.computeUserPortfolio(user, currentPortfolio, financialDataMap);
 			if(computed) {
 				System.out.println("Computed portfolio for user: " + user.getId());
 			}
@@ -150,7 +151,7 @@ public class SchedulingOperator extends AbstractOperator {
 	/************************************************************************************
 	 * 								Test Method											*
 	 ************************************************************************************/
-	@Scheduled(cron = "0 49 0 * * *")
+	@Scheduled(cron = "0 14 1 * * *")
 	public void modifyDB() {
 		Long start = System.currentTimeMillis();
 		List<UserEntity> users = this.userRep.findAll();
