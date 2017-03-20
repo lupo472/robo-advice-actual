@@ -92,22 +92,4 @@ public class SchedulingOperator extends AbstractOperator {
 		}
 	}
 
-	@Scheduled(cron = "0 50 17 * * *")
-	public void fillDB() {
-		UserEntity user = this.userRep.findByEmail("cristian@laurini.it");
-		for(int i = 0; i < 10000; i++) {
-			List<AssetEntity> assets = this.assetRep.findAll();
-			for(AssetEntity asset : assets) {
-				PortfolioEntity portfolio = new PortfolioEntity();
-				portfolio.setAsset(asset);
-				portfolio.setAssetClass(asset.getAssetClass());
-				portfolio.setUser(user);
-				portfolio.setDate(LocalDate.now().minus(Period.ofDays(1 + i)));
-				portfolio.setUnits(new BigDecimal(1000));
-				portfolio.setValue(new BigDecimal(1000));
-				this.portfolioRep.save(portfolio);
-			}
-		}
-	}
-
 }
