@@ -22,7 +22,7 @@ export class StrategyService {
   activeStrategy:Strategy;
 
   constructor(private AppService:AppService, private AssetService:AssetService) {
-    this.strategies = new Strategies();
+    
   }
   // CREATE A NEW STRATEGY
   createStrategy(currentStrategy){
@@ -30,12 +30,12 @@ export class StrategyService {
   }
   // STRATEGY JSON REMAPPING
   getDefaultStrategySet() {
-    return this.AppService.getDefaultStrategySet().map(res => console.log(res));
+    return this.AppService.getDefaultStrategySet().map(res => this.assignStrategy(res));
         //console.log(res));
         //this.assignStrategy(res));
   }
   assignStrategy(res) {
-    //this.strategies = new Strategies();
+    this.strategies = new Strategies();
     this.customStrategy = new CustomStrategy();
     this.customStrategy.populateMap(this.AssetService.assetClassStrategies.getAssetClassStrategies());
     this.strategies.createStrategies(res);
