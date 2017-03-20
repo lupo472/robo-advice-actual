@@ -1,4 +1,3 @@
-
 import { Injectable, Inject } from '@angular/core';
 import { AppConfig } from './app.config';
 import { AppService } from './app.service';
@@ -23,6 +22,7 @@ export class StrategyService {
   activeStrategy:Strategy;
 
   constructor(private AppService:AppService, private AssetService:AssetService) {
+    
   }
   // CREATE A NEW STRATEGY
   createStrategy(currentStrategy){
@@ -31,12 +31,14 @@ export class StrategyService {
   // STRATEGY JSON REMAPPING
   getDefaultStrategySet() {
     return this.AppService.getDefaultStrategySet().map(res => this.assignStrategy(res));
+        //console.log(res));
+        //this.assignStrategy(res));
   }
   assignStrategy(res) {
     this.strategies = new Strategies();
     this.customStrategy = new CustomStrategy();
     this.customStrategy.populateMap(this.AssetService.assetClassStrategies.getAssetClassStrategies());
-    this.strategies.createStrategies(res.data);
+    this.strategies.createStrategies(res);
     this.strategies.addStrategy(this.customStrategy);
     return this.strategies;
   }

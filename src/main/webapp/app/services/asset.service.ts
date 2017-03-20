@@ -24,7 +24,7 @@ export class AssetService {
   }
   assignAssetClass(res) {
     this.assetClassStrategies = new AssetClassStrategies();
-    this.assetClassStrategies.createAssetClassStrategies(res.data);
+    this.assetClassStrategies.createAssetClassStrategies(res);
     console.log("ASSETCLASSSTRATEGIES",this.assetClassStrategies.getAssetClassStrategies());
     return this.assetClassStrategies;
   }

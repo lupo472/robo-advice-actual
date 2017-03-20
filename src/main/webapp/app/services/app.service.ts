@@ -3,6 +3,7 @@ import { AppConfig } from './app.config';
 import { Cookie } from 'ng2-cookies';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
+import {GenericResponse} from "../model/generic-response";
 
 @Injectable()
 export class AppService {
@@ -15,6 +16,11 @@ export class AppService {
     // this.headers.append('Authorization',Cookie.get('token'));
     // this.opts = new RequestOptions();
     // opts.headers = headers;
+  }
+
+  private logError(error: any) {
+    console.error(error.error);
+    throw error;
   }
 
   loginUser(user) {
@@ -35,7 +41,14 @@ export class AppService {
     this.opts = new RequestOptions();
     this.opts.headers = this.headers;
     return this.http.post(AppConfig.url + 'getDefaultStrategySet', {},this.opts)
-      .map(response => response.json());
+      .map(response => {
+        const json = response.json();
+        if (response.ok) {
+          return json.data;
+        } else {
+          return this.logError(json);
+        }
+      });
   }
 
   getAssetClassSet() {
@@ -46,7 +59,14 @@ export class AppService {
     this.opts = new RequestOptions();
     this.opts.headers = this.headers;
     return this.http.post(AppConfig.url + 'getAssetClassSet', {},this.opts)
-      .map(response => response.json());
+      .map(response => {
+        const json = response.json();
+        if (response.ok) {
+          return json.data;
+        } else {
+          return this.logError(json);
+        }
+      });
   }
 
   getFinancialData(id, period) {
