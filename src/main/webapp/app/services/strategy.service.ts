@@ -3,6 +3,7 @@ import { AppConfig } from './app.config';
 import { AppService } from './app.service';
 import { AssetService } from './asset.service';
 import { Strategy } from '../model/strategy';
+import { AssetClassStrategy } from '../model/asset-class-strategy';
 import { DefaultStrategy } from '../model/default-strategy';
 import { CustomStrategy } from '../model/custom-strategy';
 import { Strategies } from '../model/strategies';
@@ -20,9 +21,9 @@ export class StrategyService {
   dataHistory:any=[];
   period:number = 30;
   activeStrategy:Strategy;
+  list:AssetClassStrategy[];
 
   constructor(private AppService:AppService, private AssetService:AssetService) {
-    
   }
   // CREATE A NEW STRATEGY
   createStrategy(currentStrategy){
@@ -36,8 +37,10 @@ export class StrategyService {
   }
   assignStrategy(res) {
     this.strategies = new Strategies();
-    this.customStrategy = new CustomStrategy();
-    this.customStrategy.populateMap(this.AssetService.assetClassStrategies.getAssetClassStrategies());
+    if(this.customStrategy == undefined) {
+      this.customStrategy = new CustomStrategy();
+      this.customStrategy.populateMap(this.AssetService.assetClassStrategies.getAssetClassStrategies());
+    }
     this.strategies.createStrategies(res);
     this.strategies.addStrategy(this.customStrategy);
     return this.strategies;
@@ -65,6 +68,16 @@ export class StrategyService {
   setActiveStrategy(res){
     if(res.response == 1) {
       this.activeStrategy = new Strategy(res.data);
+      this.customStrategy = new CustomStrategy();
+
+      this.list = [];
+
+      for (let item of res.data.list){
+        let itemToPush = new AssetClassStrategy(item.percentage, item.id, item.name);
+        this.list.push(itemToPush);
+      }
+
+      this.customStrategy.populateMap(this.list);
 
       return this.activeStrategy.getChartData();
     }

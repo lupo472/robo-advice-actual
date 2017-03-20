@@ -5,6 +5,7 @@ import {User} from '../model/user';
 import {Login} from '../model/login';
 import {AppService} from '../services/app.service';
 import {UserService} from '../services/user.service';
+import {StrategyService} from '../services/strategy.service';
 
 @Component({
     selector: 'app-dashboard',
@@ -16,14 +17,14 @@ export class FullLayoutComponent implements OnInit {
     check: number;
     capital: number;
 
-    constructor(private UserService: UserService, private AppService: AppService, private router: Router) {
+    constructor(private UserService: UserService, private StrategyService: StrategyService, private AppService: AppService, private router: Router) {
     }
 
     ngOnInit(): void {
         this.login = this.UserService.getLogin();
         console.log("LOGIN NAVBAR", this.login);
-        this.AppService.getCapitalForPeriod(0).subscribe(res => console.log(res));
-            //this.assignCapitalData(res));
+        this.AppService.getCapitalForPeriod(0).subscribe(res => this.assignCapitalData(res));
+        this.StrategyService.getActiveStrategy().subscribe();
     }
 
     public isLoaded: boolean = false;

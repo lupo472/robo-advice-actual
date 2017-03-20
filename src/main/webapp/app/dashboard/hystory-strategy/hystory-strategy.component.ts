@@ -65,6 +65,6 @@ export class HystoryStrategyComponent implements OnInit {
   };
 
   public barChartType:string = 'bar';
-  public barChartLegend:boolean = true;
+  public barChartLegend:boolean = false;
 
 }

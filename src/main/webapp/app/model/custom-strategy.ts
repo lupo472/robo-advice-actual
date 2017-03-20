@@ -10,13 +10,13 @@ export class CustomStrategy extends Strategy {
 
   constructor() {
     super();
-    this.name = "custom";
+    this.name = "active";
     this.list = [];
     this.sumPercentage = 0;
     this.maxPercentage = 100;
   }
   createAssetClassStrategies(){
-    this.assetClassStrategiesMap.forEach((item,index)=>{
+    this.assetClassStrategiesMap.forEach(item =>{
       this.list.push(item);
     });
   }
@@ -45,7 +45,7 @@ export class CustomStrategy extends Strategy {
     return this.list;
   }
   populateMap(assetClassStrategies:AssetClassStrategy[]){
-    assetClassStrategies.forEach((item,index)=> {
+    assetClassStrategies.forEach(item => {
       this.assetClassStrategiesMap.set(item.getId(),
       new AssetClassStrategy(item.getPercentage(),item.getId(),item.getName()));
     });

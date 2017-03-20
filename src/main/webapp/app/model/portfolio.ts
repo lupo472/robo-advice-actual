@@ -54,8 +54,6 @@ export class Portfolio {
             labels.push(item.date);
         });
 
-        console.log("DATA MAPPED BEFORE: ", datasets);
-
         for (let i = 0; i < value.length; i++) {
             if (value[i] != undefined) {
                 for (let j = 0; j < value[i].length; j++) {
@@ -63,16 +61,17 @@ export class Portfolio {
                         value[i][j] = 0;
                     }
                 }
-                
+
                 datasets[i].data = value[i];
             }
         }
 
+        console.log("DATASETS: ", datasets);
+
         let datasplice = [];
 
-        for (let iter = 0; iter < datasets.length - 1; iter++) {
+        for (let iter = 0; iter < datasets.length; iter++) {
             if (datasets[iter] != undefined) {
-
                 datasplice.push(datasets[iter]);
             }
         }
