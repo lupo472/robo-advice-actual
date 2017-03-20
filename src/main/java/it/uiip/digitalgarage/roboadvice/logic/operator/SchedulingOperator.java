@@ -38,7 +38,7 @@ public class SchedulingOperator extends AbstractOperator {
 	public static int quandl;
 
 	//TODO to improve scheduling for computeCapital-computePortfolio
-	@Scheduled(cron = "0 19 11 * * *")
+	@Scheduled(cron = "0 37 13 * * *")
 	public void scheduleTask() {
 		count = 0;
 		quandl = 0;
@@ -111,7 +111,7 @@ public class SchedulingOperator extends AbstractOperator {
 	/************************************************************************************
 	 * 								Test Method											*
 	 ************************************************************************************/
-	@Scheduled(cron = "0 58 11 * * *")
+	@Scheduled(cron = "0 40 12 * * *")
 	public void fillDBUser() {
 		Long start = System.currentTimeMillis();
 		UserEntity user;
@@ -158,7 +158,7 @@ public class SchedulingOperator extends AbstractOperator {
 	/************************************************************************************
 	 * 								Test Method											*
 	 ************************************************************************************/
-	@Scheduled(cron = "0 9 11 * * *")
+	@Scheduled(cron = "0 41 13 * * *")
 	public void modifyDB() {
 		Long start = System.currentTimeMillis();
 		List<UserEntity> users = this.userRep.findAll();
@@ -176,11 +176,11 @@ public class SchedulingOperator extends AbstractOperator {
 			capital.setDate(LocalDate.now().minus(Period.ofDays(1)));
 		}
 		this.capitalRep.save(capitals);
-		List<CustomStrategyEntity> strategyEntities = this.customStrategyRep.findAll();
-		for(CustomStrategyEntity s : strategyEntities) {
-			s.setDate(LocalDate.now().minus(Period.ofDays(3)));
-		}
-		this.customStrategyRep.save(strategyEntities);
+//		List<CustomStrategyEntity> strategyEntities = this.customStrategyRep.findAll();
+//		for(CustomStrategyEntity s : strategyEntities) {
+//			s.setDate(LocalDate.now().minus(Period.ofDays(3)));
+//		}
+//		this.customStrategyRep.save(strategyEntities);
 		Long end = System.currentTimeMillis();
 		System.out.println("Modified DB computation in " + (end - start) + " ms");
 	}

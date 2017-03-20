@@ -35,7 +35,7 @@ public class CapitalOperator extends AbstractOperator {
 		if(entity == null) {
 			return null;
 		}
-		return (CapitalDTO) this.capitalConv.convertToDTO(entity);
+		return this.capitalConv.convertToDTO(entity);
 	}
 
 	@Cacheable("capitalHistory")
@@ -58,7 +58,7 @@ public class CapitalOperator extends AbstractOperator {
 			response.add(dto);
 		}
 		Collections.sort(response);
-		return  response;
+		return response;
 	}
 
 	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory"}, allEntries = true)
