@@ -113,11 +113,19 @@ public class PortfolioOperator extends AbstractOperator {
 		List<CustomStrategyEntity> strategyEntity = this.customStrategyRep.findByUserAndActive(user, true);
 		List<AssetEntity> assets = this.assetRep.findAll();
 		Map<Long, List<AssetEntity>> mapAssets = Mapper.getMapAssets(assets);
-		return this.createUserPortfolio(user, strategyEntity, mapAssets);
+		List<FinancialDataEntity> list = new ArrayList<>();
+		SchedulingOperator.count++; //TODO remove counting
+		for(AssetEntity asset : assets) {
+			list.add(financialDataRep.findByAssetAndDate(asset, asset.getLastUpdate()));
+			SchedulingOperator.count++; //TODO remove counting
+		}
+		Map<Long, FinancialDataEntity> financialDataMap = Mapper.getMapFinancialData(list);
+		return this.createUserPortfolio(user, strategyEntity, mapAssets, financialDataMap);
 	}
 
     @CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory"}, allEntries = true)
-    public boolean createUserPortfolio(UserEntity user, List<CustomStrategyEntity> strategyEntity, Map<Long, List<AssetEntity>> mapAssets) {
+    public boolean createUserPortfolio(UserEntity user, List<CustomStrategyEntity> strategyEntity,
+									   Map<Long, List<AssetEntity>> mapAssets, Map<Long, FinancialDataEntity> mapFD) {
 		if(strategyEntity.isEmpty()) {
 			return false;
 		}
@@ -130,13 +138,14 @@ public class PortfolioOperator extends AbstractOperator {
     	for (CustomStrategyEntity strategy : strategyEntity) {
 			BigDecimal amountPerClass = amount.divide(new BigDecimal(100.00), 8, RoundingMode.HALF_UP).multiply(strategy.getPercentage());
 			AssetClassEntity assetClass = strategy.getAssetClass();
-			this.savePortfolioForAssetClass(assetClass, user, amountPerClass, mapAssets);
+			this.savePortfolioForAssetClass(assetClass, user, amountPerClass, mapAssets, mapFD);
 		}
     	return true;
     }
 
-    private void savePortfolioForAssetClass(AssetClassEntity assetClass, UserEntity user, BigDecimal amount, Map<Long, List<AssetEntity>> map) {
-    	List<AssetEntity> assets = map.get(assetClass.getId());
+    private void savePortfolioForAssetClass(AssetClassEntity assetClass, UserEntity user, BigDecimal amount,
+											Map<Long, List<AssetEntity>> mapAssets, Map<Long, FinancialDataEntity> mapFD) {
+    	List<AssetEntity> assets = mapAssets.get(assetClass.getId());
 //		SchedulingOperator.count++; //TODO remove counting
     	for (AssetEntity asset : assets) {
 			PortfolioEntity savedEntity = this.portfolioRep.findByUserAndAssetAndDate(user, asset, LocalDate.now());
@@ -150,17 +159,16 @@ public class PortfolioOperator extends AbstractOperator {
     		entity.setAssetClass(assetClass);
     		entity.setUser(user);
     		entity.setValue(amountPerAsset);
-    		entity.setUnits(this.getUnitsForAsset(asset, amountPerAsset));
+    		entity.setUnits(this.getUnitsForAsset(asset, amountPerAsset, mapFD));
     		entity.setDate(LocalDate.now());
 			this.portfolioRep.save(entity);
 			SchedulingOperator.count++; //TODO remove counting
     	}
     }
 
-    //TODO anche qui può essere passata la mappa di financialData
-    private BigDecimal getUnitsForAsset(AssetEntity asset, BigDecimal amount) {
-    	FinancialDataEntity financialData = this.financialDataRep.findByAssetAndDate(asset, asset.getLastUpdate());
-		SchedulingOperator.count++; //TODO remove counting
+    private BigDecimal getUnitsForAsset(AssetEntity asset, BigDecimal amount, Map<Long, FinancialDataEntity> map) {
+    	FinancialDataEntity financialData = map.get(asset.getId());
+//		SchedulingOperator.count++; //TODO remove counting
 		BigDecimal units = amount.divide(financialData.getValue(), 8, RoundingMode.HALF_UP);
 		return units;
     }
@@ -203,11 +211,7 @@ public class PortfolioOperator extends AbstractOperator {
 		return this.computeUserPortfolio(user, currentPortfolio, financialDataMap);
 	}
 
-    /*TODO: migliorare prestazioni
-	 *    	Il currentPortfolio viene già computato dallo scheduler e può dunque essere
-	 *    	ottenuto come parametro o cachato, evitando una query.
-     */
-	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory"}, allEntries = true)
+    @CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory"}, allEntries = true)
     public boolean computeUserPortfolio(UserEntity user, List<PortfolioEntity> currentPortfolio, Map<Long, FinancialDataEntity> map) {
     	List<PortfolioEntity> newPortfolioList = new ArrayList<>();
     	for (PortfolioEntity element : currentPortfolio) {

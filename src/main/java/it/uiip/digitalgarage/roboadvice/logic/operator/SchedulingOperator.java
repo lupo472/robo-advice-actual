@@ -37,7 +37,6 @@ public class SchedulingOperator extends AbstractOperator {
 	public static int count;
 	public static int quandl;
 
-	//TODO: verificare i miglioramenti prestazionali suggeriti nei todo
 	@Scheduled(cron = "0 14 8 * * *")
 	public void scheduleTask() {
 		count = 0;
@@ -62,7 +61,7 @@ public class SchedulingOperator extends AbstractOperator {
 			if(currentPortfolio.isEmpty()) {
 				List<CustomStrategyEntity> strategy = this.customStrategyRep.findByUserAndActive(user, true);
 				SchedulingOperator.count++; //TODO remove counting
-				boolean created = portfolioOp.createUserPortfolio(user, strategy, mapAssets);
+				boolean created = portfolioOp.createUserPortfolio(user, strategy, mapAssets, financialDataMap);
 				if(created) {
 					System.out.println("Created portfolio for user: " + user.getId());
 				}
@@ -76,14 +75,13 @@ public class SchedulingOperator extends AbstractOperator {
 			if(computed) {
 				System.out.println("Computed capital for user: " + user.getId());
 			}
-			//TODO la chiamata getCustomStrategySet potrebbe essere troppo dispendiosa.
 			List<CustomStrategyEntity> strategy = this.customStrategyRep.findByUserAndActive(user, true);
 			SchedulingOperator.count++; //TODO remove counting
-			if(!strategy.isEmpty() && customStrategyOp.getCustomStrategySet(user, 0).size() > 1 &&
+			if(!strategy.isEmpty() &&
 					(strategy.get(0).getDate().equals(LocalDate.now()) ||
 					 strategy.get(0).getDate().equals(LocalDate.now().minus(Period.ofDays(1))))) {
-				SchedulingOperator.count++; //TODO remove counting
-				boolean recreated = portfolioOp.createUserPortfolio(user, strategy, mapAssets);
+//				SchedulingOperator.count++; //TODO remove counting
+				boolean recreated = portfolioOp.createUserPortfolio(user, strategy, mapAssets, financialDataMap);
 				if(recreated) {
 					System.out.println("Re-created portfolio for user: " + user.getId());
 				}
@@ -106,7 +104,7 @@ public class SchedulingOperator extends AbstractOperator {
 	/************************************************************************************
 	 * 								Test Method											*
 	 ************************************************************************************/
-	@Scheduled(cron = "0 9 8 * * *")
+	@Scheduled(cron = "0 47 8 * * *")
 	public void fillDBUser() {
 		Long start = System.currentTimeMillis();
 		UserEntity user;

@@ -106,7 +106,7 @@ public class CapitalOperator extends AbstractOperator {
 	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory"}, allEntries = true)
 	public boolean computeCapital(UserEntity user, Map<Long, FinancialDataEntity> map, List<PortfolioEntity> currentPortfolio) {
 		CapitalEntity capital = new CapitalEntity();
-		BigDecimal amount = portfolioOp.evaluatePortfolio(user, map);
+		BigDecimal amount = portfolioOp.evaluatePortfolio(user, map, currentPortfolio);
 		if(amount == null) {
 			return false;
 		}
