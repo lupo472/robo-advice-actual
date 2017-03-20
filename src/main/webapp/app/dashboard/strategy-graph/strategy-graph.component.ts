@@ -1,7 +1,5 @@
-import { AppService } from '../../services/app.service';
-import { UserService } from '../../services/user.service';
+import { StrategyService } from '../../services/strategy.service';
 import { Component, OnInit } from '@angular/core';
-import {Cookie} from "ng2-cookies";
 
 @Component({
   selector: 'app-strategy-graph',
@@ -10,33 +8,29 @@ import {Cookie} from "ng2-cookies";
 })
 export class StrategyGraphComponent implements OnInit {
 
-  constructor(private AppService: AppService, private UserService: UserService) { }
+  constructor(private StrategyService: StrategyService) { }
 
   public labels: Array<string> = [];
-  public data: Array<number> = [];
+  public datasets: Array<number> = [];
   public date: string;
+  public colors:Array<any> = [];
 
   public render: boolean = false;
 
   ngOnInit() {
 
-    var login = this.UserService.getLogin();
-    //this.AppService.getActiveStrategy(user,Cookie.get('token')).subscribe(res => this.getStrategy(res.data));
+    this.StrategyService.getActiveStrategy().subscribe(res => this.getStrategy(res));
   }
 
-  getStrategy(res) {
-    if(res.response == 1) {
-      let resdata = res.data;
+  getStrategy(data) {
+    console.log("DATA IN COMPONENT:", data);
 
-      this.date = resdata.date;
+    this.labels = data.labels;
+    this.datasets = data.datasets;
+    this.colors = data.colors;
 
-      resdata.list.forEach((item, index) => {
-        this.labels[index] = item.name;
-        this.data[index] = item.percentage;
-      });
+    this.render = true;
 
-      this.render = true;
-    }
   }
 
   public brandPrimary: string = '#20a8d8';
@@ -67,13 +61,7 @@ export class StrategyGraphComponent implements OnInit {
 
 
   // Pie
-  public colors = [
-    {
-      backgroundColor: [this.brandSuccess,
-      this.brandInfo,
-      this.brandWarning,
-      this.brandDanger], borderWidth: 3
-    }];
+
   public strategyOptions: any = {
     maintainAspectRatio: false,
     cutoutPercentage: 20,

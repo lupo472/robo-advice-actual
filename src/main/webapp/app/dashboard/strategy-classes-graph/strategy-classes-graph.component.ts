@@ -21,6 +21,9 @@ export class StrategyClassesGraphComponent implements OnInit {
     public startdate:Date;
     public data:any = {};
 
+    public clicked:any;
+    public date:Date;
+
     public render: boolean = false;
     public response: string = 'Data not yet available';
 
@@ -59,7 +62,9 @@ export class StrategyClassesGraphComponent implements OnInit {
 
     // events
     public chartClicked(e: any): void {
-        console.log(e);
+        this.clicked = e.active[0]._index;
+        this.date = new Date(this.data.labels[this.clicked]);
+        console.log("CLICK: ", this.date);
     }
 
     public chartHovered(e: any): void {

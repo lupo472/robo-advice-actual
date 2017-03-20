@@ -12,7 +12,9 @@ import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetEntity;
 @Repository
 @Transactional
 public interface AssetRepository extends PagingAndSortingRepository<AssetEntity, Long> {
-	
+
+	public List<AssetEntity> findAll();
+
 	public List<AssetEntity> findByAssetClass(AssetClassEntity assetClass);
 
 }

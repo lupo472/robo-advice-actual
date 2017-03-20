@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetClassEntity;
@@ -20,6 +21,11 @@ import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataElementDTO;
 @Service
 public class FinancialDataOperator extends AbstractOperator {
 
+	/*
+	* This method is not used.
+	* TODO: Improve performance if necessary
+	*/
+	@Cacheable("financialDataSet")
 	public List<FinancialDataDTO> getFinancialDataSet(int period) {
 		List<FinancialDataDTO> result = new ArrayList<>();
 		List<AssetClassEntity> assetClassSet = this.assetClassRep.findAll();

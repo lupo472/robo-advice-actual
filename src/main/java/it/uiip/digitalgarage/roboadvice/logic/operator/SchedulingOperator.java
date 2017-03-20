@@ -5,17 +5,16 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetEntity;
-import it.uiip.digitalgarage.roboadvice.persistence.entity.PortfolioEntity;
+import it.uiip.digitalgarage.roboadvice.persistence.entity.*;
+import it.uiip.digitalgarage.roboadvice.persistence.util.Mapper;
 import it.uiip.digitalgarage.roboadvice.service.dto.*;
 import it.uiip.digitalgarage.roboadvice.service.util.HashFunction;
 import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
-import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
 
 @Service
 public class SchedulingOperator extends AbstractOperator {
@@ -34,18 +33,46 @@ public class SchedulingOperator extends AbstractOperator {
 	
 	@Autowired
 	private CustomStrategyOperator customStrategyOp;
-	
-	@Scheduled(cron = "0 24 12 * * *")
+
+	public static int count;
+	public static int quandl;
+
+	@Scheduled(cron = "0 33 9 * * *")
 	public void scheduleTask() {
+		count = 0;
+		quandl = 0;
 		Long start = System.currentTimeMillis();
-		quandlOp.updateFinancialDataSet();
+		//quandlOp.updateFinancialDataSet(); //TODO uncomment
 		Long middle = System.currentTimeMillis();
-		System.out.println("Quandl computation in " + (middle - start) + " ms");
 		List<UserEntity> users = userOp.getAllUsers();
+		SchedulingOperator.count++; //TODO remove counting
+		List<AssetEntity> assets = this.assetRep.findAll();
+		Map<Long, List<AssetEntity>> mapAssets = Mapper.getMapAssets(assets);
+		List<FinancialDataEntity> list = new ArrayList<>();
+		SchedulingOperator.count++; //TODO remove counting
+		for(AssetEntity asset : assets) {
+			list.add(financialDataRep.findByAssetAndDate(asset, asset.getLastUpdate()));
+			SchedulingOperator.count++; //TODO remove counting
+		}
+		Map<Long, FinancialDataEntity> financialDataMap = Mapper.getMapFinancialData(list);
+		userComputation(users, mapAssets, financialDataMap);
+		Long end = System.currentTimeMillis();
+		System.out.println("Quandl: " + quandl + " queries");
+		System.out.println("Scheduling: " + count + " queries");
+		System.out.println("Total: " + (count + quandl) + " queries");
+		System.out.println("Quandl computation in " + (middle - start) + " ms");
+		System.out.println("Scheduling computation in " + (end - middle) + " ms");
+		System.out.println("Total computation in " + (end - start) + " ms");
+	}
+
+	private void userComputation(List<UserEntity> users, Map<Long, List<AssetEntity>> mapAssets, Map<Long, FinancialDataEntity> financialDataMap) {
 		for (UserEntity user : users) {
-			PortfolioDTO currentPortfolio = portfolioOp.getCurrentPortfolio(user);
-			if(currentPortfolio == null) {
-				boolean created = portfolioOp.createUserPortfolio(user);
+			List<PortfolioEntity> currentPortfolio = this.portfolioRep.findByUserAndDate(user, user.getLastUpdate());
+			SchedulingOperator.count++; //TODO remove counting
+			if(currentPortfolio.isEmpty()) {
+				List<CustomStrategyEntity> strategy = this.customStrategyRep.findByUserAndActive(user, true);
+				SchedulingOperator.count++; //TODO remove counting
+				boolean created = portfolioOp.createUserPortfolio(user, strategy, mapAssets, financialDataMap);
 				if(created) {
 					System.out.println("Created portfolio for user: " + user.getId());
 				}
@@ -55,42 +82,42 @@ public class SchedulingOperator extends AbstractOperator {
 				System.out.println("Skipped computation for user: " + user.getId());
 				continue;
 			}
-			boolean computed = capitalOp.computeCapital(user);
+			boolean computed = capitalOp.computeCapital(user, financialDataMap, currentPortfolio);
 			if(computed) {
 				System.out.println("Computed capital for user: " + user.getId());
 			}
-			CustomStrategyResponseDTO strategy = customStrategyOp.getActiveStrategy(user);
-			if(strategy != null && customStrategyOp.getCustomStrategySet(user, 0).size() > 1 && 
-					(strategy.getDate().equals(LocalDate.now().toString()) || 
-					 strategy.getDate().equals(LocalDate.now().minus(Period.ofDays(1)).toString()))) {
-				boolean recreated = portfolioOp.createUserPortfolio(user);
+			List<CustomStrategyEntity> strategy = this.customStrategyRep.findByUserAndActive(user, true);
+			SchedulingOperator.count++; //TODO remove counting
+			if(!strategy.isEmpty() &&
+					(strategy.get(0).getDate().equals(LocalDate.now()) ||
+					 strategy.get(0).getDate().equals(LocalDate.now().minus(Period.ofDays(1))))) {
+//				SchedulingOperator.count++; //TODO remove counting
+				boolean recreated = portfolioOp.createUserPortfolio(user, strategy, mapAssets, financialDataMap);
 				if(recreated) {
 					System.out.println("Re-created portfolio for user: " + user.getId());
 				}
 				continue;
 			}
-			computed = portfolioOp.computeUserPortfolio(user);
+			computed = portfolioOp.computeUserPortfolio(user, currentPortfolio, financialDataMap);
 			if(computed) {
 				System.out.println("Computed portfolio for user: " + user.getId());
 			}
 		}
-		Long end = System.currentTimeMillis();
-		System.out.println("Scheduling computation in " + (end - start) + " ms");
 	}
 
 	/************************************************************************************
 	 * 								Test Method											*
-	 ************************************************************************************
-	@Scheduled(cron = "0 14 13 * * *")
+	 ************************************************************************************/
+	@Scheduled(cron = "0 47 8 * * *")
 	public void fillDBUser() {
 		Long start = System.currentTimeMillis();
 		UserEntity user;
-		for(int i = 1; i < 50000; i++) {
+		for(int i = 1; i < 10000; i++) {
 			user = new UserEntity();
 			user.setLastUpdate(LocalDate.now());
 			user.setPassword(HashFunction.hashStringSHA256("stress"));
-			user.setDate(LocalDate.now());
-			user.setEmail(i + "b@stress");
+			user.setDate(LocalDate.now().minus(Period.ofDays(1)));
+			user.setEmail(i + "@stress");
 			this.userRep.save(user);
 			CapitalRequestDTO capital = new CapitalRequestDTO();
 			capital.setAmount(new BigDecimal(10).add(new BigDecimal(i)));
@@ -123,6 +150,37 @@ public class SchedulingOperator extends AbstractOperator {
 		Long end = System.currentTimeMillis();
 		System.out.println("Fill DB computation in " + (end - start) + " ms");
 	}
+	 /************************************************************************************/
+
+	/************************************************************************************
+	 * 								Test Method											*
 	 ************************************************************************************/
+	@Scheduled(cron = "0 28 9 * * *")
+	public void modifyDB() {
+		Long start = System.currentTimeMillis();
+		List<UserEntity> users = this.userRep.findAll();
+		for (UserEntity user: users) {
+			user.setLastUpdate(LocalDate.now().minus(Period.ofDays(1)));
+			this.userRep.save(user);
+		}
+		List<PortfolioEntity> portfolios = (List<PortfolioEntity>) this.portfolioRep.findAll();
+		for(PortfolioEntity portfolio : portfolios) {
+			portfolio.setDate(LocalDate.now().minus(Period.ofDays(1)));
+		}
+		this.portfolioRep.save(portfolios);
+		List<CapitalEntity> capitals = (List<CapitalEntity>) this.capitalRep.findAll();
+		for(CapitalEntity capital : capitals) {
+			capital.setDate(LocalDate.now().minus(Period.ofDays(1)));
+		}
+		this.capitalRep.save(capitals);
+		List<CustomStrategyEntity> strategyEntities = this.customStrategyRep.findAll();
+		for(CustomStrategyEntity s : strategyEntities) {
+			s.setDate(LocalDate.now().minus(Period.ofDays(3)));
+		}
+		this.customStrategyRep.save(strategyEntities);
+		Long end = System.currentTimeMillis();
+		System.out.println("Modified DB computation in " + (end - start) + " ms");
+	}
+	/************************************************************************************/
 
 }
