@@ -40,6 +40,7 @@ public class BacktestingOperator extends AbstractOperator {
 		}
 		PortfolioDTO result = this.portfolioWrap.wrapToDTO(user, entityList, request.getCapital(), mapPerAsset);
 
+		
 		return result;
 	}
 
