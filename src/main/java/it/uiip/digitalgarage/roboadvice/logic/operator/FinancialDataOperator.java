@@ -18,12 +18,12 @@ import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataElementDTO;
 public class FinancialDataOperator extends AbstractOperator {
 
 	//TODO remove test
-//	public List<String> getFinanacialDataAsset() {
+//	public List<BigDecimal> getFinanacialDataAsset() {
 //		AssetEntity asset = this.assetRep.findOne(new Long(1));
 //		List<FinancialDataEntity> entity = this.financialDataRep.findByAsset(asset);
-//		List<String> result = new ArrayList<>();
+//		List<BigDecimal> result = new ArrayList<>();
 //		for(FinancialDataEntity e : entity) {
-//			result.add(e.getValue().toString());
+//			result.add(e.getValue());
 //		}
 //		return result;
 //	}

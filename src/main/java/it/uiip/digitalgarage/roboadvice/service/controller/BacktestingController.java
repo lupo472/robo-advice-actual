@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.List;
 
 @CrossOrigin("*")
@@ -26,8 +27,8 @@ public class BacktestingController extends AbstractController {
 	//TODO remove test
 //	@RequestMapping("/prova")
 //	@ResponseBody
-//	public List<String> prova(Authentication auth) {
-//		List<String> result = this.financialDataOp.getFinanacialDataAsset();
+//	public List<BigDecimal> prova(Authentication auth) {
+//		List<BigDecimal> result = this.financialDataOp.getFinanacialDataAsset();
 //		return result;
 //	}
 
