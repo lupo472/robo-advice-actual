@@ -30,7 +30,14 @@ public class PortfolioOperator extends AbstractOperator {
 		if(entityList.isEmpty()) {
 			return null;
 		}
-		return this.portfolioWrap.wrapToDTO(user, entityList);
+		Map<Long, BigDecimal> assetClassMap = new HashMap<>();
+		for(PortfolioEntity entity : entityList) {
+			if(assetClassMap.get(entity.getAssetClass().getId()) == null) {
+				assetClassMap.put(entity.getAssetClass().getId(), this.portfolioRep.sumValuesForAssetClass(entity.getAssetClass(), user, LocalDate.now()).getValue());
+			}
+		}
+		BigDecimal totalValue = this.portfolioRep.sumValues(user, LocalDate.now()).getValue();
+		return this.portfolioWrap.wrapToDTO(user, entityList, totalValue, assetClassMap);
 	}
 
 	@Cacheable("portfolioHistory")
@@ -63,7 +70,6 @@ public class PortfolioOperator extends AbstractOperator {
 			}
 			if(map.get(entity.getDate().toString()) == null) {
 				map.put(entity.getDate().toString(), new HashSet<>());
-				System.out.println(entity.getDate().toString());
 			}
 			map.get(entity.getDate().toString()).add(entity);
 		}

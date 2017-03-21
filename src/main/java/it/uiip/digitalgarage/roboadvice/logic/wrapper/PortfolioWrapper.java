@@ -47,14 +47,16 @@ public class PortfolioWrapper {
 		return result;
 	}
 
-	public PortfolioDTO wrapToDTO(UserEntity user, List<PortfolioEntity> entityList) {
+	public PortfolioDTO wrapToDTO(UserEntity user, List<PortfolioEntity> entityList, BigDecimal total,
+								  Map<Long, BigDecimal> assetClassMap) {
 		PortfolioDTO result = new PortfolioDTO();
 		LocalDate date = entityList.get(0).getDate();
 		result.setDate(date.toString());
-		BigDecimal total = this.portfolioRep.sumValues(user, date).getValue();
+//		BigDecimal total = this.portfolioRep.sumValues(user, date).getValue();
 		Set<PortfolioElementDTO> set = new HashSet<>();
 		for (PortfolioEntity entity : entityList) {
-			BigDecimal assetClassValue = this.portfolioRep.sumValuesForAssetClass(entity.getAssetClass(), user, date).getValue();
+//			BigDecimal assetClassValue = this.portfolioRep.sumValuesForAssetClass(entity.getAssetClass(), user, date).getValue();
+			BigDecimal assetClassValue = assetClassMap.get(entity.getAssetClass().getId());
 			PortfolioElementDTO element = new PortfolioElementDTO();
 			element.setId(entity.getAssetClass().getId());
 			element.setName(entity.getAssetClass().getName());

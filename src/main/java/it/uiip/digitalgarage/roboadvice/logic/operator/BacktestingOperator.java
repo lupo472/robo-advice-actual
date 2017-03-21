@@ -17,23 +17,23 @@ import java.util.*;
 @Service
 public class BacktestingOperator extends AbstractOperator {
 
-//	public List<PortfolioDTO> getBacktesting(BacktestingDTO request, Authentication auth) {
+	public List<PortfolioDTO> getBacktesting(BacktestingDTO request, Authentication auth) {
 //		UserEntity user = this.userRep.findByEmail(auth.getName());
 //		LocalDate date = LocalDate.now().minus(Period.ofDays(request.getPeriod()));
 //		CustomStrategyDTO strategyDTO = new CustomStrategyDTO();
 //		strategyDTO.setList(request.getList());
 //		List<CustomStrategyEntity> list = this.customStrategyWrap.unwrapToEntity(strategyDTO);
 //		BigDecimal amount = request.getCapital();
-//		List<PortfolioDTO> result = new ArrayList<>();
+		List<PortfolioDTO> result = new ArrayList<>();
 //		for (CustomStrategyEntity strategy : list) {
 //			BigDecimal amountPerClass = amount.divide(new BigDecimal(100.00), 8, RoundingMode.HALF_UP).multiply(strategy.getPercentage());
 //			AssetClassEntity assetClass = strategy.getAssetClass();
 //			PortfolioDTO portfolioDTO = this.computePortfolioForAssetClass(assetClass, user, amountPerClass, date);
 //			result.add(portfolioDTO);
 //		}
-//		return result;
-//	}
-//
+		return result;
+	}
+
 //	private PortfolioDTO computePortfolioForAssetClass(AssetClassEntity assetClass, UserEntity user, BigDecimal amount, LocalDate date) {
 //		List<AssetEntity> assets = this.assetRep.findByAssetClass(assetClass);
 //		List<PortfolioEntity> entityList = new ArrayList<>();
