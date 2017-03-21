@@ -33,6 +33,9 @@ import static org.mockito.Mockito.when;
 @SpringBootTest(classes = RoboadviceApplication.class)
 public class AssetClassOperatorTest {
 
+    @Autowired
+    public AssetClassController assetClassController;
+
     @InjectMocks
     @Autowired
     private AssetClassOperator assetClassOp;
@@ -87,6 +90,9 @@ public class AssetClassOperatorTest {
         assertEquals("stocks", serviceList.get(2).getName());
         assertEquals("commodities", serviceList.get(3).getName());
         assertEquals("dummy", serviceList.get(4).getName());
+        GenericResponse<List<AssetClassDTO>> controllerResponse = (GenericResponse<List<AssetClassDTO>>) assetClassController.getAssetClassSet();
+        assertTrue(controllerResponse.getData().size() > 0);
+
     }
 
 }
