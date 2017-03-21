@@ -23,21 +23,16 @@ export class StrategyGraphComponent implements OnInit {
   }
 
   getStrategy(data) {
-    console.log("DATA IN COMPONENT:", data);
 
-    this.labels = data.labels;
-    this.datasets = data.datasets;
-    this.colors = data.colors;
+    if(data) {
 
-    this.render = true;
+      this.labels = data.labels;
+      this.datasets = data.datasets;
+      this.colors = data.colors;
 
+      this.render = true;
+    }
   }
-
-  public brandPrimary: string = '#20a8d8';
-  public brandSuccess: string = '#4dbd74';
-  public brandInfo: string = '#63c2de';
-  public brandWarning: string = '#f8cb00';
-  public brandDanger: string = '#f86c6b';
 
   //convert Hex to RGBA
   public convertHex(hex: string, opacity: number) {

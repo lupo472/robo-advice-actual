@@ -12,19 +12,14 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class UserService {
 
-  private capital = 10000;
-
-  private user: User;
   private login:Login;
-  private capitalHistory;
+  private capital:number = 10000;
 
   constructor(private AppService: AppService) { }
 
   //SET AND GET USER
   setLogin(data) {
     this.login = new Login(data);
-    //this.AppService.getCurrentCapital(res.user,res.token).subscribe(res => this.setCapital(res));
-    //this.AppService.getActiveStrategy(res.user,res.token).subscribe(res => this.setStrategy(res));
 
     return { response: 1, data: data };
   }
@@ -40,13 +35,14 @@ export class UserService {
 
   //REGISTER
   registerUser(user) {
-    return this.AppService.registerUser(user).map(res => { if (res.response == 1) { return this.setLogin(res.data) } else { return res } });
+    return this.AppService.registerUser(user).map(res => { if (res.response == 1) {return this.setLogin(res.data) } else { return res } });
   }
 
   //INITIAL REGISTER CAPITAL
-  // addCapital() {
-  //   return this.AppService.addCapital(this.capital);
-  // }
+  addCapital() {
+    console.log("ADDING CAPITAL");
+     this.AppService.addCapital(this.capital);
+  }
 
   //SET THE CURRENT CAPITAL FOR THIS USER
   // setCapital(res) {

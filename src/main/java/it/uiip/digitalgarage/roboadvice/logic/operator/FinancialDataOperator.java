@@ -3,11 +3,7 @@ package it.uiip.digitalgarage.roboadvice.logic.operator;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -21,10 +17,6 @@ import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataElementDTO;
 @Service
 public class FinancialDataOperator extends AbstractOperator {
 
-	/*
-	* This method is not used.
-	* TODO: Improve performance if necessary
-	*/
 	@Cacheable("financialDataSet")
 	public List<FinancialDataDTO> getFinancialDataSet(int period) {
 		List<FinancialDataDTO> result = new ArrayList<>();
@@ -53,7 +45,18 @@ public class FinancialDataOperator extends AbstractOperator {
 		if(period == 0) {
 			interrupt = false;
 		}
+		LocalDate startDate = null;
+		if(period != 0) {
+			startDate = LocalDate.now().minus(Period.ofDays(period));
+		}
+		List<FinancialDataEntity> list;
 		for (AssetEntity asset : assets) {
+			if(period != 0) {
+				list = this.financialDataRep.findByAssetAndDateGreaterThanOrderByDateDesc(asset, startDate);
+			} else {
+				list = this.financialDataRep.findByAsset(asset);
+			}
+			Collections.sort(list);
 			int n = 0;
 			LocalDate entityDate = LocalDate.now();
 			BigDecimal entityValue = new BigDecimal(0);
@@ -64,11 +67,12 @@ public class FinancialDataOperator extends AbstractOperator {
 				}
 				LocalDate date = LocalDate.now().minus(Period.ofDays(n));
 				if(first || date.isBefore(entityDate)) {
-					FinancialDataEntity entity = this.financialDataRep.findTopByAssetAndDateLessThanEqualOrderByDateDesc(asset, date);
-					first = false;
-					if(entity == null) {
+					if(list.size() == 0) {
 						break;
 					}
+					FinancialDataEntity entity = list.get(list.size() - 1);
+					list.remove(entity);
+					first = false;
 					entityDate = entity.getDate();
 					entityValue = entity.getValue();
 				}

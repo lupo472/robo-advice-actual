@@ -36,6 +36,7 @@ export class StrategyClassesGraphComponent implements OnInit {
         if (res.response == 1) {
             this.data = res.data;
 
+            this.render = false;
             this.refreshChart();
 
             this.render = true;
@@ -52,7 +53,7 @@ export class StrategyClassesGraphComponent implements OnInit {
     refreshChart() {
         setTimeout(() => {
 
-            if (this.chart.chart.config.data) {
+            if (this.chart.chart.config && this.chart.chart.config.data) {
                 this.chart.chart.config.data.labels = this.data.labels;
                 this.chart.chart.config.data.datasets = this.data.datasets;
                 this.chart.chart.update();

@@ -18,7 +18,7 @@ import lombok.Data;
 
 @Entity
 @Table(name = "financial_data", indexes = {@Index(name = "IDX1", columnList = "id_asset, date")})
-public @Data class FinancialDataEntity {
+public @Data class FinancialDataEntity implements Comparable<FinancialDataEntity> {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -33,5 +33,9 @@ public @Data class FinancialDataEntity {
 	
 	@Column(name = "date", nullable = false)
     private LocalDate date;
-    
+
+	@Override
+	public int compareTo(FinancialDataEntity o) {
+		return this.date.compareTo(o.getDate());
+	}
 }

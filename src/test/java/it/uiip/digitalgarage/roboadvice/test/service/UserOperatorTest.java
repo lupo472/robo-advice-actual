@@ -6,6 +6,7 @@ import it.uiip.digitalgarage.roboadvice.persistence.repository.UserRepository;
 import it.uiip.digitalgarage.roboadvice.service.dto.LoginDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.UserDTO;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -37,14 +38,18 @@ public class UserOperatorTest {
 	@Mock
 	private UserRepository userRep;
 
-	private UserDTO userDTO;
+	private static UserDTO userDTO;
+
+	@BeforeClass
+	public static void setUpData() {
+		userDTO = new UserDTO();
+		userDTO.setEmail("test@test.com");
+		userDTO.setPassword("123456");
+	}
 
 	@Before
 	public void setUpMock() {
 		MockitoAnnotations.initMocks(this);
-		userDTO = new UserDTO();
-		userDTO.setEmail("test@test.com");
-		userDTO.setPassword("123456");
 	}
 
 	@Test

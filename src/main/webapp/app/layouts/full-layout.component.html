@@ -29,23 +29,20 @@
                         class="fa fa-lock"></i> Logout</a>
             </div>
         </li>
-
-        <li class="nav-item" *ngIf="!isLoaded">
-            <a class="h3 text-primary text-center " >{{response}}</a>
+        <li class="nav-item nav-item-custom" *ngIf="capital != undefined">
+            <div class="text-muted">My Capital</div>
+            <div class="h3 text-primary text-center">${{capital}}</div>
         </li>
-        <li class="nav-item nav-item-custom" *ngIf="isLoaded">
-            <a class="text-muted">My Capital</a>
-            <a class="h3 text-primary text-center">${{capital}}</a>
+        <li class="nav-item" *ngIf="!isLoaded && capital == undefined">
+            <div class="h3 text-primary text-center " >{{response}}</div>
         </li>
-
-
     </ul>
 
     <div class="card-block p-0 hidden-xs-down" *ngIf="isLoaded">
 
         <canvas baseChart class="chart" [datasets]="capitalData"
                 [labels]="capitalLabels" [options]="socialChartOptions"
-                [colors]="socialChartColours" [legend]="socialChartLegend"
+                [colors]="socialChartColours"
                 [chartType]="socialChartType" (chartHover)="chartHovered($event)"
                 (chartClick)="chartClicked($event)"></canvas>
 

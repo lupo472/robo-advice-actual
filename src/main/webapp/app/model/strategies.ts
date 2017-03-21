@@ -52,7 +52,7 @@ export class Strategies {
     createChartDataHistory(data: any, startdate: Date) {
         this.chartData = [];
         this.labels = [];
-        console.log("DATA DA BE:", data);
+
         data.forEach((strategy, i) => {
             let beginning = new Date(strategy.date);
 
