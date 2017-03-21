@@ -17,6 +17,18 @@ import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataElementDTO;
 @Service
 public class FinancialDataOperator extends AbstractOperator {
 
+	//TODO remove test
+//	public List<String> getFinanacialDataAsset() {
+//		AssetEntity asset = this.assetRep.findOne(new Long(1));
+//		List<FinancialDataEntity> entity = this.financialDataRep.findByAsset(asset);
+//		List<String> result = new ArrayList<>();
+//		for(FinancialDataEntity e : entity) {
+//			result.add(e.getValue().toString());
+//		}
+//		return result;
+//	}
+
+
 	@Cacheable("financialDataSet")
 	public List<FinancialDataDTO> getFinancialDataSet(int period) {
 		List<FinancialDataDTO> result = new ArrayList<>();
