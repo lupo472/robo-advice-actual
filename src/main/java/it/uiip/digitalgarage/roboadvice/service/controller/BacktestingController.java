@@ -28,12 +28,4 @@ public class BacktestingController extends AbstractController {
 		return new GenericResponse<List<PortfolioDTO>>(1, result);
 	}
 
-	//TODO remove test
-//	@RequestMapping("/prova")
-//	@ResponseBody
-//	public List<BigDecimal> prova(Authentication auth) {
-//		List<BigDecimal> result = this.financialDataOp.getFinanacialDataAsset();
-//		return result;
-//	}
-
 }
