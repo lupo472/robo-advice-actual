@@ -32,15 +32,12 @@ export class StrategyService {
   // STRATEGY JSON REMAPPING
   getDefaultStrategySet() {
     return this.AppService.getDefaultStrategySet().map(res => this.assignStrategy(res));
-        //console.log(res));
-        //this.assignStrategy(res));
   }
   assignStrategy(res) {
     this.strategies = new Strategies();
-    if(this.customStrategy == undefined) {
-      this.customStrategy = new CustomStrategy();
-      this.customStrategy.populateMap(this.AssetService.assetClassStrategies.getAssetClassStrategies());
-    }
+    //Create a custom strategy with all the asset classes from backend
+    this.customStrategy = new CustomStrategy(this.AssetService.assetClassStrategies.getAssetClassStrategies());
+    this.customStrategy.populateMap();
     this.strategies.createStrategies(res);
     this.strategies.addStrategy(this.customStrategy);
     return this.strategies;
@@ -68,17 +65,9 @@ export class StrategyService {
   setActiveStrategy(res){
     if(res.response == 1) {
       this.activeStrategy = new Strategy(res.data);
-      this.customStrategy = new CustomStrategy();
-
-      this.list = [];
-
-      for (let item of res.data.list){
-        let itemToPush = new AssetClassStrategy(item.percentage, item.id, item.name);
-        this.list.push(itemToPush);
-      }
-
-      this.customStrategy.populateMap(this.list);
-
+      this.customStrategy.setActiveStrategy(res.data);
+      this.customStrategy.updateStrategyList();
+      //this.customStrategy.createChart();
       return this.activeStrategy.getChartData();
     }
   }

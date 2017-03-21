@@ -5,11 +5,13 @@ export class CustomStrategy extends Strategy {
   private assetClassStrategiesMap:Map<number, AssetClassStrategy> = new Map<number, AssetClassStrategy>();
   private sumPercentage:number;
   private maxPercentage:number;
-  private oldValue:number;
   private name:string;
+  private customList:AssetClassStrategy[];
 
-  constructor() {
+  constructor(customList) {
     super();
+    //Initialize custom list of assetClassStrategies with the ones got from backend
+    this.customList = customList;
     this.name = "active";
     this.list = [];
     this.sumPercentage = 0;
@@ -17,9 +19,11 @@ export class CustomStrategy extends Strategy {
   }
   createAssetClassStrategies(){
     this.assetClassStrategiesMap.forEach(item =>{
+      console.log("THIS.LIST",item);
       this.list.push(item);
     });
   }
+  //Repaint the custom chart with new percentages
   rePaint(){
     this.arrayPercentages = [];
     this.arrayLabels = [];
@@ -32,6 +36,7 @@ export class CustomStrategy extends Strategy {
     this.setStrategyArray(array);
     this.createChart();
   }
+  //Override method to send to backend just the assetClassStrategies > 0
   sendStrategy(){
     let array = [];
     this.assetClassStrategiesMap.forEach((item,index)=>{
@@ -41,20 +46,41 @@ export class CustomStrategy extends Strategy {
     });
     return {"list":array};
   }
+  updateStrategyList(){
+    let array = this.customList;
+    this.list.forEach((item)=>{
+      array[item.getId()-1] = item;
+    });
+    this.list = array;
+    this.updateMap();
+    this.createChart();
+  }
+  //Send to the component the array with the custom assetClassStrategies
   getStrategyArray(): AssetClassStrategy[] {
+    console.log("ASSETCLASSSTRATEGYMAP",this.assetClassStrategiesMap);
     return this.list;
   }
-  populateMap(assetClassStrategies:AssetClassStrategy[]){
-    assetClassStrategies.forEach(item => {
+  //Populate Map for the first time
+  populateMap() : void {
+    this.customList.forEach((item)=> {
       this.assetClassStrategiesMap.set(item.getId(),
       new AssetClassStrategy(item.getPercentage(),item.getId(),item.getName()));
     });
-    this.createAssetClassStrategies();
+    this.updatePercentages();
   }
-  getAssetClassStrategyMap(){
+  //Update Map every time we change strategy
+  updateMap() : void {
+    this.list.forEach((item)=>{
+      let current = this.assetClassStrategiesMap.get(item.getId());
+      current.setPercentage(item.getPercentage());
+    });
+  }
+  //Get the Map with the custom assetClassStrategies
+  getAssetClassStrategyMap() : Map<number, AssetClassStrategy> {
     return this.assetClassStrategiesMap;
   }
-  setPercentageWithSlider(id,oldValue) {
+  //Set percentage with sliders and calculate the max percentage we can set
+  setPercentageWithSlider(id,oldValue) : number {
     let currentSlider = this.assetClassStrategiesMap.get(id);
     if (currentSlider.getPercentage() - oldValue + this.sumPercentage > 100){
       if (this.maxPercentage !=0) {
@@ -70,21 +96,26 @@ export class CustomStrategy extends Strategy {
       }
     }
     this.assetClassStrategiesMap.set(currentSlider.getId(),currentSlider);
+    this.updatePercentages();
+    return currentSlider.getPercentage();
+  }
+  //Resets all sliders and chart after clicking cancel button
+  resetSlider() : void {
+      this.getAssetClassStrategyMap().forEach((item,index)=>{
+        item.setPercentage(0);
+      });
+    this.rePaint();
+  }
+  //Update maxPercentage and sumPercentage
+  updatePercentages() : void {
     var sum = 0;
     this.assetClassStrategiesMap.forEach( (item,index) => [
       sum += item.getPercentage()
     ]);
     this.sumPercentage = sum;
     this.maxPercentage = 100 - this.sumPercentage;
-    console.log("MAP",this.assetClassStrategiesMap);
-    return currentSlider.getPercentage();
   }
-  resetSlider(){
-      this.getAssetClassStrategyMap().forEach((item,index)=>{
-        item.setPercentage(0);
-      });
-    this.rePaint();
-  }
+  //Get name of the custom strategy
   getName(): string {
     return this.name;
   }

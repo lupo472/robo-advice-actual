@@ -7,6 +7,7 @@ import it.uiip.digitalgarage.roboadvice.logic.operator.PortfolioOperator;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.*;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.*;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -53,23 +54,22 @@ public class PortfolioOperatorTest {
 	@Mock
 	private FinancialDataRepository financialDataRep;
 
-	private UserEntity user;
-	private AssetClassEntity assetClassEntity1;
-	private AssetClassEntity assetClassEntity2;
-	private AssetEntity assetEntity1;
-	private AssetEntity assetEntity2;
-	private FinancialDataEntity financialDataEntity1;
-	private FinancialDataEntity financialDataEntity2;
-	private List<PortfolioEntity> oldPortfolio;
-	private List<CustomStrategyEntity> customStrategyEntityList;
-	private Map<Long, List<AssetEntity>> mapAssets;
-	private Map<Long, FinancialDataEntity> mapFD;
-	private List<AssetEntity> assetList1;
-	private List<AssetEntity> assetList2;
+	private static UserEntity user;
+	private static AssetClassEntity assetClassEntity1;
+	private static AssetClassEntity assetClassEntity2;
+	private static AssetEntity assetEntity1;
+	private static AssetEntity assetEntity2;
+	private static FinancialDataEntity financialDataEntity1;
+	private static FinancialDataEntity financialDataEntity2;
+	private static List<PortfolioEntity> oldPortfolio;
+	private static List<CustomStrategyEntity> customStrategyEntityList;
+	private static Map<Long, List<AssetEntity>> mapAssets;
+	private static Map<Long, FinancialDataEntity> mapFD;
+	private static List<AssetEntity> assetList1;
+	private static List<AssetEntity> assetList2;
 
-	@Before
-	public void setUpMock() {
-		MockitoAnnotations.initMocks(this);
+	@BeforeClass
+	public static void setUpData() {
 		user = new UserEntity();
 		user.setId(new Long(2));
 		user.setEmail("luca@antilici.it");
@@ -161,6 +161,12 @@ public class PortfolioOperatorTest {
 		mapFD = new HashMap<>();
 		mapFD.put(assetEntity1.getId(), financialDataEntity1);
 		mapFD.put(assetEntity2.getId(), financialDataEntity2);
+	}
+
+	@Before
+	public void setUpMock() {
+		MockitoAnnotations.initMocks(this);
+
 	}
 
 	@Test
