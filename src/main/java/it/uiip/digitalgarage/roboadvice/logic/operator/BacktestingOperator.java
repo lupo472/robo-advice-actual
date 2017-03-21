@@ -6,6 +6,7 @@ import it.uiip.digitalgarage.roboadvice.service.dto.BacktestingDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,7 @@ public class BacktestingOperator extends AbstractOperator {
 	@Autowired
 	private AssetClassOperator assetClassOp;
 
+	@Cacheable("backtesting")
 	public List<PortfolioDTO> getBacktesting(BacktestingDTO request, Authentication auth) {
 		List<PortfolioDTO> result = new ArrayList<>();
 		UserEntity user = this.userRep.findByEmail(auth.getName());
@@ -30,7 +32,6 @@ public class BacktestingOperator extends AbstractOperator {
 			return null;
 		}
 		PortfolioDTO portfolio = getPortfolio(request, user, entityList);
-		System.out.println("Size: " + portfolio.getList().size());
 		result.add(portfolio);
 		while(!date.isEqual(LocalDate.now())) {
 			date = date.plus(Period.ofDays(1));
@@ -40,7 +41,6 @@ public class BacktestingOperator extends AbstractOperator {
 				entity.setDate(date);
 			}
 			portfolio = getPortfolio(request, user, entityList);
-			System.out.println("Size: " + portfolio.getList().size());
 			result.add(portfolio);
 		}
 		Collections.sort(result);
@@ -112,6 +112,7 @@ public class BacktestingOperator extends AbstractOperator {
 		return units.multiply(financialData.getValue());
 	}
 
+	@Cacheable("minimumBacktestingDate")
 	public String getMinimumBacktestingDate(CustomStrategyDTO request) {
 		LocalDate date = null;
 		for(AssetClassStrategyDTO assetClassStrategy : request.getList()) {
