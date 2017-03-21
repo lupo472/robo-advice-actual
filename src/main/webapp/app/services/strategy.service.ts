@@ -3,6 +3,7 @@ import { AppConfig } from './app.config';
 import { AppService } from './app.service';
 import { AssetService } from './asset.service';
 import { Strategy } from '../model/strategy';
+import { AssetClassStrategy } from '../model/asset-class-strategy';
 import { DefaultStrategy } from '../model/default-strategy';
 import { CustomStrategy } from '../model/custom-strategy';
 import { Strategies } from '../model/strategies';
@@ -20,6 +21,7 @@ export class StrategyService {
   dataHistory:any=[];
   period:number = 30;
   activeStrategy:Strategy;
+  list:AssetClassStrategy[];
 
   constructor(private AppService:AppService, private AssetService:AssetService) {
   }
@@ -33,6 +35,7 @@ export class StrategyService {
   }
   assignStrategy(res) {
     this.strategies = new Strategies();
+    //Create a custom strategy with all the asset classes from backend
     this.customStrategy = new CustomStrategy(this.AssetService.assetClassStrategies.getAssetClassStrategies());
     this.customStrategy.populateMap();
     this.strategies.createStrategies(res);
@@ -62,7 +65,9 @@ export class StrategyService {
   setActiveStrategy(res){
     if(res.response == 1) {
       this.activeStrategy = new Strategy(res.data);
-
+      this.customStrategy.setActiveStrategy(res.data);
+      this.customStrategy.updateStrategyList();
+      //this.customStrategy.createChart();
       return this.activeStrategy.getChartData();
     }
   }

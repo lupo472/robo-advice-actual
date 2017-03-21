@@ -3,6 +3,7 @@ import { StrategyService } from '../../services/strategy.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { DefaultStrategies } from '../../model/default-strategies';
 import { Strategies } from '../../model/strategies';
+import {Strategy} from "../../model/strategy";
 
 @Component({
     selector: 'app-strategy-selector',
@@ -20,7 +21,7 @@ export class StrategySelectorComponent implements OnInit {
     @Input() name;
     @Input() id;
     @Input() selected;
-    @Input() strategy;
+    @Input() strategy: Strategy;
 
     constructor() {
 

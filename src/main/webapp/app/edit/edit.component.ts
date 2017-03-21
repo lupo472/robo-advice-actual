@@ -41,6 +41,7 @@ export class EditComponent implements OnInit, AfterViewInit {
     }
     //ASSIGN STRATEGIES
     getStrategy(res): void {
+        this.StrategyService.getActiveStrategy().subscribe();
         this.strategies = res.getStrategies();
     }
     //ASSIGN ASSET CLASS
@@ -62,9 +63,11 @@ export class EditComponent implements OnInit, AfterViewInit {
       }
     }
     handleUpdatePercentage(){
+        console.log("CUSTOMSTRATEGYfirst",this.StrategyService.customStrategy);
       this._z.run(()=> {
         this.StrategyService.customStrategy.rePaint();
       });
+      console.log("CUSTOMSTRATEGY",this.StrategyService.customStrategy);
     }
     onSelect(strategy: Strategy, i): void {
         this.StrategyService.strategies.setCurrentStrategy(strategy);

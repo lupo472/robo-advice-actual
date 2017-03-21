@@ -17,21 +17,26 @@ export class Strategy {
           this.setActiveStrategy(data);
       }
     }
-
-    setStrategyArray(strategyArray: AssetClassStrategy[]): void {
+    setStrategyArray(strategyArray: any): void {
+        /*let array = [];
+        strategyArray.forEach((item)=>{
+            array.push(new AssetClassStrategy(item.percentage,item.id,item.name));
+        });*/
         this.list = strategyArray;
     }
-
+    //Add an asset class to the list
     addAssetClassStrategy(assetClassStrategy: AssetClassStrategy): void {
         this.list.push(assetClassStrategy);
     }
-
+    //Get the list of assetClassStrategies
     getStrategyArray(): AssetClassStrategy[] {
         return this.list;
     }
+    //Send Strategy to backend once you choose a new one and click on button create
     sendStrategy() {
       return {"list":this.list}
     }
+    //Create the chart of the strategy
     createChart(){
       for (let assetClassStrategy of this.list) {
           this.arrayPercentages.push(assetClassStrategy.getPercentage());

@@ -27,7 +27,6 @@ public class PortfolioOperator extends AbstractOperator {
 	@Cacheable("currentPortfolio")
 	public PortfolioDTO getCurrentPortfolio(UserEntity user) {
 		List<PortfolioEntity> entityList = this.portfolioRep.findByUserAndDate(user, user.getLastUpdate());
-		SchedulingOperator.count++; //TODO remove counting
 		if(entityList.isEmpty()) {
 			return null;
 		}
@@ -35,11 +34,9 @@ public class PortfolioOperator extends AbstractOperator {
 		LocalDate date = entityList.get(0).getDate();
 		result.setDate(date.toString());
 		BigDecimal total = this.portfolioRep.sumValues(user, date).getValue();
-		SchedulingOperator.count++; //TODO remove counting
 		Set<PortfolioElementDTO> set = new HashSet<>();
 		for (PortfolioEntity entity : entityList) {
 			BigDecimal assetClassValue = this.portfolioRep.sumValuesForAssetClass(entity.getAssetClass(), user, date).getValue();
-			SchedulingOperator.count++; //TODO remove counting
 			PortfolioElementDTO element = new PortfolioElementDTO();
 			element.setId(entity.getAssetClass().getId());
 			element.setName(entity.getAssetClass().getName());
@@ -124,9 +121,10 @@ public class PortfolioOperator extends AbstractOperator {
     private void savePortfolioForAssetClass(AssetClassEntity assetClass, UserEntity user, BigDecimal amount,
 											Map<Long, List<AssetEntity>> mapAssets, Map<Long, FinancialDataEntity> mapFD) {
     	List<AssetEntity> assets = mapAssets.get(assetClass.getId());
+    	List<PortfolioEntity> portfolioList = this.portfolioRep.findByUserAndDate(user, LocalDate.now());
+		Map<Long, PortfolioEntity> portfolioMap = Mapper.getMapPortfolio(portfolioList);
     	for (AssetEntity asset : assets) {
-			PortfolioEntity savedEntity = this.portfolioRep.findByUserAndAssetAndDate(user, asset, LocalDate.now());
-			SchedulingOperator.count++; //TODO remove counting
+			PortfolioEntity savedEntity = portfolioMap.get(asset.getId());
 			PortfolioEntity entity = new PortfolioEntity();
 			if(savedEntity != null) {
 				entity = savedEntity;
@@ -139,7 +137,6 @@ public class PortfolioOperator extends AbstractOperator {
     		entity.setUnits(this.getUnitsForAsset(asset, amountPerAsset, mapFD));
     		entity.setDate(LocalDate.now());
 			this.portfolioRep.save(entity);
-			SchedulingOperator.count++; //TODO remove counting
     	}
     }
 
@@ -181,7 +178,6 @@ public class PortfolioOperator extends AbstractOperator {
     		newPortfolioList.add(newElement);
     	}
     	this.savePortfolio(newPortfolioList);
-		SchedulingOperator.count++; //TODO remove counting
     	return true;
     }
 

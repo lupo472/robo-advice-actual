@@ -2,6 +2,7 @@ package it.uiip.digitalgarage.roboadvice.persistence.util;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.FinancialDataEntity;
+import it.uiip.digitalgarage.roboadvice.persistence.entity.PortfolioEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -36,6 +37,15 @@ public class Mapper {
 				map.put(idClass, new ArrayList<>());
 			}
 			map.get(idClass).add(asset);
+		}
+		return map;
+	}
+
+	public static Map<Long, PortfolioEntity> getMapPortfolio(List<PortfolioEntity> portfolioList) {
+		Map<Long, PortfolioEntity> map = new HashMap<>();
+		for(PortfolioEntity portfolio : portfolioList) {
+			Long id = portfolio.getAsset().getId();
+			map.put(id, portfolio);
 		}
 		return map;
 	}
