@@ -101,7 +101,7 @@
 *																															*
 ********************************************* FinancialDataController *******************************************************
 *																															*
-* * getFinancialData																										*
+* * getFinancialDataSet 																									*
 *		Header 		[token]																									*
 *		Body 		[]                                      																*
 *		Response	[response(1), data(List<FinancialData>)]	    														*
