@@ -22,13 +22,22 @@ export class AssetClass {
     getName(): string {
         return this.name;
     }
-    assignColour(): string {
+    /*assignColour(): string {
         let id = this.getId();
         switch (id) {
             case 1: return "#4dbd74";
             case 2: return "#63c2de";
             case 3: return "#f8cb00";
             case 4: return "#f86c6b";
+        }
+    }*/
+    assignColour(): string {
+        let id = this.getId();
+        switch (id) {
+            case 1: return "#81C784";
+            case 2: return "#4DD0E1";
+            case 3: return "#FFD54F";
+            case 4: return "#E57373";
         }
     }
 }

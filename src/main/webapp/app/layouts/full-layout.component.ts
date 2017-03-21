@@ -16,6 +16,7 @@ export class FullLayoutComponent implements OnInit {
     user: User;
     check: number;
     capital: number;
+    defaultCapital:number = 10000;
 
     constructor(private UserService: UserService, private StrategyService: StrategyService, private AppService: AppService, private router: Router) {
     }
@@ -24,7 +25,7 @@ export class FullLayoutComponent implements OnInit {
         this.login = this.UserService.getLogin();
         console.log("LOGIN NAVBAR", this.login);
         this.AppService.getCapitalForPeriod(0).subscribe(res => this.assignCapitalData(res));
-        this.StrategyService.getActiveStrategy().subscribe();
+        //this.StrategyService.getActiveStrategy().subscribe();
     }
 
     public isLoaded: boolean = false;
@@ -81,7 +82,8 @@ export class FullLayoutComponent implements OnInit {
 
             this.isLoaded = true;
         } else {
-            this.response = 'Come back tomorrow'
+            this.UserService.addCapital();
+            this.capital = this.defaultCapital;
         }
     }
 

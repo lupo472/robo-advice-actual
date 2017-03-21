@@ -10,6 +10,7 @@ import it.uiip.digitalgarage.roboadvice.persistence.repository.PortfolioReposito
 import it.uiip.digitalgarage.roboadvice.persistence.repository.UserRepository;
 import it.uiip.digitalgarage.roboadvice.service.dto.CapitalRequestDTO;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -23,7 +24,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.doReturn;
@@ -60,17 +63,17 @@ public class CapitalOperatorTest {
     @Mock
     private FinancialDataRepository financialDataRep;
 
-    private UserEntity user;
-    private FinancialDataEntity financialDataEntity1;
-    private FinancialDataEntity financialDataEntity2;
-    private AssetClassEntity assetClassEntity1;
-    private AssetClassEntity assetClassEntity2;
-    private AssetEntity assetEntity1;
-    private AssetEntity assetEntity2;
+    private static UserEntity user;
+    private static FinancialDataEntity financialDataEntity1;
+    private static FinancialDataEntity financialDataEntity2;
+    private static AssetClassEntity assetClassEntity1;
+    private static AssetClassEntity assetClassEntity2;
+    private static AssetEntity assetEntity1;
+    private static AssetEntity assetEntity2;
+    private static Map<Long, FinancialDataEntity> mapFD;
 
-    @Before
-    public void setUpMock() {
-        MockitoAnnotations.initMocks(this);
+    @BeforeClass
+    public static void setUpData() {
         user = new UserEntity();
         user.setId(2L);
         user.setEmail("luca@antilici.it");
@@ -108,55 +111,63 @@ public class CapitalOperatorTest {
         financialDataEntity1.setDate(LocalDate.now().minusDays(1));
         financialDataEntity2 = new FinancialDataEntity();
         financialDataEntity2.setId(1L);
-        financialDataEntity2.setAsset(assetEntity1);
+        financialDataEntity2.setAsset(assetEntity2);
         financialDataEntity2.setValue(new BigDecimal(50.23));
         financialDataEntity2.setDate(LocalDate.now().minusDays(1));
+
+        mapFD = new HashMap<>();
+        mapFD.put(assetEntity1.getId(), financialDataEntity1);
+        mapFD.put(assetEntity2.getId(), financialDataEntity2);
+    }
+
+    @Before
+    public void setUpMock() {
+        MockitoAnnotations.initMocks(this);
     }
 
     @Test
     public void computeCapitalTestSuccess() {
-//        PortfolioEntity portfolioEntity1 = new PortfolioEntity();
-//        portfolioEntity1.setId(1L);
-//        portfolioEntity1.setUser(user);
-//        portfolioEntity1.setAsset(assetEntity1);
-//        portfolioEntity1.setAssetClass(assetClassEntity1);
-//        portfolioEntity1.setUnits(new BigDecimal(10.50));
-//        portfolioEntity1.setValue(new BigDecimal(1296.2954));
-//        portfolioEntity1.setDate(LocalDate.now());
-//        PortfolioEntity portfolioEntity2 = new PortfolioEntity();
-//        portfolioEntity2.setId(2L);
-//        portfolioEntity2.setUser(user);
-//        portfolioEntity2.setAsset(assetEntity2);
-//        portfolioEntity2.setAssetClass(assetClassEntity2);
-//        portfolioEntity2.setUnits(new BigDecimal(11.4567));
-//        portfolioEntity2.setValue(new BigDecimal(515.5515));
-//        portfolioEntity2.setDate(LocalDate.now());
-//        List<PortfolioEntity> portfolio = new ArrayList<>();
-//        portfolio.add(portfolioEntity1);
-//        portfolio.add(portfolioEntity2);
-//
-//        CapitalEntity savedCapital = new CapitalEntity();
-//        savedCapital.setId(null);
-//        savedCapital.setUser(user);
-//        savedCapital.setDate(LocalDate.now());
-//        savedCapital.setAmount(new BigDecimal(1575.945));
-//
-//        when(capitalRep.save(savedCapital)).thenReturn(savedCapital);
-//        when(portfolioRep.findByUserAndDate(user, user.getLastUpdate())).thenReturn(portfolio);
-//        when(financialDataRep.findByAssetAndDate(assetEntity1,assetEntity1.getLastUpdate())).thenReturn(financialDataEntity1);
-//        when(financialDataRep.findByAssetAndDate(assetEntity2,assetEntity2.getLastUpdate())).thenReturn(financialDataEntity2);
-//        doReturn(new BigDecimal(1575.945)).when(portfolioOp).evaluatePortfolio(user);
-//        boolean response = capitalOp.computeCapital(user);
-//        verify(capitalRep).save(savedCapital);
-//        assertTrue(response);
+        PortfolioEntity portfolioEntity1 = new PortfolioEntity();
+        portfolioEntity1.setId(1L);
+        portfolioEntity1.setUser(user);
+        portfolioEntity1.setAsset(assetEntity1);
+        portfolioEntity1.setAssetClass(assetClassEntity1);
+        portfolioEntity1.setUnits(new BigDecimal(10.50));
+        portfolioEntity1.setValue(new BigDecimal(1296.2954));
+        portfolioEntity1.setDate(LocalDate.now());
+        PortfolioEntity portfolioEntity2 = new PortfolioEntity();
+        portfolioEntity2.setId(2L);
+        portfolioEntity2.setUser(user);
+        portfolioEntity2.setAsset(assetEntity2);
+        portfolioEntity2.setAssetClass(assetClassEntity2);
+        portfolioEntity2.setUnits(new BigDecimal(11.4567));
+        portfolioEntity2.setValue(new BigDecimal(515.5515));
+        portfolioEntity2.setDate(LocalDate.now());
+        List<PortfolioEntity> portfolio = new ArrayList<>();
+        portfolio.add(portfolioEntity1);
+        portfolio.add(portfolioEntity2);
 
+        CapitalEntity savedCapital = new CapitalEntity();
+        savedCapital.setId(null);
+        savedCapital.setUser(user);
+        savedCapital.setDate(LocalDate.now());
+        savedCapital.setAmount(new BigDecimal(1575.945));
+
+        when(capitalRep.save(savedCapital)).thenReturn(savedCapital);
+        when(portfolioRep.findByUserAndDate(user, user.getLastUpdate())).thenReturn(portfolio);
+        when(financialDataRep.findByAssetAndDate(assetEntity1,assetEntity1.getLastUpdate())).thenReturn(financialDataEntity1);
+        when(financialDataRep.findByAssetAndDate(assetEntity2,assetEntity2.getLastUpdate())).thenReturn(financialDataEntity2);
+        doReturn(new BigDecimal(1575.945)).when(portfolioOp).evaluatePortfolio(user, mapFD, portfolio);
+        CapitalEntity response = capitalOp.computeCapital(user, mapFD, portfolio);
+        verify(capitalRep).save(savedCapital);
+        assertEquals(savedCapital, response);
     }
 
     @Test
     public void computeCapitalTestNullPortfolio() {
-//        doReturn(null).when(portfolioOp).evaluatePortfolio(user);
-//        boolean response = capitalOp.computeCapital(user);
-//        assertFalse(response);
+        doReturn(null).when(portfolioOp).evaluatePortfolio(user, mapFD, null);
+        CapitalEntity response = capitalOp.computeCapital(user, mapFD, null);
+        assertNull(response);
     }
 
     @Test

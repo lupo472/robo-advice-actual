@@ -49,6 +49,15 @@ describe('StrategyService', () => {
     expect(1).toEqual(1);
   })));
 
+  /*it('#getDefaultStrategySet should return 2 strategies', inject([AppService,AssetService], (appService,assetService) => {
+    let assignStrategy;
+
+    service.getDefaultStrategySet().subscribe(res => {
+    expect(res).toBeDefined();
+    });
+  }));*/
+
+
 
   /*it('should return, by default, an empty object', inject([StrategyService], (service: StrategyService) => {
     service.getDefaultStrategySet().subscribe((strategies)=>{

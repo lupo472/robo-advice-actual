@@ -1,10 +1,14 @@
 package it.uiip.digitalgarage.roboadvice.test.service;
 
 import it.uiip.digitalgarage.roboadvice.RoboadviceApplication;
+import it.uiip.digitalgarage.roboadvice.logic.operator.FinancialDataOperator;
 import it.uiip.digitalgarage.roboadvice.service.controller.FinancialDataController;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -13,6 +17,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = RoboadviceApplication.class)
@@ -27,8 +32,15 @@ public class FinancialDataTest {
 	 * Test: initializeFinancialDataSet
 	*/
 	
+    @InjectMocks
     @Autowired
-    private FinancialDataController financialDataCtrl;
+    private FinancialDataOperator financialDataOp;
+
+
+    @Before
+    public void setUpMock() {
+        MockitoAnnotations.initMocks(this);
+    }
 
     @Test
     public void getFinancialDataSetTest() {
