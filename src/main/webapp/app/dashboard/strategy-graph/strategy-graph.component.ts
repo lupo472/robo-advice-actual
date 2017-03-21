@@ -19,10 +19,10 @@ export class StrategyGraphComponent implements OnInit {
 
   ngOnInit() {
 
-    this.StrategyService.getActiveStrategy().subscribe(res => this.getStrategy(res));
+    //this.StrategyService.getActiveStrategy().subscribe(res => this.getStrategy(res));
   }
 
-  getStrategy(data) {
+  /*getStrategy(data) {
 
     if(data) {
 
@@ -32,7 +32,7 @@ export class StrategyGraphComponent implements OnInit {
 
       this.render = true;
     }
-  }
+  }*/
 
   //convert Hex to RGBA
   public convertHex(hex: string, opacity: number) {

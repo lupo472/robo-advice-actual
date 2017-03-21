@@ -7,13 +7,18 @@
 			{{percentage}}%
 		</div>
 	</div>
-	<!-- <div class="chart-wrapper px-1" style="height:70px">
-					<canvas baseChart class="chart" [data]="lineChartData"
-						[labels]="lineChartLabels" [options]="lineChartOptions"
-						[colors]="lineChartColours" [legend]="lineChartLegend"
-						[chartType]="lineChartType" (chartHover)="chartHovered($event)"
+	<!--<canvas basechart="" class="chart" ng-reflect-datasets="[object Object]"
+			ng-reflect-labels="January,February,March,April,May,June,July"
+			ng-reflect-options="[object Object]" ng-reflect-chart-type="line"
+			ng-reflect-colors="[object Object]" width="974" height="140"
+			style="display: block; height: 70px; width: 487px;"></canvas>-->
+	 <div class="chart-wrapper px-1" style="height:100px">
+					<canvas baseChart class="chart" [datasets]="financialData.lineChartData"
+						[labels]="financialData.lineChartLabels" [options]="financialData.lineChartOptions"
+						[colors]="financialData.lineChartColours" [legend]="financialData.lineChartLegend"
+						[chartType]="financialData.lineChartType" (chartHover)="chartHovered($event)"
 						(chartClick)="chartClicked($event)"></canvas>
-				</div> -->
+	 </div>
 	<div class="card-block" *ngIf="isCustom">
 		<p-slider [(ngModel)]="percentage" [min]="0" [max]="100"
 		(onSlideEnd)="handleSlide($event)" (click)="handleSlide($event)"

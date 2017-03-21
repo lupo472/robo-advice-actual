@@ -8,6 +8,8 @@ import { DefaultStrategy } from '../model/default-strategy';
 import { CustomStrategy } from '../model/custom-strategy';
 import { Strategy } from '../model/strategy';
 import { AssetClassStrategy } from '../model/asset-class-strategy';
+import {FinancialData} from "../model/financial-data";
+import {FinancialDataSet} from "../model/financial-data-set";
 
 @Component({
     templateUrl: 'edit.component.html'
@@ -16,6 +18,7 @@ import { AssetClassStrategy } from '../model/asset-class-strategy';
 export class EditComponent implements OnInit, AfterViewInit {
     public isCustom: boolean;
     public strategies: Strategy[] = [];
+    public financialDataSet : FinancialData[];
     public assetClassStrategies: AssetClassStrategy[] = [];
     public selected = [];
     public isDisabled = true;
@@ -37,6 +40,13 @@ export class EditComponent implements OnInit, AfterViewInit {
         this.childModal.show();
     }
     ngOnInit(): void {
+        //this.AssetService.getAssetClassSet().subscribe((res) => this.getAssetClass(res));
+        this.AssetService.getFinancialDataSet().subscribe((res => this.getFinancialData(res)));
+        console.log("edit");
+    }
+    getFinancialData(res){
+        this.financialDataSet = res;
+        console.log("FinancialDataSet",this.financialDataSet);
         this.AssetService.getAssetClassSet().subscribe((res) => this.getAssetClass(res));
     }
     //ASSIGN STRATEGIES
@@ -87,7 +97,7 @@ export class EditComponent implements OnInit, AfterViewInit {
             }
         });
     }
-}
+
 
   //ASSET CLASS COLOUR//
   // public assetClassColour: string = '#20a8d8';
@@ -126,15 +136,15 @@ export class EditComponent implements OnInit, AfterViewInit {
   // }
 
   //convert Hex to RGBA
-  // public convertHex(hex: string, opacity: number) {
-  //   hex = hex.replace('#', '');
-  //   let r = parseInt(hex.substring(0, 2), 16);
-  //   let g = parseInt(hex.substring(2, 4), 16);
-  //   let b = parseInt(hex.substring(4, 6), 16);
-  //
-  //   let rgba = 'rgba(' + r + ',' + g + ',' + b + ',' + opacity / 100 + ')';
-  //   return rgba;
-  // }
+  /*public convertHex(hex: string, opacity: number) {
+    hex = hex.replace('#', '');
+    let r = parseInt(hex.substring(0, 2), 16);
+    let g = parseInt(hex.substring(2, 4), 16);
+    let b = parseInt(hex.substring(4, 6), 16);
+
+    let rgba = 'rgba(' + r + ',' + g + ',' + b + ',' + opacity / 100 + ')';
+    return rgba;
+  }*/
 
   // events
   // public chartClicked(e: any): void {
@@ -142,89 +152,104 @@ export class EditComponent implements OnInit, AfterViewInit {
   // }
 
   //LINECHART GENERAL
-  // public lineChartLabels: Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-  // public lineChartOptions: any = {
-  //   maintainAspectRatio: false,
-  //   tooltips: {
-  //     callbacks: {
-  //       label: function(tooltipItem) {
-  //         return tooltipItem.yLabel;
-  //       }
-  //     }
-  //   },
-  //   scales: {
-  //     xAxes: [{
-  //       gridLines: {
-  //         color: 'transparent',
-  //         zeroLineColor: 'transparent'
-  //       },
-  //       ticks: {
-  //         fontSize: 2,
-  //         fontColor: 'transparent',
-  //       }
-  //
-  //     }],
-  //     yAxes: [{
-  //       display: false,
-  //       ticks: {
-  //         display: false,
-  //         min: 40 - 5,
-  //         max: 84 + 5,
-  //       }
-  //     }],
-  //   },
-  //   elements: {
-  //     line: {
-  //       borderWidth: 1
-  //     },
-  //     point: {
-  //       radius: 4,
-  //       hitRadius: 10,
-  //       hoverRadius: 4,
-  //     },
-  //   },
-  //   legend: {
-  //     display: false
-  //   }
-  // };
-  // public lineChartType: string = 'line';
-  // public lineChartColours: Array<any> = [
-  //   {
-  //     backgroundColor: this.assetClassColour,
-  //     borderColor: 'rgba(255,255,255,.55)'
-  //   }
-  // ];
+    // events
+    /*public chartClicked(e:any):void {
+        console.log(e);
+    }
 
-  // barChart1
-//   public barChart1Data: Array<any> = [
-//     {
-//       data: [78, 81, 80, 45, 34, 12, 40, 78, 81, 80, 45, 34, 12, 40, 12, 40],
-//       label: 'Series A'
-//     }
-//   ];
-//   public barChart1Labels: Array<any> = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16'];
-//   public barChart1Options: any = {
-//     maintainAspectRatio: false,
-//     scales: {
-//       xAxes: [{
-//         display: false,
-//         barPercentage: 0.6,
-//       }],
-//       yAxes: [{
-//         display: false
-//       }]
-//     },
-//     legend: {
-//       display: false
-//     }
-//   };
-//   public barChart1Colours: Array<any> = [
-//     {
-//       backgroundColor: 'rgba(255,255,255,.3)',
-//       borderWidth: 0
-//     }
-//   ];
-//   public barChart1Legend: boolean = false;
-//   public barChart1Type: string = 'bar';
-//
-// }
+    public chartHovered(e:any):void {
+        console.log(e);
+    }*/
+    /*public lineChartLabels: Array<any> = ['January', 'February', 'March', 'April', 'May', 'June','July'];
+    public lineChartLegend:boolean = false;
+    public lineChartData : Array<any> = [
+        {
+            data: [78, 81, 80, 65, 74, 60, 67],
+            label: 'Series A'
+        }];
+  public lineChartOptions: any = {
+    maintainAspectRatio: false,
+    tooltips: {
+      callbacks: {
+        label: function(tooltipItem) {
+          return tooltipItem.yLabel;
+        }
+      }
+    },
+    scales: {
+      xAxes: [{
+        gridLines: {
+          color: 'transparent',
+          zeroLineColor: 'transparent'
+        },
+        ticks: {
+          fontSize: 2,
+          fontColor: 'transparent',
+        }
+
+      }],
+      yAxes: [{
+        display: false,
+        ticks: {
+          display: false,
+          min: 40 - 5,
+          max: 84 + 5,
+        }
+      }],
+    },
+    elements: {
+      line: {
+        borderWidth: 1
+      },
+      point: {
+        radius: 4,
+        hitRadius: 10,
+        hoverRadius: 4,
+      },
+    },
+    legend: {
+      display: false
+    }
+  };
+  public lineChartType: string = 'line';
+  public lineChartColours: Array<any> = [
+    {
+      backgroundColor: 'transparent',
+      borderColor: 'rgba(255,255,255,.55)'
+    }
+  ];*/
+
+}
+  /*barChart1
+  public barChart1Data: Array<any> = [
+    {
+      data: [78, 81, 80, 45, 34, 12, 40, 78, 81, 80, 45, 34, 12, 40, 12, 40],
+      label: 'Series A'
+    }
+  ];
+  public barChart1Labels: Array<any> = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16'];
+  public barChart1Options: any = {
+    maintainAspectRatio: false,
+    scales: {
+      xAxes: [{
+        display: false,
+        barPercentage: 0.6,
+      }],
+      yAxes: [{
+        display: false
+      }]
+    },
+    legend: {
+      display: false
+    }
+  };
+  public barChart1Colours: Array<any> = [
+    {
+      backgroundColor: 'rgba(255,255,255,.3)',
+      borderWidth: 0
+    }
+  ];
+  public barChart1Legend: boolean = false;
+  public barChart1Type: string = 'bar';*/
+
+
