@@ -1,9 +1,11 @@
 package it.uiip.digitalgarage.roboadvice.logic.operator;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.*;
+import it.uiip.digitalgarage.roboadvice.service.dto.AssetClassStrategyDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.BacktestingDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,9 @@ import java.util.*;
 
 @Service
 public class BacktestingOperator extends AbstractOperator {
+
+	@Autowired
+	private AssetClassOperator assetClassOp;
 
 	public List<PortfolioDTO> getBacktesting(BacktestingDTO request, Authentication auth) {
 		List<PortfolioDTO> result = new ArrayList<>();
@@ -105,6 +110,20 @@ public class BacktestingOperator extends AbstractOperator {
 	private BigDecimal getValueForAsset(BigDecimal units, AssetEntity asset, LocalDate date) {
 		FinancialDataEntity financialData = this.financialDataRep.findTop1ByAssetAndDateLessThanEqualOrderByDateDesc(asset, date);
 		return units.multiply(financialData.getValue());
+	}
+
+	public String getMinimumBacktestingDate(CustomStrategyDTO request) {
+		LocalDate date = null;
+		for(AssetClassStrategyDTO assetClassStrategy : request.getList()) {
+			AssetClassEntity assetClass = new AssetClassEntity();
+			assetClass.setId(assetClassStrategy.getId());
+			assetClass.setName(assetClassStrategy.getName());
+			LocalDate assetClassDate = this.assetClassOp.getMinDate(assetClass);
+			if(date == null || date.isBefore(assetClassDate)) {
+				date = assetClassDate;
+			}
+		}
+		return date.toString();
 	}
 
 }
