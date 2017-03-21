@@ -8,7 +8,7 @@ import lombok.Data;
 public @Data class PeriodRequestDTO {
 
 	@NotNull
-	@Min(1)
+	@Min(0)
 	private int period;
 
 }

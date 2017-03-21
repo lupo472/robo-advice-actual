@@ -29,9 +29,11 @@ public class BacktestingOperator extends AbstractOperator {
 		for (CustomStrategyEntity strategy : list) {
 			BigDecimal amountPerClass = amount.divide(new BigDecimal(100.00), 8, RoundingMode.HALF_UP).multiply(strategy.getPercentage());
 			AssetClassEntity assetClass = strategy.getAssetClass();
-			//this.savePortfolioForAssetClass(assetClass, user, amountPerClass, mapAssets, mapFD);
+			//this.savePortfolioForAssetClass(assetClass, user, amountPerClass);
 		}
 		return null;
 	}
+
+
 
 }
