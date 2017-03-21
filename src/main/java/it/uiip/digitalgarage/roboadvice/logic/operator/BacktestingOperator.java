@@ -21,6 +21,9 @@ public class BacktestingOperator extends AbstractOperator {
 		UserEntity user = this.userRep.findByEmail(auth.getName());
 		LocalDate date = LocalDate.now().minus(Period.ofDays(request.getPeriod()));
 		List<PortfolioEntity> entityList = createStartingPortfolio(request, user, date);
+		if(entityList == null) {
+			return null;
+		}
 		PortfolioDTO portfolio = getPortfolio(request, user, entityList);
 		System.out.println("Size: " + portfolio.getList().size());
 		result.add(portfolio);
@@ -61,6 +64,9 @@ public class BacktestingOperator extends AbstractOperator {
 			BigDecimal amountPerClass = request.getCapital().divide(new BigDecimal(100.00), 8, RoundingMode.HALF_UP).multiply(strategy.getPercentage());
 			AssetClassEntity assetClass = strategy.getAssetClass();
 			List<PortfolioEntity> listPerAsset = this.createPortfolioForAssetClass(assetClass, user, amountPerClass, date);
+			if(listPerAsset == null) {
+				return null;
+			}
 			entityList.addAll(listPerAsset);
 		}
 		return entityList;
@@ -70,13 +76,17 @@ public class BacktestingOperator extends AbstractOperator {
 		List<AssetEntity> assets = this.assetRep.findByAssetClass(assetClass);
 		List<PortfolioEntity> entityList = new ArrayList<>();
 		for (AssetEntity asset : assets) {
-			PortfolioEntity entity = new PortfolioEntity();
 			BigDecimal amountPerAsset = amount.divide(new BigDecimal(100.00), 4, RoundingMode.HALF_UP).multiply(asset.getPercentage());
+			BigDecimal units = this.getUnitsForAsset(asset, amountPerAsset, date);
+			if(units == null) {
+				return null;
+			}
+			PortfolioEntity entity = new PortfolioEntity();
 			entity.setAsset(asset);
 			entity.setAssetClass(assetClass);
 			entity.setUser(user);
 			entity.setValue(amountPerAsset);
-			entity.setUnits(this.getUnitsForAsset(asset, amountPerAsset, date));
+			entity.setUnits(units);
 			entity.setDate(date);
 			entityList.add(entity);
 		}
@@ -84,7 +94,10 @@ public class BacktestingOperator extends AbstractOperator {
 	}
 
 	private BigDecimal getUnitsForAsset(AssetEntity asset, BigDecimal amount, LocalDate date) {
-		FinancialDataEntity financialData = this.financialDataRep.findTop1ByAssetAndDateLessThanEqualOrderByDateDesc(asset, date);//findByAssetAndDate(asset, date);
+		FinancialDataEntity financialData = this.financialDataRep.findTop1ByAssetAndDateLessThanEqualOrderByDateDesc(asset, date);
+		if(financialData == null) {
+			return null;
+		}
 		BigDecimal units = amount.divide(financialData.getValue(), 4, RoundingMode.HALF_UP);
 		return units;
 	}

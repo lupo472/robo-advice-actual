@@ -2,6 +2,7 @@ package it.uiip.digitalgarage.roboadvice.service.controller;
 
 import it.uiip.digitalgarage.roboadvice.service.dto.BacktestingDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioDTO;
+import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,9 @@ public class BacktestingController extends AbstractController {
 		List<PortfolioDTO> result = this.backtestingOp.getBacktesting(request, auth);
 		Long end = System.currentTimeMillis();
 		System.out.println((end - start) + " ms");
+		if(result == null) {
+			return new GenericResponse<String>(0, ControllerConstants.NOT_APPLICABLE);
+		}
 		return new GenericResponse<List<PortfolioDTO>>(1, result);
 	}
 
