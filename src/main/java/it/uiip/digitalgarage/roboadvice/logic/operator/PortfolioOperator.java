@@ -30,24 +30,7 @@ public class PortfolioOperator extends AbstractOperator {
 		if(entityList.isEmpty()) {
 			return null;
 		}
-		PortfolioDTO result = new PortfolioDTO();
-		LocalDate date = entityList.get(0).getDate();
-		result.setDate(date.toString());
-		BigDecimal total = this.portfolioRep.sumValues(user, date).getValue();
-		Set<PortfolioElementDTO> set = new HashSet<>();
-		for (PortfolioEntity entity : entityList) {
-			BigDecimal assetClassValue = this.portfolioRep.sumValuesForAssetClass(entity.getAssetClass(), user, date).getValue();
-			PortfolioElementDTO element = new PortfolioElementDTO();
-			element.setId(entity.getAssetClass().getId());
-			element.setName(entity.getAssetClass().getName());
-			element.setValue(assetClassValue);
-			element.setPercentage(assetClassValue.divide(total, 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100.00)));
-			set.add(element);
-		}
-		List<PortfolioElementDTO> list = new ArrayList<>(set);
-		Collections.sort(list);
-		result.setList(list);
-		return result;
+		return this.portfolioWrap.wrapToDTO(user, entityList);
 	}
 
 	@Cacheable("portfolioHistory")
@@ -64,10 +47,28 @@ public class PortfolioOperator extends AbstractOperator {
 		if (entityList.isEmpty()) {
 			return null;
 		}
-		List<PortfolioDTO> result = this.portfolioWrap.wrapToDTO(user, entityList);
+		Map<LocalDate, BigDecimal> totalMap = Mapper.getMapValues(this.portfolioRep.sumValues(user));
+		Map<Long, Map<LocalDate, BigDecimal>> assetClassMap = new HashMap<>();
+		Map<String, Set<PortfolioEntity>> map = this.createMap(user, entityList, assetClassMap);
+		List<PortfolioDTO> result = this.portfolioWrap.wrapToDTOList(user, entityList, assetClassMap, map, totalMap);
 		Collections.sort(result);
         return result;
     }
+
+	private Map<String, Set<PortfolioEntity>> createMap(UserEntity user, List<PortfolioEntity> entityList, Map<Long, Map<LocalDate, BigDecimal>> assetClassMap) {
+		Map<String, Set<PortfolioEntity>> map = new HashMap<>();
+		for (PortfolioEntity entity : entityList) {
+			if(assetClassMap.get(entity.getAssetClass().getId()) == null) {
+				assetClassMap.put(entity.getAssetClass().getId(), Mapper.getMapValues(this.portfolioRep.sumValuesForAssetClass(entity.getAssetClass(), user)));
+			}
+			if(map.get(entity.getDate().toString()) == null) {
+				map.put(entity.getDate().toString(), new HashSet<>());
+				System.out.println(entity.getDate().toString());
+			}
+			map.get(entity.getDate().toString()).add(entity);
+		}
+		return map;
+	}
 
 	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory"}, allEntries = true)
     public boolean createUserPortfolio(UserEntity user, List<CustomStrategyEntity> strategyEntity, CapitalEntity capital,

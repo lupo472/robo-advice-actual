@@ -20,10 +20,10 @@ public class PortfolioWrapper {
 	@Autowired
 	private PortfolioRepository portfolioRep;
 
-	public List<PortfolioDTO> wrapToDTO(UserEntity user, List<PortfolioEntity> entityList) {
-		Map<LocalDate, BigDecimal> totalMap = Mapper.getMapValues(this.portfolioRep.sumValues(user));
-		Map<Long, Map<LocalDate, BigDecimal>> assetClassMap = new HashMap<>();
-		Map<String, Set<PortfolioEntity>> map = this.createMap(user, entityList, assetClassMap);
+	public List<PortfolioDTO> wrapToDTOList(UserEntity user, List<PortfolioEntity> entityList,
+											Map<Long, Map<LocalDate, BigDecimal>> assetClassMap,
+											Map<String, Set<PortfolioEntity>> map,
+											Map<LocalDate, BigDecimal> totalMap) {
 		List<PortfolioDTO> result = new ArrayList<>();
 		for (String date : map.keySet()) {
 			PortfolioDTO dto = new PortfolioDTO();
@@ -47,18 +47,25 @@ public class PortfolioWrapper {
 		return result;
 	}
 
-	private Map<String, Set<PortfolioEntity>> createMap(UserEntity user, List<PortfolioEntity> entityList, Map<Long, Map<LocalDate, BigDecimal>> assetClassMap) {
-		Map<String, Set<PortfolioEntity>> map = new HashMap<>();
+	public PortfolioDTO wrapToDTO(UserEntity user, List<PortfolioEntity> entityList) {
+		PortfolioDTO result = new PortfolioDTO();
+		LocalDate date = entityList.get(0).getDate();
+		result.setDate(date.toString());
+		BigDecimal total = this.portfolioRep.sumValues(user, date).getValue();
+		Set<PortfolioElementDTO> set = new HashSet<>();
 		for (PortfolioEntity entity : entityList) {
-			if(assetClassMap.get(entity.getAssetClass().getId()) == null) {
-				assetClassMap.put(entity.getAssetClass().getId(), Mapper.getMapValues(this.portfolioRep.sumValuesForAssetClass(entity.getAssetClass(), user)));
-			}
-			if(map.get(entity.getDate().toString()) == null) {
-				map.put(entity.getDate().toString(), new HashSet<>());
-			}
-			map.get(entity.getDate().toString()).add(entity);
+			BigDecimal assetClassValue = this.portfolioRep.sumValuesForAssetClass(entity.getAssetClass(), user, date).getValue();
+			PortfolioElementDTO element = new PortfolioElementDTO();
+			element.setId(entity.getAssetClass().getId());
+			element.setName(entity.getAssetClass().getName());
+			element.setValue(assetClassValue);
+			element.setPercentage(assetClassValue.divide(total, 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100.00)));
+			set.add(element);
 		}
-		return map;
+		List<PortfolioElementDTO> list = new ArrayList<>(set);
+		Collections.sort(list);
+		result.setList(list);
+		return result;
 	}
 
 }
