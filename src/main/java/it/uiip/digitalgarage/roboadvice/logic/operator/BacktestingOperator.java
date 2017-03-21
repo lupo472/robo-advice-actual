@@ -28,10 +28,12 @@ public class BacktestingOperator extends AbstractOperator {
 			for(PortfolioEntity entity: entityList) {
 				BigDecimal value = this.getValueForAsset(entity.getUnits(), entity.getAsset(), date);
 				entity.setValue(value);
+				entity.setDate(date);
 			}
 			portfolio = getPortfolio(request, user, entityList);
 			result.add(portfolio);
 		}
+		Collections.sort(result);
 		return result;
 	}
 
