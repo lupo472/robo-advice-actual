@@ -34,6 +34,7 @@ export class CustomStrategy extends Strategy {
       array.push(item);
     });
     this.setStrategyArray(array);
+    console.log("array",array);
     this.createChart();
   }
   //Override method to send to backend just the assetClassStrategies > 0
@@ -46,6 +47,11 @@ export class CustomStrategy extends Strategy {
     });
     return {"list":array};
   }
+  /*
+  *   Check if the active strategy is missing an asset class
+  *   and assign to that the one with value 0 from the custom list
+  *   which contains all the assets class with value 0
+  */
   updateStrategyList(){
     let array = this.customList;
     this.list.forEach((item)=>{
@@ -53,6 +59,7 @@ export class CustomStrategy extends Strategy {
     });
     this.list = array;
     this.updateMap();
+    this.updatePercentages();
     this.createChart();
   }
   //Send to the component the array with the custom assetClassStrategies
@@ -75,12 +82,20 @@ export class CustomStrategy extends Strategy {
       current.setPercentage(item.getPercentage());
     });
   }
+  //Update list with the values in the map
+  updateList(){
+    this.assetClassStrategiesMap.forEach((item)=>{
+      this.list[item.getId()-1].setPercentage(item.getPercentage());
+    });
+  }
   //Get the Map with the custom assetClassStrategies
   getAssetClassStrategyMap() : Map<number, AssetClassStrategy> {
     return this.assetClassStrategiesMap;
   }
   //Set percentage with sliders and calculate the max percentage we can set
   setPercentageWithSlider(id,oldValue) : number {
+    console.log("list",this.list);
+    console.log("map",this.assetClassStrategiesMap);
     let currentSlider = this.assetClassStrategiesMap.get(id);
     if (currentSlider.getPercentage() - oldValue + this.sumPercentage > 100){
       if (this.maxPercentage !=0) {
@@ -100,10 +115,25 @@ export class CustomStrategy extends Strategy {
     return currentSlider.getPercentage();
   }
   //Resets all sliders and chart after clicking cancel button
-  resetSlider() : void {
+  /*resetSlider(strategy : Strategy) : void {
       this.getAssetClassStrategyMap().forEach((item,index)=>{
         item.setPercentage(0);
       });
+      this.updateList();
+    this.rePaint();
+  }*/
+  //Preset slider,map and list to the active startegy of the user
+  resetSlider(strategy : Strategy) : void {
+    this.getAssetClassStrategyMap().forEach((item,index)=>{
+      item.setPercentage(0);
+      strategy.getStrategyArray().forEach((element)=>{
+        if (item.getId() == element.getId()){
+
+          item.setPercentage(element.getPercentage());
+        }
+      });
+    });
+    this.updateList();
     this.rePaint();
   }
   //Update maxPercentage and sumPercentage

@@ -69,7 +69,7 @@ export class EditComponent implements OnInit, AfterViewInit {
       this.isCustom = false;
       let currentStrategy = this.StrategyService.strategies.getCurrentStrategy();
       if (currentStrategy instanceof CustomStrategy) {
-        currentStrategy.resetSlider();
+        currentStrategy.resetSlider(this.StrategyService.activeStrategy);
       }
     }
     handleUpdatePercentage(){
@@ -80,6 +80,7 @@ export class EditComponent implements OnInit, AfterViewInit {
       console.log("CUSTOMSTRATEGY",this.StrategyService.customStrategy);
     }
     onSelect(strategy: Strategy, i): void {
+        console.log("strat",strategy);
         this.StrategyService.strategies.setCurrentStrategy(strategy);
         if (strategy instanceof CustomStrategy) {
           this.isCustom = true;

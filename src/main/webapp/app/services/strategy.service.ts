@@ -69,8 +69,10 @@ export class StrategyService {
   setActiveStrategy(res){
     if(res.response == 1) {
       this.activeStrategy = new Strategy(res.data);
+
       this.customStrategy.setActiveStrategy(res.data);
       this.customStrategy.updateStrategyList();
+      console.log("Custom",this.customStrategy);
       //this.customStrategy.createChart();
       return this.activeStrategy.getChartData();
     }
