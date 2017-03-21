@@ -17,50 +17,54 @@ import java.util.*;
 @Service
 public class BacktestingOperator extends AbstractOperator {
 
-	public List<PortfolioDTO> getBacktesting(BacktestingDTO request, Authentication auth) {
-//		UserEntity user = this.userRep.findByEmail(auth.getName());
-//		LocalDate date = LocalDate.now().minus(Period.ofDays(request.getPeriod()));
-//		CustomStrategyDTO strategyDTO = new CustomStrategyDTO();
-//		strategyDTO.setList(request.getList());
-//		List<CustomStrategyEntity> list = this.customStrategyWrap.unwrapToEntity(strategyDTO);
-//		BigDecimal amount = request.getCapital();
-		List<PortfolioDTO> result = new ArrayList<>();
-//		for (CustomStrategyEntity strategy : list) {
-//			BigDecimal amountPerClass = amount.divide(new BigDecimal(100.00), 8, RoundingMode.HALF_UP).multiply(strategy.getPercentage());
-//			AssetClassEntity assetClass = strategy.getAssetClass();
-//			PortfolioDTO portfolioDTO = this.computePortfolioForAssetClass(assetClass, user, amountPerClass, date);
-//			result.add(portfolioDTO);
-//		}
+	public PortfolioDTO getBacktesting(BacktestingDTO request, Authentication auth) {
+		UserEntity user = this.userRep.findByEmail(auth.getName());
+		LocalDate date = LocalDate.now().minus(Period.ofDays(request.getPeriod()));
+		CustomStrategyDTO strategyDTO = new CustomStrategyDTO();
+		strategyDTO.setList(request.getList());
+		List<CustomStrategyEntity> list = this.customStrategyWrap.unwrapToEntity(strategyDTO);
+		BigDecimal amount = request.getCapital();
+		List<PortfolioEntity> entityList = new ArrayList<>();
+		for (CustomStrategyEntity strategy : list) {
+			BigDecimal amountPerClass = amount.divide(new BigDecimal(100.00), 8, RoundingMode.HALF_UP).multiply(strategy.getPercentage());
+			AssetClassEntity assetClass = strategy.getAssetClass();
+			List<PortfolioEntity> listPerAsset = this.computePortfolioForAssetClass(assetClass, user, amountPerClass, date);
+			entityList.addAll(listPerAsset);
+		}
+		Map<Long, BigDecimal> mapPerAsset = new HashMap<>();
+		for(PortfolioEntity entity : entityList) {
+			if(mapPerAsset.get(entity.getAssetClass().getId()) == null) {
+				mapPerAsset.put(entity.getAssetClass().getId(), new BigDecimal(0));
+			}
+			mapPerAsset.put(entity.getAssetClass().getId(), mapPerAsset.get(entity.getAssetClass().getId()).add(entity.getValue()));
+		}
+		PortfolioDTO result = this.portfolioWrap.wrapToDTO(user, entityList, request.getCapital(), mapPerAsset);
+
 		return result;
 	}
 
-//	private PortfolioDTO computePortfolioForAssetClass(AssetClassEntity assetClass, UserEntity user, BigDecimal amount, LocalDate date) {
-//		List<AssetEntity> assets = this.assetRep.findByAssetClass(assetClass);
-//		List<PortfolioEntity> entityList = new ArrayList<>();
-//		for (AssetEntity asset : assets) {
-//			PortfolioEntity entity = new PortfolioEntity();
-//			BigDecimal amountPerAsset = amount.divide(new BigDecimal(100.00), 8, RoundingMode.HALF_UP).multiply(asset.getPercentage());
-//			entity.setAsset(asset);
-//			entity.setAssetClass(assetClass);
-//			entity.setUser(user);
-//			entity.setValue(amountPerAsset);
-//			entity.setUnits(this.getUnitsForAsset(asset, amountPerAsset, date));
-//			entity.setDate(date);
-//			entityList.add(entity);
-//		}
-//		Map<LocalDate, BigDecimal> totalMap = Mapper.getMapValues(this.portfolioRep.sumValues(user));
-//		Map<Long, Map<LocalDate, BigDecimal>> assetClassMap = new HashMap<>();
-//		System.out.println("Size: " + entityList.size());
-//		System.out.println(entityList.get(0).getValue());
-//		PortfolioDTO result = this.portfolioWrap.wrapToDTO(user, entityList);
-//		return result;
-////		return new ArrayList<>();
-//	}
-//
-//	private BigDecimal getUnitsForAsset(AssetEntity asset, BigDecimal amount, LocalDate date) {
-//			FinancialDataEntity financialData = this.financialDataRep.findByAssetAndDate(asset, date);
-//			BigDecimal units = amount.divide(financialData.getValue(), 8, RoundingMode.HALF_UP);
-//			return units;
-//	}
+	private List<PortfolioEntity> computePortfolioForAssetClass(AssetClassEntity assetClass, UserEntity user, BigDecimal amount, LocalDate date) {
+		List<AssetEntity> assets = this.assetRep.findByAssetClass(assetClass);
+		List<PortfolioEntity> entityList = new ArrayList<>();
+		Map<Long, BigDecimal> mapAssetClassValues = new HashMap<>();
+		for (AssetEntity asset : assets) {
+			PortfolioEntity entity = new PortfolioEntity();
+			BigDecimal amountPerAsset = amount.divide(new BigDecimal(100.00), 8, RoundingMode.HALF_UP).multiply(asset.getPercentage());
+			entity.setAsset(asset);
+			entity.setAssetClass(assetClass);
+			entity.setUser(user);
+			entity.setValue(amountPerAsset);
+			entity.setUnits(this.getUnitsForAsset(asset, amountPerAsset, date));
+			entity.setDate(date);
+			entityList.add(entity);
+		}
+		return entityList;
+	}
+
+	private BigDecimal getUnitsForAsset(AssetEntity asset, BigDecimal amount, LocalDate date) {
+			FinancialDataEntity financialData = this.financialDataRep.findByAssetAndDate(asset, date);
+			BigDecimal units = amount.divide(financialData.getValue(), 8, RoundingMode.HALF_UP);
+			return units;
+	}
 
 }

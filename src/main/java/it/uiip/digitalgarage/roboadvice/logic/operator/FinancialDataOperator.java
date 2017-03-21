@@ -79,11 +79,17 @@ public class FinancialDataOperator extends AbstractOperator {
 				}
 				LocalDate date = LocalDate.now().minus(Period.ofDays(n));
 				if(first || date.isBefore(entityDate)) {
+					FinancialDataEntity entity = null;
 					if(list.size() == 0) {
-						break;
+						if(interrupt) {
+							entity = this.financialDataRep.findTop1ByAssetAndDateLessThanEqualOrderByDateDesc(asset, date);
+						} else {
+							break;
+						}
+					} else {
+						entity = list.get(list.size() - 1);
+						list.remove(entity);
 					}
-					FinancialDataEntity entity = list.get(list.size() - 1);
-					list.remove(entity);
 					first = false;
 					entityDate = entity.getDate();
 					entityValue = entity.getValue();

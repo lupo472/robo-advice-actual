@@ -18,10 +18,10 @@ public class BacktestingController extends AbstractController {
 	@ResponseBody
 	public GenericResponse<?> getBacktesting(@Valid @RequestBody BacktestingDTO request, Authentication auth) {
 		Long start = System.currentTimeMillis();
-		List<PortfolioDTO> result = this.backtestingOp.getBacktesting(request, auth);
+		PortfolioDTO result = this.backtestingOp.getBacktesting(request, auth);
 		Long end = System.currentTimeMillis();
 		System.out.println((end - start) + " ms");
-		return new GenericResponse<List<PortfolioDTO>>(1, result);
+		return new GenericResponse<PortfolioDTO>(1, result);
 	}
 
 	//TODO remove test

@@ -3,7 +3,6 @@ package it.uiip.digitalgarage.roboadvice.logic.wrapper;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.PortfolioEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.UserEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.PortfolioRepository;
-import it.uiip.digitalgarage.roboadvice.persistence.util.Mapper;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioElementDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,10 +51,8 @@ public class PortfolioWrapper {
 		PortfolioDTO result = new PortfolioDTO();
 		LocalDate date = entityList.get(0).getDate();
 		result.setDate(date.toString());
-//		BigDecimal total = this.portfolioRep.sumValues(user, date).getValue();
 		Set<PortfolioElementDTO> set = new HashSet<>();
 		for (PortfolioEntity entity : entityList) {
-//			BigDecimal assetClassValue = this.portfolioRep.sumValuesForAssetClass(entity.getAssetClass(), user, date).getValue();
 			BigDecimal assetClassValue = assetClassMap.get(entity.getAssetClass().getId());
 			PortfolioElementDTO element = new PortfolioElementDTO();
 			element.setId(entity.getAssetClass().getId());
