@@ -51,7 +51,7 @@ public class PortfolioWrapper {
 		PortfolioDTO result = new PortfolioDTO();
 		LocalDate date = entityList.get(0).getDate();
 		result.setDate(date.toString());
-		Set<PortfolioElementDTO> set = new HashSet<>();
+		Map<Long, PortfolioElementDTO> map = new HashMap<>();
 		for (PortfolioEntity entity : entityList) {
 			BigDecimal assetClassValue = assetClassMap.get(entity.getAssetClass().getId());
 			PortfolioElementDTO element = new PortfolioElementDTO();
@@ -59,9 +59,10 @@ public class PortfolioWrapper {
 			element.setName(entity.getAssetClass().getName());
 			element.setValue(assetClassValue);
 			element.setPercentage(assetClassValue.divide(total, 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100.00)));
-			set.add(element);
+			map.put(element.getId(), element);
+			System.out.println("AssetClass: " + entity.getAssetClass().getName());
 		}
-		List<PortfolioElementDTO> list = new ArrayList<>(set);
+		List<PortfolioElementDTO> list = new ArrayList<>(map.values());
 		Collections.sort(list);
 		result.setList(list);
 		return result;

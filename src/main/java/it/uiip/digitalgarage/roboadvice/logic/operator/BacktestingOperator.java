@@ -22,6 +22,7 @@ public class BacktestingOperator extends AbstractOperator {
 		LocalDate date = LocalDate.now().minus(Period.ofDays(request.getPeriod()));
 		List<PortfolioEntity> entityList = createStartingPortfolio(request, user, date);
 		PortfolioDTO portfolio = getPortfolio(request, user, entityList);
+		System.out.println("Size: " + portfolio.getList().size());
 		result.add(portfolio);
 		while(!date.isEqual(LocalDate.now())) {
 			date = date.plus(Period.ofDays(1));
@@ -31,6 +32,7 @@ public class BacktestingOperator extends AbstractOperator {
 				entity.setDate(date);
 			}
 			portfolio = getPortfolio(request, user, entityList);
+			System.out.println("Size: " + portfolio.getList().size());
 			result.add(portfolio);
 		}
 		Collections.sort(result);
@@ -67,7 +69,6 @@ public class BacktestingOperator extends AbstractOperator {
 	private List<PortfolioEntity> createPortfolioForAssetClass(AssetClassEntity assetClass, UserEntity user, BigDecimal amount, LocalDate date) {
 		List<AssetEntity> assets = this.assetRep.findByAssetClass(assetClass);
 		List<PortfolioEntity> entityList = new ArrayList<>();
-		Map<Long, BigDecimal> mapAssetClassValues = new HashMap<>();
 		for (AssetEntity asset : assets) {
 			PortfolioEntity entity = new PortfolioEntity();
 			BigDecimal amountPerAsset = amount.divide(new BigDecimal(100.00), 4, RoundingMode.HALF_UP).multiply(asset.getPercentage());
