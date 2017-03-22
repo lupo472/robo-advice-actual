@@ -6,6 +6,7 @@ export class FinancialData extends AssetClass {
     lineChartLegend;
     lineChartData = [];
     lineChartOptions;
+    lineChartOptionsModal;
     lineChartType;
     lineChartColours;
     max:number = 0;
@@ -43,6 +44,7 @@ export class FinancialData extends AssetClass {
         ];
     }
     createLineChartOptions(){
+
         this.lineChartOptions = {
             maintainAspectRatio: false,
             tooltips: {
@@ -94,12 +96,59 @@ export class FinancialData extends AssetClass {
             }
         };
     }
-    createLineChart(){
-        this.createLineChartLabels();
-        this.lineChartLegend = false;
-        this.createLineChartData();
-        this.createLineChartOptions();
-        this.lineChartType = 'line';
+    createLineChartOptionsForModal(){
+        this.lineChartOptionsModal = {
+            maintainAspectRatio: false,
+            tooltips: {
+                callbacks: {
+                    label: function(tooltipItem) {
+                        return tooltipItem.yLabel;
+                    }
+                }
+            },
+            scales: {
+                xAxes: [{
+                    gridLines: {
+                        color: 'transparent',
+                        zeroLineColor: 'transparent'
+                    },
+                    ticks: {
+                        fontSize: 2,
+                        fontColor: 'transparent',
+                    }
+
+                }],
+                yAxes: [{
+                    display: true,
+                    gridLines: {
+                        display:false
+                    },
+                    ticks: {
+                        display: true,
+                        fontSize: 8,
+                        min: this.min ,
+                        max: this.max ,
+                        stepSize: this.max - this.min,
+
+                    }
+                }],
+            },
+            elements: {
+                line: {
+                    borderWidth: 2
+                },
+                point: {
+                    radius: 0,
+                    hitRadius: 10,
+                    hoverRadius: 3,
+                },
+            },
+            legend: {
+                display: false
+            }
+        };
+    }
+    createLineChartColours(){
         this.lineChartColours = [
             {
                 backgroundColor: 'transparent',
@@ -107,6 +156,38 @@ export class FinancialData extends AssetClass {
                 borderColor: 'rgba(255,255,255,.55)'
             }
         ];
+    }
+    createLineChartColoursModal(){
+        this.lineChartColours = [
+            {
+                backgroundColor: this.assignColour(),
+                pointBackgroundColor:'white',
+                borderColor: 'rgba(255,255,255,.55)'
+            }
+        ];
+    }
+
+    createLineChart(type){
+        if (type == "small") {
+
+            this.createLineChartLabels();
+            this.lineChartLegend = false;
+            this.createLineChartData();
+            this.createLineChartOptions();
+            this.lineChartType = 'line';
+            this.createLineChartColours();
+
+        } else if (type == "big") {
+
+            this.createLineChartLabels();
+            this.lineChartLegend = false;
+            this.createLineChartData();
+            this.createLineChartOptions();
+            this.lineChartType = 'line';
+            this.createLineChartColoursModal();
+
+        }
+
     }
 
 

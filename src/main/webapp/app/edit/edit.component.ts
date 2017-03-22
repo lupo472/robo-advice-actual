@@ -10,6 +10,7 @@ import { Strategy } from '../model/strategy';
 import { AssetClassStrategy } from '../model/asset-class-strategy';
 import {FinancialData} from "../model/financial-data";
 import {FinancialDataSet} from "../model/financial-data-set";
+import {BaseChartDirective} from "ng2-charts";
 
 @Component({
     templateUrl: 'edit.component.html'
@@ -18,69 +19,103 @@ import {FinancialDataSet} from "../model/financial-data-set";
 export class EditComponent implements OnInit, AfterViewInit {
     public isCustom: boolean;
     public strategies: Strategy[] = [];
-    public financialDataSet : FinancialData[];
+    public financialDataSet: FinancialData[] = [];
+    public financialDataSetModal: FinancialData[] = [];
+    public financialDataModal: any = {};
     public assetClassStrategies: AssetClassStrategy[] = [];
     public selected = [];
     public isDisabled = true;
+    public renderModalGraph:boolean = false;
+    public chartModalId;
     reset = false;
     @ViewChild('childModal') public childModal: ModalDirective;
+    @ViewChild('chartModal') public chartModal: ModalDirective;
+    @ViewChild('chart') public chart: BaseChartDirective;
 
-    constructor(private _z:NgZone,public AssetService: AssetService, public StrategyService: StrategyService, private router: Router) {
-      this.isCustom = false;
+    constructor(private _z: NgZone, public AssetService: AssetService, public StrategyService: StrategyService, private router: Router) {
+        this.isCustom = false;
     }
+
     public showChildModal(): void {
         this.childModal.show();
     }
+
     public hideChildModal(): void {
         this.childModal.hide();
+    }
+    public hideChartModal(){
+        this.chartModal.hide();
+        this.renderModalGraph = false;
+    }
+    public handleShow(id){
+        console.log(id);
+        this.financialDataModal = this.financialDataSetModal[id-1];
+        this.renderModalGraph = true;
+        console.log("financial",this.financialDataModal);
+        this.chartModal.show();
+
     }
     ngAfterViewInit() {
         // viewChild is set after the view has been initialized
         this.childModal.show();
     }
+
     ngOnInit(): void {
-        this.AssetService.getFinancialDataSet().subscribe((res => this.getFinancialData(res)));
+        this.AssetService.getFinancialDataSet(365,"small").subscribe((res => this.getFinancialData(res)));
+        this.AssetService.getFinancialDataSet(1825,"big").subscribe((res => this.getFinancialDataModal(res)));
         this.StrategyService.getActiveStrategy().subscribe();
     }
-    getFinancialData(res){
-        this.financialDataSet = res;
-        console.log("FinancialDataSet",this.financialDataSet);
+    getFinancialDataModal(res){
+        this.financialDataSetModal = res;
+        //this.renderModalGraph = true;
+        console.log("FinancialDataSetModal", this.financialDataSetModal);
         this.AssetService.getAssetClassSet().subscribe((res) => this.getAssetClass(res));
     }
+    getFinancialData(res) {
+        this.financialDataSet = res;
+        console.log("FinancialDataSet", this.financialDataSet);
+        this.AssetService.getAssetClassSet().subscribe((res) => this.getAssetClass(res));
+    }
+
     //ASSIGN STRATEGIES
     getStrategy(res): void {
         this.strategies = res.getStrategies();
     }
+
     //ASSIGN ASSET CLASS
     getAssetClass(res): void {
         this.StrategyService.getDefaultStrategySet().subscribe(res => this.getStrategy(res));
         this.assetClassStrategies = res.getAssetClassStrategies();
     }
+
     createStrategy(): void {
         this.StrategyService.createStrategy(this.StrategyService.strategies.getCurrentStrategy()).subscribe(
             (res) => {
                 this.router.navigate(['dashboard']);
             });
     }
-    resetSlider(){
-      this.isCustom = false;
-      let currentStrategy = this.StrategyService.strategies.getCurrentStrategy();
-      if (currentStrategy instanceof CustomStrategy) {
-        currentStrategy.resetSlider(this.StrategyService.activeStrategy);
-      }
+
+    resetSlider() {
+        this.isCustom = false;
+        let currentStrategy = this.StrategyService.strategies.getCurrentStrategy();
+        if (currentStrategy instanceof CustomStrategy) {
+            currentStrategy.resetSlider(this.StrategyService.activeStrategy);
+        }
     }
-    handleUpdatePercentage(){
-      this._z.run(()=> {
-        this.StrategyService.customStrategy.rePaint();
-      });
+
+    handleUpdatePercentage() {
+        this._z.run(() => {
+            this.StrategyService.customStrategy.rePaint();
+        });
     }
+
     onSelect(strategy: Strategy, i): void {
-        console.log("strat",strategy);
+        console.log("strat", strategy);
         this.StrategyService.strategies.setCurrentStrategy(strategy);
         if (strategy instanceof CustomStrategy) {
-          this.isCustom = true;
+            this.isCustom = true;
         } else {
-          this.isCustom = false;
+            this.isCustom = false;
         }
         this.assetClassStrategies = strategy.getStrategyArray();
         this.isDisabled = false;
@@ -92,159 +127,7 @@ export class EditComponent implements OnInit, AfterViewInit {
             }
         });
     }
-
-
-  //ASSET CLASS COLOUR//
-  // public assetClassColour: string = '#20a8d8';
-  // public assetClass1Colour: string = '#4dbd74';
-  // public assetClass2Colour: string = '#63c2de';
-  // public assetClass3Colour: string = '#f8cb00';
-  // public assetClass4Colour: string = '#f86c6b';
-  //
-  // public assetClass: number = 0;
-
-  //CHANGE ASSET CLASS VIEW
-  // public showAsset(value) {
-  //
-  //   this.selectedAsset = [];
-  //
-  //   console.log(value);
-  //
-  //   var i = 0;
-  //
-  //   this.assets.forEach((item, index) => {
-  //     if (item.assetClass.id == value) {
-  //       this.selectedAsset[i] = item;
-  //       i++;
-  //     }
-  //
-  //   });
-  //
-  // }
-
-  // dropdown buttons
-  // public status: { isopen: boolean } = { isopen: false };
-  // public toggleDropdown($event: MouseEvent): void {
-  //   $event.preventDefault();
-  //   $event.stopPropagation();
-  //   this.status.isopen = !this.status.isopen;
-  // }
-
-  //convert Hex to RGBA
-  /*public convertHex(hex: string, opacity: number) {
-    hex = hex.replace('#', '');
-    let r = parseInt(hex.substring(0, 2), 16);
-    let g = parseInt(hex.substring(2, 4), 16);
-    let b = parseInt(hex.substring(4, 6), 16);
-
-    let rgba = 'rgba(' + r + ',' + g + ',' + b + ',' + opacity / 100 + ')';
-    return rgba;
-  }*/
-
-  // events
-  // public chartClicked(e: any): void {
-  //   console.log(e);
-  // }
-
-  //LINECHART GENERAL
-    // events
-    /*public chartClicked(e:any):void {
-        console.log(e);
-    }
-
-    public chartHovered(e:any):void {
-        console.log(e);
-    }*/
-    /*public lineChartLabels: Array<any> = ['January', 'February', 'March', 'April', 'May', 'June','July'];
-    public lineChartLegend:boolean = false;
-    public lineChartData : Array<any> = [
-        {
-            data: [78, 81, 80, 65, 74, 60, 67],
-            label: 'Series A'
-        }];
-  public lineChartOptions: any = {
-    maintainAspectRatio: false,
-    tooltips: {
-      callbacks: {
-        label: function(tooltipItem) {
-          return tooltipItem.yLabel;
-        }
-      }
-    },
-    scales: {
-      xAxes: [{
-        gridLines: {
-          color: 'transparent',
-          zeroLineColor: 'transparent'
-        },
-        ticks: {
-          fontSize: 2,
-          fontColor: 'transparent',
-        }
-
-      }],
-      yAxes: [{
-        display: false,
-        ticks: {
-          display: false,
-          min: 40 - 5,
-          max: 84 + 5,
-        }
-      }],
-    },
-    elements: {
-      line: {
-        borderWidth: 1
-      },
-      point: {
-        radius: 4,
-        hitRadius: 10,
-        hoverRadius: 4,
-      },
-    },
-    legend: {
-      display: false
-    }
-  };
-  public lineChartType: string = 'line';
-  public lineChartColours: Array<any> = [
-    {
-      backgroundColor: 'transparent',
-      borderColor: 'rgba(255,255,255,.55)'
-    }
-  ];*/
-
 }
-  /*barChart1
-  public barChart1Data: Array<any> = [
-    {
-      data: [78, 81, 80, 45, 34, 12, 40, 78, 81, 80, 45, 34, 12, 40, 12, 40],
-      label: 'Series A'
-    }
-  ];
-  public barChart1Labels: Array<any> = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16'];
-  public barChart1Options: any = {
-    maintainAspectRatio: false,
-    scales: {
-      xAxes: [{
-        display: false,
-        barPercentage: 0.6,
-      }],
-      yAxes: [{
-        display: false
-      }]
-    },
-    legend: {
-      display: false
-    }
-  };
-  public barChart1Colours: Array<any> = [
-    {
-      backgroundColor: 'rgba(255,255,255,.3)',
-      borderWidth: 0
-    }
-  ];
-  public barChart1Legend: boolean = false;
-  public barChart1Type: string = 'bar';*/
+
 
 

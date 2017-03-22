@@ -117,15 +117,15 @@ export class CustomStrategy extends Strategy {
     return currentSlider.getPercentage();
   }
   //Resets all sliders and chart after clicking cancel button
-  /*resetSlider(strategy : Strategy) : void {
+  resetSlider(strategy : Strategy) : void {
       this.getAssetClassStrategyMap().forEach((item,index)=>{
         item.setPercentage(0);
       });
       this.updateList();
     this.rePaint();
-  }*/
+  }
   //Preset slider,map and list to the active startegy of the user
-  resetSlider(strategy : Strategy) : void {
+  /*resetSlider(strategy : Strategy) : void {
     this.getAssetClassStrategyMap().forEach((item,index)=>{
       item.setPercentage(0);
       strategy.getStrategyArray().forEach((element)=>{
@@ -137,7 +137,7 @@ export class CustomStrategy extends Strategy {
     });
     this.updateList();
     this.rePaint();
-  }
+  }*/
   //Update maxPercentage and sumPercentage
   updatePercentages() : void {
     var sum = 0;

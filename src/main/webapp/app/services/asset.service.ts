@@ -39,12 +39,12 @@ export class AssetService {
     return this.AppService.getPortfolioForPeriod(period).map(res => this.mapPortfolio(res));
   }
   //FINANCIAL DATASET
-  getFinancialDataSet(){
-    return this.AppService.getFinancialDataSet(365).map(res => this.assignFinancialData(res));
+  getFinancialDataSet(period,type){
+    return this.AppService.getFinancialDataSet(period).map(res => this.assignFinancialData(res,type));
   }
-  assignFinancialData(res){
+  assignFinancialData(res,type){
     this.financialDataSet = new FinancialDataSet();
-    this.financialDataSet.createFinancialDataSet(res.data);
+    this.financialDataSet.createFinancialDataSet(res.data,type);
     return this.financialDataSet.getFinancialDataSet();
   }
   mapPortfolio(res){

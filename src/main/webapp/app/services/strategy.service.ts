@@ -42,6 +42,7 @@ export class StrategyService {
     if (this.activeStrategy != undefined) {
       this.customStrategy.setStrategyArray(this.activeStrategy.getStrategyArray());
       this.customStrategy.updateStrategyList();
+      console.log("custom",this.customStrategy);
     }
     this.strategies.addStrategy(this.customStrategy);
     return this.strategies;

@@ -13,14 +13,14 @@ export class FinancialDataSet {
     getFinancialDataSet(){
         return this.financialDataSet;
     }
-    createFinancialDataSet(data){
+    createFinancialDataSet(data,type){
         data.forEach((item)=>{
             let financialData = new FinancialData(item.assetClass.id,item.assetClass.name);
             item.list.forEach((element)=>{
                 let financialDataElement = new FinancialDataElement(element.date,element.value);
                 financialData.addFinancialDataElement(financialDataElement);
             });
-            financialData.createLineChart();
+            financialData.createLineChart(type);
             this.financialDataSet.push(financialData);
         });
 
