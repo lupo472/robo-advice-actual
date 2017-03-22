@@ -239,5 +239,14 @@ public class PortfolioOperatorTest {
 		verify(portfolioRep).save(savedPortfolio);
 		assertTrue(response);
 	}
+
+	@Test
+	public void computeUserPortfolioEmptyFinancialData() {
+		when(portfolioRep.findByUserAndDate(user, user.getLastUpdate())).thenReturn(oldPortfolio);
+		when(financialDataRep.findByAssetAndDate(assetEntity1,assetEntity1.getLastUpdate())).thenReturn(financialDataEntity1);
+		when(financialDataRep.findByAssetAndDate(assetEntity2,assetEntity2.getLastUpdate())).thenReturn(financialDataEntity2);
+		boolean response = portfolioOp.computeUserPortfolio(user, oldPortfolio, new HashMap<Long, FinancialDataEntity>());
+		assertFalse(response);
+	}
 	
 }

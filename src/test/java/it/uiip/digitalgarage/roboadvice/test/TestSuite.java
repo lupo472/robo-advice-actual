@@ -10,7 +10,8 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({ AssetClassOperatorTest.class, CapitalOperatorTest.class,
 		CustomStrategyOperatorTest.class, DefaultStrategyOperatorTest.class, FinancialDataTest.class,
-		PortfolioOperatorTest.class, UserOperatorTest.class, /*CustomStrategyControllerTest.class, CapitalControllerTest.class*/})
+		PortfolioOperatorTest.class, UserOperatorTest.class, /*CustomStrategyControllerTest.class, CapitalControllerTest.class,
+		DefaultStrategyControllerTest.class, AssetClassControllerTest*/})
 public class TestSuite {
 
 }
