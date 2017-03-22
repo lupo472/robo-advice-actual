@@ -1,5 +1,6 @@
 package it.uiip.digitalgarage.roboadvice.logic.operator;
 
+import it.uiip.digitalgarage.roboadvice.logic.wrapper.PortfolioWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import it.uiip.digitalgarage.roboadvice.logic.converter.*;
@@ -48,5 +49,8 @@ public abstract class AbstractOperator {
 
 	@Autowired
 	protected CustomStrategyWrapper customStrategyWrap;
+
+	@Autowired
+	protected PortfolioWrapper portfolioWrap;
 
 }
