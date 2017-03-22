@@ -21,9 +21,8 @@
             <app-card-asset-class [value]="assets.name"
                                   [isCustom]="isCustom" [id]="assets.id"
                                   [percentage]="assets.percentage"
-                                  [color]="assets.assignColour()" [lineChartLabels]="lineChartLabels"
-                                  [lineChartOptions]="lineChartOptions"
-                                  [lineChartColours]="lineChartColours" [lineChartType]="lineChartType"
+                                  [color]="assets.assignColour()"
+                                  [financialData]="financialDataSet[assets.id-1]"
                                   [reset]="reset"
                                   (updatePercentage)="handleUpdatePercentage($event)">
             </app-card-asset-class>

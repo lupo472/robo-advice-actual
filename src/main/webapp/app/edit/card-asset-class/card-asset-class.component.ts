@@ -11,19 +11,21 @@ import { AssetClass } from '../../model/asset-class';
 
 export class CardAssetClassComponent implements OnInit{
     @Input() value;
-    @Input() lineChartData;
+    /*@Input() lineChartData;
     @Input() lineChartLabels;
     @Input() lineChartOptions;
     @Input() lineChartColours;
     @Input() lineChartLegend;
-    @Input() lineChartType;
+    @Input() lineChartType;*/
     @Input() isCustom;
+    @Input() financialData;
     @Input() id;
     @Input() percentage;
     @Input() color;
     @Input() reset;
     @Output() updatePercentage = new EventEmitter();
     oldValue: number;
+
     constructor(public StrategyService: StrategyService) { }
 
     ngOnInit() {
@@ -43,4 +45,58 @@ export class CardAssetClassComponent implements OnInit{
     // assignFinancialData(){
     //
     // }
+
+//LINECHART GENERAL
+    /*public lineChartLabels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+    public lineChartOptions: any = {
+        maintainAspectRatio: false,
+        tooltips: {
+            callbacks: {
+                label: function(tooltipItem) {
+                    return tooltipItem.yLabel;
+                }
+            }
+        },
+        scales: {
+            xAxes: [{
+                gridLines: {
+                    color: 'transparent',
+                    zeroLineColor: 'transparent'
+                },
+                ticks: {
+                    fontSize: 2,
+                    fontColor: 'transparent',
+                }
+
+            }],
+            yAxes: [{
+                display: false,
+                ticks: {
+                    display: false,
+                    min: 40 - 5,
+                    max: 84 + 5,
+                }
+            }],
+        },
+        elements: {
+            line: {
+                borderWidth: 1
+            },
+            point: {
+                radius: 4,
+                hitRadius: 10,
+                hoverRadius: 4,
+            },
+        },
+        legend: {
+            display: false
+        }
+    };
+    public lineChartType: string = 'line';
+    public lineChartColours: Array<any> = [
+        {
+            backgroundColor: 'white',
+            borderColor: 'rgba(255,255,255,.55)'
+        }
+    ];*/
 }

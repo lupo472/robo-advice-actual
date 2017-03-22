@@ -39,6 +39,10 @@ export class StrategyService {
     this.customStrategy = new CustomStrategy(this.AssetService.assetClassStrategies.getAssetClassStrategies());
     this.customStrategy.populateMap();
     this.strategies.createStrategies(res);
+    if (this.activeStrategy != undefined) {
+      this.customStrategy.setStrategyArray(this.activeStrategy.getStrategyArray());
+      this.customStrategy.updateStrategyList();
+    }
     this.strategies.addStrategy(this.customStrategy);
     return this.strategies;
   }
@@ -65,9 +69,6 @@ export class StrategyService {
   setActiveStrategy(res){
     if(res.response == 1) {
       this.activeStrategy = new Strategy(res.data);
-      this.customStrategy.setActiveStrategy(res.data);
-      this.customStrategy.updateStrategyList();
-      //this.customStrategy.createChart();
       return this.activeStrategy.getChartData();
     }
   }

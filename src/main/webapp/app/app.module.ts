@@ -14,6 +14,9 @@ import { SIDEBAR_TOGGLE_DIRECTIVES } from './shared/sidebar.directive';
 import { AsideToggleDirective } from './shared/aside.directive';
 import { BreadcrumbsComponent } from './shared/breadcrumb.component';
 
+//D3
+import { D3Service } from 'd3-ng2-service';
+
 // Routing Module
 import { AppRoutingModule } from './app.routing';
 
@@ -27,6 +30,7 @@ import { StrategyService } from './services/strategy.service';
 import { AppService } from './services/app.service';
 import { UserService } from './services/user.service';
 import { AssetService } from './services/asset.service';
+import { CondegramSpiralPlotComponent } from './edit/condegram-spiral-plot/condegram-spiral-plot.component';
 
 @NgModule({
   imports: [
@@ -36,7 +40,8 @@ import { AssetService } from './services/asset.service';
     TabsModule.forRoot(),
     ChartsModule,
     HttpModule,
-    AlertModule
+    AlertModule,
+
 
   ],
   declarations: [
@@ -47,9 +52,11 @@ import { AssetService } from './services/asset.service';
     BreadcrumbsComponent,
     SIDEBAR_TOGGLE_DIRECTIVES,
     AsideToggleDirective,
+    CondegramSpiralPlotComponent,
   ],
   providers: [
     StrategyService,
+    D3Service,
     {
     provide: LocationStrategy,
     useClass: HashLocationStrategy
