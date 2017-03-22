@@ -1,8 +1,7 @@
-package it.uiip.digitalgarage.roboadvice.test.service;
+package it.uiip.digitalgarage.roboadvice.test.controller;
 
 import it.uiip.digitalgarage.roboadvice.RoboadviceApplication;
 import it.uiip.digitalgarage.roboadvice.logic.operator.CapitalOperator;
-import it.uiip.digitalgarage.roboadvice.logic.operator.PortfolioOperator;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.*;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.CapitalRepository;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.FinancialDataRepository;
@@ -20,7 +19,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -37,24 +35,27 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+/**
+ * Created by Luca on 22/03/2017.
+ */
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = RoboadviceApplication.class)
-public class CapitalOperatorTest {
-	@Autowired
+public class CapitalControllerTest {
+
+    @Autowired
     private CapitalController capitalCtrl;
 
     @InjectMocks
     @Autowired
     private CapitalOperator capitalOp;
-
-    @Spy
-    private PortfolioOperator portfolioOp;
 
     @Mock
     private CapitalRepository capitalRep;
@@ -146,51 +147,6 @@ public class CapitalOperatorTest {
     }
 
     @Test
-    public void computeCapitalTestSuccess() {
-        PortfolioEntity portfolioEntity1 = new PortfolioEntity();
-        portfolioEntity1.setId(1L);
-        portfolioEntity1.setUser(user);
-        portfolioEntity1.setAsset(assetEntity1);
-        portfolioEntity1.setAssetClass(assetClassEntity1);
-        portfolioEntity1.setUnits(new BigDecimal(10.50));
-        portfolioEntity1.setValue(new BigDecimal(1296.2954));
-        portfolioEntity1.setDate(LocalDate.now());
-        PortfolioEntity portfolioEntity2 = new PortfolioEntity();
-        portfolioEntity2.setId(2L);
-        portfolioEntity2.setUser(user);
-        portfolioEntity2.setAsset(assetEntity2);
-        portfolioEntity2.setAssetClass(assetClassEntity2);
-        portfolioEntity2.setUnits(new BigDecimal(11.4567));
-        portfolioEntity2.setValue(new BigDecimal(515.5515));
-        portfolioEntity2.setDate(LocalDate.now());
-        List<PortfolioEntity> portfolio = new ArrayList<>();
-        portfolio.add(portfolioEntity1);
-        portfolio.add(portfolioEntity2);
-
-        CapitalEntity savedCapital = new CapitalEntity();
-        savedCapital.setId(null);
-        savedCapital.setUser(user);
-        savedCapital.setDate(LocalDate.now());
-        savedCapital.setAmount(new BigDecimal(1575.945));
-
-        when(capitalRep.save(savedCapital)).thenReturn(savedCapital);
-        when(portfolioRep.findByUserAndDate(user, user.getLastUpdate())).thenReturn(portfolio);
-        when(financialDataRep.findByAssetAndDate(assetEntity1,assetEntity1.getLastUpdate())).thenReturn(financialDataEntity1);
-        when(financialDataRep.findByAssetAndDate(assetEntity2,assetEntity2.getLastUpdate())).thenReturn(financialDataEntity2);
-        doReturn(new BigDecimal(1575.945)).when(portfolioOp).evaluatePortfolio(user, mapFD, portfolio);
-        CapitalEntity response = capitalOp.computeCapital(user, mapFD, portfolio);
-        verify(capitalRep).save(savedCapital);
-        assertEquals(savedCapital, response);
-    }
-
-    @Test
-    public void computeCapitalTestNullPortfolio() {
-        doReturn(null).when(portfolioOp).evaluatePortfolio(user, mapFD, null);
-        CapitalEntity response = capitalOp.computeCapital(user, mapFD, null);
-        assertNull(response);
-    }
-
-    @Test
     public void addCapitalTestUpdateSameDayCapital() {
         CapitalRequestDTO capitalRequestDTO = new CapitalRequestDTO();
         capitalRequestDTO.setAmount(new BigDecimal("10123.4545"));
@@ -210,8 +166,11 @@ public class CapitalOperatorTest {
         when(capitalRep.findByUserAndDate(user, LocalDate.now())).thenReturn(oldCapital);
         when(capitalRep.save(updatedCapital)).thenReturn(updatedCapital);
 
-        boolean response = capitalOp.addCapital(capitalRequestDTO, user);
-        verify(capitalRep).save(updatedCapital);
-        assertTrue(response);
+        GenericResponse<String> ctrlResponse = (GenericResponse<String>) this.capitalCtrl.addCapital(capitalRequestDTO, auth);
+        assertEquals(1, ctrlResponse.getResponse());
+        assertEquals(ControllerConstants.DONE, ctrlResponse.getData());
+
     }
+
+
 }

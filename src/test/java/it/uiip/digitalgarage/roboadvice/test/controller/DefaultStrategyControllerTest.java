@@ -1,4 +1,4 @@
-package it.uiip.digitalgarage.roboadvice.test.service;
+package it.uiip.digitalgarage.roboadvice.test.controller;
 
 import it.uiip.digitalgarage.roboadvice.RoboadviceApplication;
 import it.uiip.digitalgarage.roboadvice.logic.operator.DefaultStrategyOperator;
@@ -32,12 +32,18 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
+/**
+ * Created by Luca on 22/03/2017.
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = RoboadviceApplication.class)
-public class DefaultStrategyOperatorTest {
+public class DefaultStrategyControllerTest {
+
+    @Autowired
+    private DefaultStrategyController defaultStrategyCtrl;
 
     @InjectMocks
     @Autowired
@@ -81,9 +87,10 @@ public class DefaultStrategyOperatorTest {
         when(userRep.findByEmail("luca@antilici.it")).thenReturn(user);
     }
 
+
     @Test
     public void getDefaultStrategySetTestSuccess() {
-       List<DefaultStrategyEntity> resultList = new ArrayList<>();
+        List<DefaultStrategyEntity> resultList = new ArrayList<>();
         AssetClassEntity assetClassEntity1 = new AssetClassEntity();
         assetClassEntity1.setId(2L);
         assetClassEntity1.setName("bonds");
@@ -120,13 +127,11 @@ public class DefaultStrategyOperatorTest {
         defaultStrategyEntities.add(defaultStrategySafe2);
 
         when(defaultStrategyRep.findAll()).thenReturn(defaultStrategyEntities);
-        List<DefaultStrategyDTO> response = this.defaultStrategyOp.getDefaultStrategySet();
-        assertEquals(2, response.size());
-        assertEquals(2, response.get(0).getList().size());
-        assertEquals(2, response.get(1).getList().size());
-        assertEquals("risky", response.get(0).getName());
-        assertEquals("safe", response.get(1).getName());
-
+        GenericResponse<List<DefaultStrategyDTO>> ctrlResponse = (GenericResponse<List<DefaultStrategyDTO>>) this.defaultStrategyCtrl.getDefaultStrategySet();
+        assertEquals(2, ctrlResponse.getData().size());
+        assertEquals(2, ctrlResponse.getData().get(0).getList().size());
+        assertEquals(2, ctrlResponse.getData().get(1).getList().size());
+        assertEquals("risky", ctrlResponse.getData().get(0).getName());
+        assertEquals("safe", ctrlResponse.getData().get(1).getName());
     }
-
 }
