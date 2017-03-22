@@ -49,6 +49,10 @@ export class Strategies {
         return this.currentStrategy;
     }
 
+    createTrendLabelHistory():any{
+
+    }
+
     createChartDataHistory(data: any, startdate: Date) {
         this.chartData = [];
         this.labels = [];

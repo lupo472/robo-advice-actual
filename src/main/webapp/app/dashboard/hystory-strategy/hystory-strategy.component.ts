@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {BaseChartDirective} from "ng2-charts";
 import {StrategyService} from "../../services/strategy.service";
+import {forEach} from "@angular/router/src/utils/collection";
 
 @Component({
     selector: 'app-hystory-strategy',
@@ -43,6 +44,11 @@ export class HystoryStrategyComponent implements OnInit {
         if (res) {
             this.chartData = res.data;
             this.labels = res.labels;
+            this.StrategyService.createTrendLabelHistory(this.labels);
+           /* this.labels.forEach((label,i)=>{
+                this.labels[i] = label+ "+ 500$";
+            });
+            console.log("NEW LABELS" ,this.labels);*/
             this.refreshChart();
             this.render = true;
         }
