@@ -41,7 +41,7 @@ export class UserService {
   //INITIAL REGISTER CAPITAL
   addCapital() {
     console.log("ADDING CAPITAL");
-     this.AppService.addCapital(this.capital);
+     this.AppService.addCapital(this.capital).subscribe();
   }
 
   //SET THE CURRENT CAPITAL FOR THIS USER
