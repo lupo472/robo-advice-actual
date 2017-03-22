@@ -47,15 +47,10 @@ public class BacktestingOperator extends AbstractOperator {
 		while(!date.isEqual(LocalDate.now())) {
 			date = date.plus(Period.ofDays(1));
 			for(PortfolioEntity entity: entityList) {
-
-
 				AssetEntity asset = entity.getAsset();
 				List<FinancialDataEntity> financialDataList = financialDataMap.get(asset.getId());
 				FinancialDataEntity financialData = getFinancialData(date, asset, financialDataList);
-				System.out.println(financialData.getDate().toString());
-
-
-				BigDecimal value = this.getValueForAsset(entity.getUnits(), financialData/*entity.getAsset(), date*/);
+				BigDecimal value = this.getValueForAsset(entity.getUnits(), financialData);
 				entity.setValue(value);
 				entity.setDate(date);
 			}
@@ -100,12 +95,14 @@ public class BacktestingOperator extends AbstractOperator {
 		for (AssetEntity asset : assets) {
 			List<FinancialDataEntity> financialDataList = financialDataMap.get(asset.getId());
 			FinancialDataEntity financialData = getFinancialData(date, asset, financialDataList);
-			System.out.println(financialData.getDate().toString());
-			BigDecimal amountPerAsset = amount.divide(new BigDecimal(100.00), 4, RoundingMode.HALF_UP).multiply(asset.getPercentage());
-			BigDecimal units = this.getUnitsForAsset(financialData, amountPerAsset);
-			if(units == null) {
+			if(financialData == null) {
 				return null;
 			}
+			BigDecimal amountPerAsset = amount.divide(new BigDecimal(100.00), 4, RoundingMode.HALF_UP).multiply(asset.getPercentage());
+			BigDecimal units = this.getUnitsForAsset(financialData, amountPerAsset);
+//			if(units == null) {
+//				return null;
+//			}
 			PortfolioEntity entity = new PortfolioEntity();
 			entity.setAsset(asset);
 			entity.setAssetClass(asset.getAssetClass());
@@ -131,6 +128,9 @@ public class BacktestingOperator extends AbstractOperator {
 			financialData = this.financialDataRep.findTop1ByAssetAndDateLessThanEqualOrderByDateDesc(asset, date);
 			this.count++; //TODO remove
 		}
+		if(financialData == null) {
+			return null;
+		}
 		return financialData;
 	}
 
@@ -148,16 +148,14 @@ public class BacktestingOperator extends AbstractOperator {
 	}
 
 	private BigDecimal getUnitsForAsset(FinancialDataEntity financialData, BigDecimal amount) {
-		if(financialData == null) {
-			return null;
-		}
+//		if(financialData == null) {
+//			return null;
+//		}
 		BigDecimal units = amount.divide(financialData.getValue(), 4, RoundingMode.HALF_UP);
 		return units;
 	}
 
-	private BigDecimal getValueForAsset(BigDecimal units, FinancialDataEntity financialData/*AssetEntity asset, LocalDate date*/) {
-//		FinancialDataEntity financialData = this.financialDataRep.findTop1ByAssetAndDateLessThanEqualOrderByDateDesc(asset, date); //TODO questa chiamata è identica a quella del metodo getUnitsForAsset
-//		this.count++; //TODO remove
+	private BigDecimal getValueForAsset(BigDecimal units, FinancialDataEntity financialData) {
 		return units.multiply(financialData.getValue());
 	}
 
