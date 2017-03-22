@@ -1,6 +1,7 @@
 package it.uiip.digitalgarage.roboadvice.logic.operator;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.*;
+import it.uiip.digitalgarage.roboadvice.persistence.util.Mapper;
 import it.uiip.digitalgarage.roboadvice.service.dto.AssetClassStrategyDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.BacktestingDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyDTO;
@@ -22,10 +23,14 @@ public class BacktestingOperator extends AbstractOperator {
 	@Autowired
 	private AssetClassOperator assetClassOp;
 
+	private int count; //TODO remove declaration
+
 	@Cacheable("backtesting")
 	public List<PortfolioDTO> getBacktesting(BacktestingDTO request, Authentication auth) {
+		this.count = 0; //TODO remove start
 		List<PortfolioDTO> result = new ArrayList<>();
 		UserEntity user = this.userRep.findByEmail(auth.getName());
+		this.count++; //TODO remove necessary
 		LocalDate date = LocalDate.now().minus(Period.ofDays(request.getPeriod()));
 		List<PortfolioEntity> entityList = createStartingPortfolio(request, user, date);
 		if(entityList == null) {
@@ -44,6 +49,7 @@ public class BacktestingOperator extends AbstractOperator {
 			result.add(portfolio);
 		}
 		Collections.sort(result);
+		System.out.println("Query: " + count);
 		return result;
 	}
 
@@ -65,10 +71,13 @@ public class BacktestingOperator extends AbstractOperator {
 		strategyDTO.setList(request.getList());
 		List<CustomStrategyEntity> list = this.customStrategyWrap.unwrapToEntity(strategyDTO);
 		List<PortfolioEntity> entityList = new ArrayList<>();
+		List<AssetEntity> assets = this.assetRep.findAll();
+		Map<Long, List<AssetEntity>> mapAssets = Mapper.getMapAssets(assets);
 		for (CustomStrategyEntity strategy : list) {
 			BigDecimal amountPerClass = request.getCapital().divide(new BigDecimal(100.00), 8, RoundingMode.HALF_UP).multiply(strategy.getPercentage());
 			AssetClassEntity assetClass = strategy.getAssetClass();
-			List<PortfolioEntity> listPerAsset = this.createPortfolioForAssetClass(assetClass, user, amountPerClass, date);
+			List<AssetEntity> assetsPerClass = mapAssets.get(assetClass.getId());
+			List<PortfolioEntity> listPerAsset = this.createPortfolioForAssetClass(assetsPerClass, user, amountPerClass, date);
 			if(listPerAsset == null) {
 				return null;
 			}
@@ -77,8 +86,7 @@ public class BacktestingOperator extends AbstractOperator {
 		return entityList;
 	}
 
-	private List<PortfolioEntity> createPortfolioForAssetClass(AssetClassEntity assetClass, UserEntity user, BigDecimal amount, LocalDate date) {
-		List<AssetEntity> assets = this.assetRep.findByAssetClass(assetClass);
+	private List<PortfolioEntity> createPortfolioForAssetClass(List<AssetEntity> assets, UserEntity user, BigDecimal amount, LocalDate date) {
 		List<PortfolioEntity> entityList = new ArrayList<>();
 		for (AssetEntity asset : assets) {
 			BigDecimal amountPerAsset = amount.divide(new BigDecimal(100.00), 4, RoundingMode.HALF_UP).multiply(asset.getPercentage());
@@ -88,7 +96,7 @@ public class BacktestingOperator extends AbstractOperator {
 			}
 			PortfolioEntity entity = new PortfolioEntity();
 			entity.setAsset(asset);
-			entity.setAssetClass(assetClass);
+			entity.setAssetClass(asset.getAssetClass());
 			entity.setUser(user);
 			entity.setValue(amountPerAsset);
 			entity.setUnits(units);
@@ -99,7 +107,8 @@ public class BacktestingOperator extends AbstractOperator {
 	}
 
 	private BigDecimal getUnitsForAsset(AssetEntity asset, BigDecimal amount, LocalDate date) {
-		FinancialDataEntity financialData = this.financialDataRep.findTop1ByAssetAndDateLessThanEqualOrderByDateDesc(asset, date);
+		FinancialDataEntity financialData = this.financialDataRep.findTop1ByAssetAndDateLessThanEqualOrderByDateDesc(asset, date); //TODO posso prendere i valori tutti insieme (almeno raggruppati per data) e inserirli in una mappa. Meglio ancora mettere tutto in una mappa di una mappa e al limite prendere l'ultimo valore
+		this.count++; //TODO remove
 		if(financialData == null) {
 			return null;
 		}
@@ -108,7 +117,8 @@ public class BacktestingOperator extends AbstractOperator {
 	}
 
 	private BigDecimal getValueForAsset(BigDecimal units, AssetEntity asset, LocalDate date) {
-		FinancialDataEntity financialData = this.financialDataRep.findTop1ByAssetAndDateLessThanEqualOrderByDateDesc(asset, date);
+		FinancialDataEntity financialData = this.financialDataRep.findTop1ByAssetAndDateLessThanEqualOrderByDateDesc(asset, date); //TODO questa chiamata è identica a quella del metodo getUnitsForAsset
+		this.count++; //TODO remove
 		return units.multiply(financialData.getValue());
 	}
 
