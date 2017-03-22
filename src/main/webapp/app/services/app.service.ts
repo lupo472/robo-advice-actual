@@ -97,7 +97,7 @@ export class AppService {
     this.opts = new RequestOptions();
     this.opts.headers = this.headers;
     return this.http.post(AppConfig.url + 'addCapital', { amount: amount },this.opts)
-      .map(response => response.json());
+      .map(response => {console.log(response.json())});
   }
 
   getCurrentCapital() {
