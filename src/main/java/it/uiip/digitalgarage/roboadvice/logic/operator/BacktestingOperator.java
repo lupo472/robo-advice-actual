@@ -35,11 +35,9 @@ public class BacktestingOperator extends AbstractOperator {
 		CustomStrategyDTO strategyDTO = new CustomStrategyDTO();
 		strategyDTO.setList(request.getList());
 		List<CustomStrategyEntity> strategyList = this.customStrategyWrap.unwrapToEntity(strategyDTO);
-
 		Map<Long, List<FinancialDataEntity>> financialDataMap = new HashMap<>();
 		Map<Long, List<AssetEntity>> assetMap = new HashMap<>();
 		createMaps(date, strategyList, financialDataMap, assetMap);
-
 		List<PortfolioEntity> entityList = createStartingPortfolio(request, user, date, strategyList, financialDataMap, assetMap);
 		if(entityList == null) {
 			return null;
@@ -49,7 +47,15 @@ public class BacktestingOperator extends AbstractOperator {
 		while(!date.isEqual(LocalDate.now())) {
 			date = date.plus(Period.ofDays(1));
 			for(PortfolioEntity entity: entityList) {
-				BigDecimal value = this.getValueForAsset(entity.getUnits(), entity.getAsset(), date);
+
+
+				AssetEntity asset = entity.getAsset();
+				List<FinancialDataEntity> financialDataList = financialDataMap.get(asset.getId());
+				FinancialDataEntity financialData = getFinancialData(date, asset, financialDataList);
+				System.out.println(financialData.getDate().toString());
+
+
+				BigDecimal value = this.getValueForAsset(entity.getUnits(), financialData/*entity.getAsset(), date*/);
 				entity.setValue(value);
 				entity.setDate(date);
 			}
@@ -66,7 +72,6 @@ public class BacktestingOperator extends AbstractOperator {
 		for (CustomStrategyEntity strategy : strategyList) {
 			List<AssetEntity> assetsPerClass = assetMap.get(strategy.getAssetClass().getId());
 			BigDecimal amountPerClass = request.getCapital().divide(new BigDecimal(100.00), 8, RoundingMode.HALF_UP).multiply(strategy.getPercentage());
-			//AssetClassEntity assetClass = strategy.getAssetClass();
 			List<PortfolioEntity> listPerAsset = this.createPortfolioForAssetClass(assetsPerClass, user, amountPerClass, date, financialDataMap);
 			if(listPerAsset == null) {
 				return null;
@@ -117,7 +122,7 @@ public class BacktestingOperator extends AbstractOperator {
 		FinancialDataEntity financialData = null;
 		if(!financialDataList.isEmpty()) {
 			financialData = financialDataList.get(financialDataList.size() - 1);
-			if(financialDataList.get(financialDataList.size() - 2).getDate().isEqual(date)) {
+			if(financialDataList.size() > 1 && financialDataList.get(financialDataList.size() - 2).getDate().isEqual(date)) {
 				financialDataList.remove(financialData);
 				financialData = financialDataList.get(financialDataList.size() - 1);
 			}
@@ -150,9 +155,9 @@ public class BacktestingOperator extends AbstractOperator {
 		return units;
 	}
 
-	private BigDecimal getValueForAsset(BigDecimal units, AssetEntity asset, LocalDate date) {
-		FinancialDataEntity financialData = this.financialDataRep.findTop1ByAssetAndDateLessThanEqualOrderByDateDesc(asset, date); //TODO questa chiamata è identica a quella del metodo getUnitsForAsset
-		this.count++; //TODO remove
+	private BigDecimal getValueForAsset(BigDecimal units, FinancialDataEntity financialData/*AssetEntity asset, LocalDate date*/) {
+//		FinancialDataEntity financialData = this.financialDataRep.findTop1ByAssetAndDateLessThanEqualOrderByDateDesc(asset, date); //TODO questa chiamata è identica a quella del metodo getUnitsForAsset
+//		this.count++; //TODO remove
 		return units.multiply(financialData.getValue());
 	}
 
