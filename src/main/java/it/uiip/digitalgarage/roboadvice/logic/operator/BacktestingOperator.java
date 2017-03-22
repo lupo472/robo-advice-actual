@@ -32,7 +32,6 @@ public class BacktestingOperator extends AbstractOperator {
 		UserEntity user = this.userRep.findByEmail(auth.getName());
 		this.count++; //TODO remove necessary
 		LocalDate date = LocalDate.now().minus(Period.ofDays(request.getPeriod() - 1));
-//		List<PortfolioEntity> entityList = createStartingPortfolio(request, user, date);
 		CustomStrategyDTO strategyDTO = new CustomStrategyDTO();
 		strategyDTO.setList(request.getList());
 		List<CustomStrategyEntity> strategyList = this.customStrategyWrap.unwrapToEntity(strategyDTO);
@@ -42,12 +41,6 @@ public class BacktestingOperator extends AbstractOperator {
 		createMaps(date, strategyList, financialDataMap, assetMap);
 
 		List<PortfolioEntity> entityList = createStartingPortfolio(request, user, date, strategyList, financialDataMap, assetMap);
-//		if (entityList == null) return null;
-//		Map<Long, List<FinancialDataEntity>> financialDataMap = new HashMap<>();
-//		for(PortfolioEntity portfolio : entityList) {
-//			List<FinancialDataEntity> listPerAsset = this.financialDataRep.findByAssetAndDateGreaterThanOrderByDateDesc(portfolio.getAsset(), date);
-//			financialDataMap.put(portfolio.getAsset().getId(), listPerAsset);
-//		}
 		if(entityList == null) {
 			return null;
 		}
