@@ -69,7 +69,11 @@ export class Strategies {
                 })
             }
         });
-
+        for(var k=0;k<this.dataclass.length;k++){
+            if(this.dati[k]==undefined){
+                this.dati[k]=new Array(this.labels.length);
+            }
+        }
         //INSERIMENTO ZERI
         for (let i = 0; i < this.dati.length; i++) {
             for (let j = 0; j < this.dati[i].length; j++) {

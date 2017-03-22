@@ -69,8 +69,12 @@ export class AppService {
       });
   }
 
-  getFinancialData(id, period) {
-    return this.http.post(AppConfig.url + 'getFinancialData', { id: id, period: period })
+  getFinancialDataSet(period) {
+    this.headers = new Headers();
+    this.headers.append('Authorization',Cookie.get('token'));
+    this.opts = new RequestOptions();
+    this.opts.headers = this.headers;
+    return this.http.post(AppConfig.url + 'getFinancialDataSet', { period: period },this.opts)
       .map(response => response.json());
   }
 
@@ -93,7 +97,7 @@ export class AppService {
     this.opts = new RequestOptions();
     this.opts.headers = this.headers;
     return this.http.post(AppConfig.url + 'addCapital', { amount: amount },this.opts)
-      .map(response => response.json());
+      .map(response => {console.log(response.json())});
   }
 
   getCurrentCapital() {

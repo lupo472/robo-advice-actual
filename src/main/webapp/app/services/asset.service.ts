@@ -8,12 +8,17 @@ import { Portfolio } from '../model/portfolio';
 
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
+import {FinancialData} from "../model/financial-data";
+import {FinancialDataElement} from "../model/financial-data-element";
+import {FinancialDataSet} from "../model/financial-data-set";
 
 @Injectable()
 export class AssetService {
   private portfolio:any;
   private data:any = {};
   assetClassStrategies:AssetClassStrategies;
+  financialDataSet:FinancialDataSet;
+
   constructor(private AppService:AppService) {
   }
 
@@ -33,7 +38,15 @@ export class AssetService {
   getPortfolioForPeriod(period) {
     return this.AppService.getPortfolioForPeriod(period).map(res => this.mapPortfolio(res));
   }
-
+  //FINANCIAL DATASET
+  getFinancialDataSet(){
+    return this.AppService.getFinancialDataSet(365).map(res => this.assignFinancialData(res));
+  }
+  assignFinancialData(res){
+    this.financialDataSet = new FinancialDataSet();
+    this.financialDataSet.createFinancialDataSet(res.data);
+    return this.financialDataSet.getFinancialDataSet();
+  }
   mapPortfolio(res){
     if (res.response == 1) {
       this.portfolio = new Portfolio(res.data);

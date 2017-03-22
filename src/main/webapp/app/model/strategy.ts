@@ -10,6 +10,7 @@ export class Strategy {
     public arrayColors: any[] = [];
     public arrayLabels: string[] = [];
 
+
     constructor(data?:any) {
       this.list = [];
 
@@ -17,6 +18,7 @@ export class Strategy {
           this.setActiveStrategy(data);
       }
     }
+
     setStrategyArray(strategyArray: any): void {
         /*let array = [];
         strategyArray.forEach((item)=>{
