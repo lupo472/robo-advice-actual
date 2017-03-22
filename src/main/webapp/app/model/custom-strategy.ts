@@ -23,12 +23,15 @@ export class CustomStrategy extends Strategy {
       this.list.push(item);
     });
   }
-  //Repaint the custom chart with new percentages
-  rePaint(){
+  resetArrays() : void {
     this.arrayPercentages = [];
     this.arrayLabels = [];
     this.arrayColor = [];
     this.arrayColors = [];
+  }
+  //Repaint the custom chart with new percentages
+  rePaint() :void {
+    this.resetArrays();
     let array = [];
     this.assetClassStrategiesMap.forEach((item,index)=>{
       array.push(item);
@@ -52,7 +55,7 @@ export class CustomStrategy extends Strategy {
   *   and assign to that the one with value 0 from the custom list
   *   which contains all the assets class with value 0
   */
-  updateStrategyList(){
+  updateStrategyList() : void {
     let array = this.customList;
     this.list.forEach((item)=>{
       array[item.getId()-1] = item;
@@ -60,7 +63,6 @@ export class CustomStrategy extends Strategy {
     this.list = array;
     this.updateMap();
     this.updatePercentages();
-    this.createChart();
   }
   //Send to the component the array with the custom assetClassStrategies
   getStrategyArray(): AssetClassStrategy[] {
@@ -83,7 +85,7 @@ export class CustomStrategy extends Strategy {
     });
   }
   //Update list with the values in the map
-  updateList(){
+  updateList() : void {
     this.assetClassStrategiesMap.forEach((item)=>{
       this.list[item.getId()-1].setPercentage(item.getPercentage());
     });

@@ -23,7 +23,6 @@ export class EditComponent implements OnInit, AfterViewInit {
     public selected = [];
     public isDisabled = true;
     reset = false;
-    array = [];
     @ViewChild('childModal') public childModal: ModalDirective;
 
     constructor(private _z:NgZone,public AssetService: AssetService, public StrategyService: StrategyService, private router: Router) {
@@ -40,9 +39,8 @@ export class EditComponent implements OnInit, AfterViewInit {
         this.childModal.show();
     }
     ngOnInit(): void {
-        //this.AssetService.getAssetClassSet().subscribe((res) => this.getAssetClass(res));
         this.AssetService.getFinancialDataSet().subscribe((res => this.getFinancialData(res)));
-        console.log("edit");
+        this.StrategyService.getActiveStrategy().subscribe();
     }
     getFinancialData(res){
         this.financialDataSet = res;
@@ -51,7 +49,6 @@ export class EditComponent implements OnInit, AfterViewInit {
     }
     //ASSIGN STRATEGIES
     getStrategy(res): void {
-        this.StrategyService.getActiveStrategy().subscribe();
         this.strategies = res.getStrategies();
     }
     //ASSIGN ASSET CLASS
@@ -73,11 +70,9 @@ export class EditComponent implements OnInit, AfterViewInit {
       }
     }
     handleUpdatePercentage(){
-        console.log("CUSTOMSTRATEGYfirst",this.StrategyService.customStrategy);
       this._z.run(()=> {
         this.StrategyService.customStrategy.rePaint();
       });
-      console.log("CUSTOMSTRATEGY",this.StrategyService.customStrategy);
     }
     onSelect(strategy: Strategy, i): void {
         console.log("strat",strategy);
@@ -87,7 +82,6 @@ export class EditComponent implements OnInit, AfterViewInit {
         } else {
           this.isCustom = false;
         }
-        //this.AssetService.assetClassStrategies
         this.assetClassStrategies = strategy.getStrategyArray();
         this.isDisabled = false;
         this.strategies.forEach((item, index) => {
