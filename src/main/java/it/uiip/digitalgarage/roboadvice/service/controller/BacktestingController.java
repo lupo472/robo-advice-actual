@@ -16,7 +16,6 @@ import java.util.List;
 @RestController
 public class BacktestingController extends AbstractController {
 
-	//TODO improve performances
 	@RequestMapping("/getBacktesting")
 	@ResponseBody
 	public GenericResponse<?> getBacktesting(@Valid @RequestBody BacktestingDTO request, Authentication auth) {
