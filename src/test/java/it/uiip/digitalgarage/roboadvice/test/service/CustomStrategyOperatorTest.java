@@ -237,9 +237,9 @@ public class CustomStrategyOperatorTest {
         resultList.add(customStrategyEntity2_1);
         resultList.add(customStrategyEntity2_2);
 
-        when(customStrategyRep.findByUserId(user.getId())).thenReturn(resultList);
+        when(customStrategyRep.findByUser(user)).thenReturn(resultList);
         List<CustomStrategyResponseDTO> response = this.customStrategyOp.getCustomStrategySet(auth, 0);
-        verify(customStrategyRep).findByUserId(user.getId());
+        verify(customStrategyRep).findByUser(user);
         assertFalse(response.isEmpty());
         assertEquals(2,response.size());
         assertEquals(2, response.get(0).getList().size());

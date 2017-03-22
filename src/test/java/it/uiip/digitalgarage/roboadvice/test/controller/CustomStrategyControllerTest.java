@@ -252,7 +252,7 @@ public class CustomStrategyControllerTest {
         resultList.add(customStrategyEntity2_1);
         resultList.add(customStrategyEntity2_2);
 
-        when(customStrategyRep.findByUserId(user.getId())).thenReturn(resultList);
+        when(customStrategyRep.findByUser(user)).thenReturn(resultList);
         PeriodRequestDTO periodRequestDTO = new PeriodRequestDTO();
         periodRequestDTO.setPeriod(0);
         GenericResponse<List<CustomStrategyResponseDTO>> ctrlResponse = (GenericResponse<List<CustomStrategyResponseDTO>>) this.customStrategyCtrl.getCustomStrategyHistory(periodRequestDTO, auth);
