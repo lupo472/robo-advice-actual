@@ -19,6 +19,7 @@ export class HystoryStrategyComponent implements OnInit {
     public labels = [];
     public dati = [];
     public render: boolean = false;
+    public trendLabels= [];
 
 
     constructor(private StrategyService: StrategyService) {
@@ -44,11 +45,16 @@ export class HystoryStrategyComponent implements OnInit {
         if (res) {
             this.chartData = res.data;
             this.labels = res.labels;
-            this.StrategyService.createTrendLabelHistory(this.labels);
-           /* this.labels.forEach((label,i)=>{
-                this.labels[i] = label+ "+ 500$";
+            this.trendLabels=this.StrategyService.createTrendLabelHistory(this.labels);
+            this.labels.forEach((label,i)=>{
+                let diff:number=this.trendLabels[i].endvalue-this.trendLabels[i].startvalue;
+                console.log("diff", diff.toFixed(2));
+                if(diff>0){
+                    this.labels[i] = label+ " ("+"+ $"+diff.toFixed(2)+" )";
+                }
+                else this.labels[i] = label+ " ($ "+diff.toFixed(2)+" )";
             });
-            console.log("NEW LABELS" ,this.labels);*/
+            console.log("NEW LABELS" ,this.labels);
             this.refreshChart();
             this.render = true;
         }

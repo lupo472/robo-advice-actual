@@ -73,6 +73,8 @@ export class StrategyService {
     }
   }
   createTrendLabelHistory(labels){
+    //labels=['2017-03-20','2017-03-21'];
+
     let trendLabels:any=[];
     let portfolio=this.AssetService.getPortfolio().getData();
     console.log("PORTFOLIO",portfolio);
@@ -80,7 +82,6 @@ export class StrategyService {
 
 
     labels.forEach((label,i)=>{
-      console.log("label",label);
       portfolio.labels.forEach((labelPortfolio,j)=>{
         console.log("labelPortfolio",labelPortfolio);
         if(label===labelPortfolio){
@@ -94,13 +95,14 @@ export class StrategyService {
         }
       });
       if(i+1===labels.length){ //case of the last strategy that is analyzed
-        console.log("strategie terminate:",i);
+        console.log("strategie terminate:",i+1);
         trendLabels[i].endvalue=(portfolio.datasets[0].data[portfolio.datasets[0].data.length-1]);
       }else{
         //trendLabels[i].endvalue=(portfolio.datasets[0].data[j+1]);
       }
     });
-    console.log("trendLabels",trendLabels[0]);
+    console.log("trendLabels",trendLabels);
+    return trendLabels;
 
   }
 }
