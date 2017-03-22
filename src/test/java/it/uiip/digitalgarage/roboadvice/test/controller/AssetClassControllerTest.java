@@ -1,13 +1,12 @@
-package it.uiip.digitalgarage.roboadvice.test.service;
+package it.uiip.digitalgarage.roboadvice.test.controller;
 
 import it.uiip.digitalgarage.roboadvice.RoboadviceApplication;
 import it.uiip.digitalgarage.roboadvice.logic.operator.AssetClassOperator;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetClassEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.AssetClassRepository;
-import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 import it.uiip.digitalgarage.roboadvice.service.controller.AssetClassController;
 import it.uiip.digitalgarage.roboadvice.service.dto.AssetClassDTO;
-
+import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,22 +15,25 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
+/**
+ * Created by Luca on 22/03/2017.
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = RoboadviceApplication.class)
-public class AssetClassOperatorTest {
+public class AssetClassControllerTest {
+
+    @Autowired
+    public AssetClassController assetClassController;
 
     @InjectMocks
     @Autowired
@@ -43,9 +45,8 @@ public class AssetClassOperatorTest {
     @Before
     public void setUpMock() {
         MockitoAnnotations.initMocks(this);
-        //assetClassDTO = mock(AssetClassDTO.class);
-        //assetClassEntity = mock(AssetClassEntity.class);
     }
+
     @Test
     public void getAssetClassSetSuccess() {
         List<AssetClassEntity> resultList = new ArrayList<>();
@@ -71,19 +72,18 @@ public class AssetClassOperatorTest {
         resultList.add(assetClass5);
         assertNotNull(assetClassRep);
         when(assetClassRep.findAll()).thenReturn(resultList);
-        List<AssetClassDTO> serviceList = assetClassOp.getAssetClassSet();
-        assertEquals(5, assetClassRep.findAll().size());
-        assertEquals(5, serviceList.size());
-        assertEquals(new Long(1), serviceList.get(0).getId());
-        assertEquals(new Long(2), serviceList.get(1).getId());
-        assertEquals(new Long(3), serviceList.get(2).getId());
-        assertEquals(new Long(4), serviceList.get(3).getId());
-        assertEquals(new Long(5), serviceList.get(4).getId());
-        assertEquals("bonds", serviceList.get(0).getName());
-        assertEquals("forex", serviceList.get(1).getName());
-        assertEquals("stocks", serviceList.get(2).getName());
-        assertEquals("commodities", serviceList.get(3).getName());
-        assertEquals("dummy", serviceList.get(4).getName());
-    }
 
+        GenericResponse<List<AssetClassDTO>> controllerResponse = (GenericResponse<List<AssetClassDTO>>) assetClassController.getAssetClassSet();
+        assertTrue(controllerResponse.getData().size() > 0);
+        assertEquals(new Long(1), controllerResponse.getData().get(0).getId());
+        assertEquals(new Long(2), controllerResponse.getData().get(1).getId());
+        assertEquals(new Long(3), controllerResponse.getData().get(2).getId());
+        assertEquals(new Long(4), controllerResponse.getData().get(3).getId());
+        assertEquals(new Long(5), controllerResponse.getData().get(4).getId());
+        assertEquals("bonds", controllerResponse.getData().get(0).getName());
+        assertEquals("forex", controllerResponse.getData().get(1).getName());
+        assertEquals("stocks", controllerResponse.getData().get(2).getName());
+        assertEquals("commodities", controllerResponse.getData().get(3).getName());
+        assertEquals("dummy", controllerResponse.getData().get(4).getName());
+    }
 }

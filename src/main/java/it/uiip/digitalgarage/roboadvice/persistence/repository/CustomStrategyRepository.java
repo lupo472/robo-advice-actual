@@ -18,7 +18,7 @@ public interface CustomStrategyRepository extends PagingAndSortingRepository<Cus
 
     public List<CustomStrategyEntity> findAll();
 
-    public List<CustomStrategyEntity> findByUserId(Long idUser);
+    public List<CustomStrategyEntity> findByUser(UserEntity user);
 
     @Modifying
     @Query("UPDATE CustomStrategyEntity ce SET ce.active = false WHERE ce.user = ?1 AND ce.active = true")

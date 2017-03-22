@@ -17,7 +17,7 @@ describe('AssetClass', () => {
 
   });
   it('should accept values in the set methods', ()=>{
-    let assetClass = new AssetClass();
+    let assetClass = new AssetClass(1,'custom');
     assetClass.setId(1);
     assetClass.setName("custom");
     let id = assetClass.getId();
