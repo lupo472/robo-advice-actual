@@ -23,6 +23,9 @@ public class FinancialDataOperator extends AbstractOperator {
 		List<AssetClassEntity> assetClassSet = this.assetClassRep.findAll();
 		for (AssetClassEntity assetClass : assetClassSet) {
 			List<FinancialDataElementDTO> list = this.getFinancialDataSetForAssetClass(assetClass, period);
+			if(list == null) {
+				return null;
+			}
 			FinancialDataDTO financialData = new FinancialDataDTO();
 			financialData.setAssetClass(this.assetClassConv.convertToDTO(assetClass));
 			financialData.setList(list);
@@ -35,6 +38,9 @@ public class FinancialDataOperator extends AbstractOperator {
 	private List<FinancialDataElementDTO> getFinancialDataSetForAssetClass(AssetClassEntity assetClass, int period) {
 		List<AssetEntity> assets = this.assetRep.findByAssetClass(assetClass);
 		Map<String, BigDecimal> map = createMap(period, assets);
+		if(map == null) {
+			return null;
+		}
 		List<FinancialDataElementDTO> result = computeResult(map);
 		return result;
 	}
@@ -79,6 +85,9 @@ public class FinancialDataOperator extends AbstractOperator {
 						list.remove(entity);
 					}
 					first = false;
+					if(entity == null) {
+						return null;
+					}
 					entityDate = entity.getDate();
 					entityValue = entity.getValue();
 				}

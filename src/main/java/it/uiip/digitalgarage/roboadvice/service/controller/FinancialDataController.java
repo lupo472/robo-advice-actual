@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,9 @@ public class FinancialDataController extends AbstractController {
 	@ResponseBody
 	public GenericResponse<?> getFinancialDataSet(@Valid @RequestBody PeriodRequestDTO period) {
 		List<FinancialDataDTO> result = this.financialDataOp.getFinancialDataSet(period.getPeriod());
+		if(result == null) {
+			return new GenericResponse<String>(0, ControllerConstants.PROBLEM);
+		}
 		return new GenericResponse<List<FinancialDataDTO>>(1, result);
 	}
 		
