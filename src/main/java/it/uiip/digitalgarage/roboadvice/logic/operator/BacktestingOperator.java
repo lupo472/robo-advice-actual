@@ -1,7 +1,6 @@
 package it.uiip.digitalgarage.roboadvice.logic.operator;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.*;
-import it.uiip.digitalgarage.roboadvice.persistence.util.Mapper;
 import it.uiip.digitalgarage.roboadvice.service.dto.AssetClassStrategyDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.BacktestingDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyDTO;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
@@ -161,3 +159,4 @@ public class BacktestingOperator extends AbstractOperator {
 	}
 
 }
+
