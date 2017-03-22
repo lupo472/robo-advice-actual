@@ -60,7 +60,6 @@ public class PortfolioWrapper {
 			element.setValue(assetClassValue);
 			element.setPercentage(assetClassValue.divide(total, 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100.00)));
 			map.put(element.getId(), element);
-			System.out.println("AssetClass: " + entity.getAssetClass().getName());
 		}
 		List<PortfolioElementDTO> list = new ArrayList<>(map.values());
 		Collections.sort(list);

@@ -57,6 +57,7 @@ export class HystoryStrategyComponent implements OnInit {
             console.log("NEW LABELS" ,this.labels);
             this.refreshChart();
             this.render = true;
+            console.log("history",this.StrategyService.historyStrategies);
         }
     }
 
@@ -74,7 +75,17 @@ export class HystoryStrategyComponent implements OnInit {
     // barChart
     public barChartOptions: any = {
         scaleShowVerticalLines: false,
-        responsive: true
+        responsive: true,
+        scales: {
+            yAxes: [{
+                display: true,
+                ticks: {
+                    display: true,
+                    min: 0,
+                    max: 100,
+                }
+            }],
+        }
     };
 
     public barChartType: string = 'bar';

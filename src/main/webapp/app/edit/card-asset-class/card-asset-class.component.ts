@@ -24,12 +24,16 @@ export class CardAssetClassComponent implements OnInit{
     @Input() color;
     @Input() reset;
     @Output() updatePercentage = new EventEmitter();
+    @Output() update = new EventEmitter();
     oldValue: number;
 
     constructor(public StrategyService: StrategyService) { }
 
     ngOnInit() {
 
+    }
+    show(){
+        this.update.emit();
     }
 
     handleSlide(e) : void {

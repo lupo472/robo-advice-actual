@@ -53,7 +53,7 @@ public class UserOperatorTest {
 	}
 
 	@Test
-	public void loginUserTestUserNotExists() {
+	public void loginUserTestWrongPassword() {
 		UserEntity userEntity = new UserEntity();
 		userEntity.setId(null);
 		userEntity.setEmail("test@test.com");
