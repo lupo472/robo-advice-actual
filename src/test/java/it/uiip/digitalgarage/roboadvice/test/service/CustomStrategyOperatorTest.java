@@ -41,6 +41,9 @@ import static org.mockito.Mockito.when;
 @SpringBootTest(classes = RoboadviceApplication.class)
 public class CustomStrategyOperatorTest {
 
+    @Autowired
+    private CustomStrategyController customStrategyCtrl;
+
     @InjectMocks
     @Autowired
     private CustomStrategyOperator customStrategyOp;
@@ -117,6 +120,9 @@ public class CustomStrategyOperatorTest {
         when(customStrategyRep.save(entityList)).thenReturn(entityList);
         boolean opResponse = this.customStrategyOp.setCustomStrategy(dto, auth);
         assertTrue(opResponse);
+        GenericResponse<String> ctrlResponse = (GenericResponse<String>) this.customStrategyCtrl.setCustomStrategy(dto, auth);
+        assertEquals(1, ctrlResponse.getResponse());
+        assertEquals(ControllerConstants.DONE, ctrlResponse.getData());
     }
 
     @Test
@@ -151,6 +157,11 @@ public class CustomStrategyOperatorTest {
         assertTrue(responseDTO.isActive());
         assertEquals(LocalDate.now().toString(), responseDTO.getDate());
         assertFalse(responseDTO.getList().isEmpty());
+        GenericResponse<CustomStrategyResponseDTO> ctrlResponse = (GenericResponse<CustomStrategyResponseDTO>) this.customStrategyCtrl.getActiveStrategy(auth);
+        assertEquals(1, ctrlResponse.getResponse());
+        assertTrue(ctrlResponse.getData().isActive());
+        assertEquals(LocalDate.now().toString(), ctrlResponse.getData().getDate());
+        assertFalse(ctrlResponse.getData().getList().isEmpty());
     }
 
     @Test
@@ -186,6 +197,10 @@ public class CustomStrategyOperatorTest {
         verify(customStrategyRep).findByUserAndDateBetween(user, LocalDate.now(), LocalDate.now());
         assertFalse(response.isEmpty());
         assertEquals(2, response.get(0).getList().size());
+
+        PeriodRequestDTO periodRequestDTO = new PeriodRequestDTO();
+        periodRequestDTO.setPeriod(1);
+        GenericResponse<List<CustomStrategyResponseDTO>> ctrlResponse = (GenericResponse<List<CustomStrategyResponseDTO>>) this.customStrategyCtrl.getCustomStrategyHistory(periodRequestDTO, auth);
     }
 
     @Test
