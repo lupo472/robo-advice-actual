@@ -33,6 +33,11 @@ public class BacktestingOperator extends AbstractOperator {
 		this.count++; //TODO remove necessary
 		LocalDate date = LocalDate.now().minus(Period.ofDays(request.getPeriod()));
 		List<PortfolioEntity> entityList = createStartingPortfolio(request, user, date);
+//		Map<Long, List<FinancialDataEntity>> financialDataMap = new HashMap<>();
+//		for(PortfolioEntity portfolio : entityList) {
+//			List<FinancialDataEntity> listPerAsset = this.financialDataRep.findByAssetAndDateGreaterThanOrderByDateDesc(portfolio.getAsset(), date);
+//			financialDataMap.put(portfolio.getAsset().getId(), listPerAsset);
+//		}
 		if(entityList == null) {
 			return null;
 		}
@@ -71,12 +76,10 @@ public class BacktestingOperator extends AbstractOperator {
 		strategyDTO.setList(request.getList());
 		List<CustomStrategyEntity> list = this.customStrategyWrap.unwrapToEntity(strategyDTO);
 		List<PortfolioEntity> entityList = new ArrayList<>();
-		List<AssetEntity> assets = this.assetRep.findAll();
-		Map<Long, List<AssetEntity>> mapAssets = Mapper.getMapAssets(assets);
 		for (CustomStrategyEntity strategy : list) {
+			List<AssetEntity> assetsPerClass = this.assetRep.findByAssetClass(strategy.getAssetClass());
 			BigDecimal amountPerClass = request.getCapital().divide(new BigDecimal(100.00), 8, RoundingMode.HALF_UP).multiply(strategy.getPercentage());
 			AssetClassEntity assetClass = strategy.getAssetClass();
-			List<AssetEntity> assetsPerClass = mapAssets.get(assetClass.getId());
 			List<PortfolioEntity> listPerAsset = this.createPortfolioForAssetClass(assetsPerClass, user, amountPerClass, date);
 			if(listPerAsset == null) {
 				return null;
