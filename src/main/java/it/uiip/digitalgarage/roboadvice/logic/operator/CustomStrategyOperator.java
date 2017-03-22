@@ -73,7 +73,7 @@ public class CustomStrategyOperator extends AbstractOperator{
     public List<CustomStrategyResponseDTO> getCustomStrategySet(UserEntity user, int period){
     	List<CustomStrategyEntity> entityList = new ArrayList<>();
     	if(period == 0) {
-    		entityList = this.customStrategyRep.findByUserId(user.getId());
+    		entityList = this.customStrategyRep.findByUser(user);
     	} else {
     		LocalDate start = LocalDate.now().minus(Period.ofDays(period - 1));
     		entityList = this.customStrategyRep.findByUserAndDateBetween(user, start, LocalDate.now());
