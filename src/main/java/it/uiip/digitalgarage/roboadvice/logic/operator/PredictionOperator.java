@@ -16,6 +16,7 @@ import weka.core.*;
 import weka.filters.supervised.attribute.TSLagMaker;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.Period;
@@ -41,7 +42,6 @@ public class PredictionOperator extends AbstractOperator {
 			Collections.sort(result);
 			return result;
 		} catch (Exception e) {
-			System.out.println(e.getLocalizedMessage());
 			return null;
 		}
 	}
@@ -62,8 +62,17 @@ public class PredictionOperator extends AbstractOperator {
 			LocalDate date = LocalDate.now().plus(Period.ofDays(i));
 			BigDecimal value = new BigDecimal(0);
 			for(Map<LocalDate, BigDecimal> map : list) {
-				value = value.add(map.get(date));
+				/*************************
+				 * Avoid negative values *
+				 *************************/
+				if(map.get(date).doubleValue() < 0) {
+					value = value.add(map.get(date).divide(new BigDecimal(100)));
+				} else {
+					value = value.add(map.get(date));
+				}
+
 			}
+			value = value.divide(new BigDecimal(1), 4, RoundingMode.HALF_UP);
 			FinancialDataElementDTO element = new FinancialDataElementDTO();
 			element.setValue(value);
 			element.setDate(date.toString());
