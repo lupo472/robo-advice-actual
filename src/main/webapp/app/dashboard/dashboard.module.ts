@@ -11,7 +11,7 @@ import { StrategyGraphComponent } from './strategy-graph/strategy-graph.componen
 import { StrategyClassesGraphComponent } from './strategy-classes-graph/strategy-classes-graph.component';
 import { HystoryStrategyComponent } from './hystory-strategy/hystory-strategy.component';
 import {CalendarModule} from 'primeng/primeng';
-
+import {SharedModuleModule} from "../shared/shared-module/shared-module.module";
 
 @NgModule({
   imports: [
@@ -23,7 +23,8 @@ import {CalendarModule} from 'primeng/primeng';
     JsonpModule,
     AccordionModule,
     FormsModule,
-    CalendarModule
+    CalendarModule,
+    SharedModuleModule
   ],
   declarations: [
     DashboardComponent,

@@ -42,8 +42,10 @@ export class StrategyService {
     if (this.activeStrategy != undefined) {
       this.customStrategy.setStrategyArray(this.activeStrategy.getStrategyArray());
       this.customStrategy.updateStrategyList();
-      console.log("custom",this.customStrategy);
-    }
+    } /*else {
+      console.log("aaaaaaaa");
+      this.customStrategy.updateStrategyList();
+    }*/
     this.strategies.addStrategy(this.customStrategy);
     return this.strategies;
   }
@@ -71,6 +73,8 @@ export class StrategyService {
     if(res.response == 1) {
       this.activeStrategy = new Strategy(res.data);
       return this.activeStrategy.getChartData();
+    } else {
+      this.activeStrategy = new Strategy();
     }
   }
 }

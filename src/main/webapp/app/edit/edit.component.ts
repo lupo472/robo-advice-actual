@@ -11,19 +11,28 @@ import { AssetClassStrategy } from '../model/asset-class-strategy';
 import {FinancialData} from "../model/financial-data";
 import {FinancialDataSet} from "../model/financial-data-set";
 import {BaseChartDirective} from "ng2-charts";
+import {FinancialDataElement} from "../model/financial-data-element";
+import { DetailMarketValuesChart } from '../model/detail-market-values-chart';
+import {MyActiveStrategyAmChart} from "../model/my-active-strategy-am-chart";
 
 @Component({
     templateUrl: 'edit.component.html'
 })
 
 export class EditComponent implements OnInit, AfterViewInit {
+    public detailOptions:DetailMarketValuesChart = new DetailMarketValuesChart();
+    public myActiveStrategyChart:MyActiveStrategyAmChart = new MyActiveStrategyAmChart();
     public isCustom: boolean;
     public strategies: Strategy[] = [];
+    public financialData:FinancialData;
     public financialDataSet: FinancialData[] = [];
     public financialDataSetModal: FinancialData[] = [];
     public financialDataModal: any = {};
     public assetClassStrategies: AssetClassStrategy[] = [];
     public selected = [];
+    //public options = {};
+    color;
+    dataProvider:any[]=[];
     public isDisabled = true;
     public renderModalGraph:boolean = false;
     public chartModalId;
@@ -31,6 +40,8 @@ export class EditComponent implements OnInit, AfterViewInit {
     @ViewChild('childModal') public childModal: ModalDirective;
     @ViewChild('chartModal') public chartModal: ModalDirective;
     @ViewChild('chart') public chart: BaseChartDirective;
+    @ViewChild('chartTest') public chartTest;
+    //@ViewChild('chartTest2') public chartTest2;
 
     constructor(private _z: NgZone, public AssetService: AssetService, public StrategyService: StrategyService, private router: Router) {
         this.isCustom = false;
@@ -48,11 +59,13 @@ export class EditComponent implements OnInit, AfterViewInit {
         this.renderModalGraph = false;
     }
     public handleShow(id){
-        console.log(id);
-        this.financialDataModal = this.financialDataSetModal[id-1];
-        this.renderModalGraph = true;
-        console.log("financial",this.financialDataModal);
-        this.chartModal.show();
+        this.financialData = this.financialDataSetModal[id-1];
+        this.dataProvider = this.financialDataSetModal[id-1].getFinancialData();
+        this.color = this.financialDataSetModal[id-1].assignColour();
+        this.chartTest.changeChart(this.dataProvider,this.color);
+        //this.chartTest2.changeChart(this.color);
+        //this.renderModalGraph = true;
+        //this.chartModal.show();
 
     }
     ngAfterViewInit() {
@@ -62,18 +75,15 @@ export class EditComponent implements OnInit, AfterViewInit {
 
     ngOnInit(): void {
         this.AssetService.getFinancialDataSet(365,"small").subscribe((res => this.getFinancialData(res)));
-        this.AssetService.getFinancialDataSet(1825,"big").subscribe((res => this.getFinancialDataModal(res)));
+        this.AssetService.getFinancialDataSet(1000,"big").subscribe((res => this.getFinancialDataModal(res)));
         this.StrategyService.getActiveStrategy().subscribe();
     }
     getFinancialDataModal(res){
         this.financialDataSetModal = res;
-        //this.renderModalGraph = true;
-        console.log("FinancialDataSetModal", this.financialDataSetModal);
         this.AssetService.getAssetClassSet().subscribe((res) => this.getAssetClass(res));
     }
     getFinancialData(res) {
         this.financialDataSet = res;
-        console.log("FinancialDataSet", this.financialDataSet);
         this.AssetService.getAssetClassSet().subscribe((res) => this.getAssetClass(res));
     }
 

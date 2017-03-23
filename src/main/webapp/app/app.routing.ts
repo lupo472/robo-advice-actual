@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 // Layouts
 import { FullLayoutComponent } from './layouts/full-layout.component';
 import { SimpleLayoutComponent }  from './layouts/simple-layout.component';
+import {DetailMarketValueChartComponent} from "./edit/detail-market-value-chart/detail-market-value-chart.component";
 
 export const routes: Routes = [
   {
@@ -24,7 +25,7 @@ export const routes: Routes = [
       },
       {
         path: 'edit',
-        loadChildren: './edit/edit.module#EditModule'
+        loadChildren: './edit/edit.module#EditModule',
       },
       {
         path: 'components',
