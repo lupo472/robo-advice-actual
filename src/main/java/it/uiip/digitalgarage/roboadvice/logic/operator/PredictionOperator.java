@@ -48,37 +48,40 @@ public class PredictionOperator extends AbstractOperator {
 
 	private List<FinancialDataElementDTO> getPredictionPerClass(AssetClassEntity assetClass, int period) throws Exception {
 		List<AssetEntity> assets = this.assetRep.findByAssetClass(assetClass);
-		List<String> names = new ArrayList<>();
 		List<Map<LocalDate, BigDecimal>> list = new ArrayList<>();
 		for(AssetEntity asset : assets) {
 			List<FinancialDataEntity> financialDataEntities = this.financialDataRep.findByAssetAndDateLessThanOrderByDateAsc(asset, LocalDate.now());
-			names.add(asset.getName());
 			Instances instances = this.getInstancesPerAsset(financialDataEntities);
 			Map<LocalDate, BigDecimal> valueMap = this.forecast(instances, period);
 			list.add(valueMap);
 		}
 		List<FinancialDataElementDTO> result = new ArrayList<>();
 		for(int i = 1; i <= period; i++) {
-			LocalDate date = LocalDate.now().plus(Period.ofDays(i));
-			BigDecimal value = new BigDecimal(0);
-			for(Map<LocalDate, BigDecimal> map : list) {
-				/*************************
-				 * Avoid negative values *
-				 *************************/
-				if(map.get(date).doubleValue() < 0) {
-					value = value.add(map.get(date).divide(new BigDecimal(100)));
-				} else {
-					value = value.add(map.get(date));
-				}
-
-			}
-			value = value.divide(new BigDecimal(1), 4, RoundingMode.HALF_UP);
-			FinancialDataElementDTO element = new FinancialDataElementDTO();
-			element.setValue(value);
-			element.setDate(date.toString());
+			FinancialDataElementDTO element = getFinancialDataElement(list, i);
 			result.add(element);
 		}
 		return result;
+	}
+
+	private FinancialDataElementDTO getFinancialDataElement(List<Map<LocalDate, BigDecimal>> list, int i) {
+		LocalDate date = LocalDate.now().plus(Period.ofDays(i));
+		BigDecimal value = new BigDecimal(0);
+		for(Map<LocalDate, BigDecimal> map : list) {
+			/*************************
+			 * Avoid negative values *
+			 *************************/
+			if(map.get(date).doubleValue() < 0) {
+				value = value.add(map.get(date).divide(new BigDecimal(100)));
+			} else {
+				value = value.add(map.get(date));
+			}
+
+		}
+		value = value.divide(new BigDecimal(1), 4, RoundingMode.HALF_UP);
+		FinancialDataElementDTO element = new FinancialDataElementDTO();
+		element.setValue(value);
+		element.setDate(date.toString());
+		return element;
 	}
 
 	private Instances getInstancesPerAsset(List<FinancialDataEntity> list) throws ParseException {
