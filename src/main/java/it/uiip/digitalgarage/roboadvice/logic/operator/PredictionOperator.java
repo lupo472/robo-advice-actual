@@ -8,6 +8,7 @@ import it.uiip.digitalgarage.roboadvice.persistence.util.Value;
 import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataElementDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.PeriodRequestDTO;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import weka.classifiers.evaluation.NumericPrediction;
 import weka.classifiers.timeseries.HoltWinters;
@@ -28,7 +29,8 @@ public class PredictionOperator extends AbstractOperator {
 	private static final String VALUES = "values";
 	private static final String DATE = "date";
 
-	public List<FinancialDataDTO> getPrediction(PeriodRequestDTO period) {
+	@Cacheable("forecast")
+	public List<FinancialDataDTO> getForecast(PeriodRequestDTO period) {
 		List<AssetClassEntity> assetClassSet = this.assetClassRep.findAll();
 		List<FinancialDataDTO> result = new ArrayList<>();
 		try {
@@ -70,7 +72,7 @@ public class PredictionOperator extends AbstractOperator {
 			/*************************
 			 * Avoid negative values *
 			 *************************/
-			if(map.get(date).doubleValue() < 0) {
+			if(map.get(date).doubleValue() < map.get(date).divide(new BigDecimal(100)).doubleValue()) {
 				value = value.add(map.get(date).divide(new BigDecimal(100)));
 			} else {
 				value = value.add(map.get(date));
