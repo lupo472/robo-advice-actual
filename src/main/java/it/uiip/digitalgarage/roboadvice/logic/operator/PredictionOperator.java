@@ -105,7 +105,8 @@ public class PredictionOperator extends AbstractOperator {
 			for (int i = 0; i < nSteps; i++) {
 				List<NumericPrediction> predsAtStep = forecast.get(i);
 
-				System.out.print(currentDt + ": ");
+				LocalDate date = LocalDate.of(currentDt.getYear(), currentDt.getMonthOfYear(), currentDt.getDayOfMonth());
+				System.out.print(date.toString() + " : ");
 //
 //                for (int j = 0; j < 1; j++) {
 				NumericPrediction predForTarget = predsAtStep.get(0);
