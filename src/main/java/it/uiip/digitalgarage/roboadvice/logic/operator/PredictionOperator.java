@@ -6,12 +6,8 @@ import it.uiip.digitalgarage.roboadvice.persistence.entity.FinancialDataEntity;
 import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataElementDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.PeriodRequestDTO;
-import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 import weka.classifiers.evaluation.NumericPrediction;
-import weka.classifiers.functions.*;
-import weka.classifiers.meta.AdditiveRegression;
-import weka.classifiers.meta.RegressionByDiscretization;
 import weka.classifiers.timeseries.HoltWinters;
 import weka.classifiers.timeseries.WekaForecaster;
 import weka.core.*;
@@ -65,7 +61,7 @@ public class PredictionOperator extends AbstractOperator {
 		for(FinancialDataEntity entity : list) {
 			double[] array = new double[result.numAttributes()];
 			array[0] = entity.getValue().doubleValue();
-			array[1] = result.attribute("date").parseDate((entity.getDate().toString()));
+			array[1] = result.attribute(DATE).parseDate((entity.getDate().toString()));
 			result.add(new DenseInstance(1.0, array));
 		}
 		return result;
