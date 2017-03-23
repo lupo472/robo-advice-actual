@@ -62,7 +62,7 @@ export class EditComponent implements OnInit, AfterViewInit {
 
     ngOnInit(): void {
         this.AssetService.getFinancialDataSet(365,"small").subscribe((res => this.getFinancialData(res)));
-        this.AssetService.getFinancialDataSet(1825,"big").subscribe((res => this.getFinancialDataModal(res)));
+        this.AssetService.getFinancialDataSet(1000,"big").subscribe((res => this.getFinancialDataModal(res)));
         this.StrategyService.getActiveStrategy().subscribe();
     }
     getFinancialDataModal(res){

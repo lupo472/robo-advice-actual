@@ -73,4 +73,37 @@ export class StrategyService {
       return this.activeStrategy.getChartData();
     }
   }
+  createTrendLabelHistory(labels){
+    //labels=['2017-03-20','2017-03-21'];
+
+    let trendLabels:any=[];
+    let portfolio=this.AssetService.getPortfolio().getData();
+    console.log("PORTFOLIO",portfolio);
+    console.log("labels",labels);
+
+
+    labels.forEach((label,i)=>{
+      portfolio.labels.forEach((labelPortfolio,j)=>{
+        console.log("labelPortfolio",labelPortfolio);
+        if(label===labelPortfolio){
+          console.log("portfolio.datasets[0].data[j]",portfolio.datasets[0].data[j]);
+          trendLabels[i]={};
+
+          trendLabels[i].startvalue=(portfolio.datasets[0].data[j]);
+          if(i!==0){
+            trendLabels[i-1].endvalue=trendLabels[i].startvalue;
+          }
+        }
+      });
+      if(i+1===labels.length){ //case of the last strategy that is analyzed
+        console.log("strategie terminate:",i+1);
+        trendLabels[i].endvalue=(portfolio.datasets[0].data[portfolio.datasets[0].data.length-1]);
+      }else{
+        //trendLabels[i].endvalue=(portfolio.datasets[0].data[j+1]);
+      }
+    });
+    console.log("trendLabels",trendLabels);
+    return trendLabels;
+
+  }
 }

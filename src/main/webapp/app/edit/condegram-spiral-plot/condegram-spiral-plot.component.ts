@@ -16,8 +16,6 @@ export class CondegramSpiralPlotComponent implements OnInit {
   numSpirals = 3;
   margin = {top:50,bottom:50,left:50,right:50};
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
 }

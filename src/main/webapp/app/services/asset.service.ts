@@ -22,6 +22,10 @@ export class AssetService {
   constructor(private AppService:AppService) {
   }
 
+  getPortfolio(){
+    return this.portfolio;
+  }
+
   //REMAPPING ASSET CLASS
   getAssetClassSet() {
     return this.AppService.getAssetClassSet().map(res => this.assignAssetClass(res));
