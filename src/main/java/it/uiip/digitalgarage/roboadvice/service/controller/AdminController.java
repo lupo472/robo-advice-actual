@@ -25,4 +25,24 @@ public class AdminController extends AbstractController {
 		return new GenericResponse<String>(0, ControllerConstants.UNAUTHORIZED);
 	}
 
+	@RequestMapping("/updateFinancialDataSet")
+	@ResponseBody
+	public GenericResponse<?> updateFinancialDataSet(@RequestBody @Valid PasswordDTO request) {
+		if(HashFunction.hashStringSHA256(request.getPassword()).equals(password)) {
+			this.quandlOp.updateFinancialDataSet();
+			return new GenericResponse<String>(1, ControllerConstants.DONE);
+		}
+		return new GenericResponse<String>(0, ControllerConstants.UNAUTHORIZED);
+	}
+
+   	@RequestMapping("/initializeFinancialDataSet")
+ 	@ResponseBody
+ 	public GenericResponse<?> initializeFinancialDataSet(@RequestBody @Valid PasswordDTO request) {
+		if(HashFunction.hashStringSHA256(request.getPassword()).equals(password)) {
+			this.quandlOp.initializeFinancialDataSet();
+			return new GenericResponse<String>(1, ControllerConstants.DONE);
+		}
+		return new GenericResponse<String>(0, ControllerConstants.UNAUTHORIZED);
+ 	}
+
 }
