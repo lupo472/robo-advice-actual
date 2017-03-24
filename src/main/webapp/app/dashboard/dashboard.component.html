@@ -6,14 +6,20 @@
         </div>
 
         <div class="col-5">
-            <div class="col-10">
+
+            <div class="col-12">
                 <!--<app-strategy-graph></app-strategy-graph>-->
                 <app-detail-market-value-chart *ngIf="render" #chartTest2 [detailOptions]="options"></app-detail-market-value-chart>
+
             </div>
 
 
             <div class="col-12 hidden-sm-down">
                 <app-hystory-strategy></app-hystory-strategy>
+            </div>
+
+            <div class="col-12">
+                <app-history-chart></app-history-chart>
             </div>
 
         </div>

@@ -51,6 +51,20 @@ export class StrategyService {
     this.strategies.addStrategy(this.customStrategy);
     return this.strategies;
   }
+  /***************************TESTING*****************************************/
+  getHistoryChart() {
+    return this.AppService.getHistoryStrategies().map(res => this.historyChart(res));
+  }
+  historyChart(res){
+    if(res.response == 1 ) {
+      this.historyStrategies = new Strategies();
+      this.dataHistory=res.data;
+      let startdate=new Date();
+      startdate.setDate(startdate.getDate() - this.period);
+      return this.historyStrategies.createHistoryChartOptions(res.data, startdate);
+    }
+  }
+  /******************************#********************************************/
   getHistoryStrategies() {
     return this.AppService.getHistoryStrategies().map(res => this.mapHistory(res));
   }

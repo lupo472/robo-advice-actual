@@ -42,7 +42,6 @@ import { AmChartsModule } from "amcharts3-angular2";
     ChartsModule,
     HttpModule,
     AlertModule
-
   ],
   exports:[
     AmChartsModule
