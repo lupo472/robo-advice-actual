@@ -1,8 +1,22 @@
+import {AssetClassStrategy} from "./asset-class-strategy";
+import {Strategy} from "./strategy";
 export class MyActiveStrategyAmChart {
     private options;
+    private strategy:Strategy = new Strategy();
     private dataProvider: any[] = [];
+    private labels:string[] = [];
+    private maxValue;
 
-    constructor(color?:string) {
+    constructor(data) {
+        this.maxValue = 60;
+        console.log("d", data);
+        if (data) {
+            data.list.forEach((item) => {
+            this.strategy.addAssetClassStrategy(new AssetClassStrategy(item.percentage,item.id,item.name));
+        });
+        }
+        console.log("st",this.strategy);
+        let array = this.strategy.getStrategyArray();
         this.options = {
             "type": "gauge",
             "theme": "none",
@@ -11,98 +25,98 @@ export class MyActiveStrategyAmChart {
                 "tickAlpha": 0,
                 "labelsEnabled": false,
                 "startValue": 0,
-                "endValue": 100,
+                "endValue": this.maxValue,
                 "startAngle": 0,
                 "endAngle": 270,
                 "bands": [{
                     "color": "#eee",
                     "startValue": 0,
-                    "endValue": 100,
+                    "endValue": this.maxValue,
                     "radius": "100%",
                     "innerRadius": "85%"
                 }, {
-                    "color": color,
+                    "color": array[0].assignColour(),
                     "startValue": 0,
-                    "endValue": 80,
+                    "endValue": array[0].getPercentage(),
                     "radius": "100%",
                     "innerRadius": "85%",
-                    "balloonText": "90%"
+                    "balloonText": array[0].getPercentage().toString() + '%'
                 }, {
                     "color": "#eee",
                     "startValue": 0,
-                    "endValue": 100,
+                    "endValue": this.maxValue,
                     "radius": "80%",
                     "innerRadius": "65%"
                 }, {
-                    "color": "#fdd400",
+                    "color": array[1].assignColour(),
                     "startValue": 0,
-                    "endValue": 35,
+                    "endValue": array[1].getPercentage(),
                     "radius": "80%",
                     "innerRadius": "65%",
-                    "balloonText": "35%"
+                    "balloonText": array[1].getPercentage().toString() + '%'
                 }, {
                     "color": "#eee",
                     "startValue": 0,
-                    "endValue": 100,
+                    "endValue": this.maxValue,
                     "radius": "60%",
                     "innerRadius": "45%"
                 }, {
-                    "color": "#cc4748",
+                    "color": array[2].assignColour(),
                     "startValue": 0,
-                    "endValue": 92,
+                    "endValue": array[2].getPercentage(),
                     "radius": "60%",
                     "innerRadius": "45%",
-                    "balloonText": "92%"
+                    "balloonText": array[2].getPercentage().toString() + '%'
                 }, {
                     "color": "#eee",
                     "startValue": 0,
-                    "endValue": 100,
+                    "endValue": this.maxValue,
                     "radius": "40%",
                     "innerRadius": "25%"
                 }, {
-                    "color": "#67b7dc",
+                    "color": array[3].assignColour(),
                     "startValue": 0,
-                    "endValue": 68,
+                    "endValue": array[3].getPercentage(),
                     "radius": "40%",
                     "innerRadius": "25%",
-                    "balloonText": "68%"
+                    "balloonText": array[3].getPercentage().toString() + '%'
                 }]
             }],
             "allLabels": [{
-                "text": "First option",
+                "text": array[0].getName(),
                 "x": "49%",
-                "y": "5%",
+                "y": "16%",
                 "size": 15,
                 "bold": true,
-                "color": "#84b761",
+                "color": array[0].assignColour(),
                 "align": "right"
             }, {
-                "text": "Second option",
+                "text": array[1].getName(),
                 "x": "49%",
-                "y": "15%",
+                "y": "23%",
                 "size": 15,
                 "bold": true,
-                "color": "#fdd400",
+                "color": array[1].assignColour(),
                 "align": "right"
             }, {
-                "text": "Third option",
+                "text": array[2].getName(),
                 "x": "49%",
-                "y": "24%",
+                "y": "30%",
                 "size": 15,
                 "bold": true,
-                "color": "#cc4748",
+                "color": array[2].assignColour(),
                 "align": "right"
             }, {
-                "text": "Fourth option",
+                "text": array[3].getName(),
                 "x": "49%",
-                "y": "33%",
+                "y": "37%",
                 "size": 15,
                 "bold": true,
-                "color": "#67b7dc",
+                "color": array[3].assignColour(),
                 "align": "right"
             }],
             "export": {
-                "enabled": true
+                "enabled": false
             }
         }
     }

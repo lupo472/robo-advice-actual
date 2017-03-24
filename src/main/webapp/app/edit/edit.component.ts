@@ -13,7 +13,7 @@ import {FinancialDataSet} from "../model/financial-data-set";
 import {BaseChartDirective} from "ng2-charts";
 import {FinancialDataElement} from "../model/financial-data-element";
 import { DetailMarketValuesChart } from '../model/detail-market-values-chart';
-import {MyActiveStrategyAmChart} from "../model/my-active-strategy-am-chart";
+
 
 @Component({
     templateUrl: 'edit.component.html'
@@ -21,7 +21,6 @@ import {MyActiveStrategyAmChart} from "../model/my-active-strategy-am-chart";
 
 export class EditComponent implements OnInit, AfterViewInit {
     public detailOptions:DetailMarketValuesChart = new DetailMarketValuesChart();
-    public myActiveStrategyChart:MyActiveStrategyAmChart = new MyActiveStrategyAmChart();
     public isCustom: boolean;
     public strategies: Strategy[] = [];
     public financialData:FinancialData;

@@ -10,6 +10,7 @@ import { Strategies } from '../model/strategies';
 import { Cookie } from 'ng2-cookies';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
+import {MyActiveStrategyAmChart} from "../model/my-active-strategy-am-chart";
 
 @Injectable()
 export class StrategyService {
@@ -22,6 +23,7 @@ export class StrategyService {
   period:number = 30;
   activeStrategy:Strategy;
   list:AssetClassStrategy[];
+  public myActiveStrategyChart:MyActiveStrategyAmChart;
 
   constructor(private AppService:AppService, private AssetService:AssetService) {
   }
@@ -71,10 +73,11 @@ export class StrategyService {
 
   setActiveStrategy(res){
     if(res.response == 1) {
+    this.myActiveStrategyChart = new MyActiveStrategyAmChart(res.data);
+
       this.activeStrategy = new Strategy(res.data);
-      return this.activeStrategy.getChartData();
-    } else {
-      this.activeStrategy = new Strategy();
+      console.log("this.myActiveStrategyChart",this.myActiveStrategyChart);
+      return this.myActiveStrategyChart;
     }
   }
 }

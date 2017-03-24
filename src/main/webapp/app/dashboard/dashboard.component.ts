@@ -6,7 +6,8 @@ import { StrategyService } from '../services/strategy.service';
   templateUrl: 'dashboard.component.html'
 })
 export class DashboardComponent implements OnInit {
-  public myActiveStrategyChart:MyActiveStrategyAmChart = new MyActiveStrategyAmChart("#fdd400");
+  options;
+  render = false;
   @ViewChild('chartTest2') public chartTest2;
 
   constructor(private StrategyService:StrategyService) { }
@@ -16,6 +17,8 @@ export class DashboardComponent implements OnInit {
 
   }
   getStrategy(data){
+    this.options = data;
+    this.render = true;
     console.log("data",data);
   }
   changeChart(){
