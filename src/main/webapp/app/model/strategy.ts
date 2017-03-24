@@ -36,6 +36,7 @@ export class Strategy {
     }
     //Send Strategy to backend once you choose a new one and click on button create
     sendStrategy() {
+        console.log("called");
       return {"list":this.list}
     }
     //Create the chart of the strategy

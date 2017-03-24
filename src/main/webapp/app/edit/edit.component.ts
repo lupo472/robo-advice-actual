@@ -59,7 +59,7 @@ export class EditComponent implements OnInit, AfterViewInit {
         this.renderModalGraph = false;
     }
     public handleShow(id){
-
+        this.render= true;
         this.financialData = this.financialDataSetModal[id-1];
         this.dataProvider = this.financialDataSetModal[id-1].getFinancialData();
         this.color = this.financialDataSetModal[id-1].assignColour();
@@ -77,12 +77,11 @@ export class EditComponent implements OnInit, AfterViewInit {
 
     ngOnInit(): void {
         this.AssetService.getFinancialDataSet(365,"small").subscribe((res => this.getFinancialData(res)));
-        this.AssetService.getFinancialDataSet(1000,"big").subscribe((res => this.getFinancialDataModal(res)));
         this.StrategyService.getActiveStrategy().subscribe();
     }
     getFinancialDataModal(res){
         this.financialDataSetModal = res;
-        this.AssetService.getAssetClassSet().subscribe((res) => this.getAssetClass(res));
+        console.log("fin", this.financialDataSetModal);
     }
     getFinancialData(res) {
         this.financialDataSet = res;
@@ -92,6 +91,7 @@ export class EditComponent implements OnInit, AfterViewInit {
     //ASSIGN STRATEGIES
     getStrategy(res): void {
         this.strategies = res.getStrategies();
+        this.AssetService.getFinancialDataSet(1000,"big").subscribe((res => this.getFinancialDataModal(res)));
     }
     /*getActiveStrategy(){
         this.StrategyService.getActiveStrategy().subscribe(res => this.getActiveStrategy(res));

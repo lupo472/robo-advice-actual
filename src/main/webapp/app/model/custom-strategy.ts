@@ -61,7 +61,8 @@ export class CustomStrategy extends Strategy {
       array[item.getId()-1] = item;
     });
     this.list = array;
-    this.updateMap();
+    console.log("boh",this.list);
+    this.populateMap();
     this.updatePercentages();
   }
   //Send to the component the array with the custom assetClassStrategies

@@ -48,7 +48,7 @@
     <!-- <button type="button" (click)="showData()">show data</button> -->
 
 </div>
-<div id="graphBig">
+<div [hidden]="!render" id="graphBig">
     <app-detail-market-value-chart #chartTest [detailOptions]="detailOptions"></app-detail-market-value-chart>
 </div>
 

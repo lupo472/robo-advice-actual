@@ -2,8 +2,21 @@
 	<div class="card-block">
 		<div class="h5 float-left text-capitalize mb-0">
 			{{value}}
+			<label></label>
+			<div class="btn-group float-right" dropdown>
+				<button type="button"
+						class="btn btn-transparent dropdown-toggle p-0" dropdownToggle>
+					<i class="fa fa-line-chart" aria-hidden="true"></i>
+				</button>
+				<div class="dropdown-menu dropdown-menu-right" dropdownMenu>
+					<a class="dropdown-item" href="#">Forecasting</a> <a
+						class="dropdown-item" href="#">Market Value</a>
+				</div>
+			</div>
 		</div>
+
 		<div class="h5 float-right mb-0">
+			<i class="line-chart"></i>
 			{{percentage}}%
 		</div>
 	</div>
