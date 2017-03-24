@@ -38,7 +38,7 @@ public class SchedulingOperator extends AbstractOperator {
 	@Scheduled(cron = "0 0 10 * * *")
 	public void scheduleTask() {
 		Long start = System.currentTimeMillis();
-//		quandlOp.updateFinancialDataSet(); TODO uncomment
+		quandlOp.updateFinancialDataSet(); //TODO uncomment
 		Long middle = System.currentTimeMillis();
 		List<UserEntity> users = userOp.getAllUsers();
 		List<AssetEntity> assets = this.assetRep.findAll();
