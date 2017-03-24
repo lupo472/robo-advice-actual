@@ -38,7 +38,7 @@ public class SchedulingOperator extends AbstractOperator {
 	@Scheduled(cron = "0 0 10 * * *")
 	public void scheduleTask() {
 		Long start = System.currentTimeMillis();
-		quandlOp.updateFinancialDataSet();
+		quandlOp.updateFinancialDataSet(); //TODO uncomment
 		Long middle = System.currentTimeMillis();
 		List<UserEntity> users = userOp.getAllUsers();
 		List<AssetEntity> assets = this.assetRep.findAll();
@@ -57,17 +57,20 @@ public class SchedulingOperator extends AbstractOperator {
 
 	private void userComputation(List<UserEntity> users, Map<Long, List<AssetEntity>> mapAssets, Map<Long, FinancialDataEntity> financialDataMap) {
 		for (UserEntity user : users) {
+			System.out.println("User: " + user.getId());
 			List<PortfolioEntity> currentPortfolio = this.portfolioRep.findByUserAndDate(user, user.getLastUpdate());
 			if(currentPortfolio.isEmpty()) {
 				List<CustomStrategyEntity> strategy = this.customStrategyRep.findByUserAndActive(user, true);
 				CapitalEntity capitalEntity = this.capitalRep.findByUserAndDate(user, user.getLastUpdate());
-
 				boolean created = portfolioOp.createUserPortfolio(user, strategy, capitalEntity, mapAssets, financialDataMap);
 				if(created) {
 					System.out.println("Created portfolio for user: " + user.getId());
 					user.setLastUpdate(LocalDate.now());
-					capitalEntity.setDate(LocalDate.now());
-					capitalRep.save(capitalEntity);
+					CapitalEntity capital = new CapitalEntity();
+					capital.setAmount(capitalEntity.getAmount());
+					capital.setUser(capitalEntity.getUser());
+					capital.setDate(LocalDate.now());
+					capitalRep.save(capital);
 					userRep.save(user);
 				}
 				continue;
@@ -90,12 +93,16 @@ public class SchedulingOperator extends AbstractOperator {
 				}
 				continue;
 			}
-			boolean computed = portfolioOp.computeUserPortfolio(user, currentPortfolio, financialDataMap);
-			if(computed) {
-				System.out.println("Computed portfolio for user: " + user.getId());
+			currentPortfolio = portfolioOp.computeUserPortfolio(user, currentPortfolio, financialDataMap);
+			if(currentPortfolio == null) {
+				System.out.println("There was an error for user: " + user.getId());
+				continue;
 			}
-			//TODO rebalance
-			boolean rebalanced = this.rebalancingOp.rebalancePortfolio(mapAssets, financialDataMap, user, currentPortfolio, capital, strategy);
+//			System.out.println("Computed portfolio for user: " + user.getId());
+//			boolean rebalanced = this.rebalancingOp.rebalancePortfolio(mapAssets, financialDataMap, user, currentPortfolio, capital, strategy);
+//			if(rebalanced) {
+//				System.out.println("Re-balanced portfolio for user: " + user.getId());
+//			}
 		}
 	}
 }

@@ -34,10 +34,11 @@ export class HistoryChartComponent implements OnInit {
   }
 
   getStrategies(res) {
-    console.log("res#########",res);
-    this.changeChart();
-    this.options=res;
-
+    if (res) {
+      console.log("res#########", res);
+      this.changeChart();
+      this.options = res;
+    }
     /* if (res) {
       //AGGIUNTA TREND LABELS
       this.chartData = res.data;
