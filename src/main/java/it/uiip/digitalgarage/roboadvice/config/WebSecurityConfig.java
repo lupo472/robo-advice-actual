@@ -26,7 +26,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                                          "/img/**",
                                          "/fonts/**",
                                          "/registerUser", 
-                                         "/loginUser");
+                                         "/loginUser",
+                                         "/admin/**");
     }
 
 

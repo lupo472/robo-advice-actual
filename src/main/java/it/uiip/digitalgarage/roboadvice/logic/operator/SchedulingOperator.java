@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +31,9 @@ public class SchedulingOperator extends AbstractOperator {
 	
 	@Autowired
 	private CapitalOperator capitalOp;
+
+	@Autowired
+	private RebalancingOperator rebalancingOp;
 
 	@Scheduled(cron = "0 0 10 * * *")
 	public void scheduleTask() {
@@ -61,6 +65,10 @@ public class SchedulingOperator extends AbstractOperator {
 				boolean created = portfolioOp.createUserPortfolio(user, strategy, capitalEntity, mapAssets, financialDataMap);
 				if(created) {
 					System.out.println("Created portfolio for user: " + user.getId());
+					user.setLastUpdate(LocalDate.now());
+					capitalEntity.setDate(LocalDate.now());
+					capitalRep.save(capitalEntity);
+					userRep.save(user);
 				}
 				continue;
 			}
@@ -86,7 +94,8 @@ public class SchedulingOperator extends AbstractOperator {
 			if(computed) {
 				System.out.println("Computed portfolio for user: " + user.getId());
 			}
+			//TODO rebalance
+			boolean rebalanced = this.rebalancingOp.rebalancePortfolio(mapAssets, financialDataMap, user, currentPortfolio, capital, strategy);
 		}
 	}
-
 }

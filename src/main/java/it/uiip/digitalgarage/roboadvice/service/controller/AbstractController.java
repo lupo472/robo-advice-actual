@@ -31,5 +31,11 @@ public abstract class AbstractController {
 
 	@Autowired
 	protected BacktestingOperator backtestingOp;
-	
+
+	@Autowired
+	protected PredictionOperator predictionOp;
+
+	@Autowired
+	protected SchedulingOperator schedulingOp;
+
 }
