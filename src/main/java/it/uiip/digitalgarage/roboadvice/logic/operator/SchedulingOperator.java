@@ -61,7 +61,6 @@ public class SchedulingOperator extends AbstractOperator {
 			if(currentPortfolio.isEmpty()) {
 				List<CustomStrategyEntity> strategy = this.customStrategyRep.findByUserAndActive(user, true);
 				CapitalEntity capitalEntity = this.capitalRep.findByUserAndDate(user, user.getLastUpdate());
-
 				boolean created = portfolioOp.createUserPortfolio(user, strategy, capitalEntity, mapAssets, financialDataMap);
 				if(created) {
 					System.out.println("Created portfolio for user: " + user.getId());
@@ -97,7 +96,6 @@ public class SchedulingOperator extends AbstractOperator {
 			if(computed) {
 				System.out.println("Computed portfolio for user: " + user.getId());
 			}
-			//TODO rebalance
 			boolean rebalanced = this.rebalancingOp.rebalancePortfolio(mapAssets, financialDataMap, user, currentPortfolio, capital, strategy);
 			if(rebalanced) {
 				System.out.println("Re-balanced portfolio for user: " + user.getId());
