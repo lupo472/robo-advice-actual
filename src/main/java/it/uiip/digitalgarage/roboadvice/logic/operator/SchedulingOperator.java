@@ -32,10 +32,10 @@ public class SchedulingOperator extends AbstractOperator {
 	@Autowired
 	private CapitalOperator capitalOp;
 
-	@Scheduled(cron = "0 10 19 * * *")
+	@Scheduled(cron = "0 0 10 * * *")
 	public void scheduleTask() {
 		Long start = System.currentTimeMillis();
-//		quandlOp.updateFinancialDataSet(); TODO
+		quandlOp.updateFinancialDataSet();
 		Long middle = System.currentTimeMillis();
 		List<UserEntity> users = userOp.getAllUsers();
 		List<AssetEntity> assets = this.assetRep.findAll();
@@ -74,22 +74,6 @@ public class SchedulingOperator extends AbstractOperator {
 				System.out.println("Computed capital for user: " + user.getId());
 			}
 			List<CustomStrategyEntity> strategy = this.customStrategyRep.findByUserAndActive(user, true);
-			//TODO rebalance
-			Map<Long, BigDecimal> assetClassMap = new HashMap<>();
-			for(PortfolioEntity entity : currentPortfolio) {
-				if(assetClassMap.get(entity.getAssetClass().getId()) == null) {
-					assetClassMap.put(entity.getAssetClass().getId(), this.portfolioRep.sumValuesForAssetClass(entity.getAssetClass(), user, LocalDate.now()).getValue());
-				}
-			}
-			PortfolioDTO portfolio = this.portfolioWrap.wrapToDTO(user, currentPortfolio, capital.getAmount(), assetClassMap);
- 			Map<Long, CustomStrategyEntity> strategyMap = Mapper.getMapCustomStrategy(strategy);
- 			for(PortfolioElementDTO element : portfolio.getList()) {
-				System.out.println("Differenza: " + element.getPercentage().subtract(strategyMap.get(element.getId()).getPercentage()).abs().doubleValue());
- 				if(element.getPercentage().subtract(strategyMap.get(element.getId()).getPercentage()).abs().doubleValue() > 2.0) {
- 					System.out.println("This user needs a rebalancing");
- 					continue;
-				}
-			}
 			if(!strategy.isEmpty() &&
 					(strategy.get(0).getDate().equals(LocalDate.now()) ||
 					 strategy.get(0).getDate().equals(LocalDate.now().minus(Period.ofDays(1))))) {
@@ -99,6 +83,22 @@ public class SchedulingOperator extends AbstractOperator {
 				}
 				continue;
 			}
+//			//TODO rebalance
+//			Map<Long, BigDecimal> assetClassMap = new HashMap<>();
+//			for(PortfolioEntity entity : currentPortfolio) {
+//				if(assetClassMap.get(entity.getAssetClass().getId()) == null) {
+//					assetClassMap.put(entity.getAssetClass().getId(), this.portfolioRep.sumValuesForAssetClass(entity.getAssetClass(), user, LocalDate.now()).getValue());
+//				}
+//			}
+//			PortfolioDTO portfolio = this.portfolioWrap.wrapToDTO(user, currentPortfolio, capital.getAmount(), assetClassMap);
+//			Map<Long, CustomStrategyEntity> strategyMap = Mapper.getMapCustomStrategy(strategy);
+//			for(PortfolioElementDTO element : portfolio.getList()) {
+//				System.out.println("Differenza: " + element.getPercentage().subtract(strategyMap.get(element.getId()).getPercentage()).abs().doubleValue());
+//				if(element.getPercentage().subtract(strategyMap.get(element.getId()).getPercentage()).abs().doubleValue() > 2.0) {
+//					System.out.println("This user needs a rebalancing");
+//// 					continue; //TODO this will be necessary
+//				}
+//			}
 			boolean computed = portfolioOp.computeUserPortfolio(user, currentPortfolio, financialDataMap);
 			if(computed) {
 				System.out.println("Computed portfolio for user: " + user.getId());
