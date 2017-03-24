@@ -135,14 +135,14 @@ export class Strategies {
             },
             "dataProvider": this.chartData,
             "valueAxes": [ {
-                "stackType": "regular",
+                "stackType": "100%",
                 "axisAlpha": 0,
                 "gridAlpha": 0
             } ],
             "graphs": [ {
                 "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
                 "fillAlphas": 0.8,
-                "labelText": "[[value]]",
+                "labelText": "[[percents]]%",
                 "lineAlpha": 0.3,
                 "title": "Europe",
                 "type": "column",
@@ -152,7 +152,7 @@ export class Strategies {
             }, {
                 "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
                 "fillAlphas": 0.8,
-                "labelText": "[[value]]",
+                "labelText": "[[percents]]%",
                 "lineAlpha": 0.3,
                 "title": "North America",
                 "type": "column",
@@ -162,7 +162,7 @@ export class Strategies {
             }, {
                 "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
                 "fillAlphas": 0.8,
-                "labelText": "[[value]]",
+                "labelText": "[[percents]]%",
                 "lineAlpha": 0.3,
                 "title": "Asia-Pacific",
                 "type": "column",
@@ -173,7 +173,7 @@ export class Strategies {
             }, {
                 "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
                 "fillAlphas": 0.8,
-                "labelText": "[[value]]",
+                "labelText": "[[percents]]%",
                 "lineAlpha": 0.3,
                 "title": "Latin America",
                 "type": "column",
