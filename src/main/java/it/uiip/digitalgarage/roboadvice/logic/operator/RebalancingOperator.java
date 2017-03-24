@@ -22,6 +22,7 @@ public class RebalancingOperator extends AbstractOperator {
 	public boolean rebalancePortfolio(Map<Long, List<AssetEntity>> mapAssets, Map<Long, FinancialDataEntity> financialDataMap,
 									  UserEntity user, List<PortfolioEntity> currentPortfolio, CapitalEntity capital,
 									  List<CustomStrategyEntity> strategy) {
+		System.out.println("Arriva qui");
 		PortfolioDTO portfolio = createPortfolioDTO(user, currentPortfolio, capital);
 		Map<Long, CustomStrategyEntity> strategyMap = Mapper.getMapCustomStrategy(strategy);
 		boolean toRebalance = false;
@@ -29,6 +30,7 @@ public class RebalancingOperator extends AbstractOperator {
 		for(PortfolioElementDTO element : portfolio.getList()) {
 			BigDecimal difference = element.getPercentage().subtract(strategyMap.get(element.getId()).getPercentage());
 			mapDifferences.put(element.getId(), difference);
+			System.out.println("Difference " + element.getName() + " " + difference);
 			if(difference.abs().doubleValue() > 2.0) {
 				toRebalance = true;
 			}
@@ -55,8 +57,10 @@ public class RebalancingOperator extends AbstractOperator {
 				} else {
 					portfolioMap.get(asset.getId()).setUnits(currentUnit.subtract(newUnits));
 				}
+				this.portfolioRep.save(portfolioMap.get(asset.getId()));
 			}
 		}
+
 	}
 
 	private BigDecimal getDifferenceForAssetClass(BigDecimal difference, BigDecimal totalCapital) {
