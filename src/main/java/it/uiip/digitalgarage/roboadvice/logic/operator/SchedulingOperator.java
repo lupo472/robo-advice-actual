@@ -66,8 +66,11 @@ public class SchedulingOperator extends AbstractOperator {
 				if(created) {
 					System.out.println("Created portfolio for user: " + user.getId());
 					user.setLastUpdate(LocalDate.now());
-					capitalEntity.setDate(LocalDate.now());
-					capitalRep.save(capitalEntity);
+					CapitalEntity capital = new CapitalEntity();
+					capital.setAmount(capitalEntity.getAmount());
+					capital.setUser(capitalEntity.getUser());
+					capital.setDate(LocalDate.now());
+					capitalRep.save(capital);
 					userRep.save(user);
 				}
 				continue;
@@ -96,6 +99,9 @@ public class SchedulingOperator extends AbstractOperator {
 			}
 			//TODO rebalance
 			boolean rebalanced = this.rebalancingOp.rebalancePortfolio(mapAssets, financialDataMap, user, currentPortfolio, capital, strategy);
+			if(rebalanced) {
+				System.out.println("Re-balanced portfolio for user: " + user.getId());
+			}
 		}
 	}
 }

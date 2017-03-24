@@ -20,6 +20,30 @@ public class RebalancingOperator extends AbstractOperator {
 	public boolean rebalancePortfolio(Map<Long, List<AssetEntity>> mapAssets, Map<Long, FinancialDataEntity> financialDataMap,
 									  UserEntity user, List<PortfolioEntity> currentPortfolio, CapitalEntity capital,
 									  List<CustomStrategyEntity> strategy) {
+		PortfolioDTO portfolio = createPortfolioDTO(user, currentPortfolio, capital);
+		Map<Long, CustomStrategyEntity> strategyMap = Mapper.getMapCustomStrategy(strategy);
+		boolean toRebalance = false;
+		Map<Long, BigDecimal> mapDifferences = new HashMap<>();
+		for(PortfolioElementDTO element : portfolio.getList()) {
+			BigDecimal difference = element.getPercentage().subtract(strategyMap.get(element.getId()).getPercentage());
+			mapDifferences.put(element.getId(), difference);
+			if(difference.abs().doubleValue() > 2.0) {
+				toRebalance = true;
+			}
+		}
+		if(toRebalance) {
+			this.rebalance(mapDifferences);
+		}
+		return toRebalance;
+	}
+
+	public void rebalance(Map<Long, BigDecimal> mapDifferences) {
+		for(Long id : mapDifferences.keySet()) {
+
+		}
+	}
+
+	private PortfolioDTO createPortfolioDTO(UserEntity user, List<PortfolioEntity> currentPortfolio, CapitalEntity capital) {
 		Map<Long, BigDecimal> assetClassMap = new HashMap<>();
 		for(PortfolioEntity entity : currentPortfolio) {
 			if(assetClassMap.get(entity.getAssetClass().getId()) == null) {
@@ -27,20 +51,7 @@ public class RebalancingOperator extends AbstractOperator {
 			}
 		}
 
-		PortfolioDTO portfolio = this.portfolioWrap.wrapToDTO(user, currentPortfolio, capital.getAmount(), assetClassMap);
-		Map<Long, CustomStrategyEntity> strategyMap = Mapper.getMapCustomStrategy(strategy);
-		for(PortfolioElementDTO element : portfolio.getList()) {
-			System.out.println("Differenza: " + element.getPercentage().subtract(strategyMap.get(element.getId()).getPercentage()).abs().doubleValue());
-			if(element.getPercentage().subtract(strategyMap.get(element.getId()).getPercentage()).abs().doubleValue() > 2.0) {
-//				boolean rebalanced = this.rebalancingOp.rebalancePortfolio(user, strategy, capital, mapAssets, financialDataMap);
-//				if(rebalanced) {
-//					System.out.println("Re-balanced portfolio for user: " + user.getId());
-//					break;
-//				}
-			}
-		}
-
-		return true;
+		return this.portfolioWrap.wrapToDTO(user, currentPortfolio, capital.getAmount(), assetClassMap);
 	}
 
 }
