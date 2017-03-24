@@ -4,6 +4,7 @@ public class ControllerConstants {
 	
 	public static final String DONE = "done";
 	public static final String PROBLEM = "A problem occurred";
+	public static final String UNAUTHORIZED =  "Permission denied";
 	public static final String ANY_CAPITAL = "This user doesn't have any capital";
 	public static final String ANY_STRATEGY_IN_PERIOD = "This user doesn't have any strategy for the selected period";
 	public static final String ANY_ACTIVE_STRATEGY = "This user doesn't have any active strategy";

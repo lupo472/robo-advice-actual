@@ -9,6 +9,8 @@ export class FinancialData extends AssetClass {
     lineChartOptionsModal;
     lineChartType;
     lineChartColours;
+    options;
+    dataProvider;
     max:number = 0;
     min:number = 5000;
     constructor(id:number,name:string){
@@ -39,6 +41,7 @@ export class FinancialData extends AssetClass {
         this.lineChartData = [
             {
                 data:data,
+
                 label: 'Serie A'
             }
         ];

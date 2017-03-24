@@ -16,6 +16,7 @@ import { HystoryStrategyComponent } from './hystory-strategy/hystory-strategy.co
 import {CalendarModule} from 'primeng/primeng';
 import { HistoryChartComponent } from './history-chart/history-chart.component';
 
+import {SharedModuleModule} from "../shared/shared-module/shared-module.module";
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { HistoryChartComponent } from './history-chart/history-chart.component';
     AccordionModule,
     FormsModule,
     CalendarModule,
-    AmChartsModule
+    AmChartsModule,
+    SharedModuleModule
   ],
   declarations: [
     DashboardComponent,

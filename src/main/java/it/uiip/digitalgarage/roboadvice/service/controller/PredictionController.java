@@ -17,7 +17,7 @@ public class PredictionController extends AbstractController {
 	@ResponseBody
 	public GenericResponse<?> getPrediction(@Valid @RequestBody PeriodRequestDTO period) {
 		//TODO implement
-		List<FinancialDataDTO> result = this.predictionOp.getPrediction(period);
+		List<FinancialDataDTO> result = this.predictionOp.getForecast(period);
 		if(result == null) {
 			return new GenericResponse<String>(0, ControllerConstants.PROBLEM);
 		}

@@ -16,9 +16,7 @@ export class Login {
   getEmail() : string {
     return this.email;
   }
-  getToken() : string {
-    return this.token;
-  }
+
 
   /*assignCapitalData(res) {
     if (res.response == 1) {

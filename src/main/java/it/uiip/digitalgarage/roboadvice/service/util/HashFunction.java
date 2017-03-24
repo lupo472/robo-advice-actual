@@ -17,7 +17,7 @@ public class HashFunction {
             }
             return hexString.toString();
         } catch(Exception e){
-            return "Error";
+            return e.getLocalizedMessage();
         }
     }
 }
