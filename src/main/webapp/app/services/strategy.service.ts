@@ -37,17 +37,14 @@ export class StrategyService {
   }
   assignStrategy(res) {
     this.strategies = new Strategies();
-    //Create a custom strategy with all the asset classes from backend
+
     this.customStrategy = new CustomStrategy(this.AssetService.assetClassStrategies.getAssetClassStrategies());
     this.customStrategy.populateMap();
     this.strategies.createStrategies(res);
     if (this.activeStrategy != undefined) {
       this.customStrategy.setStrategyArray(this.activeStrategy.getStrategyArray());
       this.customStrategy.updateStrategyList();
-    } /*else {
-      console.log("aaaaaaaa");
-      this.customStrategy.updateStrategyList();
-    }*/
+    }
     this.strategies.addStrategy(this.customStrategy);
     return this.strategies;
   }

@@ -1,29 +1,34 @@
 <div class="animated fadeIn">
     <div class="row">
-        <div class="col-7">
+        <div class="col-8">
             <app-strategy-classes-graph></app-strategy-classes-graph>
 
         </div>
 
-        <div class="col-5">
+        <div class="col-4">
 
             <div class="col-12">
-                <!--<app-strategy-graph></app-strategy-graph>-->
+
+                <app-strategy-graph></app-strategy-graph>
                 <!--<app-detail-market-value-chart *ngIf="render" #chartTest2 [detailOptions]="options"></app-detail-market-value-chart>-->
 
             </div>
 
 
-            <div class="col-12 hidden-sm-down">
-                <app-hystory-strategy></app-hystory-strategy>
-            </div>
 
-            <div class="col-12">
+
+            <!--<div class="col-12">
                 <app-history-chart></app-history-chart>
-            </div>
+            </div>-->
 
         </div>
     </div>
+    <div clas="row">
+        <div class="col-8">
+            <app-history-chart></app-history-chart>
+        </div>
+    </div>
+
    <!-- <div>
         <app-detail-market-value-chart *ngIf="render" #chartTest2 [detailOptions]="options"></app-detail-market-value-chart>
     </div>-->

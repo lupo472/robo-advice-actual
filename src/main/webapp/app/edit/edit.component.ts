@@ -34,6 +34,7 @@ export class EditComponent implements OnInit, AfterViewInit {
     dataProvider:any[]=[];
     public isDisabled = true;
     public renderModalGraph:boolean = false;
+    render = false;
     public chartModalId;
     reset = false;
     @ViewChild('childModal') public childModal: ModalDirective;
@@ -58,10 +59,12 @@ export class EditComponent implements OnInit, AfterViewInit {
         this.renderModalGraph = false;
     }
     public handleShow(id){
+
         this.financialData = this.financialDataSetModal[id-1];
         this.dataProvider = this.financialDataSetModal[id-1].getFinancialData();
         this.color = this.financialDataSetModal[id-1].assignColour();
         this.chartTest.changeChart(this.dataProvider,this.color);
+
         //this.chartTest2.changeChart(this.color);
         //this.renderModalGraph = true;
         //this.chartModal.show();
