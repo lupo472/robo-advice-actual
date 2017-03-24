@@ -13,7 +13,7 @@ import {SliderModule} from 'primeng/primeng';
 import {AccordionModule} from 'primeng/primeng';     //accordion and accordion tab
 import { FormsModule } from '@angular/forms'
 import { StrategySelectorComponent } from './strategy-selector/strategy-selector.component';
-
+import {SharedModuleModule} from "../shared/shared-module/shared-module.module";
 @NgModule({
   imports: [
     EditRoutingModule,
@@ -26,7 +26,8 @@ import { StrategySelectorComponent } from './strategy-selector/strategy-selector
     AccordionModule,
     FormsModule,
     ModalModule.forRoot(),
-    CarouselModule.forRoot()
+    CarouselModule.forRoot(),
+    SharedModuleModule
   ],
   declarations: [
     EditComponent,

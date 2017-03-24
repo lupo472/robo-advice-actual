@@ -25,6 +25,7 @@
     "@angular/platform-browser-dynamic": "2.4.8",
     "@angular/router": "3.4.8",
     "@angular/upgrade": "2.4.8",
+    "amcharts3-angular2": "github:amcharts/amcharts3-angular2",
     "chart.js": "2.5.0",
     "core-js": "2.4.1",
     "d3": "^4.7.3",

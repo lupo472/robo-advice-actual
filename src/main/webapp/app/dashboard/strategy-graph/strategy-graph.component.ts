@@ -18,7 +18,7 @@ export class StrategyGraphComponent implements OnInit {
   public render: boolean = false;
 
   ngOnInit() {
-    this.StrategyService.getActiveStrategy().subscribe(res => this.getStrategy(res));
+
   }
 
   getStrategy(data) {
