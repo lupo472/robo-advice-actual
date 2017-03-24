@@ -44,6 +44,7 @@ export class MyActiveStrategyAmChart {
         /*console.log("bands",this.bands);
         console.log("st",this.strategy);*/
         let array = this.strategy.getStrategyArray();
+        console.log("array",array);
         this.options = {
             "type": "gauge",
             "theme": "none",

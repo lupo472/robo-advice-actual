@@ -13,16 +13,16 @@ export class DashboardComponent implements OnInit {
   constructor(private StrategyService:StrategyService) { }
 
   ngOnInit() {
-    this.StrategyService.getActiveStrategy().subscribe(res => this.getStrategy(res));
+    //this.StrategyService.getActiveStrategy().subscribe(res => this.getStrategy(res));
 
   }
-  getStrategy(data){
+  /*getStrategy(data){
     this.options = data;
     this.render = true;
     console.log("data",data);
   }
   changeChart(){
     this.chartTest2.changeChart();
-  }
+  }*/
 
 }

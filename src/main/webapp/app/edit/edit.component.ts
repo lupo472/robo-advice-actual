@@ -90,7 +90,12 @@ export class EditComponent implements OnInit, AfterViewInit {
     getStrategy(res): void {
         this.strategies = res.getStrategies();
     }
+    /*getActiveStrategy(){
+        this.StrategyService.getActiveStrategy().subscribe(res => this.getActiveStrategy(res));
+    }
+    getActiveStrategy(){
 
+    }*/
     //ASSIGN ASSET CLASS
     getAssetClass(res): void {
         this.StrategyService.getDefaultStrategySet().subscribe(res => this.getStrategy(res));

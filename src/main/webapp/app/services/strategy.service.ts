@@ -87,11 +87,11 @@ export class StrategyService {
 
   setActiveStrategy(res){
     if(res.response == 1) {
-    this.myActiveStrategyChart = new MyActiveStrategyAmChart(res.data);
-
+    //this.myActiveStrategyChart = new MyActiveStrategyAmChart(res.data);
+      // console.log("this.myActiveStrategyChart",this.myActiveStrategyChart);
       this.activeStrategy = new Strategy(res.data);
-      console.log("this.myActiveStrategyChart",this.myActiveStrategyChart);
-      return this.myActiveStrategyChart;
+
+      return this.activeStrategy;
     }
   }
   createTrendLabelHistory(labels){
