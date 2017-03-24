@@ -6,16 +6,43 @@ export class MyActiveStrategyAmChart {
     private dataProvider: any[] = [];
     private labels:string[] = [];
     private maxValue;
+    private bandElement = {};
+    private bands = [];
+    private innerRadius = 100;
+    private radius = 85;
+    private bandBackground = {};
 
     constructor(data) {
         this.maxValue = 60;
         console.log("d", data);
         if (data) {
             data.list.forEach((item) => {
+               // let asset = new AssetClassStrategy(item.percentage,item.id,item.name);
             this.strategy.addAssetClassStrategy(new AssetClassStrategy(item.percentage,item.id,item.name));
+            // this.bandBackground ={
+            //     "color": "#eee",
+            //     "startValue": 0,
+            //     "endValue": 100,
+            //     "radius": this.radius,
+            //     "innerRadius": this.innerRadius
+            // };
+            // this.bandElement = {
+            //     "color": asset.assignColour(),
+            //     "startValue": 0,
+            //     "endValue": asset.getPercentage(),
+            //     "radius": this.radius,
+            //     "innerRadius": this.innerRadius,
+            //     "balloonText": asset.getPercentage().toString() + '%'
+            // }
+            // this.radius = this.radius -20;
+            // this.innerRadius = this.innerRadius -20;
+            // this.bands.push(this.bandBackground);
+            // this.bands.push(this.bandElement);
+
         });
         }
-        console.log("st",this.strategy);
+        /*console.log("bands",this.bands);
+        console.log("st",this.strategy);*/
         let array = this.strategy.getStrategyArray();
         this.options = {
             "type": "gauge",
@@ -28,7 +55,8 @@ export class MyActiveStrategyAmChart {
                 "endValue": this.maxValue,
                 "startAngle": 0,
                 "endAngle": 270,
-                "bands": [{
+                "bands":
+                [{
                     "color": "#eee",
                     "startValue": 0,
                     "endValue": this.maxValue,
@@ -119,6 +147,7 @@ export class MyActiveStrategyAmChart {
                 "enabled": false
             }
         }
+        console.log("finalbands",this.options.axes[0].bands);
     }
     getOptions(){
         return this.options;
