@@ -33,10 +33,10 @@ public class PortfolioOperator extends AbstractOperator {
 		Map<Long, BigDecimal> assetClassMap = new HashMap<>();
 		for(PortfolioEntity entity : entityList) {
 			if(assetClassMap.get(entity.getAssetClass().getId()) == null) {
-				assetClassMap.put(entity.getAssetClass().getId(), this.portfolioRep.sumValuesForAssetClass(entity.getAssetClass(), user, LocalDate.now()).getValue());
+				assetClassMap.put(entity.getAssetClass().getId(), this.portfolioRep.sumValuesForAssetClass(entity.getAssetClass(), user, user.getLastUpdate()).getValue());
 			}
 		}
-		BigDecimal totalValue = this.portfolioRep.sumValues(user, LocalDate.now()).getValue();
+		BigDecimal totalValue = this.portfolioRep.sumValues(user, user.getLastUpdate()).getValue();
 		return this.portfolioWrap.wrapToDTO(user, entityList, totalValue, assetClassMap);
 	}
 
@@ -136,13 +136,13 @@ public class PortfolioOperator extends AbstractOperator {
     }
 
     @CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast"}, allEntries = true)
-    public boolean computeUserPortfolio(UserEntity user, List<PortfolioEntity> currentPortfolio, Map<Long, FinancialDataEntity> map) {
+    public List<PortfolioEntity> computeUserPortfolio(UserEntity user, List<PortfolioEntity> currentPortfolio, Map<Long, FinancialDataEntity> map) {
     	List<PortfolioEntity> newPortfolioList = new ArrayList<>();
     	for (PortfolioEntity element : currentPortfolio) {
     		BigDecimal units = element.getUnits();
     		BigDecimal newValue = this.getValueForAsset(units, element.getAsset(), map);
     		if(newValue == null) {
-    			return false;
+    			return null;
     		}
     		PortfolioEntity newElement = new PortfolioEntity();
     		newElement.setAsset(element.getAsset());
@@ -154,7 +154,7 @@ public class PortfolioOperator extends AbstractOperator {
     		newPortfolioList.add(newElement);
     	}
     	this.savePortfolio(newPortfolioList);
-    	return true;
+    	return newPortfolioList;
     }
 
      private BigDecimal getValueForAsset(BigDecimal units, AssetEntity asset, Map<Long, FinancialDataEntity> map) {
