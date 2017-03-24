@@ -40,9 +40,7 @@ import { CondegramSpiralPlotComponent } from './edit/condegram-spiral-plot/conde
     TabsModule.forRoot(),
     ChartsModule,
     HttpModule,
-    AlertModule,
-
-
+    AlertModule
   ],
   declarations: [
     AppComponent,

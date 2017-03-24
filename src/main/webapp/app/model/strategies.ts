@@ -11,7 +11,8 @@ export class Strategies {
     public colorclass = ["#4dbd74", "#63c2de", "#f8cb00", "#f86c6b"]; // da sostituire con il model
     public labels = [];
     public dati = [];
-    public render: boolean = false;
+    //public render: boolean = false;
+    public options={};
 
     constructor() {
     }
@@ -47,10 +48,6 @@ export class Strategies {
 
     getCurrentStrategy(): Strategy {
         return this.currentStrategy;
-    }
-
-    createTrendLabelHistory():any{
-
     }
 
     createChartDataHistory(data: any, startdate: Date) {
@@ -93,4 +90,168 @@ export class Strategies {
 
         return {data: this.chartData, labels: this.labels};
     }
+    createHistoryChartOptions(data: any, startdate: Date) {
+        this.chartData = [];
+        this.labels = [];
+        let k:number=0;
+        let JSONStrategy:string="";
+
+        data.forEach((strategy, i) => {
+            JSONStrategy="";
+            let beginning = new Date(strategy.date);
+
+            if (beginning >= startdate) {
+
+                JSONStrategy='{"category": "'+strategy.date+'",';
+                strategy.list.forEach(assetClass => {
+                    JSONStrategy=JSONStrategy+'"'+assetClass.name+'":'+assetClass.percentage+',';
+                });
+                JSONStrategy=JSONStrategy+'},';
+                this.chartData[k]=JSONStrategy;
+                k++;
+            }
+
+        });
+        console.log("chartData:#############",JSON.stringify(this.chartData));
+
+
+
+        this.options={
+            "type": "serial",
+            "depth3D": 20,
+            "angle": 30,
+            "legend": {
+                "horizontalGap": 10,
+                "useGraphSettings": true,
+                "markerSize": 10
+            },
+            "dataProvider": [{"category": "2017-03-20","bonds":100,},],
+            "valueAxes": [ {
+                "stackType": "regular",
+                "axisAlpha": 0,
+                "gridAlpha": 0
+            } ],
+            "graphs": [ {
+                "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+                "fillAlphas": 0.8,
+                "labelText": "[[value]]",
+                "lineAlpha": 0.3,
+                "title": "Europe",
+                "type": "column",
+                "color": "#000000",
+                "valueField": "bonds",
+                "fillColors": "#FFC107"
+            }, {
+                "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+                "fillAlphas": 0.8,
+                "labelText": "[[value]]",
+                "lineAlpha": 0.3,
+                "title": "North America",
+                "type": "column",
+                "color": "#000000",
+                "valueField": "forex"
+            }, {
+                "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+                "fillAlphas": 0.8,
+                "labelText": "[[value]]",
+                "lineAlpha": 0.3,
+                "title": "Asia-Pacific",
+                "type": "column",
+                "newStack": true,
+                "color": "#000000",
+                "valueField": "stocks"
+            }, {
+                "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+                "fillAlphas": 0.8,
+                "labelText": "[[value]]",
+                "lineAlpha": 0.3,
+                "title": "Latin America",
+                "type": "column",
+                "color": "#000000",
+                "valueField": "commodities"
+            }],
+            "categoryField": "category",
+            "categoryAxis": {
+                "gridPosition": "start",
+                "axisAlpha": 0,
+                "gridAlpha": 0,
+                "position": "left"
+            },
+            "export": {
+                "enabled": true
+            }
+
+        }
+
+
+        return this.options;
+    }
 }
+/*"dataProvider": [{"category": "2017-03-20","bonds":100,},]
+
+this.options={
+    "type": "serial",
+    "theme": "none",
+    "depth3D": 20,
+    "angle": 30,
+    "legend": {
+        "horizontalGap": 10,
+        "useGraphSettings": true,
+        "markerSize": 10
+    },
+    "dataProvider": [{"category": "2017-03-20","bonds":100,},],
+    "valueAxes": [ {
+        "stackType": "regular",
+        "axisAlpha": 0,
+        "gridAlpha": 0
+    } ],
+    "graphs": [ {
+        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+        "fillAlphas": 0.8,
+        "labelText": "[[value]]",
+        "lineAlpha": 0.3,
+        "title": "Europe",
+        "type": "column",
+        "color": "#000000",
+        "valueField": "bonds"
+    }, {
+        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+        "fillAlphas": 0.8,
+        "labelText": "[[value]]",
+        "lineAlpha": 0.3,
+        "title": "North America",
+        "type": "column",
+        "color": "#000000",
+        "valueField": "forex"
+    }, {
+        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+        "fillAlphas": 0.8,
+        "labelText": "[[value]]",
+        "lineAlpha": 0.3,
+        "title": "Asia-Pacific",
+        "type": "column",
+        "newStack": true,
+        "color": "#000000",
+        "valueField": "stocks"
+    }, {
+        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+        "fillAlphas": 0.8,
+        "labelText": "[[value]]",
+        "lineAlpha": 0.3,
+        "title": "Latin America",
+        "type": "column",
+        "color": "#000000",
+        "valueField": "commodities"
+    }],
+    "categoryField": "category",
+    "categoryAxis": {
+        "gridPosition": "start",
+        "axisAlpha": 0,
+        "gridAlpha": 0,
+        "position": "left"
+    },
+    "export": {
+        "enabled": true
+    }
+
+}*/

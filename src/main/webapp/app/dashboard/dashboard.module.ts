@@ -7,10 +7,15 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 import { HttpModule,JsonpModule } from '@angular/http';
 import {AccordionModule} from 'primeng/primeng';     //accordion and accordion tab
 import { FormsModule } from '@angular/forms';
+import { AmChartsModule } from "amcharts3-angular2";
+
+
 import { StrategyGraphComponent } from './strategy-graph/strategy-graph.component';
 import { StrategyClassesGraphComponent } from './strategy-classes-graph/strategy-classes-graph.component';
 import { HystoryStrategyComponent } from './hystory-strategy/hystory-strategy.component';
 import {CalendarModule} from 'primeng/primeng';
+import { HistoryChartComponent } from './history-chart/history-chart.component';
+
 
 
 @NgModule({
@@ -23,13 +28,15 @@ import {CalendarModule} from 'primeng/primeng';
     JsonpModule,
     AccordionModule,
     FormsModule,
-    CalendarModule
+    CalendarModule,
+    AmChartsModule
   ],
   declarations: [
     DashboardComponent,
     StrategyGraphComponent,
     StrategyClassesGraphComponent,
-    HystoryStrategyComponent
+    HystoryStrategyComponent,
+    HistoryChartComponent
   ]
 })
 export class DashboardModule { }

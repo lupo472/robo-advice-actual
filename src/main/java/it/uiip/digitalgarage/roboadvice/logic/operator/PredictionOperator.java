@@ -6,7 +6,7 @@ import it.uiip.digitalgarage.roboadvice.persistence.entity.FinancialDataEntity;
 import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataElementDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.PeriodRequestDTO;
-import org.joda.time.DateTime;
+//import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 import weka.classifiers.evaluation.NumericPrediction;
 import weka.classifiers.functions.LinearRegression;
@@ -67,13 +67,13 @@ public class PredictionOperator extends AbstractOperator {
 		return result;
 	}
 
-	private DateTime getCurrentDateTime(TSLagMaker lm) throws Exception {
+	/*private DateTime getCurrentDateTime(TSLagMaker lm) throws Exception {
 		return new DateTime((long) lm.getCurrentTimeStampValue());
 	}
 
 	private DateTime advanceTime(TSLagMaker lm, DateTime dt) {
 		return new DateTime((long) lm.advanceSuppliedTimeValue(dt.getMillis()));
-	}
+	}*/
 
 	private void forecast(Instances instances, int period) throws Exception {
 			// load the data
@@ -117,7 +117,7 @@ public class PredictionOperator extends AbstractOperator {
 
 			List<List<NumericPrediction>> forecast = forecaster.forecast(nSteps, System.out);
 
-			DateTime currentDt = getCurrentDateTime(forecaster.getTSLagMaker());
+			//DateTime currentDt = getCurrentDateTime(forecaster.getTSLagMaker());
 
 
 			// output the predictions. Outer list is over the steps; inner list is over
@@ -125,17 +125,17 @@ public class PredictionOperator extends AbstractOperator {
 			for (int i = 0; i < nSteps; i++) {
 				List<NumericPrediction> predsAtStep = forecast.get(i);
 
-				LocalDate date = LocalDate.of(currentDt.getYear(), currentDt.getMonthOfYear(), currentDt.getDayOfMonth());
-				System.out.print(date.toString() + " : ");
+				//LocalDate date = LocalDate.of(currentDt.getYear(), currentDt.getMonthOfYear(), currentDt.getDayOfMonth());
+				//System.out.print(date.toString() + " : ");
 //
 //                for (int j = 0; j < 1; j++) {
 				NumericPrediction predForTarget = predsAtStep.get(0);
-				System.out.print("" + predForTarget.predicted() + " ");
+				//System.out.print("" + predForTarget.predicted() + " ");
 //                }
 				System.out.println();
 
 				// Advance the current date to the next prediction date
-				currentDt = advanceTime(forecaster.getTSLagMaker(), currentDt);
+				//currentDt = advanceTime(forecaster.getTSLagMaker(), currentDt);
 			}
 
 			// we can continue to use the trained forecaster for further forecasting
