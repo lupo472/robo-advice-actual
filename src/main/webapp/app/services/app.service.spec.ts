@@ -5,14 +5,14 @@ import { Http,ConnectionBackend,BaseRequestOptions,Response,ResponseOptions, XHR
 import {IStrategy} from "../model/interfaces/istrategy";
 import {AppConfig} from "./app.config";
 import {IAssetClassStrategy} from "../model/interfaces/iasset-class-strategy";
-import {StrategiesMock} from '../mocks/strategies-mock';
+import {strategiesMock} from '../mocks/strategies-mock';
 import {Strategy} from "../model/strategy";
 import {IDefaultStrategy} from "../model/interfaces/idefault-strategy";
+import {IAssetClass} from "../model/interfaces/iasset-class";
+import {mockAssetClass} from "../mocks/asset-class-mock";
 
 describe('Service:AppService', () => {
-  let strategiesMock = new StrategiesMock();
   beforeEach(() => {
-
     TestBed.configureTestingModule({
       providers: [
         BaseRequestOptions,
@@ -40,7 +40,7 @@ describe('Service:AppService', () => {
         connection.mockRespond(response);
     });
   }
-  it('should should return the list of strategies', inject([AppService, MockBackend], (service:AppService, backend) => {
+  it('should return the list of strategies', inject([AppService, MockBackend], (service:AppService, backend) => {
       setupConnections(backend,{
         body:{
           data:strategiesMock
@@ -65,28 +65,17 @@ describe('Service:AppService', () => {
       expect(console.error).toHaveBeenCalledWith(`I'm afraid I've got some bad news!`);
     });
   }));
-  it('should should return the list of asset class strategies', inject([AppService, MockBackend], (service:AppService, backend) => {
+  it('should return the list of asset class strategies', inject([AppService, MockBackend], (service:AppService, backend) => {
     setupConnections(backend,{
       body: {
-        data: [
-          {
-            id: 1,
-            name: 'bonds',
-            percentage:95
-          },
-          {
-            id: 4,
-            name: 'commodities',
-            percentage:5
-          }
-        ]
+        data: mockAssetClass
       },
       status: 200
     },'getAssetClassSet');
-    service.getAssetClassSet().subscribe((data:IAssetClassStrategy[])=>{
-      expect(data.length).toBe(2);
-      expect(data[0].name).toBe('bonds');
-      expect(data[1].name).toBe('commodities');
+    service.getAssetClassSet().subscribe((data:IAssetClass[])=>{
+      expect(data.length).toBe(4);
+      expect(data[0].name).toBe('Bonds');
+      expect(data[1].name).toBe('Forex');
     });
   }));
 });
