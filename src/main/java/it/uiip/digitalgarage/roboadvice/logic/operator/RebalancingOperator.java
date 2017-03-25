@@ -22,7 +22,6 @@ public class RebalancingOperator extends AbstractOperator {
 	public boolean rebalancePortfolio(Map<Long, List<AssetEntity>> mapAssets, Map<Long, FinancialDataEntity> financialDataMap,
 									  UserEntity user, List<PortfolioEntity> currentPortfolio, CapitalEntity capital,
 									  List<CustomStrategyEntity> strategy) {
-		System.out.println("Arriva qui");
 		PortfolioDTO portfolio = createPortfolioDTO(user, currentPortfolio, capital);
 		Map<Long, CustomStrategyEntity> strategyMap = Mapper.getMapCustomStrategy(strategy);
 		boolean toRebalance = false;
@@ -30,12 +29,13 @@ public class RebalancingOperator extends AbstractOperator {
 		for(PortfolioElementDTO element : portfolio.getList()) {
 			BigDecimal difference = element.getPercentage().subtract(strategyMap.get(element.getId()).getPercentage());
 			mapDifferences.put(element.getId(), difference);
-			System.out.println("Difference " + element.getName() + " " + difference);
+			System.out.println("Differenza " + element.getName() + " " + difference); //TODO
 			if(difference.abs().doubleValue() > 2.0) {
 				toRebalance = true;
 			}
 		}
 		if(toRebalance) {
+			System.out.println("Rebalance è true"); //TODO
 			this.rebalance(mapAssets, financialDataMap, currentPortfolio, capital, mapDifferences);
 		}
 		return toRebalance;
@@ -47,19 +47,27 @@ public class RebalancingOperator extends AbstractOperator {
 		Map<Long, PortfolioEntity> portfolioMap = Mapper.getMapPortfolio(currentPortfolio);
 		for(Long id : mapDifferences.keySet()) {
 			BigDecimal capitalDifference = this.getDifferenceForAssetClass(mapDifferences.get(id), capital.getAmount());
+			System.out.println("Capital Difference per: " + id + " è " + capitalDifference); //TODO
 			for(AssetEntity asset : mapAssets.get(id)) {
 				BigDecimal assetDifference = capitalDifference.divide(new BigDecimal(100.0), 4, RoundingMode.HALF_UP).multiply(asset.getPercentage());
+				System.out.println("Asset difference per " + asset.getName() + " è " + assetDifference); //TODO
 				BigDecimal currentUnit = portfolioMap.get(asset.getId()).getUnits();
 				FinancialDataEntity financialData = financialDataMap.get(asset.getId());
+				System.out.println("Avevo: " + currentUnit); //TODO
+				System.out.println("Valore: " + currentUnit.multiply(financialData.getValue())); //TODO
 				BigDecimal newUnits = assetDifference.divide(financialData.getValue(), 8, RoundingMode.HALF_UP);
-				if(assetDifference.doubleValue() > 0) {
-					portfolioMap.get(asset.getId()).setUnits(currentUnit.add(newUnits));
-				} else {
-					portfolioMap.get(asset.getId()).setUnits(currentUnit.subtract(newUnits));
-				}
-				this.portfolioRep.save(portfolioMap.get(asset.getId()));
+				BigDecimal units = currentUnit.subtract(newUnits);
+				BigDecimal value = units.multiply(financialData.getValue());
+				System.out.println("Ho: " + units); //TODO
+				System.out.println("Valore: " + value); //TODO
+				portfolioMap.get(asset.getId()).setUnits(units);
+				portfolioMap.get(asset.getId()).setValue(value);
+				System.out.println("--------"); //TODO
+//				this.portfolioRep.save(portfolioMap.get(asset.getId()));  //TODO uncomment
 			}
+			System.out.println("--------\n");  //TODO
 		}
+		this.portfolioRep.save(currentPortfolio);
 
 	}
 
