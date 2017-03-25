@@ -11,7 +11,6 @@ import {Strategy} from "../../model/strategy";
     styleUrls: ['./strategy-selector.component.scss']
 })
 export class StrategySelectorComponent implements OnInit {
-
     @Input() data;
     @Input() labels;
     @Input() options;
@@ -23,18 +22,13 @@ export class StrategySelectorComponent implements OnInit {
     @Input() selected;
     @Input() strategy: Strategy;
 
-    constructor() {
-
-    }
+    constructor() {}
     ngOnInit() {
       this.strategy.createChart();
     }
-
-
     public chartHovered(e: any): void {
         console.log(e);
     }
-
     //GENERAL SETTINGS
     public strategyOptions: any = {
         maintainAspectRatio: false,
@@ -43,6 +37,7 @@ export class StrategySelectorComponent implements OnInit {
             display: false
         }
     };
+    //GRAPH TYPE
     public strategyType: string = 'pie';
 
 }

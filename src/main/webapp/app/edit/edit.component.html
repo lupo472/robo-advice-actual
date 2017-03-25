@@ -31,6 +31,8 @@
         </div>
 
     </div>
+
+    <!-- BUTTONS ROW -->
     <div class="col-12 text-center" *ngIf="!isCustom">
         <button type="button" class="btn btn-success" (click)="createStrategy()" [disabled]="isDisabled">Select
             Strategy
@@ -45,13 +47,14 @@
         </button>
     </div>
 
-    <!-- <button type="button" (click)="showData()">show data</button> -->
 
+    <!-- GRAPH ROW -->
 </div>
 <div [hidden]="!render" id="graphBig">
     <app-detail-market-value-chart #chartTest [detailOptions]="detailOptions"></app-detail-market-value-chart>
 </div>
 
+    <!-- MODAL ROW -->
 <div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-primary modal-lg" role="document">
@@ -177,34 +180,5 @@
 </div>
 <!-- /.modal -->
 
-<!-- chart modal -->
 
-<div bsModal #chartModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog modal-primary modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title"></h4>
-                <button type="button" class="close" (click)="hideChartModal()" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
 
-                <div *ngIf="renderModalGraph" class="chart-wrapper px-1" style="height:300px" >
-                    <canvas baseChart class="chart" [datasets]="financialDataModal.lineChartData"
-                            [labels]="financialDataModal.lineChartLabels" [options]="financialDataModal.lineChartOptions"
-                            [colors]="financialDataModal.lineChartColours" [legend]="financialDataModal.lineChartLegend"
-                            [chartType]="financialDataModal.lineChartType" (chartHover)="chartHovered($event)"
-                            (chartClick)="chartClicked($event)"></canvas>
-                </div>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" (click)="hideChildModal()">Close</button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>

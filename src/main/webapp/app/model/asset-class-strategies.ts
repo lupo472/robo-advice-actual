@@ -19,6 +19,6 @@ export class AssetClassStrategies {
             let assetClassStrategy = new AssetClassStrategy(0, item.id, item.name);
             this.addAssetClassStrategy(assetClassStrategy);
         });
-        console.log("assetClassStrategies",this.getAssetClassStrategies());
+        //console.log("assetClassStrategies",this.getAssetClassStrategies());
     }
 }

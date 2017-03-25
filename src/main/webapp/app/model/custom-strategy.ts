@@ -12,22 +12,66 @@ export class CustomStrategy extends Strategy {
     super();
     //Initialize custom list of assetClassStrategies with the ones got from backend
     this.customList = customList;
+    this.createStrategyList();
     this.name = "active";
     this.list = [];
     this.sumPercentage = 0;
     this.maxPercentage = 100;
   }
-  createAssetClassStrategies(){
-    this.assetClassStrategiesMap.forEach(item =>{
-      console.log("THIS.LIST",item);
-      this.list.push(item);
+  //Get name of the custom strategy
+  getName(): string {
+    return this.name;
+  }
+  //Send to the component the array with the custom assetClassStrategies
+  getStrategyArray(): AssetClassStrategy[] {
+    return this.list;
+  }
+  setStrategyArray(strategyArray: any){
+    super.setStrategyArray(strategyArray);
+    this.updateStrategyList();
+  }
+  createStrategyList(){
+  let array = this.customList;
+  this.list.forEach((item)=>{
+    array[item.getId()-1] = item;
+  });
+  this.list = array;
+  this.populateMap();
+  }
+  /*
+   *   Check if the active strategy is missing an asset class
+   *   and assign to that the one with value 0 from the custom list
+   *   which contains all the assets class with value 0
+   */
+  updateStrategyList() : void {
+    this.createStrategyList();
+    this.updateMap();
+  }
+  //Update list with only the values in the map
+  updateList() : void {
+    this.assetClassStrategiesMap.forEach((item)=>{
+      this.list[item.getId()-1].setPercentage(item.getPercentage());
     });
   }
-  resetArrays() : void {
-    this.arrayPercentages = [];
-    this.arrayLabels = [];
-    this.arrayColor = [];
-    this.arrayColors = [];
+  //Get the Map with the custom assetClassStrategies
+  getAssetClassStrategyMap() : Map<number, AssetClassStrategy> {
+    return this.assetClassStrategiesMap;
+  }
+  //Populate Map for the first time
+  populateMap() : void {
+    this.customList.forEach((item)=> {
+      this.assetClassStrategiesMap.set(item.getId(),
+          new AssetClassStrategy(item.getPercentage(),item.getId(),item.getName()));
+    });
+    this.updatePercentages();
+  }
+  //Update Map every time we change strategy
+  updateMap() : void {
+    this.list.forEach((item)=>{
+      let current = this.assetClassStrategiesMap.get(item.getId());
+      current.setPercentage(item.getPercentage());
+    });
+    this.updatePercentages();
   }
   //Repaint the custom chart with new percentages
   rePaint() :void {
@@ -37,7 +81,6 @@ export class CustomStrategy extends Strategy {
       array.push(item);
     });
     this.setStrategyArray(array);
-    console.log("array",array);
     this.createChart();
   }
   //Override method to send to backend just the assetClassStrategies > 0
@@ -50,55 +93,8 @@ export class CustomStrategy extends Strategy {
     });
     return {"list":array};
   }
-  /*
-  *   Check if the active strategy is missing an asset class
-  *   and assign to that the one with value 0 from the custom list
-  *   which contains all the assets class with value 0
-  */
-  updateStrategyList() : void {
-    let array = this.customList;
-    this.list.forEach((item)=>{
-      array[item.getId()-1] = item;
-    });
-    this.list = array;
-    console.log("boh",this.list);
-    this.populateMap();
-    this.updatePercentages();
-  }
-  //Send to the component the array with the custom assetClassStrategies
-  getStrategyArray(): AssetClassStrategy[] {
-    console.log("ASSETCLASSSTRATEGYMAP",this.assetClassStrategiesMap);
-    return this.list;
-  }
-  //Populate Map for the first time
-  populateMap() : void {
-    this.customList.forEach((item)=> {
-      this.assetClassStrategiesMap.set(item.getId(),
-      new AssetClassStrategy(item.getPercentage(),item.getId(),item.getName()));
-    });
-    this.updatePercentages();
-  }
-  //Update Map every time we change strategy
-  updateMap() : void {
-    this.list.forEach((item)=>{
-      let current = this.assetClassStrategiesMap.get(item.getId());
-      current.setPercentage(item.getPercentage());
-    });
-  }
-  //Update list with the values in the map
-  updateList() : void {
-    this.assetClassStrategiesMap.forEach((item)=>{
-      this.list[item.getId()-1].setPercentage(item.getPercentage());
-    });
-  }
-  //Get the Map with the custom assetClassStrategies
-  getAssetClassStrategyMap() : Map<number, AssetClassStrategy> {
-    return this.assetClassStrategiesMap;
-  }
   //Set percentage with sliders and calculate the max percentage we can set
   setPercentageWithSlider(id,oldValue) : number {
-    console.log("list",this.list);
-    console.log("map",this.assetClassStrategiesMap);
     let currentSlider = this.assetClassStrategiesMap.get(id);
     if (currentSlider.getPercentage() - oldValue + this.sumPercentage > 100){
       if (this.maxPercentage !=0) {
@@ -125,6 +121,20 @@ export class CustomStrategy extends Strategy {
       this.updateList();
     this.rePaint();
   }
+  updatePercentages() : void {
+    var sum = 0;
+    this.assetClassStrategiesMap.forEach( (item,index) => [
+      sum += item.getPercentage()
+    ]);
+    this.sumPercentage = sum;
+    this.maxPercentage = 100 - this.sumPercentage;
+  }
+  resetArrays() : void {
+    this.arrayPercentages = [];
+    this.arrayLabels = [];
+    this.arrayColor = [];
+    this.arrayColors = [];
+  }
   //Preset slider,map and list to the active startegy of the user
   /*resetSlider(strategy : Strategy) : void {
     this.getAssetClassStrategyMap().forEach((item,index)=>{
@@ -139,17 +149,4 @@ export class CustomStrategy extends Strategy {
     this.updateList();
     this.rePaint();
   }*/
-  //Update maxPercentage and sumPercentage
-  updatePercentages() : void {
-    var sum = 0;
-    this.assetClassStrategiesMap.forEach( (item,index) => [
-      sum += item.getPercentage()
-    ]);
-    this.sumPercentage = sum;
-    this.maxPercentage = 100 - this.sumPercentage;
-  }
-  //Get name of the custom strategy
-  getName(): string {
-    return this.name;
-  }
 }

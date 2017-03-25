@@ -8,7 +8,12 @@ import { AmChartsModule } from "amcharts3-angular2";
     CommonModule,
     AmChartsModule
   ],
-  declarations: [DetailMarketValueChartComponent],
-  exports:[DetailMarketValueChartComponent,CommonModule]
+  declarations: [
+      DetailMarketValueChartComponent
+  ],
+  exports:[
+      DetailMarketValueChartComponent,
+      CommonModule
+  ]
 })
 export class SharedModuleModule { }

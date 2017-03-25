@@ -1,17 +1,12 @@
-import {Component, OnInit, Renderer, ViewChild, AfterViewInit, NgZone} from '@angular/core';
+import {Component, OnInit, Renderer, ViewChild, AfterViewInit, NgZone, OnDestroy} from '@angular/core';
 import { Router } from '@angular/router';
 import { AssetService } from '../services/asset.service';
 import { StrategyService } from '../services/strategy.service';
-import { Cookie } from 'ng2-cookies';
 import { ModalDirective } from 'ng2-bootstrap/modal/modal.component';
-import { DefaultStrategy } from '../model/default-strategy';
 import { CustomStrategy } from '../model/custom-strategy';
 import { Strategy } from '../model/strategy';
 import { AssetClassStrategy } from '../model/asset-class-strategy';
 import {FinancialData} from "../model/financial-data";
-import {FinancialDataSet} from "../model/financial-data-set";
-import {BaseChartDirective} from "ng2-charts";
-import {FinancialDataElement} from "../model/financial-data-element";
 import { DetailMarketValuesChart } from '../model/detail-market-values-chart';
 
 
@@ -19,99 +14,70 @@ import { DetailMarketValuesChart } from '../model/detail-market-values-chart';
     templateUrl: 'edit.component.html'
 })
 
-export class EditComponent implements OnInit, AfterViewInit {
+export class EditComponent implements OnInit, AfterViewInit, OnDestroy {
     public detailOptions:DetailMarketValuesChart = new DetailMarketValuesChart();
     public isCustom: boolean;
     public strategies: Strategy[] = [];
-    public financialData:FinancialData;
     public financialDataSet: FinancialData[] = [];
-    public financialDataSetModal: FinancialData[] = [];
-    public financialDataModal: any = {};
+    public financialDataSetAmChart: FinancialData[] = [];
     public assetClassStrategies: AssetClassStrategy[] = [];
     public selected = [];
-    //public options = {};
-    color;
-    dataProvider:any[]=[];
-    public isDisabled = true;
-    public renderModalGraph:boolean = false;
+    errorMessage:string;
+    isDisabled = true;
     render = false;
-    public chartModalId;
-    reset = false;
     @ViewChild('childModal') public childModal: ModalDirective;
-    @ViewChild('chartModal') public chartModal: ModalDirective;
-    @ViewChild('chart') public chart: BaseChartDirective;
     @ViewChild('chartTest') public chartTest;
-    //@ViewChild('chartTest2') public chartTest2;
 
     constructor(private _z: NgZone, public AssetService: AssetService, public StrategyService: StrategyService, private router: Router) {
         this.isCustom = false;
     }
-
-    public showChildModal(): void {
-        this.childModal.show();
-    }
-
     public hideChildModal(): void {
         this.childModal.hide();
     }
-    public hideChartModal(){
-        this.chartModal.hide();
-        this.renderModalGraph = false;
-    }
     public handleShow(id){
         this.render= true;
-        this.financialData = this.financialDataSetModal[id-1];
-        this.dataProvider = this.financialDataSetModal[id-1].getFinancialData();
-        this.color = this.financialDataSetModal[id-1].assignColour();
-        this.chartTest.changeChart(this.dataProvider,this.color);
-
-        //this.chartTest2.changeChart(this.color);
-        //this.renderModalGraph = true;
-        //this.chartModal.show();
-
+        let dataProvider = this.financialDataSetAmChart[id-1].getFinancialData();
+        let color = this.financialDataSetAmChart[id-1].assignColour();
+        this.chartTest.changeChart(dataProvider,color);
     }
-    ngAfterViewInit() {
-        // viewChild is set after the view has been initialized
-        this.childModal.show();
-    }
-
     ngOnInit(): void {
-        this.AssetService.getFinancialDataSet(365,"small").subscribe((res => this.getFinancialData(res)));
+        this.AssetService.getFinancialDataSet(365,"small").subscribe(
+            (res) => this.getFinancialData(res),
+            (error) => console.log(this.errorMessage = <any>error));
         this.StrategyService.getActiveStrategy().subscribe();
     }
-    getFinancialDataModal(res){
-        this.financialDataSetModal = res;
-        console.log("fin", this.financialDataSetModal);
-    }
+    //ASSIGN FINANCIAL DATA
     getFinancialData(res) {
         this.financialDataSet = res;
-        this.AssetService.getAssetClassSet().subscribe((res) => this.getAssetClass(res));
+        this.AssetService.getAssetClassSet().subscribe(
+            (res) => this.getAssetClass(res),
+            (error) => console.log(this.errorMessage = <any>error));
     }
-
-    //ASSIGN STRATEGIES
-    getStrategy(res): void {
-        this.strategies = res.getStrategies();
-        this.AssetService.getFinancialDataSet(1000,"big").subscribe((res => this.getFinancialDataModal(res)));
-    }
-    /*getActiveStrategy(){
-        this.StrategyService.getActiveStrategy().subscribe(res => this.getActiveStrategy(res));
-    }
-    getActiveStrategy(){
-
-    }*/
     //ASSIGN ASSET CLASS
     getAssetClass(res): void {
         this.StrategyService.getDefaultStrategySet().subscribe(res => this.getStrategy(res));
         this.assetClassStrategies = res.getAssetClassStrategies();
     }
-
-    createStrategy(): void {
-        this.StrategyService.createStrategy(this.StrategyService.strategies.getCurrentStrategy()).subscribe(
-            (res) => {
-                this.router.navigate(['dashboard']);
-            });
+    //ASSIGN STRATEGIES
+    getStrategy(res): void {
+        this.strategies = res.getStrategies();
+        this.AssetService.getFinancialDataSet(1000,"big").subscribe((res => this.getFinancialDataModal(res)));
     }
-
+    getFinancialDataModal(res){
+        this.financialDataSetAmChart = res;
+    }
+    ngAfterViewInit() {
+        // viewChild is set after the view has been initialized
+        this.childModal.show();
+    }
+    ngOnDestroy(){
+        console.log("onDestroy");
+    }
+    createStrategy(): void {
+        this.StrategyService.createStrategy().subscribe(
+            (res) => {this.router.navigate(['dashboard'])},
+            (error) => console.log(this.errorMessage = <any>error));
+    }
     resetSlider() {
         this.isCustom = false;
         let currentStrategy = this.StrategyService.strategies.getCurrentStrategy();
@@ -119,15 +85,12 @@ export class EditComponent implements OnInit, AfterViewInit {
             currentStrategy.resetSlider(this.StrategyService.activeStrategy);
         }
     }
-
     handleUpdatePercentage() {
         this._z.run(() => {
             this.StrategyService.customStrategy.rePaint();
         });
     }
-
     onSelect(strategy: Strategy, i): void {
-        console.log("strat", strategy);
         this.StrategyService.strategies.setCurrentStrategy(strategy);
         if (strategy instanceof CustomStrategy) {
             this.isCustom = true;

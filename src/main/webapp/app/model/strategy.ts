@@ -10,7 +10,6 @@ export class Strategy {
     public arrayColors: any[] = [];
     public arrayLabels: string[] = [];
 
-
     constructor(data?:any) {
       this.list = [];
 
@@ -18,12 +17,7 @@ export class Strategy {
           this.setActiveStrategy(data);
       }
     }
-
     setStrategyArray(strategyArray: any): void {
-        /*let array = [];
-        strategyArray.forEach((item)=>{
-            array.push(new AssetClassStrategy(item.percentage,item.id,item.name));
-        });*/
         this.list = strategyArray;
     }
     //Add an asset class to the list
@@ -36,7 +30,6 @@ export class Strategy {
     }
     //Send Strategy to backend once you choose a new one and click on button create
     sendStrategy() {
-        console.log("called");
       return {"list":this.list}
     }
     //Create the chart of the strategy
@@ -48,7 +41,6 @@ export class Strategy {
           this.arrayColors = [{ backgroundColor: this.arrayColor, borderWidth: 3 }];
       }
     }
-
     getChartData(){
         this.createChart();
         let dataToReturn = {labels: this.arrayLabels,
@@ -60,7 +52,6 @@ export class Strategy {
 
         return dataToReturn;
     }
-
     setActiveStrategy(data){
         this.date = data.date;
         this.active = data.active;

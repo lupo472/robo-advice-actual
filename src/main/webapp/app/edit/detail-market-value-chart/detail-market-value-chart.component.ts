@@ -16,7 +16,6 @@ export class DetailMarketValueChartComponent implements OnInit {
 
   changeChart(dataProvider?,color?){
     this.options = this.detailOptions.changeChart(dataProvider,color);
-    //.log("clicked");
   }
 
 }
