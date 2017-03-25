@@ -1,8 +1,4 @@
-import { AppConfig } from '../../services/app.config';
-import { StrategyService } from '../../services/strategy.service';
 import { Component, OnInit, Input } from '@angular/core';
-import { DefaultStrategies } from '../../model/default-strategies';
-import { Strategies } from '../../model/strategies';
 import {Strategy} from "../../model/strategy";
 
 @Component({

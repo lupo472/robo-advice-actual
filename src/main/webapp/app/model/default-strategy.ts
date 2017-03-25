@@ -2,10 +2,10 @@ import { Strategy } from './strategy';
 
 export class DefaultStrategy extends Strategy {
     private name: string;
+    private risk: number;
 
     constructor() {
         super();
-        //this.name = name;
         this.list = [];
     }
     setName(name: string): void {

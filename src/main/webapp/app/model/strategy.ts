@@ -17,7 +17,7 @@ export class Strategy {
           this.setActiveStrategy(data);
       }
     }
-    setStrategyArray(strategyArray: any): void {
+    setStrategyArray(strategyArray: AssetClassStrategy[]): void {
         this.list = strategyArray;
     }
     //Add an asset class to the list
@@ -29,7 +29,7 @@ export class Strategy {
         return this.list;
     }
     //Send Strategy to backend once you choose a new one and click on button create
-    sendStrategy() {
+    sendStrategy() : any {
       return {"list":this.list}
     }
     //Create the chart of the strategy

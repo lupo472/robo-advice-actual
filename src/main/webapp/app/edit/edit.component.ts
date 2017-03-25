@@ -31,9 +31,7 @@ export class EditComponent implements OnInit, AfterViewInit, OnDestroy {
     constructor(private _z: NgZone, public AssetService: AssetService, public StrategyService: StrategyService, private router: Router) {
         this.isCustom = false;
     }
-    public hideChildModal(): void {
-        this.childModal.hide();
-    }
+    public hideChildModal(): void {this.childModal.hide();}
     public handleShow(id){
         this.render= true;
         let dataProvider = this.financialDataSetAmChart[id-1].getFinancialData();
@@ -63,6 +61,7 @@ export class EditComponent implements OnInit, AfterViewInit, OnDestroy {
         this.strategies = res.getStrategies();
         this.AssetService.getFinancialDataSet(1000,"big").subscribe((res => this.getFinancialDataModal(res)));
     }
+    //ASSIGN FINANCIAL DATA FOR MORE YEARS
     getFinancialDataModal(res){
         this.financialDataSetAmChart = res;
     }

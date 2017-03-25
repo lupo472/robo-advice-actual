@@ -2,12 +2,17 @@ import { async, getTestBed,TestBed, inject, fakeAsync, tick } from '@angular/cor
 import { AppService } from './app.service';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { Http,ConnectionBackend,BaseRequestOptions,Response,ResponseOptions, XHRBackend } from '@angular/http';
-import {IStrategy} from "../model/istrategy";
+import {IStrategy} from "../model/interfaces/istrategy";
 import {AppConfig} from "./app.config";
-import {IAssetClassStrategy} from "../model/iasset-class-strategy";
+import {IAssetClassStrategy} from "../model/interfaces/iasset-class-strategy";
+import {StrategiesMock} from '../mocks/strategies-mock';
+import {Strategy} from "../model/strategy";
+import {IDefaultStrategy} from "../model/interfaces/idefault-strategy";
 
 describe('Service:AppService', () => {
+  let strategiesMock = new StrategiesMock();
   beforeEach(() => {
+
     TestBed.configureTestingModule({
       providers: [
         BaseRequestOptions,
@@ -35,35 +40,18 @@ describe('Service:AppService', () => {
         connection.mockRespond(response);
     });
   }
-
   it('should should return the list of strategies', inject([AppService, MockBackend], (service:AppService, backend) => {
       setupConnections(backend,{
-        body: {
-          data: [
-            {
-              list: [],
-              name: 'bounds',
-              risk:1
-            },
-            {
-              list: [],
-              name: 'income',
-              risk:2
-            },
-            {
-              list: [],
-              name: 'balanced',
-              risk:3
-            }
-          ]
+        body:{
+          data:strategiesMock
         },
-        status: 200
+        status:200
       },'getDefaultStrategySet');
-      service.getDefaultStrategySet().subscribe((data:IStrategy[])=>{
-        expect(data.length).toBe(3);
-        expect(data[0].name).toBe('bounds');
-        expect(data[1].name).toBe('income');
-        expect(data[2].name).toBe('balanced');
+      service.getDefaultStrategySet().subscribe((data:IDefaultStrategy[])=>{
+        expect(data.length).toBe(5);
+        expect(data[0].name).toBe('Bounds');
+        expect(data[1].name).toBe('Income');
+        expect(data[2].name).toBe('Balanced');
       });
   }));
   it('should log an error to the console on error', inject([AppService, MockBackend], (service:AppService, backend) => {

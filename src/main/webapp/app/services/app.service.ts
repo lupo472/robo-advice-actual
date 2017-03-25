@@ -9,6 +9,8 @@ import {GenericResponse} from "../model/generic-response";
 import {AssetClass} from "../model/asset-class";
 import {FinancialData} from "../model/financial-data";
 import {Strategy} from "../model/strategy";
+import {DefaultStrategy} from "../model/default-strategy";
+import {IDefaultStrategy} from "../model/interfaces/idefault-strategy";
 
 @Injectable()
 export class AppService {
@@ -34,7 +36,7 @@ export class AppService {
       .map(response => response.json());
   }
 
-  getDefaultStrategySet() : Observable<Strategy[]> {
+  getDefaultStrategySet() : Observable<IDefaultStrategy[]> {
     this.headers = new Headers();
     this.headers.append('Authorization',Cookie.get('token'));
     this.opts = new RequestOptions();
