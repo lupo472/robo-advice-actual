@@ -1,7 +1,7 @@
 import {AssetClass} from './asset-class';
 
 export class AssetClassStrategy extends AssetClass {
-    private percentage: number;
+    percentage: number;
 
     constructor(percentage: number, id: number, name: string) {
         super(id, name);

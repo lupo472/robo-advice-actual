@@ -2,7 +2,7 @@ import { AssetClassStrategy } from './asset-class-strategy';
 import {AssetClass} from "./asset-class";
 
 export class Strategy {
-    protected list: AssetClassStrategy[];
+    list: AssetClassStrategy[];
     private date:string;
     private active : boolean;
     public arrayPercentages: number[] = [];
