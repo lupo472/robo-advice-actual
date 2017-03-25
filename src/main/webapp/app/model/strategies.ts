@@ -94,25 +94,33 @@ export class Strategies {
         this.chartData = [];
         this.labels = [];
         let k:number=0;
-        let JSONStrategy:string="";
+        let StringStrategy:string="";
+        let JSONStrategy;
 
         data.forEach((strategy, i) => {
-            JSONStrategy="";
+            StringStrategy="";
             let beginning = new Date(strategy.date);
 
             if (beginning >= startdate) {
 
-                JSONStrategy='{"category": "'+strategy.date+'",';
-                strategy.list.forEach(assetClass => {
-                    JSONStrategy=JSONStrategy+'"'+assetClass.name+'":'+assetClass.percentage+',';
+                StringStrategy='{"category": "'+strategy.date+'",';
+                strategy.list.forEach((assetClass,i) => {
+                    StringStrategy=StringStrategy+'"'+assetClass.name+'":'+assetClass.percentage;
+                    if(i!= strategy.list.length-1){
+                        StringStrategy=StringStrategy+',';
+                    }
                 });
-                JSONStrategy=JSONStrategy+'},';
+                StringStrategy=StringStrategy+'}';
+                console.log("StringStrategy#####:"+StringStrategy);
+                //JSONStrategy=JSON.parse('{"category": "2017-03-20","bonds":100}');
+                JSONStrategy=JSON.parse(StringStrategy);
+                //{"category": "2017-03-20","bonds":100,},
                 this.chartData[k]=JSONStrategy;
                 k++;
             }
 
         });
-        console.log("chartData:#############",JSON.stringify(this.chartData));
+        console.log("chartData:#############",this.chartData);
 
 
 
@@ -125,50 +133,53 @@ export class Strategies {
                 "useGraphSettings": true,
                 "markerSize": 10
             },
-            "dataProvider": [{"category": "2017-03-20","bonds":100,},],
+            "dataProvider": this.chartData,
             "valueAxes": [ {
-                "stackType": "regular",
+                "stackType": "100%",
                 "axisAlpha": 0,
                 "gridAlpha": 0
             } ],
             "graphs": [ {
                 "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
                 "fillAlphas": 0.8,
-                "labelText": "[[value]]",
+                "labelText": "[[percents]]%",
                 "lineAlpha": 0.3,
                 "title": "Europe",
                 "type": "column",
                 "color": "#000000",
                 "valueField": "bonds",
-                "fillColors": "#FFC107"
+                "fillColors": "#4dbd74"
             }, {
                 "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
                 "fillAlphas": 0.8,
-                "labelText": "[[value]]",
+                "labelText": "[[percents]]%",
                 "lineAlpha": 0.3,
                 "title": "North America",
                 "type": "column",
                 "color": "#000000",
-                "valueField": "forex"
+                "valueField": "forex",
+                "fillColors": "#63c2de"
             }, {
                 "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
                 "fillAlphas": 0.8,
-                "labelText": "[[value]]",
+                "labelText": "[[percents]]%",
                 "lineAlpha": 0.3,
                 "title": "Asia-Pacific",
                 "type": "column",
                 "newStack": true,
                 "color": "#000000",
-                "valueField": "stocks"
+                "valueField": "stocks",
+                "fillColors": "#f8cb00"
             }, {
                 "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
                 "fillAlphas": 0.8,
-                "labelText": "[[value]]",
+                "labelText": "[[percents]]%",
                 "lineAlpha": 0.3,
                 "title": "Latin America",
                 "type": "column",
                 "color": "#000000",
-                "valueField": "commodities"
+                "valueField": "commodities",
+                "fillColors": "#f86c6b"
             }],
             "categoryField": "category",
             "categoryAxis": {

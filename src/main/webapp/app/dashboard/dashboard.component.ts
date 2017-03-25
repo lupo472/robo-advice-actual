@@ -6,11 +6,11 @@ import { StrategyService } from '../services/strategy.service';
   templateUrl: 'dashboard.component.html'
 })
 export class DashboardComponent implements OnInit {
-  options;
-  render = false;
-  @ViewChild('chartTest2') public chartTest2;
+  //options;
+  //render = false;
+  //@ViewChild('chartTest2') public chartTest2;
 
-  constructor(private StrategyService:StrategyService) { }
+  constructor() { }
 
   ngOnInit() {
     //this.StrategyService.getActiveStrategy().subscribe(res => this.getStrategy(res));
