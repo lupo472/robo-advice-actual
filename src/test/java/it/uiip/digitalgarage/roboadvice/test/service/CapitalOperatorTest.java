@@ -46,9 +46,6 @@ import static org.mockito.Mockito.verify;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = RoboadviceApplication.class)
 public class CapitalOperatorTest {
-	@Autowired
-    private CapitalController capitalCtrl;
-
     @InjectMocks
     @Autowired
     private CapitalOperator capitalOp;
