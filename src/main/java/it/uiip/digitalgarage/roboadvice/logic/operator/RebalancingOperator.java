@@ -55,10 +55,16 @@ public class RebalancingOperator extends AbstractOperator {
 			System.out.println("Capital Difference per: " + id + " è " + capitalDifferencePerClass); //TODO
 			for(AssetEntity asset : assetPerClassMap.get(id)) {
 				FinancialDataEntity financialData = financialDataMap.get(asset.getId());
-				BigDecimal currentUnits = portfolioMap.get(asset.getId()).getUnits();
-//				BigDecimal currentValue = currentUnits.multiply(financialData.getValue());
-//				BigDecimal capitalPerAsset = capitalPerClass.divide(new BigDecimal(100), 8, RoundingMode.HALF_UP).multiply(asset.getPercentage());
-//				currentUnits = currentUnits.add(capitalPerAsset.subtract(currentValue));
+				PortfolioEntity portfolio = portfolioMap.get(asset.getId());
+				BigDecimal currentUnits = portfolio.getUnits();
+				BigDecimal currentValue = currentUnits.multiply(financialData.getValue());
+				BigDecimal capitalPerAsset = capitalPerClass.divide(new BigDecimal(100), 8, RoundingMode.HALF_UP).multiply(asset.getPercentage());
+				BigDecimal oldCapitalDifferencePerAsset = capitalPerAsset.subtract(currentValue);
+				BigDecimal newUnitsOld = oldCapitalDifferencePerAsset.divide(financialData.getValue(), 8, RoundingMode.HALF_UP);
+				System.out.println("The capital for " + asset.getName() + " is " + capitalPerAsset);
+				System.out.println("Differenza " + oldCapitalDifferencePerAsset);
+				System.out.println("Nuove unità rispetto al vecchio " + newUnitsOld);
+				currentUnits = currentUnits.add(newUnitsOld);
 
 
 				BigDecimal capitalDifferencePerAsset = capitalDifferencePerClass.divide(new BigDecimal(100.0), 8, RoundingMode.HALF_UP).multiply(asset.getPercentage());
@@ -70,8 +76,8 @@ public class RebalancingOperator extends AbstractOperator {
 				BigDecimal value = units.multiply(financialData.getValue());
 				System.out.println("Ho: " + units); //TODO
 				System.out.println("Valore: " + value); //TODO
-				portfolioMap.get(asset.getId()).setUnits(units);
-				portfolioMap.get(asset.getId()).setValue(value);
+				portfolio.setUnits(units);
+				portfolio.setValue(value);
 				System.out.println("--------"); //TODO
 			}
 			System.out.println("--------\n");  //TODO

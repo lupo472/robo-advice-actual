@@ -105,7 +105,7 @@ public class AdminController extends AbstractController {
 		this.portfolioOp.createUserPortfolio(user, strategyEntity, capital, mapAssets, mapFD);
 		List<PortfolioEntity> currentPortfolio = this.portfolioRep.findByUserAndDate(user, user.getLastUpdate());
 		for(PortfolioEntity portfolio : currentPortfolio) {
-			double random = Math.random();
+			double random = Math.abs(Math.random());
 			portfolio.setUnits(new BigDecimal(random));
 			portfolio.setValue(mapFD.get(portfolio.getAsset().getId()).getValue().multiply(new BigDecimal(random)));
 			this.portfolioRep.save(portfolio);
