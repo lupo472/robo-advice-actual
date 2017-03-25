@@ -26,24 +26,27 @@ public class RebalancingOperator extends AbstractOperator {
 		Map<Long, CustomStrategyEntity> strategyMap = Mapper.getMapCustomStrategy(strategy);
 		boolean toRebalance = false;
 		Map<Long, BigDecimal> mapDifferences = new HashMap<>();
+		Map<Long, BigDecimal> mapCapitalPerClass = new HashMap<>();
 		for(PortfolioElementDTO element : portfolio.getList()) {
 			BigDecimal difference = element.getPercentage().subtract(strategyMap.get(element.getId()).getPercentage());
+			BigDecimal capitalPerClass = capital.getAmount().divide(new BigDecimal(100), 4, RoundingMode.HALF_UP).multiply(element.getPercentage());
 			mapDifferences.put(element.getId(), difference);
+			mapCapitalPerClass.put(element.getId(), capitalPerClass);
+			System.out.println("Capital per class: " + capitalPerClass); //TODO
 			System.out.println("Differenza " + element.getName() + " " + difference); //TODO
-			if(difference.abs().doubleValue() > 2.0) {
+			if(!toRebalance && difference.abs().doubleValue() > 2.0) {
 				toRebalance = true;
 			}
 		}
 		if(toRebalance) {
-			System.out.println("Rebalance è true"); //TODO
-			this.rebalance(mapAssets, financialDataMap, currentPortfolio, capital, mapDifferences);
+			this.rebalance(mapAssets, financialDataMap, currentPortfolio, capital, mapDifferences, mapCapitalPerClass);
 		}
 		return toRebalance;
 	}
 
 	private void rebalance(Map<Long, List<AssetEntity>> mapAssets, Map<Long, FinancialDataEntity> financialDataMap,
 						  List<PortfolioEntity> currentPortfolio, CapitalEntity capital,
-						   Map<Long, BigDecimal> mapDifferences) {
+						   Map<Long, BigDecimal> mapDifferences, Map<Long, BigDecimal> mapCapitalPerClass) {
 		Map<Long, PortfolioEntity> portfolioMap = Mapper.getMapPortfolio(currentPortfolio);
 		for(Long id : mapDifferences.keySet()) {
 			BigDecimal capitalDifference = this.getDifferenceForAssetClass(mapDifferences.get(id), capital.getAmount());
@@ -63,7 +66,6 @@ public class RebalancingOperator extends AbstractOperator {
 				portfolioMap.get(asset.getId()).setUnits(units);
 				portfolioMap.get(asset.getId()).setValue(value);
 				System.out.println("--------"); //TODO
-//				this.portfolioRep.save(portfolioMap.get(asset.getId()));  //TODO uncomment
 			}
 			System.out.println("--------\n");  //TODO
 		}
