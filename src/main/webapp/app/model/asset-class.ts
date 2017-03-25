@@ -1,4 +1,6 @@
-export class AssetClass {
+import {IAssetClass} from "./interfaces/iasset-class";
+
+export class AssetClass implements IAssetClass {
     id: number;
     name: string;
 

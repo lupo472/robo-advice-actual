@@ -11,6 +11,7 @@ import {FinancialData} from "../model/financial-data";
 import {Strategy} from "../model/strategy";
 import {DefaultStrategy} from "../model/default-strategy";
 import {IDefaultStrategy} from "../model/interfaces/idefault-strategy";
+import {IAssetClass} from "../model/interfaces/iasset-class";
 
 @Injectable()
 export class AppService {
@@ -46,7 +47,7 @@ export class AppService {
         .catch(this.handleError);
   }
 
-  getAssetClassSet() : Observable<AssetClass[]>{
+  getAssetClassSet() : Observable<IAssetClass[]>{
     this.headers = new Headers();
     this.headers.append('Authorization',Cookie.get('token'));
     this.opts = new RequestOptions();

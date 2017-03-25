@@ -10,6 +10,7 @@ import {Strategy} from "../model/strategy";
 import {IDefaultStrategy} from "../model/interfaces/idefault-strategy";
 import {IAssetClass} from "../model/interfaces/iasset-class";
 import {mockAssetClass} from "../mocks/asset-class-mock";
+import {mockCallToBackend} from "../mocks/mock-call-to-backend";
 
 describe('Service:AppService', () => {
   beforeEach(() => {
@@ -41,12 +42,7 @@ describe('Service:AppService', () => {
     });
   }
   it('should return the list of strategies', inject([AppService, MockBackend], (service:AppService, backend) => {
-      setupConnections(backend,{
-        body:{
-          data:strategiesMock
-        },
-        status:200
-      },'getDefaultStrategySet');
+      setupConnections(backend,mockCallToBackend(strategiesMock),'getDefaultStrategySet');
       service.getDefaultStrategySet().subscribe((data:IDefaultStrategy[])=>{
         expect(data.length).toBe(5);
         expect(data[0].name).toBe('Bounds');
@@ -66,12 +62,7 @@ describe('Service:AppService', () => {
     });
   }));
   it('should return the list of asset class strategies', inject([AppService, MockBackend], (service:AppService, backend) => {
-    setupConnections(backend,{
-      body: {
-        data: mockAssetClass
-      },
-      status: 200
-    },'getAssetClassSet');
+    setupConnections(backend,mockCallToBackend(mockAssetClass),'getAssetClassSet');
     service.getAssetClassSet().subscribe((data:IAssetClass[])=>{
       expect(data.length).toBe(4);
       expect(data[0].name).toBe('Bonds');
