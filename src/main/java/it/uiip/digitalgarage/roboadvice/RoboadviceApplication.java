@@ -10,7 +10,9 @@ import org.springframework.context.annotation.ComponentScan;
 @EnableCaching
 public class RoboadviceApplication {
 
+	//TODO Refactoring and Documentation of the whole project
 	public static void main(String[] args) {
 		SpringApplication.run(RoboadviceApplication.class, args);
 	}
+
 }
