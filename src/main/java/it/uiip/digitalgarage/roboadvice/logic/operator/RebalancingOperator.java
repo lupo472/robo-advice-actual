@@ -17,7 +17,6 @@ import java.util.Map;
 @Service
 public class RebalancingOperator extends AbstractOperator {
 
-	//TODO working on rebalancing
 	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast"}, allEntries = true)
 	public boolean rebalancePortfolio(Map<Long, List<AssetEntity>> assetsPerClassMap, Map<Long, FinancialDataEntity> financialDataMap,
 									  UserEntity user, List<PortfolioEntity> currentPortfolio, CapitalEntity capital,
@@ -32,8 +31,6 @@ public class RebalancingOperator extends AbstractOperator {
 			BigDecimal capitalPerClass = capital.getAmount().divide(new BigDecimal(100), 8, RoundingMode.HALF_UP).multiply(element.getPercentage());
 			differencePerClassMap.put(element.getId(), differencePerClass);
 			capitalPerClassMap.put(element.getId(), capitalPerClass);
-			System.out.println("Capital per class: " + capitalPerClass); //TODO
-			System.out.println("Differenza " + element.getName() + " " + differencePerClass); //TODO
 			if(!toRebalance && differencePerClass.abs().doubleValue() > 2.0) {
 				toRebalance = true;
 			}
@@ -51,39 +48,34 @@ public class RebalancingOperator extends AbstractOperator {
 		for(Long id : differencePerClassMap.keySet()) {
 			BigDecimal capitalPerClass = capitalPerClassMap.get(id);
 			BigDecimal capitalDifferencePerClass = this.getCapitalDifferencePerClass(differencePerClassMap.get(id), capital.getAmount());
-			System.out.println("Old Capital per: " + id + " è " + capitalPerClass); //TODO
-			System.out.println("Capital Difference per: " + id + " è " + capitalDifferencePerClass); //TODO
-			for(AssetEntity asset : assetPerClassMap.get(id)) {
-				FinancialDataEntity financialData = financialDataMap.get(asset.getId());
-				PortfolioEntity portfolio = portfolioMap.get(asset.getId());
-				BigDecimal currentUnits = portfolio.getUnits();
-				BigDecimal currentValue = currentUnits.multiply(financialData.getValue());
-				BigDecimal capitalPerAsset = capitalPerClass.divide(new BigDecimal(100), 8, RoundingMode.HALF_UP).multiply(asset.getPercentage());
-				BigDecimal oldCapitalDifferencePerAsset = capitalPerAsset.subtract(currentValue);
-				BigDecimal newUnitsOld = oldCapitalDifferencePerAsset.divide(financialData.getValue(), 8, RoundingMode.HALF_UP);
-				System.out.println("The capital for " + asset.getName() + " is " + capitalPerAsset);
-				System.out.println("Differenza " + oldCapitalDifferencePerAsset);
-				System.out.println("Nuove unità rispetto al vecchio " + newUnitsOld);
-				currentUnits = currentUnits.add(newUnitsOld);
-
-
-				BigDecimal capitalDifferencePerAsset = capitalDifferencePerClass.divide(new BigDecimal(100.0), 8, RoundingMode.HALF_UP).multiply(asset.getPercentage());
-				System.out.println("Asset difference per " + asset.getName() + " è " + capitalDifferencePerAsset); //TODO
-				System.out.println("Avevo: " + currentUnits); //TODO
-				System.out.println("Valore: " + currentUnits.multiply(financialData.getValue())); //TODO
-				BigDecimal newUnits = capitalDifferencePerAsset.divide(financialData.getValue(), 8, RoundingMode.HALF_UP);
-				BigDecimal units = currentUnits.subtract(newUnits);
-				BigDecimal value = units.multiply(financialData.getValue());
-				System.out.println("Ho: " + units); //TODO
-				System.out.println("Valore: " + value); //TODO
-				portfolio.setUnits(units);
-				portfolio.setValue(value);
-				System.out.println("--------"); //TODO
-			}
-			System.out.println("--------\n");  //TODO
+			rebalanceAssetClass(assetPerClassMap, financialDataMap, portfolioMap, id, capitalPerClass, capitalDifferencePerClass);
 		}
 		this.portfolioRep.save(currentPortfolio);
 
+	}
+
+	private void rebalanceAssetClass(Map<Long, List<AssetEntity>> assetPerClassMap, Map<Long, FinancialDataEntity> financialDataMap, Map<Long, PortfolioEntity> portfolioMap, Long id, BigDecimal capitalPerClass, BigDecimal capitalDifferencePerClass) {
+		for(AssetEntity asset : assetPerClassMap.get(id)) {
+			FinancialDataEntity financialData = financialDataMap.get(asset.getId());
+			PortfolioEntity portfolio = portfolioMap.get(asset.getId());
+			BigDecimal currentUnits = rebalanceAsset(capitalPerClass, asset, financialData, portfolio);
+			BigDecimal capitalDifferencePerAsset = capitalDifferencePerClass.divide(new BigDecimal(100.0), 8, RoundingMode.HALF_UP).multiply(asset.getPercentage());
+			BigDecimal unitsDifference = capitalDifferencePerAsset.divide(financialData.getValue(), 8, RoundingMode.HALF_UP);
+			BigDecimal newUnits = currentUnits.subtract(unitsDifference);
+			BigDecimal value = newUnits.multiply(financialData.getValue());
+			portfolio.setUnits(newUnits);
+			portfolio.setValue(value);
+		}
+	}
+
+	private BigDecimal rebalanceAsset(BigDecimal capitalPerClass, AssetEntity asset, FinancialDataEntity financialData, PortfolioEntity portfolio) {
+		BigDecimal currentUnits = portfolio.getUnits();
+		BigDecimal currentValue = currentUnits.multiply(financialData.getValue());
+		BigDecimal capitalPerAsset = capitalPerClass.divide(new BigDecimal(100), 8, RoundingMode.HALF_UP).multiply(asset.getPercentage());
+		BigDecimal capitalDifferencePerAsset = capitalPerAsset.subtract(currentValue);
+		BigDecimal newUnits = capitalDifferencePerAsset.divide(financialData.getValue(), 8, RoundingMode.HALF_UP);
+		currentUnits = currentUnits.add(newUnits);
+		return currentUnits;
 	}
 
 	private BigDecimal getCapitalDifferencePerClass(BigDecimal difference, BigDecimal totalCapital) {
