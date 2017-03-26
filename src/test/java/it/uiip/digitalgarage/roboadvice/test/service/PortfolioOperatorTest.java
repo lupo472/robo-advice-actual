@@ -221,30 +221,40 @@ public class PortfolioOperatorTest {
 
 	@Test
 	public void computeUserPortfolioSucces() {
-//		PortfolioEntity savedPortfolio = new PortfolioEntity();
-//		savedPortfolio.setId(null);
-//		savedPortfolio.setUser(user);
-//		savedPortfolio.setAsset(assetEntity1);
-//		savedPortfolio.setAssetClass(assetClassEntity1);
-//		savedPortfolio.setUnits(new BigDecimal(10.50));
-//		savedPortfolio.setValue(new BigDecimal("1575.9450000000000358113538823090493679046630859375"));
-//		savedPortfolio.setDate(LocalDate.now());
-//
-//		when(portfolioRep.findByUserAndDate(user, user.getLastUpdate())).thenReturn(oldPortfolio);
-//		when(financialDataRep.findByAssetAndDate(assetEntity1,assetEntity1.getLastUpdate())).thenReturn(financialDataEntity1);
-//		when(financialDataRep.findByAssetAndDate(assetEntity2,assetEntity2.getLastUpdate())).thenReturn(financialDataEntity2);
-//		boolean response = portfolioOp.computeUserPortfolio(user, oldPortfolio, mapFD);
-//		verify(portfolioRep).save(savedPortfolio);
-//		assertTrue(response);
+		PortfolioEntity savedPortfolio = new PortfolioEntity();
+		savedPortfolio.setId(null);
+		savedPortfolio.setUser(user);
+		savedPortfolio.setAsset(assetEntity1);
+		savedPortfolio.setAssetClass(assetClassEntity1);
+		savedPortfolio.setUnits(new BigDecimal(10.50));
+		savedPortfolio.setValue(new BigDecimal("1575.9450000000000358113538823090493679046630859375"));
+		savedPortfolio.setDate(LocalDate.now());
+		PortfolioEntity savedPortfolio2 = new PortfolioEntity();
+		savedPortfolio2.setId(null);
+		savedPortfolio2.setUser(user);
+		savedPortfolio2.setAsset(assetEntity2);
+		savedPortfolio2.setAssetClass(assetClassEntity2);
+		savedPortfolio2.setUnits(new BigDecimal(11.4566999999999996617816577781923115253448486328125));
+		savedPortfolio2.setValue(new BigDecimal("575.470040999999947193202842754545747653129535559791412767556562091186833640676923096179962158203125"));
+		savedPortfolio2.setDate(LocalDate.now());
+
+		when(portfolioRep.findByUserAndDate(user, user.getLastUpdate())).thenReturn(oldPortfolio);
+		when(financialDataRep.findByAssetAndDate(assetEntity1,assetEntity1.getLastUpdate())).thenReturn(financialDataEntity1);
+		when(financialDataRep.findByAssetAndDate(assetEntity2,assetEntity2.getLastUpdate())).thenReturn(financialDataEntity2);
+		List<PortfolioEntity> response = portfolioOp.computeUserPortfolio(user, oldPortfolio, mapFD);
+		verify(portfolioRep).save(savedPortfolio);
+		verify(portfolioRep).save(savedPortfolio2);
+		assertEquals(savedPortfolio,response.get(0));
+		assertEquals(savedPortfolio2,response.get(1));
 	}
 
 	@Test
 	public void computeUserPortfolioEmptyFinancialData() {
-//		when(portfolioRep.findByUserAndDate(user, user.getLastUpdate())).thenReturn(oldPortfolio);
-//		when(financialDataRep.findByAssetAndDate(assetEntity1,assetEntity1.getLastUpdate())).thenReturn(financialDataEntity1);
-//		when(financialDataRep.findByAssetAndDate(assetEntity2,assetEntity2.getLastUpdate())).thenReturn(financialDataEntity2);
-//		boolean response = portfolioOp.computeUserPortfolio(user, oldPortfolio, new HashMap<Long, FinancialDataEntity>());
-//		assertFalse(response);
+		when(portfolioRep.findByUserAndDate(user, user.getLastUpdate())).thenReturn(oldPortfolio);
+		when(financialDataRep.findByAssetAndDate(assetEntity1,assetEntity1.getLastUpdate())).thenReturn(financialDataEntity1);
+		when(financialDataRep.findByAssetAndDate(assetEntity2,assetEntity2.getLastUpdate())).thenReturn(financialDataEntity2);
+		List<PortfolioEntity> response = portfolioOp.computeUserPortfolio(user, oldPortfolio, new HashMap<Long, FinancialDataEntity>());
+		assertNull(response);
 	}
 	
 }
