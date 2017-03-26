@@ -26,6 +26,7 @@ public class ForecastingOperator extends AbstractOperator {
 	private static final String VALUES = "values";
 	private static final String DATE = "date";
 
+	//TODO working on demo
 	@Cacheable("demo")
 	public List<PortfolioDTO> getDemo(PeriodDTO period, Authentication auth) {
 		UserEntity user = this.userRep.findByEmail(auth.getName());
@@ -36,7 +37,7 @@ public class ForecastingOperator extends AbstractOperator {
 		}
 		try {
 			for(CustomStrategyEntity strategy : strategyList) {
-				Map<String, PortfolioElementDTO> demoPerClass = this.getDemoPerClass(strategy.getAssetClass(), period.getPeriod());
+				//TODO to fill thi method
 			}
 		} catch (Exception e) {
 			return null;
@@ -62,17 +63,6 @@ public class ForecastingOperator extends AbstractOperator {
 		} catch (Exception e) {
 			return null;
 		}
-	}
-
-	//TODO working here
-	private Map<String, PortfolioElementDTO> getDemoPerClass(AssetClassEntity assetClass, int period) throws Exception {
-		List<AssetEntity> assets = this.assetRep.findByAssetClass(assetClass);
-		Map<Long, Map<LocalDate, BigDecimal>> map = getForecastPerAsset(assets, assetClass, period);
-		Map<String, PortfolioElementDTO> result = new HashMap<>();
-		for(AssetEntity asset : assets) {
-
-		}
-		return null;
 	}
 
 	private List<FinancialDataElementDTO> getForecastPerClass(AssetClassEntity assetClass, int period) throws Exception {
@@ -132,7 +122,6 @@ public class ForecastingOperator extends AbstractOperator {
 		}
 		return result;
 	}
-
 
 	private Map<LocalDate, BigDecimal> forecast(Instances instances, int period) throws Exception {
 		WekaForecaster forecaster = new WekaForecaster();
