@@ -17,7 +17,7 @@ import java.util.Map;
 @Service
 public class RebalancingOperator extends AbstractOperator {
 
-	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast"}, allEntries = true)
+	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo"}, allEntries = true)
 	public boolean rebalancePortfolio(Map<Long, List<AssetEntity>> assetsPerClassMap, Map<Long, FinancialDataEntity> financialDataMap,
 									  UserEntity user, List<PortfolioEntity> currentPortfolio, CapitalEntity capital,
 									  List<CustomStrategyEntity> strategy) {

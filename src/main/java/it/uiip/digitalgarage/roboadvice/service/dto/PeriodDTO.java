@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 
-public @Data class PeriodRequestDTO {
+public @Data class PeriodDTO {
 
 	@NotNull
 	@Min(0)

@@ -1,7 +1,7 @@
 package it.uiip.digitalgarage.roboadvice.service.controller;
 
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyResponseDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.PeriodRequestDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.PeriodDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
@@ -42,7 +42,7 @@ public class CustomStrategyController extends AbstractController {
     
     @RequestMapping("/getCustomStrategyHistory")
     @ResponseBody
-    public GenericResponse<?> getCustomStrategyHistory(@RequestBody @Valid PeriodRequestDTO period, Authentication auth) {
+    public GenericResponse<?> getCustomStrategyHistory(@RequestBody @Valid PeriodDTO period, Authentication auth) {
     	List<CustomStrategyResponseDTO> result = this.customStrategyOp.getCustomStrategySet(auth, period.getPeriod());
     	if(result.isEmpty()) {
     		return new GenericResponse<String>(0, ControllerConstants.ANY_STRATEGY_IN_PERIOD);

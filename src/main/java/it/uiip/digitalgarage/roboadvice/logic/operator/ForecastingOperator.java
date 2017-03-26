@@ -7,7 +7,8 @@ import it.uiip.digitalgarage.roboadvice.persistence.util.Mapper;
 import it.uiip.digitalgarage.roboadvice.persistence.util.Value;
 import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataElementDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.PeriodRequestDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.PeriodDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioDTO;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import weka.classifiers.evaluation.NumericPrediction;
@@ -29,8 +30,13 @@ public class ForecastingOperator extends AbstractOperator {
 	private static final String VALUES = "values";
 	private static final String DATE = "date";
 
+	@Cacheable("demo")
+	public List<PortfolioDTO> getDemo(PeriodDTO period) {
+		return null;
+	}
+
 	@Cacheable("forecast")
-	public List<FinancialDataDTO> getForecast(PeriodRequestDTO period) {
+	public List<FinancialDataDTO> getForecast(PeriodDTO period) {
 		List<AssetClassEntity> assetClassSet = this.assetClassRep.findAll();
 		List<FinancialDataDTO> result = new ArrayList<>();
 		try {

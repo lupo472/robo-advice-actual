@@ -41,7 +41,7 @@ public class PortfolioOperator extends AbstractOperator {
 	}
 
 	@Cacheable("portfolioHistory")
-    public List<PortfolioDTO> getPortfolioForPeriod(PeriodRequestDTO request, Authentication auth){
+    public List<PortfolioDTO> getPortfolioForPeriod(PeriodDTO request, Authentication auth){
 		UserEntity user = this.userRep.findByEmail(auth.getName());
 		List<PortfolioEntity> entityList = null;
 		if(request.getPeriod() == 0){
@@ -76,7 +76,7 @@ public class PortfolioOperator extends AbstractOperator {
 		return map;
 	}
 
-	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast"}, allEntries = true)
+	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo"}, allEntries = true)
     public boolean createUserPortfolio(UserEntity user, List<CustomStrategyEntity> strategyEntity, CapitalEntity capital,
 									   Map<Long, List<AssetEntity>> mapAssets, Map<Long, FinancialDataEntity> mapFD) {
 		if(strategyEntity.isEmpty()) {
@@ -135,8 +135,8 @@ public class PortfolioOperator extends AbstractOperator {
     	return amount;
     }
 
-    @CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast"}, allEntries = true)
-    public List<PortfolioEntity> computeUserPortfolio(UserEntity user, List<PortfolioEntity> currentPortfolio, Map<Long, FinancialDataEntity> map) {
+	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo"}, allEntries = true)
+	public List<PortfolioEntity> computeUserPortfolio(UserEntity user, List<PortfolioEntity> currentPortfolio, Map<Long, FinancialDataEntity> map) {
     	List<PortfolioEntity> newPortfolioList = new ArrayList<>();
     	for (PortfolioEntity element : currentPortfolio) {
     		BigDecimal units = element.getUnits();
@@ -166,7 +166,7 @@ public class PortfolioOperator extends AbstractOperator {
     	return result;
     }
 
-	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast"}, allEntries = true)
+	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo"}, allEntries = true)
     public void savePortfolio(List<PortfolioEntity> entities) {
     	for (PortfolioEntity entity : entities) {
     		PortfolioEntity savedEntity = this.portfolioRep.findByUserAndAssetAndDate(entity.getUser(), entity.getAsset(), LocalDate.now());

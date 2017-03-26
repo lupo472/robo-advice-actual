@@ -2,7 +2,7 @@ package it.uiip.digitalgarage.roboadvice.service.controller;
 
 import javax.validation.Valid;
 
-import it.uiip.digitalgarage.roboadvice.service.dto.PeriodRequestDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.PeriodDTO;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -44,7 +44,7 @@ public class CapitalController extends AbstractController {
 
 	@RequestMapping("/getCapitalForPeriod")
 	@ResponseBody
-	public GenericResponse<?> getCapitalForPeriod(@Valid @RequestBody PeriodRequestDTO request, Authentication auth) {
+	public GenericResponse<?> getCapitalForPeriod(@Valid @RequestBody PeriodDTO request, Authentication auth) {
 		List<CapitalDTO> result = this.capitalOp.getCapitalPeriod(request, auth);
 		if(result == null) {
 			return new GenericResponse<String>(0, ControllerConstants.ANY_CAPITAL);
