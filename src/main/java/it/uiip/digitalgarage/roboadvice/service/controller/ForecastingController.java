@@ -2,12 +2,13 @@ package it.uiip.digitalgarage.roboadvice.service.controller;
 
 import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.PeriodDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.time.Period;
 import java.util.List;
 
 @CrossOrigin("*")
@@ -26,9 +27,12 @@ public class ForecastingController extends AbstractController {
 
 	@RequestMapping("/getDemo")
 	@ResponseBody
-	public GenericResponse<?> getDemo(@Valid @RequestBody Period period) {
-
-		return null;
+	public GenericResponse<?> getDemo(@Valid @RequestBody PeriodDTO period, Authentication auth) {
+		List<PortfolioDTO> result = this.forecastingOp.getDemo(period, auth);
+		if(result == null) {
+			return new GenericResponse<String>(0, ControllerConstants.PROBLEM);
+		}
+		return new GenericResponse<List<PortfolioDTO>>(1, result);
 	}
 
 }

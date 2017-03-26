@@ -1,15 +1,11 @@
 package it.uiip.digitalgarage.roboadvice.logic.operator;
 
-import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetClassEntity;
-import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetEntity;
-import it.uiip.digitalgarage.roboadvice.persistence.entity.FinancialDataEntity;
+import it.uiip.digitalgarage.roboadvice.persistence.entity.*;
 import it.uiip.digitalgarage.roboadvice.persistence.util.Mapper;
 import it.uiip.digitalgarage.roboadvice.persistence.util.Value;
-import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataElementDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.PeriodDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.*;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import weka.classifiers.evaluation.NumericPrediction;
 import weka.classifiers.timeseries.HoltWinters;
@@ -31,7 +27,21 @@ public class ForecastingOperator extends AbstractOperator {
 	private static final String DATE = "date";
 
 	@Cacheable("demo")
-	public List<PortfolioDTO> getDemo(PeriodDTO period) {
+	public List<PortfolioDTO> getDemo(PeriodDTO period, Authentication auth) {
+		UserEntity user = this.userRep.findByEmail(auth.getName());
+		List<CustomStrategyEntity> strategyList = this.customStrategyRep.findByUserAndActive(user, true);
+		CapitalEntity capital = this.capitalRep.findByUserAndDate(user, user.getLastUpdate());
+		if(strategyList.isEmpty() || capital == null) {
+			return null;
+		}
+		try {
+			for(CustomStrategyEntity strategy : strategyList) {
+				Map<String, PortfolioElementDTO> demoPerClass = this.getDemoPerClass(strategy.getAssetClass(), period.getPeriod());
+			}
+		} catch (Exception e) {
+			return null;
+		}
+
 		return null;
 	}
 
@@ -41,10 +51,10 @@ public class ForecastingOperator extends AbstractOperator {
 		List<FinancialDataDTO> result = new ArrayList<>();
 		try {
 			for(AssetClassEntity assetClass : assetClassSet) {
-				List<FinancialDataElementDTO> predictionPerClass = this.getForecastPerClass(assetClass, period.getPeriod());
+				List<FinancialDataElementDTO> forecastPerClass = this.getForecastPerClass(assetClass, period.getPeriod());
 				FinancialDataDTO financialData = new FinancialDataDTO();
 				financialData.setAssetClass(this.assetClassConv.convertToDTO(assetClass));
-				financialData.setList(predictionPerClass);
+				financialData.setList(forecastPerClass);
 				result.add(financialData);
 			}
 			Collections.sort(result);
@@ -54,19 +64,35 @@ public class ForecastingOperator extends AbstractOperator {
 		}
 	}
 
+	//TODO working here
+	private Map<String, PortfolioElementDTO> getDemoPerClass(AssetClassEntity assetClass, int period) throws Exception {
+		List<AssetEntity> assets = this.assetRep.findByAssetClass(assetClass);
+		Map<Long, Map<LocalDate, BigDecimal>> map = getForecastPerAsset(assets, assetClass, period);
+		Map<String, PortfolioElementDTO> result = new HashMap<>();
+		for(AssetEntity asset : assets) {
+
+		}
+		return null;
+	}
+
 	private List<FinancialDataElementDTO> getForecastPerClass(AssetClassEntity assetClass, int period) throws Exception {
 		List<AssetEntity> assets = this.assetRep.findByAssetClass(assetClass);
-		List<Map<LocalDate, BigDecimal>> list = new ArrayList<>();
+		Map<Long, Map<LocalDate, BigDecimal>> map = getForecastPerAsset(assets, assetClass, period);
+		List<FinancialDataElementDTO> result = new ArrayList<>();
+		for(int i = 1; i <= period; i++) {
+			FinancialDataElementDTO element = getFinancialDataElement(new ArrayList<>(map.values()), i);
+			result.add(element);
+		}
+		return result;
+	}
+
+	private Map<Long, Map<LocalDate, BigDecimal>> getForecastPerAsset(List<AssetEntity> assets, AssetClassEntity assetClass, int period) throws Exception {
+		Map<Long, Map<LocalDate, BigDecimal>> result = new HashMap<>();
 		for(AssetEntity asset : assets) {
 			List<FinancialDataEntity> financialDataEntities = this.financialDataRep.findByAssetAndDateLessThanOrderByDateAsc(asset, LocalDate.now());
 			Instances instances = this.getInstancesPerAsset(financialDataEntities);
 			Map<LocalDate, BigDecimal> valueMap = this.forecast(instances, period);
-			list.add(valueMap);
-		}
-		List<FinancialDataElementDTO> result = new ArrayList<>();
-		for(int i = 1; i <= period; i++) {
-			FinancialDataElementDTO element = getFinancialDataElement(list, i);
-			result.add(element);
+			result.put(asset.getId(), valueMap);
 		}
 		return result;
 	}
@@ -83,7 +109,6 @@ public class ForecastingOperator extends AbstractOperator {
 			} else {
 				value = value.add(map.get(date));
 			}
-
 		}
 		value = value.divide(new BigDecimal(1), 4, RoundingMode.HALF_UP);
 		FinancialDataElementDTO element = new FinancialDataElementDTO();
