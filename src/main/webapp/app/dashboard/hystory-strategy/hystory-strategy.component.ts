@@ -10,7 +10,10 @@ import {forEach} from "@angular/router/src/utils/collection";
 })
 export class HystoryStrategyComponent implements OnInit {
 
-    @ViewChild(BaseChartDirective) chart: BaseChartDirective;
+    ngOnInit() {
+    }
+
+    /*@ViewChild(BaseChartDirective) chart: BaseChartDirective;
 
     public period = 30;
     public startdate: Date;
@@ -89,6 +92,6 @@ export class HystoryStrategyComponent implements OnInit {
     };
 
     public barChartType: string = 'bar';
-    public barChartLegend: boolean = false;
+    public barChartLegend: boolean = false;*/
 
 }

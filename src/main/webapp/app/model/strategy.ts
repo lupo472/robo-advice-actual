@@ -2,6 +2,7 @@ import { AssetClassStrategy } from './asset-class-strategy';
 import {AssetClass} from "./asset-class";
 
 export class Strategy {
+
     list: AssetClassStrategy[];
     private date:string;
     private active : boolean;
@@ -17,7 +18,17 @@ export class Strategy {
           this.setActiveStrategy(data);
       }
     }
+
+    getDate(): string {
+        return this.date;
+    }
+
+    setDate(value: string) {
+        this.date = value;
+    }
+
     setStrategyArray(strategyArray: AssetClassStrategy[]): void {
+
         this.list = strategyArray;
     }
     //Add an asset class to the list
