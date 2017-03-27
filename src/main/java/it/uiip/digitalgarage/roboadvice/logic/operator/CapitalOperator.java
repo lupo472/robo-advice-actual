@@ -7,12 +7,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.*;
-import it.uiip.digitalgarage.roboadvice.persistence.util.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.Cache;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.Authentication;
@@ -20,7 +17,7 @@ import org.springframework.stereotype.Service;
 
 import it.uiip.digitalgarage.roboadvice.service.dto.CapitalRequestDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CapitalDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.PeriodRequestDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.PeriodDTO;
 
 @Service
 public class CapitalOperator extends AbstractOperator {
@@ -39,7 +36,7 @@ public class CapitalOperator extends AbstractOperator {
 	}
 
 	@Cacheable("capitalHistory")
-	public List<CapitalDTO> getCapitalPeriod(PeriodRequestDTO request, Authentication auth) {
+	public List<CapitalDTO> getCapitalPeriod(PeriodDTO request, Authentication auth) {
 		UserEntity user = this.userRep.findByEmail(auth.getName());
 		List<CapitalDTO> response = new ArrayList<CapitalDTO>();
 		List<CapitalEntity> entityList;
@@ -61,13 +58,13 @@ public class CapitalOperator extends AbstractOperator {
 		return response;
 	}
 
-	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast"}, allEntries = true)
+	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo"}, allEntries = true)
 	public boolean addCapital(CapitalRequestDTO capital, Authentication auth) {
 		UserEntity user = this.userRep.findByEmail(auth.getName());
 		return this.addCapital(capital, user);
 	}
 
-	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast"}, allEntries = true)
+	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo"}, allEntries = true)
 	public boolean addCapital(CapitalRequestDTO capital, UserEntity user) {
 		CapitalEntity entity = this.capitalConv.convertToEntity(capital);
 		if(user == null) {
@@ -92,7 +89,7 @@ public class CapitalOperator extends AbstractOperator {
 		return true;
 	}
 
-	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast"}, allEntries = true)
+	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo"}, allEntries = true)
 	public CapitalEntity computeCapital(UserEntity user, Map<Long, FinancialDataEntity> map, List<PortfolioEntity> currentPortfolio) {
 		CapitalEntity capital = new CapitalEntity();
 		BigDecimal amount = portfolioOp.evaluatePortfolio(user, map, currentPortfolio);

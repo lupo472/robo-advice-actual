@@ -11,13 +11,14 @@ import { Cookie } from 'ng2-cookies';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
 import {MyActiveStrategyAmChart} from "../model/my-active-strategy-am-chart";
+import {HistoryAmChart} from "../model/history-am-chart";
 
 @Injectable()
 export class StrategyService {
   strategies:Strategies;
   customStrategy:CustomStrategy;
   array:Strategy[];
-  historyStrategies:Strategies;
+  historyStrategies:HistoryAmChart;
   currentStrategy:DefaultStrategy;
   dataHistory:any=[];
   period:number = 30;
@@ -28,41 +29,47 @@ export class StrategyService {
   constructor(private AppService:AppService, private AssetService:AssetService) {
   }
   // CREATE A NEW STRATEGY
-  createStrategy(currentStrategy){
-    return this.AppService.setCustomStrategy(currentStrategy.sendStrategy()).map(res => console.log(res));
+  createStrategy(){
+    let currentStrategy = this.strategies.getCurrentStrategy();
+    return this.AppService.setCustomStrategy(currentStrategy.sendStrategy()).map(res => {return res});
   }
   // STRATEGY JSON REMAPPING
   getDefaultStrategySet() {
-    return this.AppService.getDefaultStrategySet().map(res => this.assignStrategy(res));
+    return this.AppService.getDefaultStrategySet().map(defaultStrategies => this.assignStrategy(defaultStrategies));
   }
-  assignStrategy(res) {
+  assignStrategy(defaultStrategies) {
     this.strategies = new Strategies();
-
+    this.strategies.createStrategies(defaultStrategies);
     this.customStrategy = new CustomStrategy(this.AssetService.assetClassStrategies.getAssetClassStrategies());
-    this.customStrategy.populateMap();
-    this.strategies.createStrategies(res);
     if (this.activeStrategy != undefined) {
       this.customStrategy.setStrategyArray(this.activeStrategy.getStrategyArray());
-      this.customStrategy.updateStrategyList();
     }
     this.strategies.addStrategy(this.customStrategy);
     return this.strategies;
   }
-  /***************************TESTING*****************************************/
+
+  /***************************TESTING CHART HISTORY VERSION 2*****************************************/
   getHistoryChart() {
     return this.AppService.getHistoryStrategies().map(res => this.historyChart(res));
   }
   historyChart(res){
     if(res.response == 1 ) {
-      this.historyStrategies = new Strategies();
+      this.historyStrategies = new HistoryAmChart();
       this.dataHistory=res.data;
       let startdate=new Date();
       startdate.setDate(startdate.getDate() - this.period);
+      console.log("STARDATE:",startdate);
       return this.historyStrategies.createHistoryChartOptions(res.data, startdate);
     }
   }
-  /******************************#********************************************/
-  getHistoryStrategies() {
+  refreshHistory(startdate){
+    console.log("STARDATE:",startdate);
+    return this.historyStrategies.createHistoryChartOptions(this.dataHistory,startdate);
+  }
+
+
+  /*****************************CHART HISTORY VERSION 1**************************************/
+  /*getHistoryStrategies() {
     return this.AppService.getHistoryStrategies().map(res => this.mapHistory(res));
   }
   mapHistory(res){
@@ -76,21 +83,19 @@ export class StrategyService {
   }
   refreshHistory(startdate){
     return this.historyStrategies.createChartDataHistory(this.dataHistory,startdate);
-  }
+
+  }*/
 
   getActiveStrategy(){
-    return this.AppService.getActiveStrategy().map(res => this.setActiveStrategy(res));
+    return this.AppService.getActiveStrategy()
+        .map(activeStrategy => {
+          if(activeStrategy.response == 1) {
+            this.activeStrategy = new Strategy(activeStrategy.data);
+            return this.activeStrategy;
+          }
+        });
   }
 
-  setActiveStrategy(res){
-    if(res.response == 1) {
-    //this.myActiveStrategyChart = new MyActiveStrategyAmChart(res.data);
-      // console.log("this.myActiveStrategyChart",this.myActiveStrategyChart);
-      this.activeStrategy = new Strategy(res.data);
-
-      return this.activeStrategy;
-    }
-  }
   createTrendLabelHistory(labels){
     //labels=['2017-03-20','2017-03-21'];
 

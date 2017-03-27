@@ -38,4 +38,7 @@ public abstract class AbstractController {
 	@Autowired
 	protected SchedulingOperator schedulingOp;
 
+	@Autowired
+	protected AdviceOperator adviceOp;
+
 }

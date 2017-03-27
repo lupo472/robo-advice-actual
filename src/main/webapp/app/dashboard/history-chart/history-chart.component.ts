@@ -19,7 +19,12 @@ export class HistoryChartComponent implements OnInit {
   public options;
 
   id = "chartdiv";
-  constructor(private StrategyService: StrategyService) { }
+  constructor(private StrategyService: StrategyService) {
+    this.maxdate = new Date();
+    this.startdate = new Date();
+    console.log("today" + this.maxdate);
+    this.startdate.setDate(this.startdate.getDate() - this.period);
+  }
 
   ngOnInit() {
     this.StrategyService.getHistoryChart().subscribe(res => this.getStrategies(res));
@@ -29,15 +34,18 @@ export class HistoryChartComponent implements OnInit {
     this.dati = [];
     this.chartData = [];
     this.labels = [];
+    //this.options = [];
     let res = this.StrategyService.refreshHistory(this.startdate);
+
     this.getStrategies(res);
   }
 
   getStrategies(res) {
     if (res) {
       console.log("res#########", res);
+      //this.render=false;
+      this.options=res;
       this.changeChart();
-      this.options = res;
     }
     /* if (res) {
       //AGGIUNTA TREND LABELS
@@ -61,7 +69,7 @@ export class HistoryChartComponent implements OnInit {
   }
   changeChart() {
     // Make a copy of the existing config
-    //this.options = JSON.parse(JSON.stringify(this.options));
+    this.options = JSON.parse(JSON.stringify(this.options));
     this.render=true;
 
   }

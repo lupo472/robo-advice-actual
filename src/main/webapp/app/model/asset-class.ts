@@ -1,6 +1,8 @@
-export class AssetClass {
-    private id: number;
-    private name: string;
+import {IAssetClass} from "./interfaces/iasset-class";
+
+export class AssetClass implements IAssetClass {
+    id: number;
+    name: string;
 
     constructor(id: number, name: string) {
         this.id = id;
@@ -38,6 +40,7 @@ export class AssetClass {
             case 2: return "#4DD0E1";
             case 3: return "#FFD54F";
             case 4: return "#E57373";
+            default: return "#000000"
         }
     }
 }

@@ -12,7 +12,7 @@ import it.uiip.digitalgarage.roboadvice.service.controller.CustomStrategyControl
 import it.uiip.digitalgarage.roboadvice.service.dto.AssetClassStrategyDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyResponseDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.PeriodRequestDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.PeriodDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 import org.junit.AfterClass;
@@ -194,9 +194,9 @@ public class CustomStrategyControllerTest {
 
         when(customStrategyRep.findByUserAndDateBetween(user, LocalDate.now(), LocalDate.now())).thenReturn(resultList);
 
-        PeriodRequestDTO periodRequestDTO = new PeriodRequestDTO();
-        periodRequestDTO.setPeriod(1);
-        GenericResponse<List<CustomStrategyResponseDTO>> ctrlResponse = (GenericResponse<List<CustomStrategyResponseDTO>>) this.customStrategyCtrl.getCustomStrategyHistory(periodRequestDTO, auth);
+        PeriodDTO periodDTO = new PeriodDTO();
+        periodDTO.setPeriod(1);
+        GenericResponse<List<CustomStrategyResponseDTO>> ctrlResponse = (GenericResponse<List<CustomStrategyResponseDTO>>) this.customStrategyCtrl.getCustomStrategyHistory(periodDTO, auth);
         assertEquals(1, ctrlResponse.getResponse());
         assertEquals(2, ctrlResponse.getData().get(0).getList().size());
     }
@@ -253,9 +253,9 @@ public class CustomStrategyControllerTest {
         resultList.add(customStrategyEntity2_2);
 
         when(customStrategyRep.findByUser(user)).thenReturn(resultList);
-        PeriodRequestDTO periodRequestDTO = new PeriodRequestDTO();
-        periodRequestDTO.setPeriod(0);
-        GenericResponse<List<CustomStrategyResponseDTO>> ctrlResponse = (GenericResponse<List<CustomStrategyResponseDTO>>) this.customStrategyCtrl.getCustomStrategyHistory(periodRequestDTO, auth);
+        PeriodDTO periodDTO = new PeriodDTO();
+        periodDTO.setPeriod(0);
+        GenericResponse<List<CustomStrategyResponseDTO>> ctrlResponse = (GenericResponse<List<CustomStrategyResponseDTO>>) this.customStrategyCtrl.getCustomStrategyHistory(periodDTO, auth);
         assertEquals(1, ctrlResponse.getResponse());
         assertEquals(2, ctrlResponse.getData().size());
         assertEquals(2, ctrlResponse.getData().get(0).getList().size());

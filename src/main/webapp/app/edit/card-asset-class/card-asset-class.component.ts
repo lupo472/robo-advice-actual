@@ -11,12 +11,6 @@ import { AssetClass } from '../../model/asset-class';
 
 export class CardAssetClassComponent implements OnInit{
     @Input() value;
-    /*@Input() lineChartData;
-    @Input() lineChartLabels;
-    @Input() lineChartOptions;
-    @Input() lineChartColours;
-    @Input() lineChartLegend;
-    @Input() lineChartType;*/
     @Input() isCustom;
     @Input() financialData;
     @Input() id;
@@ -35,7 +29,6 @@ export class CardAssetClassComponent implements OnInit{
     show(){
         this.update.emit();
     }
-
     handleSlide(e) : void {
         let currentAssetClassStrategy = this.StrategyService.customStrategy.getAssetClassStrategyMap().get(this.id);
         this.oldValue = currentAssetClassStrategy.getPercentage();
@@ -46,61 +39,4 @@ export class CardAssetClassComponent implements OnInit{
     }
     // handleChange(e) {
     // }
-    // assignFinancialData(){
-    //
-    // }
-
-//LINECHART GENERAL
-    /*public lineChartLabels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-    public lineChartOptions: any = {
-        maintainAspectRatio: false,
-        tooltips: {
-            callbacks: {
-                label: function(tooltipItem) {
-                    return tooltipItem.yLabel;
-                }
-            }
-        },
-        scales: {
-            xAxes: [{
-                gridLines: {
-                    color: 'transparent',
-                    zeroLineColor: 'transparent'
-                },
-                ticks: {
-                    fontSize: 2,
-                    fontColor: 'transparent',
-                }
-
-            }],
-            yAxes: [{
-                display: false,
-                ticks: {
-                    display: false,
-                    min: 40 - 5,
-                    max: 84 + 5,
-                }
-            }],
-        },
-        elements: {
-            line: {
-                borderWidth: 1
-            },
-            point: {
-                radius: 4,
-                hitRadius: 10,
-                hoverRadius: 4,
-            },
-        },
-        legend: {
-            display: false
-        }
-    };
-    public lineChartType: string = 'line';
-    public lineChartColours: Array<any> = [
-        {
-            backgroundColor: 'white',
-            borderColor: 'rgba(255,255,255,.55)'
-        }
-    ];*/
 }

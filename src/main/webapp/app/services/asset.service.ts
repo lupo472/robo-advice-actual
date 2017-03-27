@@ -11,6 +11,9 @@ import 'rxjs/add/operator/map';
 import {FinancialData} from "../model/financial-data";
 import {FinancialDataElement} from "../model/financial-data-element";
 import {FinancialDataSet} from "../model/financial-data-set";
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/throw';
 
 @Injectable()
 export class AssetService {
@@ -54,11 +57,13 @@ export class AssetService {
   }
   //FINANCIAL DATASET
   getFinancialDataSet(period,type){
-    return this.AppService.getFinancialDataSet(period).map(res => this.assignFinancialData(res,type));
+    return this.AppService.getFinancialDataSet(period)
+        .map(financialDataSet => this.assignFinancialData(financialDataSet,type));
   }
-  assignFinancialData(res,type){
+
+  assignFinancialData(financialDataSet,type){
     this.financialDataSet = new FinancialDataSet();
-    this.financialDataSet.createFinancialDataSet(res.data,type);
+    this.financialDataSet.createFinancialDataSet(financialDataSet,type);
     return this.financialDataSet.getFinancialDataSet();
   }
   mapPortfolio(res){

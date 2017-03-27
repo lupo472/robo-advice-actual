@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.PeriodRequestDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.PeriodDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 
 @CrossOrigin("*")
@@ -21,7 +21,7 @@ public class FinancialDataController extends AbstractController {
 	
 	@RequestMapping("/getFinancialDataSet")
 	@ResponseBody
-	public GenericResponse<?> getFinancialDataSet(@Valid @RequestBody PeriodRequestDTO period) {
+	public GenericResponse<?> getFinancialDataSet(@Valid @RequestBody PeriodDTO period) {
 		List<FinancialDataDTO> result = this.financialDataOp.getFinancialDataSet(period.getPeriod());
 		if(result == null) {
 			return new GenericResponse<String>(0, ControllerConstants.PROBLEM);
