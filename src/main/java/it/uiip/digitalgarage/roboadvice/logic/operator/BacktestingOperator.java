@@ -24,7 +24,6 @@ public class BacktestingOperator extends AbstractOperator {
 	@Autowired
 	private RebalancingOperator rebalancingOp;
 
-	//TODO rebalance the backtesting
 	@Cacheable("backtesting")
 	public List<PortfolioDTO> getBacktesting(BacktestingDTO request, Authentication auth) {
 		List<PortfolioDTO> result = new ArrayList<>();
