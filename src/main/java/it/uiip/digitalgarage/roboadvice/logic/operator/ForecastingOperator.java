@@ -121,7 +121,7 @@ public class ForecastingOperator extends AbstractOperator {
 	}
 
 
-	public SortedMap<LocalDate, Map<Long, BigDecimal>> getAssetForecastPerDateMap(List<AssetEntity> assets, int period) throws Exception {
+	private SortedMap<LocalDate, Map<Long, BigDecimal>> getAssetForecastPerDateMap(List<AssetEntity> assets, int period) throws Exception {
 		Map<Long, Map<LocalDate, BigDecimal>> forecastPerAssetMap = getForecastPerAsset(assets, period);
 		SortedMap<LocalDate, Map<Long, BigDecimal>> assetForecastPerDateMap = new TreeMap<>();
 		for(AssetEntity asset : assets) {
@@ -171,6 +171,7 @@ public class ForecastingOperator extends AbstractOperator {
 		for(AssetEntity asset : assets) {
 			List<FinancialDataEntity> financialDataEntities = this.financialDataRep.findByAssetAndDateLessThanOrderByDateAsc(asset, LocalDate.now());
 			Instances instances = this.getInstancesPerAsset(financialDataEntities);
+			System.out.println("Asset: " + asset.getName()); //TODO remove
 			Map<LocalDate, BigDecimal> valueMap = this.forecast(instances, period);
 			result.put(asset.getId(), valueMap);
 		}
@@ -184,11 +185,10 @@ public class ForecastingOperator extends AbstractOperator {
 			/*************************
 			 * Avoid negative values *
 			 *************************/
-			if(map.get(date).doubleValue() < map.get(date).divide(new BigDecimal(100)).doubleValue()) {
-				value = value.add(map.get(date).divide(new BigDecimal(100)));
-			} else {
-				value = value.add(map.get(date));
+			if(map.get(date).doubleValue() < 0) {
+				map.put(date, map.get(date.minus(Period.ofDays(1))));
 			}
+			value = value.add(map.get(date));
 		}
 		value = value.divide(new BigDecimal(1), 4, RoundingMode.HALF_UP);
 		FinancialDataElementDTO element = new FinancialDataElementDTO();
@@ -226,6 +226,7 @@ public class ForecastingOperator extends AbstractOperator {
 		for (int i = 0; i < forecast.size(); i++) {
 			List<NumericPrediction> predsAtStep = forecast.get(i);
 			LocalDate date = LocalDate.now().plus(Period.ofDays(i + 1));
+			System.out.println(date + " " + predsAtStep.get(0).predicted()); //TODO remove
 			Value value = new Value(date, new BigDecimal(predsAtStep.get(0).predicted()));
 			resultList.add(value);
 		}
