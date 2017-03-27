@@ -4,6 +4,8 @@ import { Cookie } from 'ng2-cookies';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+<<<<<<< HEAD
+=======
 import 'rxjs/add/operator/catch';
 import {GenericResponse} from "../model/generic-response";
 import {AssetClass} from "../model/asset-class";
@@ -12,6 +14,7 @@ import {Strategy} from "../model/strategy";
 import {DefaultStrategy} from "../model/default-strategy";
 import {IDefaultStrategy} from "../model/interfaces/idefault-strategy";
 import {IAssetClass} from "../model/interfaces/iasset-class";
+>>>>>>> d593f171fae51d77ee146caab09909c46b34d5a0
 
 @Injectable()
 export class AppService {
@@ -116,14 +119,14 @@ export class AppService {
       .map(response => {console.log(response.json())});
   }
 
-  getCurrentCapital() {
+  getBacktesting(list, period, capital) {
     this.headers = new Headers();
     this.headers.append('Authorization',Cookie.get('token'));
     //this.headers.append('Access-Control-Allow-Credentials','true');
     //this.headers.append('Content-Type','application/json;charset=UTF-8');
     this.opts = new RequestOptions();
     this.opts.headers = this.headers;
-    return this.http.post(AppConfig.url + 'getCurrentCapital', {}, this.opts)
+    return this.http.post(AppConfig.url + 'getBacktesting', {list: list, period: period, capital: capital}, this.opts)
       .map(response => response.json());
   }
 

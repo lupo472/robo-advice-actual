@@ -28,6 +28,10 @@ export const routes: Routes = [
         loadChildren: './edit/edit.module#EditModule',
       },
       {
+        path: 'backtesting',
+        loadChildren: './backtesting/backtesting.module#BacktestingModule',
+      },
+      {
         path: 'components',
         loadChildren: './components/components.module#ComponentsModule'
       },

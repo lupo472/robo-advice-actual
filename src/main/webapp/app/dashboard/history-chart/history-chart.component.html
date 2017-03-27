@@ -1,1 +1,7 @@
-<amCharts *ngIf="render" [id]="id" [options]="options" [style.width.%]="100" [style.height.px]="500"></amCharts>
+<!--<p-calendar [(ngModel)]="startdate" [showIcon]="true" [maxDate]="maxdate" (ngModelChange)="refreshData($event)"></p-calendar>-->
+
+<div class="card">
+    <div class="card-block">
+    <amCharts *ngIf="render" [id]="id" [options]="options" [style.width.%]="100" [style.height.px]="500"></amCharts>
+</div>
+

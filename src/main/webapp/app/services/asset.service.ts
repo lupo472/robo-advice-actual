@@ -18,16 +18,25 @@ import 'rxjs/add/observable/throw';
 @Injectable()
 export class AssetService {
   private portfolio:any;
+  private backtesting: any;
   private data:any = {};
   assetClassStrategies:AssetClassStrategies;
   financialDataSet:FinancialDataSet;
   forecastDataSet:FinancialDataSet;
+  private capital = 10000;
+  private assetClassSet:AssetClass[] = [];
 
-  constructor(private AppService:AppService) {
-  }
+  constructor(private AppService:AppService) { }
 
   getPortfolio(){
     return this.portfolio;
+  }
+
+  getDefaultAssetClass(){
+
+    this.getAssetClassSet();
+
+    return this.assetClassSet;
   }
 
   //REMAPPING ASSET CLASS
@@ -36,6 +45,7 @@ export class AssetService {
     //return this.AppService.getFinancialDataSetForAssetClass(id,period).map(res => this.assignFinancialData(res));
   }
   assignAssetClass(res) {
+    this.assetClassSet = res;
     this.assetClassStrategies = new AssetClassStrategies();
     this.assetClassStrategies.createAssetClassStrategies(res);
     console.log("ASSETCLASSSTRATEGIES",this.assetClassStrategies.getAssetClassStrategies());
@@ -74,4 +84,15 @@ export class AssetService {
     return {response: res.response, data: this.data}
   }
 
+  getBacktesting(list, period){
+    return this.AppService.getBacktesting(list, period, this.capital).map(res => this.mapBacktesting(res));
+  }
+  mapBacktesting(res){
+    if (res.response == 1) {
+      this.backtesting = new Portfolio(res.data);
+      this.data = this.backtesting.getData();
+    }
+
+    return {response: res.response, data: this.data}
+  }
 }
