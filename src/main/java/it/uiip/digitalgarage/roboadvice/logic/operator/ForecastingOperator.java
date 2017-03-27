@@ -26,7 +26,7 @@ public class ForecastingOperator extends AbstractOperator {
 	private static final String VALUES = "values";
 	private static final String DATE = "date";
 
-	//TODO working on demo
+	//TODO rebalance the demo
 	@Cacheable("demo")
 	public List<PortfolioDTO> getDemo(PeriodDTO period, Authentication auth) {
 		UserEntity user = this.userRep.findByEmail(auth.getName());
