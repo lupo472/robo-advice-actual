@@ -1,5 +1,6 @@
 package it.uiip.digitalgarage.roboadvice.service.controller;
 
+import it.uiip.digitalgarage.roboadvice.service.dto.DefaultStrategyDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.PeriodDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioDTO;
@@ -35,4 +36,13 @@ public class ForecastingController extends AbstractController {
 		return new GenericResponse<List<PortfolioDTO>>(1, result);
 	}
 
+	@RequestMapping("/getAdvice")
+	@ResponseBody
+	public GenericResponse<?> getAdvice(@Valid @RequestBody PeriodDTO period, Authentication auth) {
+		DefaultStrategyDTO defaultStrategyDTO = this.adviceOp.getAdvice(period, auth);
+		if(defaultStrategyDTO == null) {
+			return new GenericResponse<String>(0, "Your current strategy is ok"); //TODO Change message
+		}
+		return new GenericResponse<DefaultStrategyDTO>(1, defaultStrategyDTO);
+	}
 }
