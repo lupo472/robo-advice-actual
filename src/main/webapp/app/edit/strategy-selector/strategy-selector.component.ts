@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import {Strategy} from "../../model/strategy";
+import {CustomStrategy} from "../../model/custom-strategy";
 
 @Component({
     selector: 'app-strategy-selector',
@@ -17,10 +18,17 @@ export class StrategySelectorComponent implements OnInit {
     @Input() id;
     @Input() selected;
     @Input() strategy: Strategy;
+    custom = false;
 
     constructor() {}
     ngOnInit() {
       this.strategy.createChart();
+      if (this.strategy instanceof CustomStrategy) {
+          if (this.strategy.getName() == "Select your strategy") {
+              this.custom = true;
+              console.log("sono una cazzo di custom");
+          }
+      }
     }
     public chartHovered(e: any): void {
         console.log(e);

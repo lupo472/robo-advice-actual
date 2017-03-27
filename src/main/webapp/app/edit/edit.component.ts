@@ -38,7 +38,7 @@ export class EditComponent implements OnInit, AfterViewInit, OnDestroy {
         this.isCustom = false;
     }
     public hideChildModal(): void {this.childModal.hide();}
-   
+
     handleUpdate(render,id){
        if (render == "market"){
            this.renderMarket = true;
