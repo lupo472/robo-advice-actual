@@ -38,7 +38,7 @@ public class SchedulingOperator extends AbstractOperator {
 	@Scheduled(cron = "0 0 10 * * *")
 	public void scheduleTask() {
 		Long start = System.currentTimeMillis();
-		quandlOp.updateFinancialDataSet(); //TODO uncomment
+		quandlOp.updateFinancialDataSet();
 		Long middle = System.currentTimeMillis();
 		List<UserEntity> users = userOp.getAllUsers();
 		List<AssetEntity> assets = this.assetRep.findAll();
@@ -57,7 +57,6 @@ public class SchedulingOperator extends AbstractOperator {
 
 	private void userComputation(List<UserEntity> users, Map<Long, List<AssetEntity>> mapAssets, Map<Long, FinancialDataEntity> financialDataMap) {
 		for (UserEntity user : users) {
-			System.out.println("User: " + user.getId());
 			List<PortfolioEntity> currentPortfolio = this.portfolioRep.findByUserAndDate(user, user.getLastUpdate());
 			if(currentPortfolio.isEmpty()) {
 				List<CustomStrategyEntity> strategy = this.customStrategyRep.findByUserAndActive(user, true);
@@ -98,11 +97,11 @@ public class SchedulingOperator extends AbstractOperator {
 				System.out.println("There was an error for user: " + user.getId());
 				continue;
 			}
-//			System.out.println("Computed portfolio for user: " + user.getId());
-//			boolean rebalanced = this.rebalancingOp.rebalancePortfolio(mapAssets, financialDataMap, user, currentPortfolio, capital, strategy);
-//			if(rebalanced) {
-//				System.out.println("Re-balanced portfolio for user: " + user.getId());
-//			}
+			System.out.println("Computed portfolio for user: " + user.getId());
+			boolean rebalanced = this.rebalancingOp.rebalancePortfolio(mapAssets, financialDataMap, user, currentPortfolio, capital, strategy);
+			if(rebalanced) {
+				System.out.println("Re-balanced portfolio for user: " + user.getId());
+			}
 		}
 	}
 }

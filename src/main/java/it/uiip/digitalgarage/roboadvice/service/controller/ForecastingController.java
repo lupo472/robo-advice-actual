@@ -11,13 +11,12 @@ import java.util.List;
 
 @CrossOrigin("*")
 @RestController
-public class PredictionController extends AbstractController {
+public class ForecastingController extends AbstractController {
 
-	@RequestMapping("/getPrediction")
+	@RequestMapping("/getForecast")
 	@ResponseBody
-	public GenericResponse<?> getPrediction(@Valid @RequestBody PeriodRequestDTO period) {
-		//TODO implement
-		List<FinancialDataDTO> result = this.predictionOp.getForecast(period);
+	public GenericResponse<?> getForecast(@Valid @RequestBody PeriodRequestDTO period) {
+		List<FinancialDataDTO> result = this.forecastingOp.getForecast(period);
 		if(result == null) {
 			return new GenericResponse<String>(0, ControllerConstants.PROBLEM);
 		}
