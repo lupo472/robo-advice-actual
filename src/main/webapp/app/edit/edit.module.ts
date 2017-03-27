@@ -8,7 +8,6 @@ import { EditComponent } from './edit.component';
 import { EditRoutingModule } from './edit-routing.module';
 import { CardAssetClassComponent } from './card-asset-class/card-asset-class.component';
 import { HttpModule,JsonpModule } from '@angular/http';
-import { CardAssetComponent } from './card-asset/card-asset.component';
 import {SliderModule} from 'primeng/primeng';
 import {AccordionModule} from 'primeng/primeng';     //accordion and accordion tab
 import { FormsModule } from '@angular/forms'
@@ -19,7 +18,6 @@ import {SharedModuleModule} from "../shared/shared-module/shared-module.module";
     EditRoutingModule,
     ChartsModule,
     DropdownModule,
-    CommonModule,
     HttpModule,
     JsonpModule,
     SliderModule,
@@ -32,7 +30,6 @@ import {SharedModuleModule} from "../shared/shared-module/shared-module.module";
   declarations: [
     EditComponent,
     CardAssetClassComponent,
-    CardAssetComponent,
     StrategySelectorComponent
   ]
 })
