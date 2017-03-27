@@ -2,16 +2,24 @@
 	<div class="card-block">
 		<div class="h5 float-left text-capitalize mb-0">
 			{{value}}
+			<label></label>
+			<div class="btn-group float-right" dropdown>
+				<button type="button"
+						class="btn btn-transparent dropdown-toggle p-0" dropdownToggle>
+					<i class="fa fa-line-chart" aria-hidden="true"></i>
+				</button>
+				<div class="dropdown-menu dropdown-menu-right" dropdownMenu>
+					<a class="dropdown-item" href="#">Forecasting</a> <a
+						class="dropdown-item" href="#">Market Value</a>
+				</div>
+			</div>
 		</div>
+
 		<div class="h5 float-right mb-0">
+			<i class="line-chart"></i>
 			{{percentage}}%
 		</div>
 	</div>
-	<!--<canvas basechart="" class="chart" ng-reflect-datasets="[object Object]"
-			ng-reflect-labels="January,February,March,April,May,June,July"
-			ng-reflect-options="[object Object]" ng-reflect-chart-type="line"
-			ng-reflect-colors="[object Object]" width="974" height="140"
-			style="display: block; height: 70px; width: 487px;"></canvas>-->
 	 <div  class="chart-wrapper px-1" style="height:100px">
 					<canvas baseChart class="chart" [datasets]="financialData.lineChartData"
 						[labels]="financialData.lineChartLabels" [options]="financialData.lineChartOptions"

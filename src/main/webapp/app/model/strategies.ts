@@ -5,17 +5,14 @@ import {DefaultStrategy} from './default-strategy';
 export class Strategies {
     private strategies: Strategy[] = [];
     private currentStrategy: Strategy = new Strategy();
-
     public chartData = [];
     public dataclass = ["bonds", "forex", "stocks", "commodities"]; // da sostituire con il model
     public colorclass = ["#4dbd74", "#63c2de", "#f8cb00", "#f86c6b"]; // da sostituire con il model
     public labels = [];
     public dati = [];
-    //public render: boolean = false;
     public options={};
 
-    constructor() {
-    }
+    constructor() {}
 
     resetStrategies():void{
         this.strategies=[];

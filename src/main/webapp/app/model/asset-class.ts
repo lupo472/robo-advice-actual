@@ -1,6 +1,8 @@
-export class AssetClass {
-    private id: number;
-    private name: string;
+import {IAssetClass} from "./interfaces/iasset-class";
+
+export class AssetClass implements IAssetClass {
+    id: number;
+    name: string;
 
     constructor(id: number, name: string) {
         this.id = id;

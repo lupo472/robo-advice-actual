@@ -21,6 +21,9 @@ public class BacktestingOperator extends AbstractOperator {
 	@Autowired
 	private AssetClassOperator assetClassOp;
 
+	@Autowired
+	private RebalancingOperator rebalancingOp;
+
 	@Cacheable("backtesting")
 	public List<PortfolioDTO> getBacktesting(BacktestingDTO request, Authentication auth) {
 		List<PortfolioDTO> result = new ArrayList<>();
@@ -29,10 +32,10 @@ public class BacktestingOperator extends AbstractOperator {
 		CustomStrategyDTO strategyDTO = new CustomStrategyDTO();
 		strategyDTO.setList(request.getList());
 		List<CustomStrategyEntity> strategyList = this.customStrategyWrap.unwrapToEntity(strategyDTO);
-		Map<Long, List<FinancialDataEntity>> financialDataMap = new HashMap<>();
+		Map<Long, List<FinancialDataEntity>> financialDataListPerAssetMap = new HashMap<>();
 		Map<Long, List<AssetEntity>> assetMap = new HashMap<>();
-		createMaps(date, strategyList, financialDataMap, assetMap);
-		List<PortfolioEntity> entityList = createStartingPortfolio(request, user, date, strategyList, financialDataMap, assetMap);
+		createMaps(date, strategyList, financialDataListPerAssetMap, assetMap);
+		List<PortfolioEntity> entityList = createStartingPortfolio(request, user, date, strategyList, financialDataListPerAssetMap, assetMap);
 		if(entityList == null) {
 			return null;
 		}
@@ -40,14 +43,17 @@ public class BacktestingOperator extends AbstractOperator {
 		result.add(portfolio);
 		while(!date.isEqual(LocalDate.now())) {
 			date = date.plus(Period.ofDays(1));
+			Map<Long, FinancialDataEntity> financialDataMap = new HashMap<>();
 			for(PortfolioEntity entity: entityList) {
 				AssetEntity asset = entity.getAsset();
-				List<FinancialDataEntity> financialDataList = financialDataMap.get(asset.getId());
+				List<FinancialDataEntity> financialDataList = financialDataListPerAssetMap.get(asset.getId());
 				FinancialDataEntity financialData = getFinancialData(date, asset, financialDataList);
+				financialDataMap.put(asset.getId(), financialData);
 				BigDecimal value = this.getValueForAsset(entity.getUnits(), financialData);
 				entity.setValue(value);
 				entity.setDate(date);
 			}
+			entityList = this.rebalancingOp.rebalance(user, entityList, strategyList, financialDataMap);
 			portfolio = getPortfolio(request, user, entityList);
 			result.add(portfolio);
 		}
@@ -122,16 +128,16 @@ public class BacktestingOperator extends AbstractOperator {
 	}
 
 	private PortfolioDTO getPortfolio(BacktestingDTO request, UserEntity user, List<PortfolioEntity> entityList) {
-		Map<Long, BigDecimal> mapPerAsset = new HashMap<>();
+		Map<Long, BigDecimal> assetClassMap = new HashMap<>();
 		BigDecimal total = new BigDecimal(0);
 		for(PortfolioEntity entity : entityList) {
-			if(mapPerAsset.get(entity.getAssetClass().getId()) == null) {
-				mapPerAsset.put(entity.getAssetClass().getId(), new BigDecimal(0));
+			if(assetClassMap.get(entity.getAssetClass().getId()) == null) {
+				assetClassMap.put(entity.getAssetClass().getId(), new BigDecimal(0));
 			}
-			mapPerAsset.put(entity.getAssetClass().getId(), mapPerAsset.get(entity.getAssetClass().getId()).add(entity.getValue()));
+			assetClassMap.put(entity.getAssetClass().getId(), assetClassMap.get(entity.getAssetClass().getId()).add(entity.getValue()));
 			total = total.add(entity.getValue());
 		}
-		return this.portfolioWrap.wrapToDTO(user, entityList, total, mapPerAsset);
+		return this.portfolioWrap.wrapToDTO(entityList, total, assetClassMap);
 	}
 
 	private BigDecimal getUnitsForAsset(FinancialDataEntity financialData, BigDecimal amount) {

@@ -8,13 +8,9 @@ import it.uiip.digitalgarage.roboadvice.persistence.repository.CapitalRepository
 import it.uiip.digitalgarage.roboadvice.persistence.repository.FinancialDataRepository;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.PortfolioRepository;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.UserRepository;
-import it.uiip.digitalgarage.roboadvice.service.controller.CapitalController;
 import it.uiip.digitalgarage.roboadvice.service.dto.CapitalDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CapitalRequestDTO;
-import it.uiip.digitalgarage.roboadvice.service.dto.PeriodRequestDTO;
-import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
-import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
-import org.apache.tomcat.jni.Local;
+import it.uiip.digitalgarage.roboadvice.service.dto.PeriodDTO;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -216,8 +212,8 @@ public class CapitalOperatorTest {
 
     @Test
     public void getCapitalPeriodOneDayBackwardTodaySunday() {
-        PeriodRequestDTO periodRequestDTO = new PeriodRequestDTO();
-        periodRequestDTO.setPeriod(2);
+        PeriodDTO periodDTO = new PeriodDTO();
+        periodDTO.setPeriod(2);
 
         LocalDate sunday = LocalDate.parse("2017-03-26");
         LocalDate sathurday = LocalDate.parse("2017-03-25");
@@ -238,7 +234,7 @@ public class CapitalOperatorTest {
 
         //TODO search another type of faking the date
         when(capitalRep.findByUserAndDateBetween(user,LocalDate.now().minusDays(1), LocalDate.now())).thenReturn(capitals);
-        List<CapitalDTO> opResponse = capitalOp.getCapitalPeriod(periodRequestDTO, auth);
+        List<CapitalDTO> opResponse = capitalOp.getCapitalPeriod(periodDTO, auth);
         assertEquals(2, opResponse.size());
 
     }
@@ -246,8 +242,8 @@ public class CapitalOperatorTest {
 
     @Test
     public void getCapitalPeriodZeroPeriodTodaySunday() {
-        PeriodRequestDTO periodRequestDTO = new PeriodRequestDTO();
-        periodRequestDTO.setPeriod(0);
+        PeriodDTO periodDTO = new PeriodDTO();
+        periodDTO.setPeriod(0);
 
         LocalDate sunday = LocalDate.parse("2017-03-26");
         LocalDate sathurday = LocalDate.parse("2017-03-25");
@@ -276,7 +272,7 @@ public class CapitalOperatorTest {
 
         //TODO search another type of faking the date
         when(capitalRep.findByUser(user)).thenReturn(capitals);
-        List<CapitalDTO> opResponse = capitalOp.getCapitalPeriod(periodRequestDTO, auth);
+        List<CapitalDTO> opResponse = capitalOp.getCapitalPeriod(periodDTO, auth);
         assertEquals(3, opResponse.size());
 
     }

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.*;
@@ -19,8 +20,7 @@ public class PortfolioWrapper {
 	@Autowired
 	private PortfolioRepository portfolioRep;
 
-	public List<PortfolioDTO> wrapToDTOList(UserEntity user, List<PortfolioEntity> entityList,
-											Map<Long, Map<LocalDate, BigDecimal>> assetClassMap,
+	public List<PortfolioDTO> wrapToDTOList(Map<Long, Map<LocalDate, BigDecimal>> assetClassMap,
 											Map<String, Set<PortfolioEntity>> map,
 											Map<LocalDate, BigDecimal> totalMap) {
 		List<PortfolioDTO> result = new ArrayList<>();
@@ -46,7 +46,7 @@ public class PortfolioWrapper {
 		return result;
 	}
 
-	public PortfolioDTO wrapToDTO(UserEntity user, List<PortfolioEntity> entityList, BigDecimal total,
+	public PortfolioDTO wrapToDTO(List<PortfolioEntity> entityList, BigDecimal total,
 								  Map<Long, BigDecimal> assetClassMap) {
 		PortfolioDTO result = new PortfolioDTO();
 		LocalDate date = entityList.get(0).getDate();
@@ -54,6 +54,7 @@ public class PortfolioWrapper {
 		Map<Long, PortfolioElementDTO> map = new HashMap<>();
 		for (PortfolioEntity entity : entityList) {
 			BigDecimal assetClassValue = assetClassMap.get(entity.getAssetClass().getId());
+			assetClassValue = assetClassValue.divide(new BigDecimal(1), 4, RoundingMode.HALF_UP);
 			PortfolioElementDTO element = new PortfolioElementDTO();
 			element.setId(entity.getAssetClass().getId());
 			element.setName(entity.getAssetClass().getName());

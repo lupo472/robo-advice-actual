@@ -29,22 +29,20 @@ export class StrategyService {
   constructor(private AppService:AppService, private AssetService:AssetService) {
   }
   // CREATE A NEW STRATEGY
-  createStrategy(currentStrategy){
-    return this.AppService.setCustomStrategy(currentStrategy.sendStrategy()).map(res => console.log(res));
+  createStrategy(){
+    let currentStrategy = this.strategies.getCurrentStrategy();
+    return this.AppService.setCustomStrategy(currentStrategy.sendStrategy()).map(res => {return res});
   }
   // STRATEGY JSON REMAPPING
   getDefaultStrategySet() {
-    return this.AppService.getDefaultStrategySet().map(res => this.assignStrategy(res));
+    return this.AppService.getDefaultStrategySet().map(defaultStrategies => this.assignStrategy(defaultStrategies));
   }
-  assignStrategy(res) {
+  assignStrategy(defaultStrategies) {
     this.strategies = new Strategies();
-
+    this.strategies.createStrategies(defaultStrategies);
     this.customStrategy = new CustomStrategy(this.AssetService.assetClassStrategies.getAssetClassStrategies());
-    this.customStrategy.populateMap();
-    this.strategies.createStrategies(res);
     if (this.activeStrategy != undefined) {
       this.customStrategy.setStrategyArray(this.activeStrategy.getStrategyArray());
-      this.customStrategy.updateStrategyList();
     }
     this.strategies.addStrategy(this.customStrategy);
     return this.strategies;
@@ -85,22 +83,19 @@ export class StrategyService {
   }
   refreshHistory(startdate){
     return this.historyStrategies.createChartDataHistory(this.dataHistory,startdate);
+
   }*/
 
-
   getActiveStrategy(){
-    return this.AppService.getActiveStrategy().map(res => this.setActiveStrategy(res));
+    return this.AppService.getActiveStrategy()
+        .map(activeStrategy => {
+          if(activeStrategy.response == 1) {
+            this.activeStrategy = new Strategy(activeStrategy.data);
+            return this.activeStrategy;
+          }
+        });
   }
 
-  setActiveStrategy(res){
-    if(res.response == 1) {
-    //this.myActiveStrategyChart = new MyActiveStrategyAmChart(res.data);
-      // console.log("this.myActiveStrategyChart",this.myActiveStrategyChart);
-      this.activeStrategy = new Strategy(res.data);
-
-      return this.activeStrategy;
-    }
-  }
   createTrendLabelHistory(labels){
     //labels=['2017-03-20','2017-03-21'];
 

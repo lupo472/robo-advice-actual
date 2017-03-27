@@ -24,7 +24,6 @@ import {SharedModuleModule} from "../shared/shared-module/shared-module.module";
     DashboardRoutingModule,
     ChartsModule,
     DropdownModule,
-    CommonModule,
     HttpModule,
     JsonpModule,
     AccordionModule,

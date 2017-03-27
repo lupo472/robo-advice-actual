@@ -2,9 +2,18 @@ import { async, getTestBed,TestBed, inject, fakeAsync, tick } from '@angular/cor
 import { AppService } from './app.service';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { Http,ConnectionBackend,BaseRequestOptions,Response,ResponseOptions, XHRBackend } from '@angular/http';
-import {IStrategy} from "../model/istrategy";
+import {IStrategy} from "../model/interfaces/istrategy";
 import {AppConfig} from "./app.config";
-import {IAssetClassStrategy} from "../model/iasset-class-strategy";
+import {IAssetClassStrategy} from "../model/interfaces/iasset-class-strategy";
+import {strategiesMock} from '../mocks/strategies-mock';
+import {Strategy} from "../model/strategy";
+import {IDefaultStrategy} from "../model/interfaces/idefault-strategy";
+import {IAssetClass} from "../model/interfaces/iasset-class";
+import {mockAssetClass} from "../mocks/asset-class-mock";
+import {mockCallToBackend} from "../mocks/mock-call-to-backend";
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/map';
 
 describe('Service:AppService', () => {
   beforeEach(() => {
@@ -35,37 +44,15 @@ describe('Service:AppService', () => {
         connection.mockRespond(response);
     });
   }
-
-  it('should should return the list of strategies', inject([AppService, MockBackend], (service:AppService, backend) => {
-      setupConnections(backend,{
-        body: {
-          data: [
-            {
-              list: [],
-              name: 'bounds',
-              risk:1
-            },
-            {
-              list: [],
-              name: 'income',
-              risk:2
-            },
-            {
-              list: [],
-              name: 'balanced',
-              risk:3
-            }
-          ]
-        },
-        status: 200
-      },'getDefaultStrategySet');
-      service.getDefaultStrategySet().subscribe((data:IStrategy[])=>{
-        expect(data.length).toBe(3);
-        expect(data[0].name).toBe('bounds');
-        expect(data[1].name).toBe('income');
-        expect(data[2].name).toBe('balanced');
+  it('should return the list of strategies', fakeAsync(inject([AppService, MockBackend], (service:AppService, backend) => {
+      setupConnections(backend,mockCallToBackend(strategiesMock),'getDefaultStrategySet');
+      service.getDefaultStrategySet()
+          .subscribe((data:IDefaultStrategy[])=>{
+        expect(data.length).toBe(5);
+        expect(data[0].name).toBe('Bonds');
+        expect(data[1].name).toBe('Income');
       });
-  }));
+  })));
   it('should log an error to the console on error', inject([AppService, MockBackend], (service:AppService, backend) => {
     setupConnections(backend, {
       body: { error: `I'm afraid I've got some bad news!` },
@@ -77,28 +64,12 @@ describe('Service:AppService', () => {
       expect(console.error).toHaveBeenCalledWith(`I'm afraid I've got some bad news!`);
     });
   }));
-  it('should should return the list of asset class strategies', inject([AppService, MockBackend], (service:AppService, backend) => {
-    setupConnections(backend,{
-      body: {
-        data: [
-          {
-            id: 1,
-            name: 'bonds',
-            percentage:95
-          },
-          {
-            id: 4,
-            name: 'commodities',
-            percentage:5
-          }
-        ]
-      },
-      status: 200
-    },'getAssetClassSet');
-    service.getAssetClassSet().subscribe((data:IAssetClassStrategy[])=>{
-      expect(data.length).toBe(2);
-      expect(data[0].name).toBe('bonds');
-      expect(data[1].name).toBe('commodities');
+  it('should return the list of asset class strategies', inject([AppService, MockBackend], (service:AppService, backend) => {
+    setupConnections(backend,mockCallToBackend(mockAssetClass),'getAssetClassSet');
+    service.getAssetClassSet().subscribe((data:IAssetClass[])=>{
+      expect(data.length).toBe(4);
+      expect(data[0].name).toBe('Bonds');
+      expect(data[1].name).toBe('Forex');
     });
   }));
 });

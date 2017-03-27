@@ -55,7 +55,7 @@ public class AdminController extends AbstractController {
 		return new GenericResponse<String>(0, ControllerConstants.UNAUTHORIZED);
 	}
 
-	//TODO remove from here down
+	//TODO remove from here down - methods to test the rebalancing
 	@Autowired
 	private AssetRepository assetRep;
 	@Autowired

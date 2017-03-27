@@ -1,11 +1,12 @@
 import { Strategy } from './strategy';
+import {IDefaultStrategy} from "./interfaces/idefault-strategy";
 
-export class DefaultStrategy extends Strategy {
-    private name: string;
+export class DefaultStrategy extends Strategy implements IDefaultStrategy {
+    name: string;
+    risk: number;
 
     constructor() {
         super();
-        //this.name = name;
         this.list = [];
     }
     setName(name: string): void {
