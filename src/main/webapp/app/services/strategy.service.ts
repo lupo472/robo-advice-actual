@@ -11,13 +11,14 @@ import { Cookie } from 'ng2-cookies';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
 import {MyActiveStrategyAmChart} from "../model/my-active-strategy-am-chart";
+import {HistoryAmChart} from "../model/history-am-chart";
 
 @Injectable()
 export class StrategyService {
   strategies:Strategies;
   customStrategy:CustomStrategy;
   array:Strategy[];
-  historyStrategies:Strategies;
+  historyStrategies:HistoryAmChart;
   currentStrategy:DefaultStrategy;
   dataHistory:any=[];
   period:number = 30;
@@ -48,21 +49,29 @@ export class StrategyService {
     this.strategies.addStrategy(this.customStrategy);
     return this.strategies;
   }
-  /***************************TESTING*****************************************/
+
+  /***************************TESTING CHART HISTORY VERSION 2*****************************************/
   getHistoryChart() {
     return this.AppService.getHistoryStrategies().map(res => this.historyChart(res));
   }
   historyChart(res){
     if(res.response == 1 ) {
-      this.historyStrategies = new Strategies();
+      this.historyStrategies = new HistoryAmChart();
       this.dataHistory=res.data;
       let startdate=new Date();
       startdate.setDate(startdate.getDate() - this.period);
+      console.log("STARDATE:",startdate);
       return this.historyStrategies.createHistoryChartOptions(res.data, startdate);
     }
   }
-  /******************************#********************************************/
-  getHistoryStrategies() {
+  refreshHistory(startdate){
+    console.log("STARDATE:",startdate);
+    return this.historyStrategies.createHistoryChartOptions(this.dataHistory,startdate);
+  }
+
+
+  /*****************************CHART HISTORY VERSION 1**************************************/
+  /*getHistoryStrategies() {
     return this.AppService.getHistoryStrategies().map(res => this.mapHistory(res));
   }
   mapHistory(res){
@@ -76,7 +85,8 @@ export class StrategyService {
   }
   refreshHistory(startdate){
     return this.historyStrategies.createChartDataHistory(this.dataHistory,startdate);
-  }
+  }*/
+
 
   getActiveStrategy(){
     return this.AppService.getActiveStrategy().map(res => this.setActiveStrategy(res));
