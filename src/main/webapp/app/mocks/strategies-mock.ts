@@ -2,7 +2,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import {IDefaultStrategy} from "../model/interfaces/idefault-strategy";
 
-export const strategiesMock : Observable<IDefaultStrategy[]> = Observable.of([
+export const strategiesMock : IDefaultStrategy[] = [
         {
             list:[{
                 percentage:100,
@@ -96,4 +96,4 @@ export const strategiesMock : Observable<IDefaultStrategy[]> = Observable.of([
             name: 'Stocks',
             risk:5
         }
-]);
+];

@@ -11,6 +11,9 @@ import {IDefaultStrategy} from "../model/interfaces/idefault-strategy";
 import {IAssetClass} from "../model/interfaces/iasset-class";
 import {mockAssetClass} from "../mocks/asset-class-mock";
 import {mockCallToBackend} from "../mocks/mock-call-to-backend";
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/map';
 
 describe('Service:AppService', () => {
   beforeEach(() => {
@@ -41,15 +44,15 @@ describe('Service:AppService', () => {
         connection.mockRespond(response);
     });
   }
-  it('should return the list of strategies', inject([AppService, MockBackend], (service:AppService, backend) => {
+  it('should return the list of strategies', fakeAsync(inject([AppService, MockBackend], (service:AppService, backend) => {
       setupConnections(backend,mockCallToBackend(strategiesMock),'getDefaultStrategySet');
-      service.getDefaultStrategySet().subscribe((data:IDefaultStrategy[])=>{
+      service.getDefaultStrategySet()
+          .subscribe((data:IDefaultStrategy[])=>{
         expect(data.length).toBe(5);
-        expect(data[0].name).toBe('Bounds');
+        expect(data[0].name).toBe('Bonds');
         expect(data[1].name).toBe('Income');
-        expect(data[2].name).toBe('Balanced');
       });
-  }));
+  })));
   it('should log an error to the console on error', inject([AppService, MockBackend], (service:AppService, backend) => {
     setupConnections(backend, {
       body: { error: `I'm afraid I've got some bad news!` },
