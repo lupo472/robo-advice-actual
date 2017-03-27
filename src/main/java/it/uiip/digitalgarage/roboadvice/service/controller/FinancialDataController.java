@@ -28,27 +28,5 @@ public class FinancialDataController extends AbstractController {
 		}
 		return new GenericResponse<List<FinancialDataDTO>>(1, result);
 	}
-		
-/************************************************************************************************
- * 										Test Method												*
- * ******************************************************************************************** *	
- *  @RequestMapping("/updateFinancialDataSet")													*
- *	@ResponseBody																				*
- *	public GenericResponse<?> updateFinancialDataSet() {										*
- *		this.quandlOp.updateFinancialDataSet();													*
- *		return new GenericResponse<String>(1, ControllerConstants.DONE);						*
- *	}																							*
- ************************************************************************************************/
-	
-/************************************************************************************************
- * 										Test Method												*
- * ******************************************************************************************** *	
- *  @RequestMapping("/initializeFinancialDataSet")												*
- *	@ResponseBody																				*
- *	public GenericResponse<?> initializeFinancialDataSet() {									*
- *		this.quandlOp.initializeFinancialDataSet();												*
- *		return new GenericResponse<String>(1, ControllerConstants.DONE);						*
- *	}																							*
- ************************************************************************************************/
 
 }

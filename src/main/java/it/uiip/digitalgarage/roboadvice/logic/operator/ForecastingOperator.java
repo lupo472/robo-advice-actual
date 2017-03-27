@@ -24,7 +24,7 @@ import java.time.Period;
 import java.util.*;
 
 @Service
-public class PredictionOperator extends AbstractOperator {
+public class ForecastingOperator extends AbstractOperator {
 
 	private static final String VALUES = "values";
 	private static final String DATE = "date";
@@ -35,7 +35,7 @@ public class PredictionOperator extends AbstractOperator {
 		List<FinancialDataDTO> result = new ArrayList<>();
 		try {
 			for(AssetClassEntity assetClass : assetClassSet) {
-				List<FinancialDataElementDTO> predictionPerClass = this.getPredictionPerClass(assetClass, period.getPeriod());
+				List<FinancialDataElementDTO> predictionPerClass = this.getForecastPerClass(assetClass, period.getPeriod());
 				FinancialDataDTO financialData = new FinancialDataDTO();
 				financialData.setAssetClass(this.assetClassConv.convertToDTO(assetClass));
 				financialData.setList(predictionPerClass);
@@ -48,7 +48,7 @@ public class PredictionOperator extends AbstractOperator {
 		}
 	}
 
-	private List<FinancialDataElementDTO> getPredictionPerClass(AssetClassEntity assetClass, int period) throws Exception {
+	private List<FinancialDataElementDTO> getForecastPerClass(AssetClassEntity assetClass, int period) throws Exception {
 		List<AssetEntity> assets = this.assetRep.findByAssetClass(assetClass);
 		List<Map<LocalDate, BigDecimal>> list = new ArrayList<>();
 		for(AssetEntity asset : assets) {

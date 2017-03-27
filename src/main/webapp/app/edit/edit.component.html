@@ -18,6 +18,7 @@
     <div class="row">
 
         <div class="col-sm-12 col-md-6 col-lg-3" *ngFor="let assets of assetClassStrategies; let i = index;">
+            <a  href="#graphBig">
             <app-card-asset-class [value]="assets.name"
                                   [isCustom]="isCustom" [id]="assets.id"
                                   [percentage]="assets.percentage"
@@ -25,9 +26,8 @@
                                   [financialData]="financialDataSet[assets.id-1]"
                                   [reset]="reset"
                                   (updatePercentage)="handleUpdatePercentage($event)"
-                                  (update)="handleShow(assets.id)"
-                                  >
-            </app-card-asset-class>
+                                  (click)="handleShow(assets.id)">
+            </app-card-asset-class></a>
         </div>
 
     </div>
@@ -48,6 +48,10 @@
     <!-- <button type="button" (click)="showData()">show data</button> -->
 
 </div>
+<div id="graphBig">
+    <app-detail-market-value-chart #chartTest [detailOptions]="detailOptions"></app-detail-market-value-chart>
+</div>
+
 <div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-primary modal-lg" role="document">
@@ -180,14 +184,14 @@
     <div class="modal-dialog modal-primary modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Welcome to the financial Jungle!</h4>
+                <h4 class="modal-title"></h4>
                 <button type="button" class="close" (click)="hideChartModal()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
 
-                <div *ngIf="renderModalGraph" class="chart-wrapper px-1" style="height:300px">
+                <div *ngIf="renderModalGraph" class="chart-wrapper px-1" style="height:300px" >
                     <canvas baseChart class="chart" [datasets]="financialDataModal.lineChartData"
                             [labels]="financialDataModal.lineChartLabels" [options]="financialDataModal.lineChartOptions"
                             [colors]="financialDataModal.lineChartColours" [legend]="financialDataModal.lineChartLegend"
@@ -197,7 +201,7 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" (click)="hideChildModal()">Let's Start!</button>
+                <button type="button" class="btn btn-primary" (click)="hideChildModal()">Close</button>
             </div>
         </div>
         <!-- /.modal-content -->

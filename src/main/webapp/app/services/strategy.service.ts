@@ -10,6 +10,7 @@ import { Strategies } from '../model/strategies';
 import { Cookie } from 'ng2-cookies';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
+import {MyActiveStrategyAmChart} from "../model/my-active-strategy-am-chart";
 
 @Injectable()
 export class StrategyService {
@@ -22,6 +23,7 @@ export class StrategyService {
   period:number = 30;
   activeStrategy:Strategy;
   list:AssetClassStrategy[];
+  public myActiveStrategyChart:MyActiveStrategyAmChart;
 
   constructor(private AppService:AppService, private AssetService:AssetService) {
   }
@@ -35,18 +37,31 @@ export class StrategyService {
   }
   assignStrategy(res) {
     this.strategies = new Strategies();
-    //Create a custom strategy with all the asset classes from backend
+
     this.customStrategy = new CustomStrategy(this.AssetService.assetClassStrategies.getAssetClassStrategies());
     this.customStrategy.populateMap();
     this.strategies.createStrategies(res);
     if (this.activeStrategy != undefined) {
       this.customStrategy.setStrategyArray(this.activeStrategy.getStrategyArray());
       this.customStrategy.updateStrategyList();
-      console.log("custom",this.customStrategy);
     }
     this.strategies.addStrategy(this.customStrategy);
     return this.strategies;
   }
+  /***************************TESTING*****************************************/
+  getHistoryChart() {
+    return this.AppService.getHistoryStrategies().map(res => this.historyChart(res));
+  }
+  historyChart(res){
+    if(res.response == 1 ) {
+      this.historyStrategies = new Strategies();
+      this.dataHistory=res.data;
+      let startdate=new Date();
+      startdate.setDate(startdate.getDate() - this.period);
+      return this.historyStrategies.createHistoryChartOptions(res.data, startdate);
+    }
+  }
+  /******************************#********************************************/
   getHistoryStrategies() {
     return this.AppService.getHistoryStrategies().map(res => this.mapHistory(res));
   }
@@ -69,8 +84,11 @@ export class StrategyService {
 
   setActiveStrategy(res){
     if(res.response == 1) {
+    //this.myActiveStrategyChart = new MyActiveStrategyAmChart(res.data);
+      // console.log("this.myActiveStrategyChart",this.myActiveStrategyChart);
       this.activeStrategy = new Strategy(res.data);
-      return this.activeStrategy.getChartData();
+
+      return this.activeStrategy;
     }
   }
   createTrendLabelHistory(labels){

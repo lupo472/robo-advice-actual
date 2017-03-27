@@ -1,6 +1,7 @@
 package it.uiip.digitalgarage.roboadvice.persistence.util;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetEntity;
+import it.uiip.digitalgarage.roboadvice.persistence.entity.CustomStrategyEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.FinancialDataEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.PortfolioEntity;
 
@@ -48,6 +49,15 @@ public class Mapper {
 			map.put(id, portfolio);
 		}
 		return map;
+	}
+
+	public static Map<Long, CustomStrategyEntity> getMapCustomStrategy(List<CustomStrategyEntity> customStrategyList) {
+		Map<Long, CustomStrategyEntity> result = new HashMap<>();
+		for(CustomStrategyEntity entity : customStrategyList) {
+			Long id = entity.getAssetClass().getId();
+			result.put(id, entity);
+		}
+		return result;
 	}
 
 }

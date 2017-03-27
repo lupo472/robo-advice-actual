@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +32,9 @@ public class SchedulingOperator extends AbstractOperator {
 	@Autowired
 	private CapitalOperator capitalOp;
 
+	@Autowired
+	private RebalancingOperator rebalancingOp;
+
 	@Scheduled(cron = "0 0 10 * * *")
 	public void scheduleTask() {
 		Long start = System.currentTimeMillis();
@@ -57,10 +61,16 @@ public class SchedulingOperator extends AbstractOperator {
 			if(currentPortfolio.isEmpty()) {
 				List<CustomStrategyEntity> strategy = this.customStrategyRep.findByUserAndActive(user, true);
 				CapitalEntity capitalEntity = this.capitalRep.findByUserAndDate(user, user.getLastUpdate());
-
 				boolean created = portfolioOp.createUserPortfolio(user, strategy, capitalEntity, mapAssets, financialDataMap);
 				if(created) {
 					System.out.println("Created portfolio for user: " + user.getId());
+					user.setLastUpdate(LocalDate.now());
+					CapitalEntity capital = new CapitalEntity();
+					capital.setAmount(capitalEntity.getAmount());
+					capital.setUser(capitalEntity.getUser());
+					capital.setDate(LocalDate.now());
+					capitalRep.save(capital);
+					userRep.save(user);
 				}
 				continue;
 			}
@@ -82,11 +92,16 @@ public class SchedulingOperator extends AbstractOperator {
 				}
 				continue;
 			}
-			boolean computed = portfolioOp.computeUserPortfolio(user, currentPortfolio, financialDataMap);
-			if(computed) {
-				System.out.println("Computed portfolio for user: " + user.getId());
+			currentPortfolio = portfolioOp.computeUserPortfolio(user, currentPortfolio, financialDataMap);
+			if(currentPortfolio == null) {
+				System.out.println("There was an error for user: " + user.getId());
+				continue;
+			}
+			System.out.println("Computed portfolio for user: " + user.getId());
+			boolean rebalanced = this.rebalancingOp.rebalancePortfolio(mapAssets, financialDataMap, user, currentPortfolio, capital, strategy);
+			if(rebalanced) {
+				System.out.println("Re-balanced portfolio for user: " + user.getId());
 			}
 		}
 	}
-
 }

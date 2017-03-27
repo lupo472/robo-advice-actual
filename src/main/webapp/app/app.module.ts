@@ -13,7 +13,7 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { SIDEBAR_TOGGLE_DIRECTIVES } from './shared/sidebar.directive';
 import { AsideToggleDirective } from './shared/aside.directive';
 import { BreadcrumbsComponent } from './shared/breadcrumb.component';
-
+//import { AmChartsModule } from "amcharts3-angular2";
 //D3
 import { D3Service } from 'd3-ng2-service';
 
@@ -30,7 +30,8 @@ import { StrategyService } from './services/strategy.service';
 import { AppService } from './services/app.service';
 import { UserService } from './services/user.service';
 import { AssetService } from './services/asset.service';
-import { CondegramSpiralPlotComponent } from './edit/condegram-spiral-plot/condegram-spiral-plot.component';
+import { AmChartsModule } from "amcharts3-angular2";
+
 
 @NgModule({
   imports: [
@@ -40,9 +41,10 @@ import { CondegramSpiralPlotComponent } from './edit/condegram-spiral-plot/conde
     TabsModule.forRoot(),
     ChartsModule,
     HttpModule,
-    AlertModule,
-
-
+    AlertModule
+  ],
+  exports:[
+    AmChartsModule
   ],
   declarations: [
     AppComponent,
@@ -51,8 +53,8 @@ import { CondegramSpiralPlotComponent } from './edit/condegram-spiral-plot/conde
     NAV_DROPDOWN_DIRECTIVES,
     BreadcrumbsComponent,
     SIDEBAR_TOGGLE_DIRECTIVES,
-    AsideToggleDirective,
-    CondegramSpiralPlotComponent,
+    AsideToggleDirective
+
   ],
   providers: [
     StrategyService,

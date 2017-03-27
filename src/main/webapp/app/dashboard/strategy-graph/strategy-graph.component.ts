@@ -22,12 +22,12 @@ export class StrategyGraphComponent implements OnInit {
   }
 
   getStrategy(data) {
-
+  console.log("aaaaaa",data);
     if(data) {
-
-      this.labels = data.labels;
-      this.datasets = data.datasets;
-      this.colors = data.colors;
+      let t = data.getChartData();
+      this.labels = t.labels;
+      this.datasets = t.datasets;
+      this.colors = t.colors;
 
       this.render = true;
     }
