@@ -16,7 +16,6 @@ import java.util.List;
 @RestController
 public class BacktestingController extends AbstractController {
 
-	//TODO implement the rebalancing in the backtesting
 	@RequestMapping("/getBacktesting")
 	@ResponseBody
 	public GenericResponse<?> getBacktesting(@Valid @RequestBody BacktestingDTO request, Authentication auth) {

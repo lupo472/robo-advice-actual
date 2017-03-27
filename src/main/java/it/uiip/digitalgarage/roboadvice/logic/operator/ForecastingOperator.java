@@ -171,7 +171,6 @@ public class ForecastingOperator extends AbstractOperator {
 		for(AssetEntity asset : assets) {
 			List<FinancialDataEntity> financialDataEntities = this.financialDataRep.findByAssetAndDateLessThanOrderByDateAsc(asset, LocalDate.now());
 			Instances instances = this.getInstancesPerAsset(financialDataEntities);
-			System.out.println("Asset: " + asset.getName()); //TODO remove
 			Map<LocalDate, BigDecimal> valueMap = this.forecast(instances, period);
 			result.put(asset.getId(), valueMap);
 		}
@@ -226,7 +225,6 @@ public class ForecastingOperator extends AbstractOperator {
 		for (int i = 0; i < forecast.size(); i++) {
 			List<NumericPrediction> predsAtStep = forecast.get(i);
 			LocalDate date = LocalDate.now().plus(Period.ofDays(i + 1));
-			System.out.println(date + " " + predsAtStep.get(0).predicted()); //TODO remove
 			Value value = new Value(date, new BigDecimal(predsAtStep.get(0).predicted()));
 			resultList.add(value);
 		}

@@ -17,41 +17,66 @@ import java.util.Map;
 @Service
 public class RebalancingOperator extends AbstractOperator {
 
-	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo"}, allEntries = true)
-	public boolean rebalancePortfolio(Map<Long, List<AssetEntity>> assetsPerClassMap, Map<Long, FinancialDataEntity> financialDataMap,
-									  UserEntity user, List<PortfolioEntity> currentPortfolio, CapitalEntity capital,
-									  List<CustomStrategyEntity> strategy) {
+	public List<PortfolioEntity> rebalance(UserEntity user, List<PortfolioEntity> currentPortfolio, List<CustomStrategyEntity> strategy,
+	  									   Map<Long, FinancialDataEntity> financialDataMap) {
+		List<AssetEntity> assets = this.assetRep.findAll();
+		Map<Long, List<AssetEntity>> assetsPerClassMap = Mapper.getMapAssets(assets);
+		BigDecimal capital = new BigDecimal(0);
+		for(PortfolioEntity entity : currentPortfolio) {
+			capital = capital.add(entity.getValue());
+		}
 		PortfolioDTO portfolio = createPortfolioDTO(user, currentPortfolio, capital);
 		Map<Long, CustomStrategyEntity> strategyMap = Mapper.getMapCustomStrategy(strategy);
 		boolean toRebalance = false;
 		Map<Long, BigDecimal> differencePerClassMap = new HashMap<>();
 		Map<Long, BigDecimal> capitalPerClassMap = new HashMap<>();
+		toRebalance = isToRebalance(capital, portfolio, strategyMap, toRebalance, differencePerClassMap, capitalPerClassMap);
+		if(toRebalance) {
+			currentPortfolio = this.rebalance(assetsPerClassMap, financialDataMap, currentPortfolio, capital, differencePerClassMap, capitalPerClassMap);
+		}
+		return currentPortfolio;
+	}
+
+	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo"}, allEntries = true)
+	public boolean rebalancePortfolio(Map<Long, List<AssetEntity>> assetsPerClassMap, Map<Long, FinancialDataEntity> financialDataMap,
+									  UserEntity user, List<PortfolioEntity> currentPortfolio, CapitalEntity capital,
+									  List<CustomStrategyEntity> strategy) {
+		PortfolioDTO portfolio = createPortfolioDTO(user, currentPortfolio, capital.getAmount());
+		Map<Long, CustomStrategyEntity> strategyMap = Mapper.getMapCustomStrategy(strategy);
+		boolean toRebalance = false;
+		Map<Long, BigDecimal> differencePerClassMap = new HashMap<>();
+		Map<Long, BigDecimal> capitalPerClassMap = new HashMap<>();
+		toRebalance = isToRebalance(capital.getAmount(), portfolio, strategyMap, toRebalance, differencePerClassMap, capitalPerClassMap);
+		if(toRebalance) {
+			currentPortfolio = this.rebalance(assetsPerClassMap, financialDataMap, currentPortfolio, capital.getAmount(), differencePerClassMap, capitalPerClassMap);
+			this.portfolioRep.save(currentPortfolio);
+		}
+		return toRebalance;
+	}
+
+	private boolean isToRebalance(BigDecimal capital, PortfolioDTO portfolio, Map<Long, CustomStrategyEntity> strategyMap, boolean toRebalance, Map<Long, BigDecimal> differencePerClassMap, Map<Long, BigDecimal> capitalPerClassMap) {
 		for(PortfolioElementDTO element : portfolio.getList()) {
 			BigDecimal differencePerClass = element.getPercentage().subtract(strategyMap.get(element.getId()).getPercentage());
-			BigDecimal capitalPerClass = capital.getAmount().divide(new BigDecimal(100), 8, RoundingMode.HALF_UP).multiply(element.getPercentage());
+			BigDecimal capitalPerClass = capital.divide(new BigDecimal(100), 8, RoundingMode.HALF_UP).multiply(element.getPercentage());
 			differencePerClassMap.put(element.getId(), differencePerClass);
 			capitalPerClassMap.put(element.getId(), capitalPerClass);
 			if(!toRebalance && differencePerClass.abs().doubleValue() > 2.0) {
 				toRebalance = true;
 			}
 		}
-		if(toRebalance) {
-			this.rebalance(assetsPerClassMap, financialDataMap, currentPortfolio, capital, differencePerClassMap, capitalPerClassMap);
-		}
 		return toRebalance;
 	}
 
-	private void rebalance(Map<Long, List<AssetEntity>> assetPerClassMap, Map<Long, FinancialDataEntity> financialDataMap,
-						  List<PortfolioEntity> currentPortfolio, CapitalEntity capital,
+	private List<PortfolioEntity> rebalance(Map<Long, List<AssetEntity>> assetPerClassMap, Map<Long, FinancialDataEntity> financialDataMap,
+						  List<PortfolioEntity> currentPortfolio, BigDecimal capital,
 						   Map<Long, BigDecimal> differencePerClassMap, Map<Long, BigDecimal> capitalPerClassMap) {
 		Map<Long, PortfolioEntity> portfolioMap = Mapper.getMapPortfolio(currentPortfolio);
 		for(Long id : differencePerClassMap.keySet()) {
 			BigDecimal capitalPerClass = capitalPerClassMap.get(id);
-			BigDecimal capitalDifferencePerClass = this.getCapitalDifferencePerClass(differencePerClassMap.get(id), capital.getAmount());
+			BigDecimal capitalDifferencePerClass = this.getCapitalDifferencePerClass(differencePerClassMap.get(id), capital);
 			rebalanceAssetClass(assetPerClassMap, financialDataMap, portfolioMap, id, capitalPerClass, capitalDifferencePerClass);
 		}
-		this.portfolioRep.save(currentPortfolio);
-
+		return currentPortfolio;
 	}
 
 	private void rebalanceAssetClass(Map<Long, List<AssetEntity>> assetPerClassMap, Map<Long, FinancialDataEntity> financialDataMap, Map<Long, PortfolioEntity> portfolioMap, Long id, BigDecimal capitalPerClass, BigDecimal capitalDifferencePerClass) {
@@ -83,14 +108,17 @@ public class RebalancingOperator extends AbstractOperator {
 		return result;
 	}
 
-	private PortfolioDTO createPortfolioDTO(UserEntity user, List<PortfolioEntity> currentPortfolio, CapitalEntity capital) {
+	private PortfolioDTO createPortfolioDTO(UserEntity user, List<PortfolioEntity> currentPortfolio, BigDecimal capital) {
 		Map<Long, BigDecimal> assetClassMap = new HashMap<>();
 		for(PortfolioEntity entity : currentPortfolio) {
 			if(assetClassMap.get(entity.getAssetClass().getId()) == null) {
-				assetClassMap.put(entity.getAssetClass().getId(), this.portfolioRep.sumValuesForAssetClass(entity.getAssetClass(), user, LocalDate.now()).getValue());
+				assetClassMap.put(entity.getAssetClass().getId(), new BigDecimal(0));
 			}
+			BigDecimal current = assetClassMap.get(entity.getAssetClass().getId());
+			current = current.add(entity.getValue());
+			assetClassMap.put(entity.getAssetClass().getId(), current);
 		}
-		return this.portfolioWrap.wrapToDTO(currentPortfolio, capital.getAmount(), assetClassMap);
+		return this.portfolioWrap.wrapToDTO(currentPortfolio, capital, assetClassMap);
 	}
 
 }

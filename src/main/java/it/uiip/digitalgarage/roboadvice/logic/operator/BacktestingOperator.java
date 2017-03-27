@@ -21,6 +21,9 @@ public class BacktestingOperator extends AbstractOperator {
 	@Autowired
 	private AssetClassOperator assetClassOp;
 
+	@Autowired
+	private RebalancingOperator rebalancingOp;
+
 	//TODO rebalance the backtesting
 	@Cacheable("backtesting")
 	public List<PortfolioDTO> getBacktesting(BacktestingDTO request, Authentication auth) {
@@ -30,10 +33,10 @@ public class BacktestingOperator extends AbstractOperator {
 		CustomStrategyDTO strategyDTO = new CustomStrategyDTO();
 		strategyDTO.setList(request.getList());
 		List<CustomStrategyEntity> strategyList = this.customStrategyWrap.unwrapToEntity(strategyDTO);
-		Map<Long, List<FinancialDataEntity>> financialDataMap = new HashMap<>();
+		Map<Long, List<FinancialDataEntity>> financialDataListPerAssetMap = new HashMap<>();
 		Map<Long, List<AssetEntity>> assetMap = new HashMap<>();
-		createMaps(date, strategyList, financialDataMap, assetMap);
-		List<PortfolioEntity> entityList = createStartingPortfolio(request, user, date, strategyList, financialDataMap, assetMap);
+		createMaps(date, strategyList, financialDataListPerAssetMap, assetMap);
+		List<PortfolioEntity> entityList = createStartingPortfolio(request, user, date, strategyList, financialDataListPerAssetMap, assetMap);
 		if(entityList == null) {
 			return null;
 		}
@@ -41,14 +44,17 @@ public class BacktestingOperator extends AbstractOperator {
 		result.add(portfolio);
 		while(!date.isEqual(LocalDate.now())) {
 			date = date.plus(Period.ofDays(1));
+			Map<Long, FinancialDataEntity> financialDataMap = new HashMap<>();
 			for(PortfolioEntity entity: entityList) {
 				AssetEntity asset = entity.getAsset();
-				List<FinancialDataEntity> financialDataList = financialDataMap.get(asset.getId());
+				List<FinancialDataEntity> financialDataList = financialDataListPerAssetMap.get(asset.getId());
 				FinancialDataEntity financialData = getFinancialData(date, asset, financialDataList);
+				financialDataMap.put(asset.getId(), financialData);
 				BigDecimal value = this.getValueForAsset(entity.getUnits(), financialData);
 				entity.setValue(value);
 				entity.setDate(date);
 			}
+			entityList = this.rebalancingOp.rebalance(user, entityList, strategyList, financialDataMap);
 			portfolio = getPortfolio(request, user, entityList);
 			result.add(portfolio);
 		}
