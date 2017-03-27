@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,7 +59,7 @@ public class RebalancingOperator extends AbstractOperator {
 			BigDecimal capitalPerClass = capital.divide(new BigDecimal(100), 8, RoundingMode.HALF_UP).multiply(element.getPercentage());
 			differencePerClassMap.put(element.getId(), differencePerClass);
 			capitalPerClassMap.put(element.getId(), capitalPerClass);
-			if(!toRebalance && differencePerClass.abs().doubleValue() > 2.0) {
+			if(!toRebalance && differencePerClass.abs().doubleValue() > 1.0) {
 				toRebalance = true;
 			}
 		}

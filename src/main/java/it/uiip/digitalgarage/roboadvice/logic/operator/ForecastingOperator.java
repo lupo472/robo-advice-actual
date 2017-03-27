@@ -4,6 +4,7 @@ import it.uiip.digitalgarage.roboadvice.persistence.entity.*;
 import it.uiip.digitalgarage.roboadvice.persistence.util.Mapper;
 import it.uiip.digitalgarage.roboadvice.persistence.util.Value;
 import it.uiip.digitalgarage.roboadvice.service.dto.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -23,10 +24,12 @@ import java.util.*;
 @Service
 public class ForecastingOperator extends AbstractOperator {
 
+	@Autowired
+	private RebalancingOperator rebalancingOp;
+
 	private static final String VALUES = "values";
 	private static final String DATE = "date";
 
-	//TODO rebalance the demo
 	@Cacheable("demo")
 	public List<PortfolioDTO> getDemo(PeriodDTO period, Authentication auth) {
 		UserEntity user = this.userRep.findByEmail(auth.getName());
@@ -55,17 +58,32 @@ public class ForecastingOperator extends AbstractOperator {
 			boolean goOn = true;
 			while(goOn) {
 				BigDecimal total = new BigDecimal(0);
+				List<FinancialDataEntity> financialDataList = new ArrayList<>();
 				for(Long idClass : forecastPerClassMap.keySet()) {
 					SortedMap<LocalDate, Map<Long, BigDecimal>> assetForecastPerDateMap = forecastPerClassMap.get(idClass);
 					if(assetForecastPerDateMap.keySet().isEmpty()) {
 						goOn = false;
 						break;
 					}
-					total = computePortfolioPerAsset(portfolioPerAssetMap, total, assetForecastPerDateMap);
+					LocalDate date = assetForecastPerDateMap.firstKey();
+					Map<Long, BigDecimal> valuePerAssetMap = assetForecastPerDateMap.get(date);
+					assetForecastPerDateMap.remove(date);
+					total = computePortfolioPerAsset(portfolioPerAssetMap, total, date, valuePerAssetMap);
+					for(Long idAsset : valuePerAssetMap.keySet()) {
+						FinancialDataEntity entity = new FinancialDataEntity();
+						entity.setDate(date);
+						entity.setValue(valuePerAssetMap.get(idAsset));
+						AssetEntity asset = new AssetEntity();
+						asset.setId(idAsset);
+						entity.setAsset(asset);
+						financialDataList.add(entity);
+					}
 				}
 				if(!goOn) {
 					break;
 				}
+				Map<Long, FinancialDataEntity> financialDataMap = Mapper.getMapFinancialData(financialDataList);
+				currentPortfolio = this.rebalancingOp.rebalance(user, currentPortfolio, strategyList, financialDataMap);
 				portfolio = getPortfolioDTO(total, currentPortfolio);
 				result.add(portfolio);
 			}
@@ -75,10 +93,8 @@ public class ForecastingOperator extends AbstractOperator {
 		}
 	}
 
-	private BigDecimal computePortfolioPerAsset(Map<Long, PortfolioEntity> portfolioPerAssetMap, BigDecimal total, SortedMap<LocalDate, Map<Long, BigDecimal>> assetForecastPerDateMap) {
-		LocalDate date = assetForecastPerDateMap.firstKey();
-		Map<Long, BigDecimal> valuePerAssetMap = assetForecastPerDateMap.get(date);
-		assetForecastPerDateMap.remove(date);
+	private BigDecimal computePortfolioPerAsset(Map<Long, PortfolioEntity> portfolioPerAssetMap, BigDecimal total,
+												LocalDate date, Map<Long, BigDecimal> valuePerAssetMap) {
 		for(Long idAsset : valuePerAssetMap.keySet()) {
 			PortfolioEntity entity = portfolioPerAssetMap.get(idAsset);
 			BigDecimal units = entity.getUnits();
