@@ -37,7 +37,7 @@ public class PortfolioOperator extends AbstractOperator {
 			}
 		}
 		BigDecimal totalValue = this.portfolioRep.sumValues(user, user.getLastUpdate()).getValue();
-		return this.portfolioWrap.wrapToDTO(user, entityList, totalValue, assetClassMap);
+		return this.portfolioWrap.wrapToDTO(entityList, totalValue, assetClassMap);
 	}
 
 	@Cacheable("portfolioHistory")
@@ -57,7 +57,7 @@ public class PortfolioOperator extends AbstractOperator {
 		Map<LocalDate, BigDecimal> totalMap = Mapper.getMapValues(this.portfolioRep.sumValues(user));
 		Map<Long, Map<LocalDate, BigDecimal>> assetClassMap = new HashMap<>();
 		Map<String, Set<PortfolioEntity>> map = this.createMap(user, entityList, assetClassMap);
-		List<PortfolioDTO> result = this.portfolioWrap.wrapToDTOList(user, entityList, assetClassMap, map, totalMap);
+		List<PortfolioDTO> result = this.portfolioWrap.wrapToDTOList(assetClassMap, map, totalMap);
 		Collections.sort(result);
         return result;
     }

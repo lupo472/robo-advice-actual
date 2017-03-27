@@ -90,7 +90,7 @@ public class RebalancingOperator extends AbstractOperator {
 				assetClassMap.put(entity.getAssetClass().getId(), this.portfolioRep.sumValuesForAssetClass(entity.getAssetClass(), user, LocalDate.now()).getValue());
 			}
 		}
-		return this.portfolioWrap.wrapToDTO(user, currentPortfolio, capital.getAmount(), assetClassMap);
+		return this.portfolioWrap.wrapToDTO(currentPortfolio, capital.getAmount(), assetClassMap);
 	}
 
 }

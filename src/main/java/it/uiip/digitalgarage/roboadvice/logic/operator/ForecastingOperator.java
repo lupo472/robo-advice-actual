@@ -36,31 +36,64 @@ public class ForecastingOperator extends AbstractOperator {
 			return null;
 		}
 		try {
+			Map<Long, SortedMap<LocalDate, Map<Long, BigDecimal>>>  forecastPerClassMap = new HashMap<>();
+			Map<Long, AssetClassEntity> assetClassMap = new HashMap<>();
+			List<PortfolioEntity> portfolioEntityList = new ArrayList<>();
 			for(CustomStrategyEntity strategy : strategyList) {
-
-
-
+				BigDecimal capitalPerClass = capital.getAmount().divide(new BigDecimal(100), 8, RoundingMode.HALF_UP).multiply(strategy.getPercentage());
+				List<AssetEntity> assets = this.assetRep.findByAssetClass(strategy.getAssetClass());
+				SortedMap<LocalDate, Map<Long, BigDecimal>> assetForecastPerDateMap = this.getAssetForecastPerDateMap(assets, period.getPeriod());
+				forecastPerClassMap.put(strategy.getAssetClass().getId(), assetForecastPerDateMap);
+				assetClassMap.put(strategy.getAssetClass().getId(), strategy.getAssetClass());
+				LocalDate date = assetForecastPerDateMap.firstKey();
+				Map<Long, BigDecimal> forecastPerAssetMap = assetForecastPerDateMap.get(date);
+				for(AssetEntity asset : assets) {
+					PortfolioEntity entity = new PortfolioEntity();
+					entity.setAssetClass(strategy.getAssetClass());
+					entity.setAsset(asset);
+					entity.setDate(date);
+					BigDecimal value = capitalPerClass.divide(new BigDecimal(100), 8, RoundingMode.HALF_UP).multiply(asset.getPercentage());
+					entity.setValue(value);
+					BigDecimal units = value.divide(forecastPerAssetMap.get(asset.getId()), 8, RoundingMode.HALF_UP);
+					entity.setUnits(units);
+					portfolioEntityList.add(entity);
+				}
+				assetForecastPerDateMap.remove(date);
 			}
+			//TODO convertire in PortfolioDTO
+			Map<Long, BigDecimal> valuePerAssetClassMap = new HashMap<>();
+			for(PortfolioEntity entity : portfolioEntityList) {
+				if(valuePerAssetClassMap.get(entity.getAssetClass().getId()) == null) {
+					valuePerAssetClassMap.put(entity.getAssetClass().getId(), new BigDecimal(0));
+				}
+				valuePerAssetClassMap.put(entity.getAssetClass().getId(), valuePerAssetClassMap.get(entity.getAssetClass().getId()).add(entity.getValue()));
+			}
+
+			PortfolioDTO portfolio = this.portfolioWrap.wrapToDTO(portfolioEntityList, capital.getAmount(), valuePerAssetClassMap);
+			List<PortfolioDTO> result = new ArrayList<>();
+			result.add(portfolio);
+			return result;
 		} catch (Exception e) {
+			System.out.println("eccezione " + e.getLocalizedMessage());
 			return null;
 		}
-
-		return null;
 	}
 
-	public void cazzo(AssetClassEntity assetClass, int period) throws Exception {
-		List<AssetEntity> assets = this.assetRep.findByAssetClass(assetClass);
-		Map<Long, Map<LocalDate, BigDecimal>> forecastPerAssetMap = getForecastPerAsset(assets, assetClass, period);
-		Map<String, Map<Long, BigDecimal>> assetForecastPerDateMap = new HashMap<>();
+
+
+	public SortedMap<LocalDate, Map<Long, BigDecimal>> getAssetForecastPerDateMap(List<AssetEntity> assets, int period) throws Exception {
+		Map<Long, Map<LocalDate, BigDecimal>> forecastPerAssetMap = getForecastPerAsset(assets, period);
+		SortedMap<LocalDate, Map<Long, BigDecimal>> assetForecastPerDateMap = new TreeMap<>();
 		for(AssetEntity asset : assets) {
 			Map<LocalDate, BigDecimal> valuePerDateMap = forecastPerAssetMap.get(asset.getId());
 			for(LocalDate date : valuePerDateMap.keySet()) {
-				if(assetForecastPerDateMap.get(date.toString()) == null) {
-					assetForecastPerDateMap.put(date.toString(), new HashMap<>());
+				if(assetForecastPerDateMap.get(date) == null) {
+					assetForecastPerDateMap.put(date, new HashMap<>());
 				}
-				assetForecastPerDateMap.get(date.toString()).put(asset.getId(), valuePerDateMap.get(date));
+				assetForecastPerDateMap.get(date).put(asset.getId(), valuePerDateMap.get(date));
 			}
 		}
+		return assetForecastPerDateMap;
 	}
 
 	@Cacheable("forecast")
@@ -69,7 +102,8 @@ public class ForecastingOperator extends AbstractOperator {
 		List<FinancialDataDTO> result = new ArrayList<>();
 		try {
 			for(AssetClassEntity assetClass : assetClassSet) {
-				List<FinancialDataElementDTO> forecastPerClass = this.getForecastPerClass(assetClass, period.getPeriod());
+				List<AssetEntity> assets = this.assetRep.findByAssetClass(assetClass);
+				List<FinancialDataElementDTO> forecastPerClass = this.getForecastPerClass(assets, period.getPeriod());
 				FinancialDataDTO financialData = new FinancialDataDTO();
 				financialData.setAssetClass(this.assetClassConv.convertToDTO(assetClass));
 				financialData.setList(forecastPerClass);
@@ -82,9 +116,8 @@ public class ForecastingOperator extends AbstractOperator {
 		}
 	}
 
-	private List<FinancialDataElementDTO> getForecastPerClass(AssetClassEntity assetClass, int period) throws Exception {
-		List<AssetEntity> assets = this.assetRep.findByAssetClass(assetClass);
-		Map<Long, Map<LocalDate, BigDecimal>> forecastPerAssetMap = getForecastPerAsset(assets, assetClass, period);
+	private List<FinancialDataElementDTO> getForecastPerClass(List<AssetEntity> assets, int period) throws Exception {
+		Map<Long, Map<LocalDate, BigDecimal>> forecastPerAssetMap = getForecastPerAsset(assets, period);
 		List<FinancialDataElementDTO> result = new ArrayList<>();
 		for(int i = 1; i <= period; i++) {
 			FinancialDataElementDTO element = getFinancialDataElement(new ArrayList<>(forecastPerAssetMap.values()), i);
@@ -93,7 +126,7 @@ public class ForecastingOperator extends AbstractOperator {
 		return result;
 	}
 
-	private Map<Long, Map<LocalDate, BigDecimal>> getForecastPerAsset(List<AssetEntity> assets, AssetClassEntity assetClass, int period) throws Exception {
+	private Map<Long, Map<LocalDate, BigDecimal>> getForecastPerAsset(List<AssetEntity> assets, int period) throws Exception {
 		Map<Long, Map<LocalDate, BigDecimal>> result = new HashMap<>();
 		for(AssetEntity asset : assets) {
 			List<FinancialDataEntity> financialDataEntities = this.financialDataRep.findByAssetAndDateLessThanOrderByDateAsc(asset, LocalDate.now());

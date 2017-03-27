@@ -122,16 +122,16 @@ public class BacktestingOperator extends AbstractOperator {
 	}
 
 	private PortfolioDTO getPortfolio(BacktestingDTO request, UserEntity user, List<PortfolioEntity> entityList) {
-		Map<Long, BigDecimal> mapPerAsset = new HashMap<>();
+		Map<Long, BigDecimal> assetClassMap = new HashMap<>();
 		BigDecimal total = new BigDecimal(0);
 		for(PortfolioEntity entity : entityList) {
-			if(mapPerAsset.get(entity.getAssetClass().getId()) == null) {
-				mapPerAsset.put(entity.getAssetClass().getId(), new BigDecimal(0));
+			if(assetClassMap.get(entity.getAssetClass().getId()) == null) {
+				assetClassMap.put(entity.getAssetClass().getId(), new BigDecimal(0));
 			}
-			mapPerAsset.put(entity.getAssetClass().getId(), mapPerAsset.get(entity.getAssetClass().getId()).add(entity.getValue()));
+			assetClassMap.put(entity.getAssetClass().getId(), assetClassMap.get(entity.getAssetClass().getId()).add(entity.getValue()));
 			total = total.add(entity.getValue());
 		}
-		return this.portfolioWrap.wrapToDTO(user, entityList, total, mapPerAsset);
+		return this.portfolioWrap.wrapToDTO(entityList, total, assetClassMap);
 	}
 
 	private BigDecimal getUnitsForAsset(FinancialDataEntity financialData, BigDecimal amount) {
