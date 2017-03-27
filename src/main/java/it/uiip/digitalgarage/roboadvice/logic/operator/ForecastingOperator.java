@@ -36,7 +36,6 @@ public class ForecastingOperator extends AbstractOperator {
 			return null;
 		}
 		try {
-//			Map<Long, AssetClassEntity> assetClassMap = new HashMap<>();
 			List<PortfolioEntity> currentPortfolio = new ArrayList<>();
 			Map<Long, SortedMap<LocalDate, Map<Long, BigDecimal>>>  forecastPerClassMap = new HashMap<>();
 			Map<Long, BigDecimal> capitalPerClassMap = new HashMap<>();
@@ -46,7 +45,6 @@ public class ForecastingOperator extends AbstractOperator {
 				List<AssetEntity> assets = this.assetRep.findByAssetClass(strategy.getAssetClass());
 				SortedMap<LocalDate, Map<Long, BigDecimal>> assetForecastPerDateMap = this.getAssetForecastPerDateMap(assets, period.getPeriod());
 				forecastPerClassMap.put(strategy.getAssetClass().getId(), assetForecastPerDateMap);
-//				assetClassMap.put(strategy.getAssetClass().getId(), strategy.getAssetClass());
 				List<PortfolioEntity> portfolioListPerClass = createStartingPortfolio(strategy, capitalPerClass, assets, assetForecastPerDateMap);
 				currentPortfolio.addAll(portfolioListPerClass);
 			}
@@ -54,27 +52,18 @@ public class ForecastingOperator extends AbstractOperator {
 			List<PortfolioDTO> result = new ArrayList<>();
 			result.add(portfolio);
 			Map<Long, PortfolioEntity> portfolioPerAssetMap = Mapper.getMapPortfolio(currentPortfolio);
-			while(!forecastPerClassMap.values().isEmpty()) {
+			boolean goOn = true;
+			while(goOn) {
 				BigDecimal total = new BigDecimal(0);
 				for(Long idClass : forecastPerClassMap.keySet()) {
 					SortedMap<LocalDate, Map<Long, BigDecimal>> assetForecastPerDateMap = forecastPerClassMap.get(idClass);
 					if(assetForecastPerDateMap.keySet().isEmpty()) {
+						goOn = false;
 						break;
 					}
-					LocalDate date = assetForecastPerDateMap.firstKey();
-					Map<Long, BigDecimal> valuePerAssetMap = assetForecastPerDateMap.get(date);
-					assetForecastPerDateMap.remove(date);
-					System.out.println("Data: " + date);
-					for(Long idAsset : valuePerAssetMap.keySet()) {
-						PortfolioEntity entity = portfolioPerAssetMap.get(idAsset);
-						BigDecimal units = entity.getUnits();
-						BigDecimal newValue = units.multiply(valuePerAssetMap.get(idAsset));
-						entity.setValue(newValue);
-						entity.setDate(date);
-						total = total.add(newValue);
-					}
+					total = computePortfolioPerAsset(portfolioPerAssetMap, total, assetForecastPerDateMap);
 				}
-				if(total.doubleValue() == 0) {
+				if(!goOn) {
 					break;
 				}
 				portfolio = getPortfolioDTO(total, currentPortfolio);
@@ -82,10 +71,23 @@ public class ForecastingOperator extends AbstractOperator {
 			}
 			return result;
 		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("eccezione " + e.getLocalizedMessage());
 			return null;
 		}
+	}
+
+	private BigDecimal computePortfolioPerAsset(Map<Long, PortfolioEntity> portfolioPerAssetMap, BigDecimal total, SortedMap<LocalDate, Map<Long, BigDecimal>> assetForecastPerDateMap) {
+		LocalDate date = assetForecastPerDateMap.firstKey();
+		Map<Long, BigDecimal> valuePerAssetMap = assetForecastPerDateMap.get(date);
+		assetForecastPerDateMap.remove(date);
+		for(Long idAsset : valuePerAssetMap.keySet()) {
+			PortfolioEntity entity = portfolioPerAssetMap.get(idAsset);
+			BigDecimal units = entity.getUnits();
+			BigDecimal newValue = units.multiply(valuePerAssetMap.get(idAsset));
+			entity.setValue(newValue);
+			entity.setDate(date);
+			total = total.add(newValue);
+		}
+		return total;
 	}
 
 	private PortfolioDTO getPortfolioDTO(BigDecimal total, List<PortfolioEntity> portfolioEntityList) {

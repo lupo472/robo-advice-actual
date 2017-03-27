@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.*;
@@ -53,6 +54,7 @@ public class PortfolioWrapper {
 		Map<Long, PortfolioElementDTO> map = new HashMap<>();
 		for (PortfolioEntity entity : entityList) {
 			BigDecimal assetClassValue = assetClassMap.get(entity.getAssetClass().getId());
+			assetClassValue = assetClassValue.divide(new BigDecimal(1), 4, RoundingMode.HALF_UP);
 			PortfolioElementDTO element = new PortfolioElementDTO();
 			element.setId(entity.getAssetClass().getId());
 			element.setName(entity.getAssetClass().getName());
