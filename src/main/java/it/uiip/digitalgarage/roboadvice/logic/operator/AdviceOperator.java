@@ -3,6 +3,7 @@ package it.uiip.digitalgarage.roboadvice.logic.operator;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.*;
 import it.uiip.digitalgarage.roboadvice.service.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Luca on 27/03/2017.
- */
-
 @Service
 public class AdviceOperator extends AbstractOperator {
 
@@ -22,18 +19,15 @@ public class AdviceOperator extends AbstractOperator {
     private ForecastingOperator forecastingOp;
 
     @Autowired
-    private PortfolioOperator portfolioOp;
-
-    @Autowired
     private DefaultStrategyOperator defaultStrategyOp;
 
-//    public Map<DefaultStrategyEntity, CapitalDTO> computeDefaultStrategyForecastCapital(List<FinancialDataDTO> forecastFinancialData) {
-//        PeriodDTO periodRequest = new PeriodDTO();
-//        periodRequest.setPeriod(14);
-//        return null;
-//    }
-
-    public DefaultStrategyDTO getAdvice(PeriodDTO period, Authentication auth /*UserEntity user, Map<DefaultStrategyEntity, CapitalDTO> defaultStrategiesForecastedCapitals, List<FinancialDataDTO> forecastFinancialData*/) {
+    /*
+     * Performances for this method are not good
+     * TODO: improve if necessary
+     * TODO: check errors if the user doesn't have capital
+     */
+    @Cacheable("advice")
+    public DefaultStrategyDTO getAdvice(PeriodDTO period, Authentication auth) {
         UserEntity user = this.userRep.findByEmail(auth.getName());
         List<PortfolioDTO> currentStrategyPortfolio = this.forecastingOp.getDemo(period, auth);
         BigDecimal finalCapital = new BigDecimal(0);

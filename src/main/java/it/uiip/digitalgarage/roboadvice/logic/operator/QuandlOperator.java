@@ -13,7 +13,7 @@ import it.uiip.digitalgarage.roboadvice.persistence.quandl.QuandlDBUpdater;
 @Service
 public class QuandlOperator extends AbstractOperator {
 
-	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo"}, allEntries = true)
+	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo", "advice"}, allEntries = true)
 	public void updateFinancialDataSet() {
 		List<AssetEntity> assets = (List<AssetEntity>) this.assetRep.findAll();
 		QuandlDBUpdater q = new QuandlDBUpdater();
@@ -23,7 +23,7 @@ public class QuandlOperator extends AbstractOperator {
 		}
 	}
 
-	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo"}, allEntries = true)
+	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo", "advice"}, allEntries = true)
 	public void initializeFinancialDataSet() {
 		List<AssetEntity> assets = (List<AssetEntity>) this.assetRep.findAll();
 		QuandlDBInitializer q = new QuandlDBInitializer();
