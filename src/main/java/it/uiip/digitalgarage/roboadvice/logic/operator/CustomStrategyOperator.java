@@ -21,13 +21,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomStrategyOperator extends AbstractOperator{
 
-	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo"}, allEntries = true)
+	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo", "advice"}, allEntries = true)
     public boolean setCustomStrategy(CustomStrategyDTO request, Authentication auth) {
     	UserEntity user = this.userRep.findByEmail(auth.getName());
     	return this.setCustomStrategy(request, user);
     }
 
-	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo"}, allEntries = true)
+	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo", "advice"}, allEntries = true)
     public boolean setCustomStrategy(CustomStrategyDTO request, UserEntity user) {
 		if(user == null){
 			return false;
@@ -87,7 +87,7 @@ public class CustomStrategyOperator extends AbstractOperator{
 		}
 	    List<CustomStrategyResponseDTO> list = new ArrayList<>();
     	for (String date : map.keySet()) {
-			CustomStrategyResponseDTO dto = (CustomStrategyResponseDTO) this.customStrategyWrap.wrapToDTO(map.get(date));
+			CustomStrategyResponseDTO dto = this.customStrategyWrap.wrapToDTO(map.get(date));
 			list.add(dto);
 		}
     	Collections.sort(list);
