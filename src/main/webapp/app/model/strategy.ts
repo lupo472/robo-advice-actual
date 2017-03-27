@@ -43,6 +43,12 @@ export class Strategy {
     sendStrategy() : any {
       return {"list":this.list}
     }
+    resetArray(){
+        this.arrayColor = [];
+        this.arrayColors = [];
+        this.arrayLabels = [];
+        this.arrayPercentages = [];
+    }
     //Create the chart of the strategy
     createChart(){
       for (let assetClassStrategy of this.list) {

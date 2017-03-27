@@ -21,6 +21,7 @@ import { D3Service } from 'd3-ng2-service';
 // Routing Module
 import { AppRoutingModule } from './app.routing';
 
+
 // Layouts
 import { FullLayoutComponent } from './layouts/full-layout.component';
 import { SimpleLayoutComponent } from './layouts/simple-layout.component';

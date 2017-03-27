@@ -23,6 +23,7 @@ export class StrategyService {
   dataHistory:any=[];
   period:number = 30;
   activeStrategy:Strategy;
+  adviceStrategy:Strategy;
   list:AssetClassStrategy[];
   public myActiveStrategyChart:MyActiveStrategyAmChart;
 
@@ -49,7 +50,13 @@ export class StrategyService {
     this.strategies.addStrategy(this.customStrategy);
     return this.strategies;
   }
-
+  getAdvice(period){
+    return this.AppService.getAdvice(period).map(strategyAdvice => this.assignStrategyAdvice(strategyAdvice));
+  }
+  assignStrategyAdvice(strategyAdvice){
+    console.log("Advice Strategy",strategyAdvice);
+    this.adviceStrategy = new Strategy();
+  }
   /***************************TESTING CHART HISTORY VERSION 2*****************************************/
   getHistoryChart() {
     return this.AppService.getHistoryStrategies().map(res => this.historyChart(res));

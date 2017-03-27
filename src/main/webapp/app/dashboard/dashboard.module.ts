@@ -17,6 +17,8 @@ import {CalendarModule} from 'primeng/primeng';
 import { HistoryChartComponent } from './history-chart/history-chart.component';
 
 import {SharedModuleModule} from "../shared/shared-module/shared-module.module";
+import { TabMenuComponent } from './tab-menu/tab-menu.component';
+import {StrategySelectorComponent} from "../edit/strategy-selector/strategy-selector.component";
 
 
 @NgModule({
@@ -37,7 +39,9 @@ import {SharedModuleModule} from "../shared/shared-module/shared-module.module";
     StrategyGraphComponent,
     StrategyClassesGraphComponent,
     HystoryStrategyComponent,
-    HistoryChartComponent
+    HistoryChartComponent,
+    TabMenuComponent,
+    StrategySelectorComponent
   ],
   exports: [
     StrategyClassesGraphComponent
