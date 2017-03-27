@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { DropdownModule } from 'ng2-bootstrap/dropdown';
 import { AlertModule } from 'ng2-bootstrap/alert';
 import { TabsModule } from 'ng2-bootstrap/tabs';
+import { ProgressbarModule } from 'ng2-bootstrap/progressbar';
 import { NAV_DROPDOWN_DIRECTIVES } from './shared/nav-dropdown.directive';
 import { Cookie } from 'ng2-cookies';
 
@@ -39,6 +40,7 @@ import { AmChartsModule } from "amcharts3-angular2";
     AppRoutingModule,
     DropdownModule.forRoot(),
     TabsModule.forRoot(),
+      ProgressbarModule.forRoot(),
     ChartsModule,
     HttpModule,
     AlertModule

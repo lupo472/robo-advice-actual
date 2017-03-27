@@ -1,28 +1,40 @@
-import { Component, OnInit,ViewChild, Renderer } from '@angular/core';
-import {MyActiveStrategyAmChart} from "../model/my-active-strategy-am-chart";
-import { StrategyService } from '../services/strategy.service';
+import { Component, OnInit } from '@angular/core';
+import { AssetService } from "../services/asset.service";
+import { AssetClassStrategy } from "../model/asset-class-strategy";
+import { AssetClass } from "../model/asset-class";
 
 @Component({
-  templateUrl: 'dashboard.component.html'
+  templateUrl: 'backtesting.component.html'
 })
-export class DashboardComponent implements OnInit {
-  //options;
-  //render = false;
-  //@ViewChild('chartTest2') public chartTest2;
+export class BacktestingComponent implements OnInit {
 
-  constructor() { }
+  constructor(private AssetService:AssetService) { }
+
+  private list: AssetClassStrategy[] = [new AssetClassStrategy(10, 1, "bonds"), new AssetClassStrategy(90, 2, "forex")];
+  private period:number = 30;
+
+  public data:any = {};
+
+  public render: boolean = false;
+
+  public selected = [];
+  public assetclasses:AssetClass[] = [];
+
+  public max = 100;
+
 
   ngOnInit() {
-    //this.StrategyService.getActiveStrategy().subscribe(res => this.getStrategy(res));
-
+    this.AssetService.getBacktesting(this.list, this.period).subscribe(res => this.getBacktesting(res));
+    this.assetclasses = this.AssetService.getDefaultAssetClass();
   }
-  /*getStrategy(data){
-    this.options = data;
-    this.render = true;
-    console.log("data",data);
-  }
-  changeChart(){
-    this.chartTest2.changeChart();
-  }*/
 
+  getBacktesting(res) {
+    if (res.response == 1) {
+      this.data = res.data;
+
+      console.log("DATA FOR BACKTEST: ", this.data);
+
+      this.render = true;
+    }
+  }
 }

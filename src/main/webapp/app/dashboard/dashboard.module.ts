@@ -39,6 +39,9 @@ import {SharedModuleModule} from "../shared/shared-module/shared-module.module";
     StrategyClassesGraphComponent,
     HystoryStrategyComponent,
     HistoryChartComponent
+  ],
+  exports: [
+    StrategyClassesGraphComponent
   ]
 })
 export class DashboardModule { }

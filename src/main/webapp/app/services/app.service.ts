@@ -3,7 +3,6 @@ import { AppConfig } from './app.config';
 import { Cookie } from 'ng2-cookies';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
-import {GenericResponse} from "../model/generic-response";
 
 @Injectable()
 export class AppService {
@@ -100,14 +99,14 @@ export class AppService {
       .map(response => {console.log(response.json())});
   }
 
-  getCurrentCapital() {
+  getBacktesting(list, period, capital) {
     this.headers = new Headers();
     this.headers.append('Authorization',Cookie.get('token'));
     //this.headers.append('Access-Control-Allow-Credentials','true');
     //this.headers.append('Content-Type','application/json;charset=UTF-8');
     this.opts = new RequestOptions();
     this.opts.headers = this.headers;
-    return this.http.post(AppConfig.url + 'getCurrentCapital', {}, this.opts)
+    return this.http.post(AppConfig.url + 'getBacktesting', {list: list, period: period, capital: capital}, this.opts)
       .map(response => response.json());
   }
 
