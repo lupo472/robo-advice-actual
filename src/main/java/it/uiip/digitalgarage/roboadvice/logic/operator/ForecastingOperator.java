@@ -34,6 +34,11 @@ public class ForecastingOperator extends AbstractOperator {
 	public List<PortfolioDTO> getDemo(PeriodDTO period, Authentication auth) {
 		UserEntity user = this.userRep.findByEmail(auth.getName());
 		List<CustomStrategyEntity> strategyList = this.customStrategyRep.findByUserAndActive(user, true);
+		return this.getDemo(strategyList, period, user);
+	}
+
+	@Cacheable("demo")
+	public List<PortfolioDTO> getDemo(List<CustomStrategyEntity> strategyList, PeriodDTO period, UserEntity user) {
 		CapitalEntity capital = this.capitalRep.findByUserAndDate(user, user.getLastUpdate());
 		if(strategyList.isEmpty() || capital == null) {
 			return null;
