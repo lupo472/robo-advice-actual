@@ -20,23 +20,48 @@ export class EditComponent implements OnInit, AfterViewInit, OnDestroy {
     public strategies: Strategy[] = [];
     public financialDataSet: FinancialData[] = [];
     public financialDataSetAmChart: FinancialData[] = [];
+    public forecastDataSetAmChart: FinancialData[] = [];
     public assetClassStrategies: AssetClassStrategy[] = [];
     public selected = [];
     errorMessage:string;
     isDisabled = true;
-    render = false;
+    ren = false;
+    render:string="nullo";
+    market=true;
+    forecasting=true;
+    renderMarket=false;
+    renderForecasting=false;
     @ViewChild('childModal') public childModal: ModalDirective;
-    @ViewChild('chartTest') public chartTest;
+    @ViewChild('chartMarket') public chartMarket;
+    @ViewChild('chartForecasting') public chartForecasting;
+    @ViewChild('appCard') public appcard;
 
     constructor(private _z: NgZone, public AssetService: AssetService, public StrategyService: StrategyService, private router: Router) {
         this.isCustom = false;
     }
     public hideChildModal(): void {this.childModal.hide();}
     public handleShow(id){
-        this.render= true;
-        let dataProvider = this.financialDataSetAmChart[id-1].getFinancialData();
-        let color = this.financialDataSetAmChart[id-1].assignColour();
-        this.chartTest.changeChart(dataProvider,color);
+        console.log(id);
+
+    }
+    handleUpdate(render,id){
+       //this.render = render;
+       if (render == "market"){
+           this.renderMarket = true;
+           this.renderForecasting = false;
+           this.market=false;
+           let dataProvider = this.financialDataSetAmChart[id-1].getFinancialData();
+           let color = this.financialDataSetAmChart[id-1].assignColour();
+           this.chartMarket.changeChart(dataProvider,color);
+       }
+       if (render == "forecasting"){
+           this.renderMarket = false;
+           this.renderForecasting = true;
+           this.market=false;
+           let dataProviderForecast = this.forecastDataSetAmChart[id-1].getFinancialData();
+           let colorForecast = this.forecastDataSetAmChart[id-1].assignColour();
+           this.chartMarket.changeChart(dataProviderForecast,colorForecast);
+       }
     }
     ngOnInit(): void {
         this.AssetService.getFinancialDataSet(365,"small").subscribe(
@@ -53,6 +78,7 @@ export class EditComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     //ASSIGN ASSET CLASS
     getAssetClass(res): void {
+        this.StrategyService.getActiveStrategy().subscribe();
         this.StrategyService.getDefaultStrategySet().subscribe(res => this.getStrategy(res));
         this.assetClassStrategies = res.getAssetClassStrategies();
     }
@@ -60,10 +86,14 @@ export class EditComponent implements OnInit, AfterViewInit, OnDestroy {
     getStrategy(res): void {
         this.strategies = res.getStrategies();
         this.AssetService.getFinancialDataSet(1000,"big").subscribe((res => this.getFinancialDataModal(res)));
+        this.AssetService.getForecast(90,"big").subscribe(res=>this.assignForecast(res));
     }
     //ASSIGN FINANCIAL DATA FOR MORE YEARS
     getFinancialDataModal(res){
         this.financialDataSetAmChart = res;
+    }
+    assignForecast(res){
+        this.forecastDataSetAmChart = res;
     }
     ngAfterViewInit() {
         // viewChild is set after the view has been initialized

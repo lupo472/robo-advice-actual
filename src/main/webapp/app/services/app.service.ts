@@ -84,6 +84,15 @@ export class AppService {
         .map(this.extractData)
         .catch(this.handleError);
   }
+  getForecast(period): Observable<FinancialData[]> {
+    this.headers = new Headers();
+    this.headers.append('Authorization',Cookie.get('token'));
+    this.opts = new RequestOptions();
+    this.opts.headers = this.headers;
+    return this.http.post(AppConfig.url + 'getForecast', { period: period },this.opts)
+        .map(this.extractData)
+        .catch(this.handleError);
+  }
 
   getPortfolioForPeriod(period) {
     this.headers = new Headers();
@@ -160,5 +169,6 @@ export class AppService {
     return this.http.post(AppConfig.url + 'getCustomStrategyHistory', {Period:'0'}, this.opts)
         .map(response => response.json());
   }
+
 
 }

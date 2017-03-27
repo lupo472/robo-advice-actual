@@ -1,31 +1,43 @@
 <div class="card card-inverse" [style.backgroundColor]="color">
 	<div class="card-block">
+
+		<div class="btn-group float-right edit-padding" dropdown>
+			<button type="button"
+					class="btn btn-transparent dropdown-toggle p-0" dropdownToggle>
+				<i class="icon-settings"></i>
+			</button>
+			<div class="dropdown-menu dropdown-menu-right" dropdownMenu>
+				<a class="dropdown-item" href="#graphBig" (click)="show('forecasting')">Forecasting</a>
+				<a class="dropdown-item" href="#graphBig" (click)="show('market')">Market Value</a>
+			</div>
+		</div>
+
 		<div class="h5 float-left text-capitalize mb-0">
-			{{value}}
-			<label></label>
+			{{value}}<p>1 year</p>
+			<!--<label></label>
 			<div class="btn-group float-right" dropdown>
 				<button type="button"
 						class="btn btn-transparent dropdown-toggle p-0" dropdownToggle>
-					<i class="fa fa-line-chart" aria-hidden="true"></i>
+					<i class="fa fa-cog" aria-hidden="true"></i>
 				</button>
 				<div class="dropdown-menu dropdown-menu-right" dropdownMenu>
-					<a class="dropdown-item" href="#">Forecasting</a> <a
-						class="dropdown-item" href="#">Market Value</a>
+					<a class="dropdown-item" href="#graphBig" (click)="show('forecasting')">Forecasting</a>
+					<a class="dropdown-item" href="#graphBig" (click)="show('market')">Market Value</a>
 				</div>
-			</div>
+			</div>-->
 		</div>
 
 		<div class="h5 float-right mb-0">
 			<i class="line-chart"></i>
 			{{percentage}}%
 		</div>
+
 	</div>
 	 <div  class="chart-wrapper px-1" style="height:100px">
 					<canvas baseChart class="chart" [datasets]="financialData.lineChartData"
 						[labels]="financialData.lineChartLabels" [options]="financialData.lineChartOptions"
 						[colors]="financialData.lineChartColours" [legend]="financialData.lineChartLegend"
 						[chartType]="financialData.lineChartType" (chartHover)="chartHovered($event)"
-							(click)="show()"
 						></canvas>
 	 </div>
 	<div class="card-block" *ngIf="isCustom">

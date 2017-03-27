@@ -21,6 +21,7 @@ export class AssetService {
   private data:any = {};
   assetClassStrategies:AssetClassStrategies;
   financialDataSet:FinancialDataSet;
+  forecastDataSet:FinancialDataSet;
 
   constructor(private AppService:AppService) {
   }
@@ -50,7 +51,15 @@ export class AssetService {
     return this.AppService.getFinancialDataSet(period)
         .map(financialDataSet => this.assignFinancialData(financialDataSet,type));
   }
-
+  getForecast(period,type){
+    return this.AppService.getForecast(period)
+        .map(forecastDataSet => this.assignForecastData(forecastDataSet,type));
+  }
+  assignForecastData(forecastDataSet,type){
+    this.forecastDataSet = new FinancialDataSet();
+    this.forecastDataSet.createFinancialDataSet(forecastDataSet,type);
+    return this.forecastDataSet.getFinancialDataSet();
+  }
   assignFinancialData(financialDataSet,type){
     this.financialDataSet = new FinancialDataSet();
     this.financialDataSet.createFinancialDataSet(financialDataSet,type);

@@ -18,16 +18,18 @@
     <div class="row">
 
         <div class="col-sm-12 col-md-6 col-lg-3" *ngFor="let assets of assetClassStrategies; let i = index;">
-            <a  href="#graphBig">
-            <app-card-asset-class [value]="assets.name"
+
+            <app-card-asset-class #appCard [value]="assets.name"
                                   [isCustom]="isCustom" [id]="assets.id"
                                   [percentage]="assets.percentage"
                                   [color]="assets.assignColour()"
                                   [financialData]="financialDataSet[assets.id-1]"
                                   [reset]="reset"
                                   (updatePercentage)="handleUpdatePercentage($event)"
-                                  (click)="handleShow(assets.id)">
-            </app-card-asset-class></a>
+                                  (click)="handleShow(assets.id)"
+                                  (update)="handleUpdate($event,assets.id)"
+                                 >
+            </app-card-asset-class>
         </div>
 
     </div>
@@ -50,9 +52,14 @@
 
     <!-- GRAPH ROW -->
 </div>
-<div [hidden]="!render" id="graphBig">
-    <app-detail-market-value-chart #chartTest [detailOptions]="detailOptions"></app-detail-market-value-chart>
+<div id="graphBig">
+        <div [hidden]="market">
+            <p *ngIf="renderForecasting" [style.font-family]="'Inconsolata'">FORECASTING 90 DAYS</p>
+            <p *ngIf="renderMarket" [style.font-family]="'Inconsolata'">MARKET VALUE 3 YEARS</p>
+            <app-detail-market-value-chart #chartMarket [detailOptions]="detailOptions"></app-detail-market-value-chart>
+        </div>
 </div>
+
 
     <!-- MODAL ROW -->
 <div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"

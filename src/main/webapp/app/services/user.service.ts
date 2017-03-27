@@ -1,4 +1,3 @@
-
 import { Injectable, Inject } from '@angular/core';
 import { AppConfig } from './app.config';
 import { AppService } from './app.service';
@@ -8,6 +7,7 @@ import { Login } from '../model/login';
 
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
+import {StrategyService} from "./strategy.service";
 
 @Injectable()
 export class UserService {
@@ -15,7 +15,7 @@ export class UserService {
   private login:Login;
   private capital:number = 10000;
 
-  constructor(private AppService: AppService) { }
+  constructor(private AppService: AppService,private StrategyService :StrategyService) { }
 
   //SET AND GET USER
   setLogin(data) {
@@ -27,7 +27,10 @@ export class UserService {
   getLogin() {
     return this.login;
   }
-
+  logout(){
+    Cookie.deleteAll();
+    this.StrategyService.activeStrategy = null;
+  }
   //LOGIN
   loginUser(user) {
     return this.AppService.loginUser(user).map(res => { if (res.response == 1) { return this.setLogin(res.data) } else { return res } });
@@ -41,9 +44,11 @@ export class UserService {
   //INITIAL REGISTER CAPITAL
   addCapital() {
     console.log("ADDING CAPITAL");
-     this.AppService.addCapital(this.capital).subscribe();
+     //this.AppService.addCapital(this.capital).subscribe();
   }
+  addActiveStrategy(){
 
+  }
   //SET THE CURRENT CAPITAL FOR THIS USER
   // setCapital(res) {
   //   this.user.capital = res.data.amount;
