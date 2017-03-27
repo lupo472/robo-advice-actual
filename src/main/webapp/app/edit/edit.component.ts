@@ -32,27 +32,21 @@ export class EditComponent implements OnInit, AfterViewInit, OnDestroy {
     renderMarket=false;
     renderForecasting=false;
     @ViewChild('childModal') public childModal: ModalDirective;
-    @ViewChild('chartMarket') public chartMarket;
-    @ViewChild('chartForecasting') public chartForecasting;
-    @ViewChild('appCard') public appcard;
+    @ViewChild('chartGraph') public chartGraph;
 
     constructor(private _z: NgZone, public AssetService: AssetService, public StrategyService: StrategyService, private router: Router) {
         this.isCustom = false;
     }
     public hideChildModal(): void {this.childModal.hide();}
-    public handleShow(id){
-        console.log(id);
-
-    }
+   
     handleUpdate(render,id){
-       //this.render = render;
        if (render == "market"){
            this.renderMarket = true;
            this.renderForecasting = false;
            this.market=false;
            let dataProvider = this.financialDataSetAmChart[id-1].getFinancialData();
            let color = this.financialDataSetAmChart[id-1].assignColour();
-           this.chartMarket.changeChart(dataProvider,color);
+           this.chartGraph.changeChart(dataProvider,color);
        }
        if (render == "forecasting"){
            this.renderMarket = false;
@@ -60,7 +54,7 @@ export class EditComponent implements OnInit, AfterViewInit, OnDestroy {
            this.market=false;
            let dataProviderForecast = this.forecastDataSetAmChart[id-1].getFinancialData();
            let colorForecast = this.forecastDataSetAmChart[id-1].assignColour();
-           this.chartMarket.changeChart(dataProviderForecast,colorForecast);
+           this.chartGraph.changeChart(dataProviderForecast,colorForecast);
        }
     }
     ngOnInit(): void {
