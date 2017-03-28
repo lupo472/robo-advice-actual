@@ -5,6 +5,11 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+/**
+ * DTO String password (min 5 chars).
+ *
+ * @author Cristian Laurini
+ */
 public @Data class PasswordDTO {
 
 	@NotNull

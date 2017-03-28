@@ -7,6 +7,12 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * DTO that represents a DefaultStrategy with String name, int risk and a List
+ * of AssetClassStrategyDTO (min 1 element).
+ *
+ * @author Cristian Laurini
+ */
 public @Data class DefaultStrategyDTO implements Comparable<DefaultStrategyDTO> {
 	
 	@NotNull

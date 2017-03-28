@@ -6,8 +6,12 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Email;
 
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Required;
 
+/**
+ * DTO that represents an User with String email and String password (min 5 chars).
+ *
+ * @author Cristian Laurini
+ */
 public @Data class UserDTO {
 
 	@NotNull
