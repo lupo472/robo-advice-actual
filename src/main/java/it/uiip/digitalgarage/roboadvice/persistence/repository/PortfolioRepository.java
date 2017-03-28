@@ -14,6 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * This interface offers methods to retrieve data from the portfolio table in the database.
+ *
+ * @author Cristian Laurini
+ * @author Luca Antilici
+ */
 @Repository
 @Transactional
 public interface PortfolioRepository extends PagingAndSortingRepository<PortfolioEntity, Long> {
@@ -34,7 +40,14 @@ public interface PortfolioRepository extends PagingAndSortingRepository<Portfoli
 	static final String SUM_VALUES_ASSET_CLASS_DATE = "SELECT NEW it.uiip.digitalgarage.roboadvice.persistence.util.Value"
 												+ "(p.date, SUM(p.value)) FROM PortfolioEntity p "
 												+ "WHERE p.user = ?2 AND p.date = ?3 AND p.assetClass = ?1";
-	
+
+	/**
+	 * This method allows to retrieve the sum of values for each set of portfolios of the specified user
+	 * grouped by date.
+	 *
+	 * @param user	UserEntity is the user for wich
+	 * @return
+	 */
 	@Query(value = SUM_VALUES)
 	public List<Value> sumValues(UserEntity user);
 

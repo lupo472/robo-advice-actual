@@ -20,8 +20,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class offers the methods useful for the Authentication.
+ *
+ * @author Luca Antilici
+ */
 public class JWTFilter extends GenericFilterBean {
-    private static final String AUTHORIZATION_HEADER = "Authorization";
+
+	private static final String AUTHORIZATION_HEADER = "Authorization";
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain filterChain) throws IOException, ServletException {

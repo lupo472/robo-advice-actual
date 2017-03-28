@@ -1,5 +1,10 @@
 package it.uiip.digitalgarage.roboadvice.service.util;
 
+/**
+ * This class is just a container of constants.
+ *
+ * @author Cristian Laurini
+ */
 public class ControllerConstants {
 	
 	public static final String DONE = "done";

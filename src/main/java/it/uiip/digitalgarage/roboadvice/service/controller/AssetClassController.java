@@ -10,10 +10,21 @@ import org.springframework.web.bind.annotation.RestController;
 import it.uiip.digitalgarage.roboadvice.service.dto.AssetClassDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 
+/**
+ * This class contains the Rest-APIs related to the Asset Class
+ *
+ * @author Cristian Laurini
+ */
 @CrossOrigin("*")
 @RestController
 public class AssetClassController extends AbstractController {
-	
+
+	/**
+	 * This method allows to get all the Asset Classes.
+	 * The related API is <b>/getAssetClassSet</b>
+	 *
+	 * @return 	GenericResponse with response 1 and a List of AssetClassDTOs.
+	 */
 	@RequestMapping("/getAssetClassSet")
 	@ResponseBody
 	public GenericResponse<?> getAssetClassSet() {

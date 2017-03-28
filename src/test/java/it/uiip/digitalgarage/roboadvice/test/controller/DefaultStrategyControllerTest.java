@@ -35,9 +35,6 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
-/**
- * Created by Luca on 22/03/2017.
- */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = RoboadviceApplication.class)
 public class DefaultStrategyControllerTest {

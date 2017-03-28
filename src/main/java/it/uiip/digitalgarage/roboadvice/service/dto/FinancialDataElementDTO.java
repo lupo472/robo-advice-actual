@@ -6,6 +6,11 @@ import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 
+/**
+ * DTO that represents a single Element of a FinancialData with BigDecimal value, and String date.
+ *
+ * @author Cristian Laurini
+ */
 public @Data class FinancialDataElementDTO implements Comparable<FinancialDataElementDTO>  {
 
 	@NotNull
