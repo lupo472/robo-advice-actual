@@ -76,7 +76,7 @@ public class PortfolioOperator extends AbstractOperator {
 		return map;
 	}
 
-	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo", "advice"}, allEntries = true)
+	@CacheEvict(value = {"activeStrategy", "strategies", "currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo", "advice"}, allEntries = true)
     public boolean createUserPortfolio(UserEntity user, List<CustomStrategyEntity> strategyEntity, CapitalEntity capital,
 									   Map<Long, List<AssetEntity>> mapAssets, Map<Long, FinancialDataEntity> mapFD) {
 		if(strategyEntity.isEmpty()) {
@@ -135,7 +135,7 @@ public class PortfolioOperator extends AbstractOperator {
     	return amount;
     }
 
-	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo", "advice"}, allEntries = true)
+	@CacheEvict(value = {"activeStrategy", "strategies", "currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo", "advice"}, allEntries = true)
 	public List<PortfolioEntity> computeUserPortfolio(UserEntity user, List<PortfolioEntity> currentPortfolio, Map<Long, FinancialDataEntity> map) {
     	List<PortfolioEntity> newPortfolioList = new ArrayList<>();
     	for (PortfolioEntity element : currentPortfolio) {
@@ -166,7 +166,7 @@ public class PortfolioOperator extends AbstractOperator {
     	return result;
     }
 
-	@CacheEvict(value = {"currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo", "advice"}, allEntries = true)
+	@CacheEvict(value = {"activeStrategy", "strategies", "currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo", "advice"}, allEntries = true)
     public void savePortfolio(List<PortfolioEntity> entities) {
     	for (PortfolioEntity entity : entities) {
     		PortfolioEntity savedEntity = this.portfolioRep.findByUserAndAssetAndDate(entity.getUser(), entity.getAsset(), LocalDate.now());
