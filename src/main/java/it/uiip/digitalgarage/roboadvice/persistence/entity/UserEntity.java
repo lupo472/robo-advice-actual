@@ -11,6 +11,12 @@ import javax.persistence.Table;
 
 import lombok.Data;
 
+/**
+ * Entity that represents the user table on the database with Long id, String email, String password,
+ * LocalDate date and LocalDate lastUpdate.
+ *
+ * @author Cristian Laurini
+ */
 @Entity
 @Table(name = "user")
 public @Data class UserEntity {

@@ -7,6 +7,12 @@ import lombok.Data;
 
 import javax.persistence.*;
 
+/**
+ * Entity that represents the portfolio table on the database with Long id, UserEntity user, AssetEntity asset,
+ * AssetClassEntity assetClass, BigDecimal units, BigDecimal value and LocalDate date.
+ *
+ * @author Cristian Laurini
+ */
 @Entity
 @Table(name = "portfolio", indexes = {@Index(name = "IDX1", columnList = "id_user, date"),
 									  @Index(name = "IDX2", columnList = "id_user, id_asset, date")})

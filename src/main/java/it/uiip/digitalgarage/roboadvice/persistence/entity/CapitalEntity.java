@@ -16,6 +16,13 @@ import javax.persistence.Table;
 
 import lombok.Data;
 
+/**
+ * Entity that represents the capital table on the database with Long id, UserEntity user,
+ * BigDecimal amount, and LocalDate date.
+ *
+ * @author Cristian Laurini
+ * @author Luca Antilici
+ */
 @Entity
 @Table(name = "capital", indexes = {@Index(name = "IDX1", columnList = "id_user, date")})
 public @Data class CapitalEntity {

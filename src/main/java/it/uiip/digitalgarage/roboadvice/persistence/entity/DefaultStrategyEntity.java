@@ -14,6 +14,12 @@ import javax.persistence.Table;
 
 import lombok.Data;
 
+/**
+ * Entity that represents the default_strategy table on the database with Long id, String name
+ * and AssetClassEntity assetClass, BigDecimal percentage
+ *
+ * @author Cristian Laurini
+ */
 @Entity
 @Table(name = "default_strategy")
 public @Data class DefaultStrategyEntity {

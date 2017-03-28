@@ -7,6 +7,13 @@ import lombok.Data;
 
 import javax.persistence.*;
 
+/**
+ * Entity that represents the custom_strategy table on the database with Long id, UserEntity user,
+ * AssetClassEntity assetClass, BigDecimal percentage, boolean active and LocalDate date.
+ *
+ * @author Cristian Laurini
+ * @author Luca Antilici
+ */
 @Entity
 @Table(name = "custom_strategy", indexes = {@Index(name = "IDX1", columnList = "id_user, date"), 
 											@Index(name = "IDX2", columnList = "id_user, active")})

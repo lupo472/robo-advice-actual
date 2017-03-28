@@ -15,6 +15,12 @@ import javax.persistence.Table;
 
 import lombok.Data;
 
+/**
+ * Entity that represents the asset table on the database with Long id, String name, String dataSource
+ * BigDecimal percentage, int remarksIndex and LocalDate lastUpdate.
+ *
+ * @author Cristian Laurini
+ */
 @Entity
 @Table(name = "asset")
 public @Data class AssetEntity {
