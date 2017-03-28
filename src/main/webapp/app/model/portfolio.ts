@@ -66,8 +66,6 @@ export class Portfolio {
             }
         }
 
-        console.log("DATASETS: ", datasets);
-
         let datasplice = [];
 
         for (let iter = 0; iter < datasets.length; iter++) {
@@ -77,7 +75,6 @@ export class Portfolio {
         }
 
         this.data = {datasets: datasplice, labels: labels};
-        console.log("DATA MAPPED: ", this.data);
     }
 
     getData() {

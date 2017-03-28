@@ -1,21 +1,17 @@
-import {AssetService} from '../../services/asset.service';
-import {UserService} from '../../services/user.service';
 import {Component, OnInit, ViewChild, Input} from '@angular/core';
 import {BaseChartDirective} from "ng2-charts";
 
 @Component({
-    selector: 'app-strategy-classes-graph',
-    templateUrl: './strategy-classes-graph.component.html',
-    styleUrls: ['./strategy-classes-graph.component.scss']
+    selector: 'app-portfolio-graph',
+    templateUrl: 'portfolio-graph.component.html'
 })
-export class StrategyClassesGraphComponent implements OnInit {
+export class PortfolioGraphComponent implements OnInit {
 
     @Input() data;
     @Input() render;
     @ViewChild(BaseChartDirective) chart: BaseChartDirective;
 
-    constructor(private AssetService: AssetService, private UserService: UserService) {
-    }
+    constructor() { }
 
     public clicked:any;
     public date:Date;
@@ -40,6 +36,8 @@ export class StrategyClassesGraphComponent implements OnInit {
                 dataselect.labels.push(currentlabels[index]);
             }
         });
+
+        console.log("DATASELECT: ", dataselect );
 
         this.refreshChart(dataselect)
     }

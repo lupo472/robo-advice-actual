@@ -1,16 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 
-import {UserService} from "../services/user.service";
 import {AssetService} from "../services/asset.service";
+import {PortfolioGraphComponent} from "./portfolio-graph/portfolio-graph.component";
 
 @Component({
   templateUrl: 'dashboard.component.html'
 })
 export class DashboardComponent implements OnInit {
 
-  constructor(private UserService:UserService, private AssetService:AssetService) { }
+  @ViewChild('portfolioGraph') portfolioGraph;
 
-  private login: any;
+  constructor(private AssetService:AssetService) { }
+
   public period:number = 0;
 
   public render: boolean = false;
@@ -18,15 +19,16 @@ export class DashboardComponent implements OnInit {
   public data:any = {};
 
   ngOnInit() {
-    this.login = this.UserService.getLogin();
     this.AssetService.getPortfolioForPeriod(this.period).subscribe(res => this.getPortfolio(res));
   }
 
   getPortfolio(res) {
     if (res.response == 1) {
       this.data = res.data;
-
+      console.log("DATA PORTFOLIO: ", this.data);
       this.render = true;
+
+      this.portfolioGraph.refreshChart(this.data);
     }
   }
 }
