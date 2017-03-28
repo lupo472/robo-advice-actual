@@ -27,7 +27,7 @@ public class AdminController extends AbstractController {
 	 *
 	 * @param 	request 	PasswordDTO containing the admin password
 	 * @return				GenericResponse with response 1 if the password is correct, or response and 0 if it is not,
-	 * 						with the relative message.
+	 * 						with the relative messages.
 	 */
 	@RequestMapping("/scheduleTask")
 	@ResponseBody
@@ -45,7 +45,7 @@ public class AdminController extends AbstractController {
 	 *
 	 * @param 	request 	PasswordDTO containing the admin password
 	 * @return				GenericResponse with response 1 if the password is correct, or response and 0 if it is not,
-	 * 						with the relative message.
+	 * 						with the relative messages.
 	 */
 	@RequestMapping("/updateFinancialDataSet")
 	@ResponseBody
@@ -63,7 +63,7 @@ public class AdminController extends AbstractController {
 	 *
 	 * @param 	request 	PasswordDTO containing the admin password
 	 * @return				GenericResponse with response 1 if the password is correct, or response and 0 if it is not,
-	 * 						with the relative message.
+	 * 						with the relative messages.
 	 */
 	@RequestMapping("/initializeFinancialDataSet")
 	@ResponseBody
