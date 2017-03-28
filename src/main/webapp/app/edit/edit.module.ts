@@ -30,7 +30,7 @@ import {StrategySelectorComponent} from "./strategy-selector/strategy-selector.c
   declarations: [
     EditComponent,
     CardAssetClassComponent,
-      StrategySelectorComponent
+    StrategySelectorComponent
   ]
 })
 export class EditModule { }

@@ -40,8 +40,7 @@ import {StrategySelectorComponent} from "../edit/strategy-selector/strategy-sele
     StrategyClassesGraphComponent,
     HystoryStrategyComponent,
     HistoryChartComponent,
-    TabMenuComponent,
-    StrategySelectorComponent
+    TabMenuComponent
   ],
   exports: [
     StrategyClassesGraphComponent

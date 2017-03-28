@@ -33,6 +33,7 @@ import { AppService } from './services/app.service';
 import { UserService } from './services/user.service';
 import { AssetService } from './services/asset.service';
 import { AmChartsModule } from "amcharts3-angular2";
+import {StrategySelectorComponent} from "./edit/strategy-selector/strategy-selector.component";
 
 
 @NgModule({

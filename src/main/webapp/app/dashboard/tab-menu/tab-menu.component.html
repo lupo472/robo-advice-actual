@@ -1,9 +1,8 @@
-<tabset>
-    <tab heading="My Strategy">
-        <app-strategy-graph *ngIf="render" [isActive]="render" [strategy]="activeStrategy"></app-strategy-graph>
-        <div class="h3 text-primary" *ngIf="!render">Select a Strategy</div>
-    </tab>
-    <tab heading="Get Advice!">
-        <app-strategy-graph *ngIf="render" [isActive]="render" [strategy]="activeStrategy"></app-strategy-graph>
-    </tab>
-</tabset>
+<app-strategy-graph *ngIf="renderActive" [strategy]="activeStrategy"></app-strategy-graph>
+<!--<button [disabled]="!renderAdvice" (click)="showAdvice()">tap me</button>-->
+<app-strategy-graph #advice *ngIf="renderAdvice" [strategy]="adviceStrategy"></app-strategy-graph>
+        <!--<div class="h3 text-primary" *ngIf="!render">Select a Strategy</div>-->
+
+
+
+
