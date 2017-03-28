@@ -118,7 +118,7 @@ public class SchedulingOperator extends AbstractOperator {
 				continue;
 			}
 			System.out.println("Computed portfolio for user: " + user.getUser().getId());
-			boolean rebalanced = this.rebalancingOp.rebalancePortfolio(assetsPerClassMap, financialDataPerAssetMap, user.getUser(), user.getPortfolio(), user.getCapital(), user.getStrategy());
+			boolean rebalanced = this.rebalancingOp.rebalancePortfolio(user, assetsPerClassMap, financialDataPerAssetMap);
 			if(rebalanced) {
 				System.out.println("Re-balanced portfolio for user: " + user.getUser().getId());
 			}

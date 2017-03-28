@@ -1,6 +1,7 @@
 package it.uiip.digitalgarage.roboadvice.logic.operator;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.*;
+import it.uiip.digitalgarage.roboadvice.persistence.util.User;
 import it.uiip.digitalgarage.roboadvice.service.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -24,19 +25,23 @@ public class BacktestingOperator extends AbstractOperator {
 	@Cacheable("backtesting")
 	public List<PortfolioDTO> getBacktesting(BacktestingDTO request, Authentication auth) {
 		List<PortfolioDTO> result = new ArrayList<>();
-		UserEntity user = this.userRep.findByEmail(auth.getName());
+		UserEntity userEntity = this.userRep.findByEmail(auth.getName());
+		User user = new User();
+		user.setUser(userEntity);
 		LocalDate date = LocalDate.now().minus(Period.ofDays(request.getPeriod() - 1));
 		CustomStrategyDTO strategyDTO = new CustomStrategyDTO();
 		strategyDTO.setList(request.getList());
 		List<CustomStrategyEntity> strategyList = this.customStrategyWrap.unwrapToEntity(strategyDTO);
+		user.setStrategy(strategyList);
 		Map<Long, List<FinancialDataEntity>> financialDataListPerAssetMap = new HashMap<>();
 		Map<Long, List<AssetEntity>> assetMap = new HashMap<>();
 		createMaps(date, strategyList, financialDataListPerAssetMap, assetMap);
-		List<PortfolioEntity> entityList = createStartingPortfolio(request, user, date, strategyList, financialDataListPerAssetMap, assetMap);
+		List<PortfolioEntity> entityList = createStartingPortfolio(request, userEntity, date, strategyList, financialDataListPerAssetMap, assetMap);
+		user.setPortfolio(entityList);
 		if(entityList == null) {
 			return null;
 		}
-		PortfolioDTO portfolio = getPortfolio(request, user, entityList);
+		PortfolioDTO portfolio = getPortfolio(request, userEntity, entityList);
 		result.add(portfolio);
 		while(!date.isEqual(LocalDate.now())) {
 			date = date.plus(Period.ofDays(1));
@@ -50,8 +55,8 @@ public class BacktestingOperator extends AbstractOperator {
 				entity.setValue(value);
 				entity.setDate(date);
 			}
-			entityList = this.rebalancingOp.rebalance(user, entityList, strategyList, financialDataMap);
-			portfolio = getPortfolio(request, user, entityList);
+			entityList = this.rebalancingOp.rebalance(user, financialDataMap);
+			portfolio = getPortfolio(request, userEntity, entityList);
 			result.add(portfolio);
 		}
 		Collections.sort(result);
