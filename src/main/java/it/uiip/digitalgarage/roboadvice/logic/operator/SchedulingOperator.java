@@ -95,7 +95,7 @@ public class SchedulingOperator extends AbstractOperator {
 				System.out.println("Skipped computation for user: " + user.getUser().getId());
 				continue;
 			}
-			CapitalEntity capital = capitalOp.computeCapital(user.getUser(), financialDataPerAssetMap, user.getPortfolio());
+			CapitalEntity capital = capitalOp.computeCapital(user, financialDataPerAssetMap);
 			user.setCapital(capital);
 			if(user.getCapital() != null) {
 				System.out.println("Computed capital for user: " + user.getUser().getId());
