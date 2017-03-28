@@ -1,10 +1,17 @@
 <div class="animated fadeIn">
+
+    <div class="card card-inverse card-primary">
+        <div class="card-block text-center">
+            <div class="h5 font-weight-bold">Insert percentages of a strategy to see how it would have worked</div>
+        </div>
+    </div>
+
     <div class="row">
 
         <div class="col-3" *ngFor="let assetclass of assetclasses; let i = index">
-            <div class="card">
+            <div class="card" [ngClass]="{'card-primary card-inverse' : selected[i]}">
                 <div class="card-block text-center">
-                    <div class="text-capitalize font-weight-bold">{{assetclass.name}}</div>
+                    <div class="text-capitalize font-weight-bold">{{assetclass.name}} {{percentage[i]}}%</div>
                     <input type="number" [(ngModel)]="selected[i]" class="form-control"
                            (ngModelChange)="updateSum()">
                 </div>

@@ -28,13 +28,29 @@ export class PortfolioGraphComponent implements OnInit {
         let currentlabels = this.data.labels;
         let currentdatasets = this.data.datasets;
 
+        console.log("DATA TO SELECT: ", currentdatasets);
+
+        let i = 0;
+
         currentlabels.forEach((item, index) => {
             let date = new Date(item);
             if(date > this.startdate){
-                dataselect.datasets.push(currentdatasets[index]);
+                if(i == 0){
+                    i = index;
+                }
                 dataselect.labels.push(currentlabels[index]);
             }
         });
+
+        let end = currentdatasets.length;
+
+        currentdatasets.forEach((assetclass, index)=>{
+           if(index == i){
+               assetclass.data.slice(index, end);
+           }
+        });
+
+        dataselect.datasets = currentdatasets;
 
         console.log("DATASELECT: ", dataselect );
 
@@ -57,10 +73,6 @@ export class PortfolioGraphComponent implements OnInit {
         this.clicked = e.active[0]._index;
         this.date = new Date(this.data.labels[this.clicked]);
         console.log("CLICK: ", this.date);
-    }
-
-    public chartHovered(e: any): void {
-        console.log(e);
     }
 
     // lineChart
