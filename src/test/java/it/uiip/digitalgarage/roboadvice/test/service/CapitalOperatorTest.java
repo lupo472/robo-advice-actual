@@ -167,20 +167,26 @@ public class CapitalOperatorTest {
         savedCapital.setDate(LocalDate.now());
         savedCapital.setAmount(new BigDecimal(1575.945));
 
+        it.uiip.digitalgarage.roboadvice.persistence.util.User u = new it.uiip.digitalgarage.roboadvice.persistence.util.User();
+        u.setPortfolio(portfolio);
+        u.setUser(user);
+
         when(capitalRep.save(savedCapital)).thenReturn(savedCapital);
         when(portfolioRep.findByUserAndDate(user, user.getLastUpdate())).thenReturn(portfolio);
         when(financialDataRep.findByAssetAndDate(assetEntity1,assetEntity1.getLastUpdate())).thenReturn(financialDataEntity1);
         when(financialDataRep.findByAssetAndDate(assetEntity2,assetEntity2.getLastUpdate())).thenReturn(financialDataEntity2);
-        doReturn(new BigDecimal(1575.945)).when(portfolioOp).evaluatePortfolio(user, mapFD, portfolio);
-        CapitalEntity response = capitalOp.computeCapital(user, mapFD, portfolio);
+        doReturn(new BigDecimal(1575.945)).when(portfolioOp).evaluatePortfolio(mapFD, portfolio);
+        CapitalEntity response = capitalOp.computeCapital(u, mapFD);
         verify(capitalRep).save(savedCapital);
         assertEquals(savedCapital, response);
     }
 
     @Test
     public void computeCapitalTestNullPortfolio() {
-        doReturn(null).when(portfolioOp).evaluatePortfolio(user, mapFD, null);
-        CapitalEntity response = capitalOp.computeCapital(user, mapFD, null);
+        it.uiip.digitalgarage.roboadvice.persistence.util.User u = new it.uiip.digitalgarage.roboadvice.persistence.util.User();
+        u.setUser(user);
+        doReturn(null).when(portfolioOp).evaluatePortfolio(mapFD, null);
+        CapitalEntity response = capitalOp.computeCapital(u, mapFD);
         assertNull(response);
     }
 

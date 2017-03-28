@@ -2,6 +2,7 @@ package it.uiip.digitalgarage.roboadvice.logic.operator;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.*;
 import it.uiip.digitalgarage.roboadvice.persistence.util.Mapper;
+import it.uiip.digitalgarage.roboadvice.persistence.util.User;
 import it.uiip.digitalgarage.roboadvice.persistence.util.Value;
 import it.uiip.digitalgarage.roboadvice.service.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,11 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.*;
 
+/**
+ * This class manages all the computations for forecasting and demo.
+ *
+ * @author Cristian Laurini
+ */
 @Service
 public class ForecastingOperator extends AbstractOperator {
 
@@ -30,24 +36,42 @@ public class ForecastingOperator extends AbstractOperator {
 	private static final String VALUES = "values";
 	private static final String DATE = "date";
 
+	/**
+	 * This method compute the demo for the logged user for the selected period.
+	 *
+	 * @param period	PeriodDTO is the number of days for the demo.
+	 * @param auth		Authentication is used to retrieve the logged user.
+	 * @return			List of PortfolioDTOs as demo or null if the user doesn't have any strategy or capital.
+	 */
 	@Cacheable("demo")
 	public List<PortfolioDTO> getDemo(PeriodDTO period, Authentication auth) {
-		UserEntity user = this.userRep.findByEmail(auth.getName());
-		List<CustomStrategyEntity> strategyList = this.customStrategyRep.findByUserAndActive(user, true);
-		return this.getDemo(strategyList, period, user);
+		UserEntity userEntity = this.userRep.findByEmail(auth.getName());
+		List<CustomStrategyEntity> strategyList = this.customStrategyRep.findByUserAndActive(userEntity, true);
+		User user = new User();
+		user.setUser(userEntity);
+		user.setStrategy(strategyList);
+		return this.getDemo(user, period);
 	}
 
+	/**
+	 * This method compute the demo for the logged user for the selected period.
+	 *
+	 * @param user		User is the user for which you want to get the demo and contains the user's strategy.
+	 * @param period	PeriodDTO is the number of days for the demo.
+	 * @return			List of PortfolioDTOs as demo or null if the user doesn't have any strategy or capital.
+	 */
 	@Cacheable("demo")
-	public List<PortfolioDTO> getDemo(List<CustomStrategyEntity> strategyList, PeriodDTO period, UserEntity user) {
-		CapitalEntity capital = this.capitalRep.findByUserAndDate(user, user.getLastUpdate());
-		if(strategyList.isEmpty() || capital == null) {
+	public List<PortfolioDTO> getDemo(User user, PeriodDTO period) {
+		CapitalEntity capital = this.capitalRep.findByUserAndDate(user.getUser(), user.getUser().getLastUpdate());
+		user.setCapital(capital);
+		if(user.getStrategy().isEmpty() || user.getCapital() == null) {
 			return null;
 		}
 		try {
 			List<PortfolioEntity> currentPortfolio = new ArrayList<>();
 			Map<Long, SortedMap<LocalDate, Map<Long, BigDecimal>>>  forecastPerClassMap = new HashMap<>();
 			Map<Long, BigDecimal> capitalPerClassMap = new HashMap<>();
-			for(CustomStrategyEntity strategy : strategyList) {
+			for(CustomStrategyEntity strategy : user.getStrategy()) {
 				BigDecimal capitalPerClass = capital.getAmount().divide(new BigDecimal(100), 8, RoundingMode.HALF_UP).multiply(strategy.getPercentage());
 				capitalPerClassMap.put(strategy.getAssetClass().getId(), capitalPerClass);
 				List<AssetEntity> assets = this.assetRep.findByAssetClass(strategy.getAssetClass());
@@ -56,6 +80,7 @@ public class ForecastingOperator extends AbstractOperator {
 				List<PortfolioEntity> portfolioListPerClass = createStartingPortfolio(strategy, capitalPerClass, assets, assetForecastPerDateMap);
 				currentPortfolio.addAll(portfolioListPerClass);
 			}
+			user.setPortfolio(currentPortfolio);
 			PortfolioDTO portfolio = getPortfolioDTO(capital.getAmount(), currentPortfolio);
 			List<PortfolioDTO> result = new ArrayList<>();
 			result.add(portfolio);
@@ -73,7 +98,8 @@ public class ForecastingOperator extends AbstractOperator {
 					LocalDate date = assetForecastPerDateMap.firstKey();
 					Map<Long, BigDecimal> valuePerAssetMap = assetForecastPerDateMap.get(date);
 					assetForecastPerDateMap.remove(date);
-					total = computePortfolioPerAsset(portfolioPerAssetMap, total, date, valuePerAssetMap);
+					Value value = new Value(date, total);
+					total = computePortfolioPerAsset(value, portfolioPerAssetMap, valuePerAssetMap);
 					for(Long idAsset : valuePerAssetMap.keySet()) {
 						FinancialDataEntity entity = new FinancialDataEntity();
 						entity.setDate(date);
@@ -87,8 +113,8 @@ public class ForecastingOperator extends AbstractOperator {
 				if(!goOn) {
 					break;
 				}
-				Map<Long, FinancialDataEntity> financialDataMap = Mapper.getMapFinancialData(financialDataList);
-				currentPortfolio = this.rebalancingOp.rebalance(user, currentPortfolio, strategyList, financialDataMap);
+				Map<Long, FinancialDataEntity> financialDataPerAssetMap = Mapper.getMapFinancialData(financialDataList);
+				currentPortfolio = this.rebalancingOp.rebalance(user, financialDataPerAssetMap);
 				portfolio = getPortfolioDTO(total, currentPortfolio);
 				result.add(portfolio);
 			}
@@ -98,28 +124,27 @@ public class ForecastingOperator extends AbstractOperator {
 		}
 	}
 
-	private BigDecimal computePortfolioPerAsset(Map<Long, PortfolioEntity> portfolioPerAssetMap, BigDecimal total,
-												LocalDate date, Map<Long, BigDecimal> valuePerAssetMap) {
+	private BigDecimal computePortfolioPerAsset(Value value, Map<Long, PortfolioEntity> portfolioPerAssetMap, Map<Long, BigDecimal> valuePerAssetMap) {
 		for(Long idAsset : valuePerAssetMap.keySet()) {
 			PortfolioEntity entity = portfolioPerAssetMap.get(idAsset);
 			BigDecimal units = entity.getUnits();
 			BigDecimal newValue = units.multiply(valuePerAssetMap.get(idAsset));
 			entity.setValue(newValue);
-			entity.setDate(date);
-			total = total.add(newValue);
+			entity.setDate(value.getDate());
+			value.setValue(value.getValue().add(newValue));
 		}
-		return total;
+		return value.getValue();
 	}
 
-	private PortfolioDTO getPortfolioDTO(BigDecimal total, List<PortfolioEntity> portfolioEntityList) {
+	private PortfolioDTO getPortfolioDTO(BigDecimal total, List<PortfolioEntity> portfolioList) {
 		Map<Long, BigDecimal> valuePerAssetClassMap = new HashMap<>();
-		for(PortfolioEntity entity : portfolioEntityList) {
-			if(valuePerAssetClassMap.get(entity.getAssetClass().getId()) == null) {
-				valuePerAssetClassMap.put(entity.getAssetClass().getId(), new BigDecimal(0));
+		for(PortfolioEntity portfolio : portfolioList) {
+			if(valuePerAssetClassMap.get(portfolio.getAssetClass().getId()) == null) {
+				valuePerAssetClassMap.put(portfolio.getAssetClass().getId(), new BigDecimal(0));
 			}
-			valuePerAssetClassMap.put(entity.getAssetClass().getId(), valuePerAssetClassMap.get(entity.getAssetClass().getId()).add(entity.getValue()));
+			valuePerAssetClassMap.put(portfolio.getAssetClass().getId(), valuePerAssetClassMap.get(portfolio.getAssetClass().getId()).add(portfolio.getValue()));
 		}
-		return this.portfolioWrap.wrapToDTO(portfolioEntityList, total, valuePerAssetClassMap);
+		return this.portfolioWrap.wrapToDTO(portfolioList, total, valuePerAssetClassMap);
 	}
 
 	private List<PortfolioEntity> createStartingPortfolio(CustomStrategyEntity strategy, BigDecimal capitalPerClass, List<AssetEntity> assets, SortedMap<LocalDate, Map<Long, BigDecimal>> assetForecastPerDateMap) {
@@ -141,7 +166,6 @@ public class ForecastingOperator extends AbstractOperator {
 		return portfolioListPerClass;
 	}
 
-
 	private SortedMap<LocalDate, Map<Long, BigDecimal>> getAssetForecastPerDateMap(List<AssetEntity> assets, int period) throws Exception {
 		Map<Long, Map<LocalDate, BigDecimal>> forecastPerAssetMap = getForecastPerAsset(assets, period);
 		SortedMap<LocalDate, Map<Long, BigDecimal>> assetForecastPerDateMap = new TreeMap<>();
@@ -157,12 +181,18 @@ public class ForecastingOperator extends AbstractOperator {
 		return assetForecastPerDateMap;
 	}
 
+	/**
+	 * This method compute the forecast for the selected period.
+	 *
+	 * @param period	PeriodDTO is the number of days for the forecast.
+	 * @return			List of FinancialData as forecast or null if some problem occurs.
+	 */
 	@Cacheable("forecast")
 	public List<FinancialDataDTO> getForecast(PeriodDTO period) {
-		List<AssetClassEntity> assetClassSet = this.assetClassRep.findAll();
+		List<AssetClassEntity> assetClassList = this.assetClassRep.findAll();
 		List<FinancialDataDTO> result = new ArrayList<>();
 		try {
-			for(AssetClassEntity assetClass : assetClassSet) {
+			for(AssetClassEntity assetClass : assetClassList) {
 				List<AssetEntity> assets = this.assetRep.findByAssetClass(assetClass);
 				List<FinancialDataElementDTO> forecastPerClass = this.getForecastPerClass(assets, period.getPeriod());
 				FinancialDataDTO financialData = new FinancialDataDTO();
@@ -198,10 +228,10 @@ public class ForecastingOperator extends AbstractOperator {
 		return result;
 	}
 
-	private FinancialDataElementDTO getFinancialDataElement(List<Map<LocalDate, BigDecimal>> list, int i) {
+	private FinancialDataElementDTO getFinancialDataElement(List<Map<LocalDate, BigDecimal>> valuePerDateMapList, int i) {
 		LocalDate date = LocalDate.now().plus(Period.ofDays(i));
 		BigDecimal value = new BigDecimal(0);
-		for(Map<LocalDate, BigDecimal> map : list) {
+		for(Map<LocalDate, BigDecimal> map : valuePerDateMapList) {
 			/*************************
 			 * Avoid negative values *
 			 *************************/
@@ -217,14 +247,14 @@ public class ForecastingOperator extends AbstractOperator {
 		return element;
 	}
 
-	private Instances getInstancesPerAsset(List<FinancialDataEntity> list) throws ParseException {
+	private Instances getInstancesPerAsset(List<FinancialDataEntity> financialDataList) throws ParseException {
 		ArrayList<Attribute> attributes = new ArrayList<>();
 		Attribute date = new Attribute(DATE, "yyyy-MM-dd");
 		Attribute values = new Attribute(VALUES);
 		attributes.add(values);
 		attributes.add(date);
 		Instances result = new Instances("result", attributes, 0);
-		for(FinancialDataEntity entity : list) {
+		for(FinancialDataEntity entity : financialDataList) {
 			double[] array = new double[result.numAttributes()];
 			array[0] = entity.getValue().doubleValue();
 			array[1] = result.attribute(DATE).parseDate((entity.getDate().toString()));
