@@ -10,23 +10,21 @@
         </div>
         <hr>
         <div *ngIf="render">
-            <ul>
-                <li class="asset-item" *ngFor="let i of data.datasets">
-                    <div class="float-left">
-                        <i *ngIf="i.tendency=='up'" class="fa fa-arrow-up" aria-hidden="true" style="color: green"></i>
-                        <i *ngIf="i.tendency=='down'" class="fa fa-arrow-down" aria-hidden="true"
-                           style="color: red"></i>
-                        <i *ngIf="i.tendency=='='" class="fa fa-anchor" style="color: black"></i>
-                    </div>
-                    <div class="float-right">
-                        <p>{{i.percentage}}%</p>
-                    </div>
+            <div class="asset-item" *ngFor="let i of data.datasets">
+                <div class="float-left">
+                    <i *ngIf="i.tendency=='up'" class="fa fa-arrow-up" aria-hidden="true" style="color: green"></i>
+                    <i *ngIf="i.tendency=='down'" class="fa fa-arrow-down" aria-hidden="true"
+                       style="color: red"></i>
+                    <i *ngIf="i.tendency=='='" class="fa fa-anchor" style="color: black"></i>
+                </div>
+                <div class="float-right hidden-sm-down">
+                    <p>{{i.percentage}}%</p>
+                </div>
 
-                    <p class="text-uppercase font-weight-bold">{{i.label}}</p>
-                    <p class="h5">${{i.value}}</p>
+                <p class="text-uppercase font-weight-bold">{{i.label}}</p>
+                <p class="h5">${{i.value}}</p>
 
-                </li>
-            </ul>
+            </div>
         </div>
         <div class="card-block p-0 clearfix" *ngIf="!render">
             <div class="h3 text-primary mb-0 pt-1">{{response}}</div>
