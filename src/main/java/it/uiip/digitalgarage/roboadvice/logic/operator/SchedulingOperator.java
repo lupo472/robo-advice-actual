@@ -1,22 +1,22 @@
 package it.uiip.digitalgarage.roboadvice.logic.operator;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.*;
 import it.uiip.digitalgarage.roboadvice.persistence.util.Mapper;
-import it.uiip.digitalgarage.roboadvice.service.dto.*;
-import it.uiip.digitalgarage.roboadvice.service.util.HashFunction;
-import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+/**
+ * This class manages all the nightly computation
+ *
+ * @author Cristian Laurini
+ */
 @Service
 public class SchedulingOperator extends AbstractOperator {
 	
@@ -35,6 +35,15 @@ public class SchedulingOperator extends AbstractOperator {
 	@Autowired
 	private RebalancingOperator rebalancingOp;
 
+	/**
+	 * This method is computed every day at the same time.
+	 * It updates the financial data, then, for each user in the database,
+	 * it creates the portfolio for the new users, while for the others,
+	 * it computes the new capital and then it recreates the portfolio for the
+	 * users that have changed their strategy in the last day or computes the
+	 * portfolio with the new financial data and re-balances if necessary
+	 * for the others.
+	 */
 	@Scheduled(cron = "0 0 10 * * *")
 	public void scheduleTask() {
 		Long start = System.currentTimeMillis();
@@ -104,4 +113,5 @@ public class SchedulingOperator extends AbstractOperator {
 			}
 		}
 	}
+
 }
