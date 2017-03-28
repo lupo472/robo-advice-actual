@@ -1,6 +1,7 @@
 package it.uiip.digitalgarage.roboadvice.logic.operator;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.*;
+import it.uiip.digitalgarage.roboadvice.persistence.util.User;
 import it.uiip.digitalgarage.roboadvice.service.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -27,7 +28,7 @@ public class AdviceOperator extends AbstractOperator {
      */
     @Cacheable("advice")
     public DefaultStrategyDTO getAdvice(PeriodDTO period, Authentication auth) {
-        UserEntity user = this.userRep.findByEmail(auth.getName());
+        UserEntity userEntity = this.userRep.findByEmail(auth.getName());
         List<PortfolioDTO> currentStrategyPortfolio = this.forecastingOp.getDemo(period, auth);
         BigDecimal finalCapital = new BigDecimal(0);
         if(currentStrategyPortfolio != null) {
@@ -40,7 +41,10 @@ public class AdviceOperator extends AbstractOperator {
             CustomStrategyDTO customStrategyDTO = new CustomStrategyDTO();
             customStrategyDTO.setList(defaultStrategy.getList());
             List<CustomStrategyEntity> strategyList = this.customStrategyWrap.unwrapToEntity(customStrategyDTO);
-            List<PortfolioDTO> defaultStrategyPortfolio = this.forecastingOp.getDemo(strategyList, period, user);
+			User user = new User();
+			user.setUser(userEntity);
+			user.setStrategy(strategyList);
+            List<PortfolioDTO> defaultStrategyPortfolio = this.forecastingOp.getDemo(user, period);
             int lastElementIndex = defaultStrategyPortfolio.size() - 1;
             BigDecimal defaultStrategyCapital = this.portfolioSum(defaultStrategyPortfolio.get(lastElementIndex));
             if(defaultStrategyCapital.doubleValue() > finalCapital.doubleValue()) {
