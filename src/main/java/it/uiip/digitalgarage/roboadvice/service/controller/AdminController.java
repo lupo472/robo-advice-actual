@@ -23,9 +23,11 @@ public class AdminController extends AbstractController {
 
 	/**
 	 * This method allow to force the nightly computation of the system.
+	 * The related API is <b>/scheduleTask</b>
 	 *
-	 * @param 	request a PasswordDTO containing the admin password
-	 * @return	GenericResponse with response 1 and String "Done" if the password is correct, or response and 0 and String "Permission denied" instead
+	 * @param 	request 	PasswordDTO containing the admin password
+	 * @return				GenericResponse with response 1 if the password is correct, or response and 0 if it is not,
+	 * 						with the relative message.
 	 */
 	@RequestMapping("/scheduleTask")
 	@ResponseBody
@@ -38,10 +40,12 @@ public class AdminController extends AbstractController {
 	}
 
 	/**
-	 * This method allow to force the updating the financial data
+	 * This method allow to force the updating the financial data.
+	 * The related API is <b>/updateFinancialDataSet</b>
 	 *
-	 * @param 	request a PasswordDTO containing the admin password
-	 * @return	GenericResponse with response 1 and String "Done" if the password is correct, or response and 0 and String "Permission denied" instead
+	 * @param 	request 	PasswordDTO containing the admin password
+	 * @return				GenericResponse with response 1 if the password is correct, or response and 0 if it is not,
+	 * 						with the relative message.
 	 */
 	@RequestMapping("/updateFinancialDataSet")
 	@ResponseBody
@@ -54,10 +58,12 @@ public class AdminController extends AbstractController {
 	}
 
 	/**
-	 * This method allow to force the initialization the financial data
+	 * This method allow to force the initialization the financial data.
+	 * The related API is <b>/initializeFinancialDataSet</b>
 	 *
-	 * @param 	request a PasswordDTO containing the admin password
-	 * @return	GenericResponse with response 1 and String "Done" if the password is correct, or response and 0 and String "Permission denied" instead
+	 * @param 	request 	PasswordDTO containing the admin password
+	 * @return				GenericResponse with response 1 if the password is correct, or response and 0 if it is not,
+	 * 						with the relative message.
 	 */
 	@RequestMapping("/initializeFinancialDataSet")
 	@ResponseBody
