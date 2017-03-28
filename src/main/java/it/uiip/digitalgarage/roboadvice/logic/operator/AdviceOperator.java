@@ -13,6 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class manages the computation for giving an Advice.
+ *
+ * @author Cristian Laurini
+ * @author Luca Antilici
+ */
 @Service
 public class AdviceOperator extends AbstractOperator {
 
@@ -22,31 +28,36 @@ public class AdviceOperator extends AbstractOperator {
     @Autowired
     private DefaultStrategyOperator defaultStrategyOp;
 
-    /*
-     * Performances for this method are not good
-     * TODO: improve if necessary
-     */
+	/**
+	 * This method returns an adviced strategy for the user.
+	 * Performances for this method are not excellent, but it is not a problem for the whole system.
+	 *
+	 * @param period	PeriodDTO is the number of days to retrieve.
+	 * @param auth		Authentication is used to retrieve the logged user.
+	 * @return			DefaultStrategyDTO if some defaultStrategy is better than the current strategy
+	 * 					of the logged user or null instead.
+	 */
     @Cacheable("advice")
     public DefaultStrategyDTO getAdvice(PeriodDTO period, Authentication auth) {
         UserEntity userEntity = this.userRep.findByEmail(auth.getName());
-        List<PortfolioDTO> currentStrategyPortfolio = this.forecastingOp.getDemo(period, auth);
+        List<PortfolioDTO> currentStrategyDemo = this.forecastingOp.getDemo(period, auth);
         BigDecimal finalCapital = new BigDecimal(0);
-        if(currentStrategyPortfolio != null) {
-            int lastElementIndex = currentStrategyPortfolio.size() - 1;
-            finalCapital = this.portfolioSum(currentStrategyPortfolio.get(lastElementIndex));
+        if(currentStrategyDemo != null) {
+            int lastElementIndex = currentStrategyDemo.size() - 1;
+            finalCapital = this.portfolioSum(currentStrategyDemo.get(lastElementIndex));
         }
-        List<DefaultStrategyDTO> getDefaultStrategySet = this.defaultStrategyOp.getDefaultStrategySet();
+        List<DefaultStrategyDTO> defaultStrategyList = this.defaultStrategyOp.getDefaultStrategySet();
         DefaultStrategyDTO result = null;
-        for(DefaultStrategyDTO defaultStrategy : getDefaultStrategySet) {
-            CustomStrategyDTO customStrategyDTO = new CustomStrategyDTO();
-            customStrategyDTO.setList(defaultStrategy.getList());
-            List<CustomStrategyEntity> strategyList = this.customStrategyWrap.unwrapToEntity(customStrategyDTO);
-			User user = new User();
-			user.setUser(userEntity);
+		User user = new User();
+		user.setUser(userEntity);
+        for(DefaultStrategyDTO defaultStrategy : defaultStrategyList) {
+            CustomStrategyDTO customStrategy = new CustomStrategyDTO();
+            customStrategy.setList(defaultStrategy.getList());
+            List<CustomStrategyEntity> strategyList = this.customStrategyWrap.unwrapToEntity(customStrategy);
 			user.setStrategy(strategyList);
-            List<PortfolioDTO> defaultStrategyPortfolio = this.forecastingOp.getDemo(user, period);
-            int lastElementIndex = defaultStrategyPortfolio.size() - 1;
-            BigDecimal defaultStrategyCapital = this.portfolioSum(defaultStrategyPortfolio.get(lastElementIndex));
+            List<PortfolioDTO> defaultStrategyDemo = this.forecastingOp.getDemo(user, period);
+            int lastElementIndex = defaultStrategyDemo.size() - 1;
+            BigDecimal defaultStrategyCapital = this.portfolioSum(defaultStrategyDemo.get(lastElementIndex));
             if(defaultStrategyCapital.doubleValue() > finalCapital.doubleValue()) {
                 finalCapital = defaultStrategyCapital;
             	result = defaultStrategy;

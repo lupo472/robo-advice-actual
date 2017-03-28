@@ -193,7 +193,6 @@ public class PortfolioOperatorTest {
 		when(financialDataRep.findByAssetAndDate(assetEntity1,assetEntity1.getLastUpdate())).thenReturn(financialDataEntity1);
 		when(financialDataRep.findByAssetAndDate(assetEntity2,assetEntity2.getLastUpdate())).thenReturn(financialDataEntity2);
 		when(portfolioRep.findByUserAndAssetAndDate(user, assetEntity1, LocalDate.now())).thenReturn(portfolioEntity);
-		//TODO Luca fai così
 		User u = new User();
 		u.setUser(user);
 		u.setStrategy(customStrategyEntityList);
