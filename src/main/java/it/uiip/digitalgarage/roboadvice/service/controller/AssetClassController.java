@@ -23,7 +23,7 @@ public class AssetClassController extends AbstractController {
 	 * This method allow to get all the Asset Classes.
 	 * The related API is <b>/getAssetClassSet</b>
 	 *
-	 * @return 	GenericResponse with response 1 and a List of AssetClassDTO
+	 * @return 	GenericResponse with response 1 and a List of AssetClassDTOs.
 	 */
 	@RequestMapping("/getAssetClassSet")
 	@ResponseBody

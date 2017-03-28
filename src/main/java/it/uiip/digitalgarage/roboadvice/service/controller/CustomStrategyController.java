@@ -17,7 +17,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 /**
- * This class contains the Rest-APIs related to the CustomStrategy.
+ * This class contains the Rest-APIs related to the CustomStrategies.
  *
  * @author Cristian Laurini
  * @author Luca Antilici

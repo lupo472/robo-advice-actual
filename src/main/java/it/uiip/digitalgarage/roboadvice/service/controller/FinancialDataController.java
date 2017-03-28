@@ -15,10 +15,22 @@ import it.uiip.digitalgarage.roboadvice.service.dto.FinancialDataDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.PeriodDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 
+/**
+ * This class contains the Rest-APIs related to the CustomStrategies.
+ *
+ * @author Cristian Laurini
+ */
 @CrossOrigin("*")
 @RestController
-public class FinancialDataController extends AbstractController { 
-	
+public class FinancialDataController extends AbstractController {
+
+	/**
+	 * This method allow to get all the Financial Datas.
+	 * The related API is <b>/getFinancialDataSet</b>
+	 *
+	 * @return 	GenericResponse with response 0 and a message if some problem occurs, or with response 1 and
+	 * 			a List of FinancialDataDTOs instead.
+	 */
 	@RequestMapping("/getFinancialDataSet")
 	@ResponseBody
 	public GenericResponse<?> getFinancialDataSet(@Valid @RequestBody PeriodDTO period) {
