@@ -28,13 +28,9 @@ public class AdviceOperator extends AbstractOperator {
     @Autowired
     private DefaultStrategyOperator defaultStrategyOp;
 
-    /*
-     * Performances for this method are not good
-     * TODO: improve if necessary
-     */
-
 	/**
 	 * This method returns an adviced strategy for the user.
+	 * Performances for this method are not excellent, but it is not a problem for the whole system.
 	 *
 	 * @param period	PeriodDTO is the number of days to retrieve.
 	 * @param auth		Authentication is used to retrieve the logged user.

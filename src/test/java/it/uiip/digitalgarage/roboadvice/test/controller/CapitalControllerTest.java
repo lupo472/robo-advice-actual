@@ -192,7 +192,6 @@ public class CapitalControllerTest {
         capitals.add(sundayCapital);
         capitals.add(sathurdayCapital);
 
-        //TODO search another type of faking the date
         when(capitalRep.findByUserAndDateBetween(user,LocalDate.now().minusDays(1), LocalDate.now())).thenReturn(capitals);
         List<CapitalDTO> opResponse = capitalOp.getCapitalPeriod(periodDTO, auth);
         assertEquals(2, opResponse.size());
