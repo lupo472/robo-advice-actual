@@ -77,4 +77,7 @@ export class Strategy {
         this.setStrategyArray(list);
 
     }
+    resetStrategy(){
+        this.list = [];
+    }
 }

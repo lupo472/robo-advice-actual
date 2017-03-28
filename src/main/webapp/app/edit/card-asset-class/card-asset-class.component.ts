@@ -10,6 +10,7 @@ import { AssetClass } from '../../model/asset-class';
 })
 
 export class CardAssetClassComponent implements OnInit{
+    render : string;
     @Input() value;
     @Input() isCustom;
     @Input() financialData;
@@ -26,8 +27,15 @@ export class CardAssetClassComponent implements OnInit{
     ngOnInit() {
 
     }
-    show(){
-        this.update.emit();
+    setValue(render){
+        this.render = render;
+    }
+    show(render){
+        this.render = render;
+        this.update.emit(render);
+    }
+    getRender(){
+        return this.render;
     }
     handleSlide(e) : void {
         let currentAssetClassStrategy = this.StrategyService.customStrategy.getAssetClassStrategyMap().get(this.id);

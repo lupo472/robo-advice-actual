@@ -1,28 +1,32 @@
-import { Component, OnInit,ViewChild, Renderer } from '@angular/core';
-import {MyActiveStrategyAmChart} from "../model/my-active-strategy-am-chart";
-import { StrategyService } from '../services/strategy.service';
+import { Component, OnInit } from '@angular/core';
+
+import {UserService} from "../services/user.service";
+import {AssetService} from "../services/asset.service";
 
 @Component({
   templateUrl: 'dashboard.component.html'
 })
 export class DashboardComponent implements OnInit {
-  //options;
-  //render = false;
-  //@ViewChild('chartTest2') public chartTest2;
 
-  constructor() { }
+  constructor(private UserService:UserService, private AssetService:AssetService) { }
+
+  private login: any;
+  public period:number = 0;
+
+  public render: boolean = false;
+
+  public data:any = {};
 
   ngOnInit() {
-    //this.StrategyService.getActiveStrategy().subscribe(res => this.getStrategy(res));
-
+    this.login = this.UserService.getLogin();
+    this.AssetService.getPortfolioForPeriod(this.period).subscribe(res => this.getPortfolio(res));
   }
-  /*getStrategy(data){
-    this.options = data;
-    this.render = true;
-    console.log("data",data);
-  }
-  changeChart(){
-    this.chartTest2.changeChart();
-  }*/
 
+  getPortfolio(res) {
+    if (res.response == 1) {
+      this.data = res.data;
+
+      this.render = true;
+    }
+  }
 }

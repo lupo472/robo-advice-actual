@@ -1,6 +1,6 @@
 import {AssetService} from '../../services/asset.service';
 import {UserService} from '../../services/user.service';
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, Input} from '@angular/core';
 import {BaseChartDirective} from "ng2-charts";
 
 @Component({
@@ -10,52 +10,46 @@ import {BaseChartDirective} from "ng2-charts";
 })
 export class StrategyClassesGraphComponent implements OnInit {
 
+    @Input() data;
+    @Input() render;
     @ViewChild(BaseChartDirective) chart: BaseChartDirective;
 
     constructor(private AssetService: AssetService, private UserService: UserService) {
     }
 
-    login: any;
-    public period = 30;
-    public today:Date = new Date();
-    public startdate:Date;
-    public data:any = {};
-
     public clicked:any;
     public date:Date;
 
-    public render: boolean = false;
+    public today:Date = new Date();
+    public startdate:Date;
+
     public response: string = 'Data not yet available';
 
-    ngOnInit() {
-        this.login = this.UserService.getLogin();
-        this.AssetService.getPortfolioForPeriod(this.period).subscribe(res => this.getPortfolio(res));
-    }
-
-    getPortfolio(res) {
-        if (res.response == 1) {
-            this.data = res.data;
-
-            this.render = false;
-            this.refreshChart();
-
-            this.render = true;
-        }
-    }
+    ngOnInit() { }
 
     setPeriod() {
-        let timeDiff = Math.abs(this.today.getTime() - this.startdate.getTime());
-        this.period = Math.ceil(timeDiff / (1000 * 3600 * 24));
+        let dataselect = {datasets: [], labels: []};
+        let currentlabels = this.data.labels;
+        let currentdatasets = this.data.datasets;
 
-        this.AssetService.getPortfolioForPeriod(this.period).subscribe(res => this.getPortfolio(res));
+        currentlabels.forEach((item, index) => {
+            let date = new Date(item);
+            console.log(date);
+            if(date > this.startdate){
+                dataselect.datasets.push(currentdatasets[index]);
+                dataselect.labels.push(currentlabels[index]);
+            }
+        });
+
+        this.refreshChart(dataselect)
     }
 
-    refreshChart() {
+    refreshChart(data) {
         setTimeout(() => {
 
             if (this.chart.chart.config && this.chart.chart.config.data) {
-                this.chart.chart.config.data.labels = this.data.labels;
-                this.chart.chart.config.data.datasets = this.data.datasets;
+                this.chart.chart.config.data.labels = data.labels;
+                this.chart.chart.config.data.datasets = data.datasets;
                 this.chart.chart.update();
             }
         });

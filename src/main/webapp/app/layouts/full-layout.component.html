@@ -24,7 +24,8 @@
                 </div>
 
                 <a class="dropdown-item" href="#"><i class="fa fa-user"></i>Profile</a>
-                <a class="dropdown-item" [routerLink]="['/edit'] " href="#"><i class="fa fa-wrench"></i>Strategy</a>
+                <a class="dropdown-item" [routerLink]="['/edit'] " href="#"><i class="fa fa-pie-chart"></i>Strategy</a>
+                <a class="dropdown-item" [routerLink]="['/backtesting'] " href="#"><i class="fa fa-history"></i>Backtesting</a>
                 <a class="dropdown-item" [routerLink]="['/pages/login'] " href="#" (click)="logout()"><i
                         class="fa fa-lock"></i> Logout</a>
             </div>
@@ -146,9 +147,11 @@
                 <div class="btn-group" role="group"
                      aria-label="Button group with nested dropdown">
                     <a class="btn btn-secondary" [routerLink]="['/dashboard']"><i
-                            class="icon-graph"></i> &nbsp;Dashboard</a>
-                    <a class="btn btn-secondary" [routerLink]="['/edit']"><i class="icon-settings"></i>
+                            class="fa fa-line-chart"></i> &nbsp;Dashboard</a>
+                    <a class="btn btn-secondary" [routerLink]="['/edit']"><i class="fa fa-pie-chart"></i>
                         &nbsp;Edit Strategy</a>
+                    <a class="btn btn-secondary" [routerLink]="['/backtesting']"><i class="fa fa-history"></i>
+                        &nbsp;Backtesting</a>
                 </div>
             </li>
 

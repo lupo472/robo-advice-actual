@@ -35,7 +35,7 @@ export class FullLayoutComponent implements OnInit {
     public response = 'Data not yet available';
 
     public logout(): void {
-        Cookie.deleteAll();
+        this.UserService.logout();
     }
 
     public toggleDropdown($event: MouseEvent): void {

@@ -12,8 +12,8 @@ export class CustomStrategy extends Strategy {
     super();
     //Initialize custom list of assetClassStrategies with the ones got from backend
     this.customList = customList;
-    this.createStrategyList();
-    this.name = "active";
+    //this.createStrategyList();
+    this.name = "Select your strategy";
     this.list = [];
     this.sumPercentage = 0;
     this.maxPercentage = 100;
@@ -21,6 +21,9 @@ export class CustomStrategy extends Strategy {
   //Get name of the custom strategy
   public getName(): string {
     return this.name;
+  }
+  public setName(name:string){
+    this.name = name;
   }
   //Send to the component the array with the custom assetClassStrategies
   public getStrategyArray(): AssetClassStrategy[] {
@@ -30,12 +33,14 @@ export class CustomStrategy extends Strategy {
     super.setStrategyArray(strategyArray);
     this.updateStrategyList();
   }
-  private createStrategyList() : void {
+  createStrategyList() : void {
     let array = this.customList;
+    console.log("array",array);
     this.list.forEach((item)=>{
       array[item.getId()-1] = item;
     });
     this.list = array;
+    console.log("this.list",this.list);
     this.populateMap();
   }
   /*

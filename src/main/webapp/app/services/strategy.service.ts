@@ -41,8 +41,10 @@ export class StrategyService {
     this.strategies = new Strategies();
     this.strategies.createStrategies(defaultStrategies);
     this.customStrategy = new CustomStrategy(this.AssetService.assetClassStrategies.getAssetClassStrategies());
+    this.customStrategy.createStrategyList();
     if (this.activeStrategy != undefined) {
       this.customStrategy.setStrategyArray(this.activeStrategy.getStrategyArray());
+      this.customStrategy.setName("Active");
     }
     this.strategies.addStrategy(this.customStrategy);
     return this.strategies;
