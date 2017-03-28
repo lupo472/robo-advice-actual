@@ -73,7 +73,7 @@ public class CapitalController extends AbstractController {
 	 * @param request	PeriodDTO contains the number of days requested.
 	 * @param auth		Authentication for the security.
 	 * @return			GenericResponse with response 0 and a message if the user doesn't have any capital,
-	 * 					or response 1 and a List of CapitalDTO containing the amount of money and the
+	 * 					or response 1 and a List of CapitalDTOs containing the amount of money and the
 	 * 					related date.
 	 */
 	@RequestMapping("/getCapitalForPeriod")
