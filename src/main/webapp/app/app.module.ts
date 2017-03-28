@@ -33,7 +33,9 @@ import { AppService } from './services/app.service';
 import { UserService } from './services/user.service';
 import { AssetService } from './services/asset.service';
 import { AmChartsModule } from "amcharts3-angular2";
-import {StrategySelectorComponent} from "./edit/strategy-selector/strategy-selector.component";
+
+import { SplashComponent } from './splash/splash.component';
+
 
 
 @NgModule({
@@ -57,7 +59,8 @@ import {StrategySelectorComponent} from "./edit/strategy-selector/strategy-selec
     NAV_DROPDOWN_DIRECTIVES,
     BreadcrumbsComponent,
     SIDEBAR_TOGGLE_DIRECTIVES,
-    AsideToggleDirective
+    AsideToggleDirective,
+    SplashComponent
 
   ],
   providers: [
