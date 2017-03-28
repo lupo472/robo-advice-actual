@@ -42,7 +42,7 @@ public class RebalancingOperator extends AbstractOperator {
 		return currentPortfolio;
 	}
 
-	@CacheEvict(value = {"activeStrategy", "strategies", "currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo", "advice"}, allEntries = true)
+	@CacheEvict(value = {"activeStrategy", "strategies", "portfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo", "advice"}, allEntries = true)
 	public boolean rebalancePortfolio(Map<Long, List<AssetEntity>> assetsPerClassMap, Map<Long, FinancialDataEntity> financialDataPerAssetMap,
 									  UserEntity user, List<PortfolioEntity> currentPortfolio, CapitalEntity capital,
 									  List<CustomStrategyEntity> strategy) {

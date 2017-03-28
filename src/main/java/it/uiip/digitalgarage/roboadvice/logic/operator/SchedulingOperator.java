@@ -14,7 +14,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 /**
- * This class manages all the nightly computation
+ * This class manages all the nightly computation.
  *
  * @author Cristian Laurini
  */
@@ -52,13 +52,13 @@ public class SchedulingOperator extends AbstractOperator {
 		Long quandl = System.currentTimeMillis();
 		List<UserEntity> users = userOp.getAllUsers();
 		List<AssetEntity> assets = this.assetRep.findAll();
-		Map<Long, List<AssetEntity>> assetsMap = Mapper.getMapAssets(assets);
+		Map<Long, List<AssetEntity>> assetsPerClassMap = Mapper.getMapAssets(assets);
 		List<FinancialDataEntity> financialDataEntities = new ArrayList<>();
 		for(AssetEntity asset : assets) {
 			financialDataEntities.add(financialDataRep.findByAssetAndDate(asset, asset.getLastUpdate()));
 		}
 		Map<Long, FinancialDataEntity> financialDataPerAssetMap = Mapper.getMapFinancialData(financialDataEntities);
-		this.userComputation(users, assetsMap, financialDataPerAssetMap);
+		this.userComputation(users, assetsPerClassMap, financialDataPerAssetMap);
 		Long end = System.currentTimeMillis();
 		/*Time checking*/
 		System.out.println("Quandl computation in " + (quandl - start) + " ms");
@@ -66,18 +66,18 @@ public class SchedulingOperator extends AbstractOperator {
 		System.out.println("Total computation in " + (end - start) + " ms");
 	}
 
-	private void userComputation(List<UserEntity> users, Map<Long, List<AssetEntity>> assetsMap, Map<Long, FinancialDataEntity> financialDataPerAssetMap) {
+	private void userComputation(List<UserEntity> users, Map<Long, List<AssetEntity>> assetsPerClassMap, Map<Long, FinancialDataEntity> financialDataPerAssetMap) {
 		for (UserEntity userEntity : users) {
 			User user = new User();
 			user.setUser(userEntity);
 			List<PortfolioEntity> currentPortfolio = this.portfolioRep.findByUserAndDate(user.getUser(), user.getUser().getLastUpdate());
-			user.setCurrentPortfolio(currentPortfolio);
-			if(user.getCurrentPortfolio().isEmpty()) {
+			user.setPortfolio(currentPortfolio);
+			if(user.getPortfolio().isEmpty()) {
 				List<CustomStrategyEntity> strategy = this.customStrategyRep.findByUserAndActive(user.getUser(), true);
 				user.setStrategy(strategy);
 				CapitalEntity currentCapital = this.capitalRep.findByUserAndDate(user.getUser(), user.getUser().getLastUpdate());
 				user.setCapital(currentCapital);
-				boolean created = portfolioOp.createUserPortfolio(user, assetsMap, financialDataPerAssetMap);
+				boolean created = portfolioOp.createUserPortfolio(user, assetsPerClassMap, financialDataPerAssetMap);
 				if(created) {
 					System.out.println("Created portfolio for user: " + user.getUser().getId());
 					user.getUser().setLastUpdate(LocalDate.now());
@@ -95,7 +95,7 @@ public class SchedulingOperator extends AbstractOperator {
 				System.out.println("Skipped computation for user: " + user.getUser().getId());
 				continue;
 			}
-			CapitalEntity capital = capitalOp.computeCapital(user.getUser(), financialDataPerAssetMap, user.getCurrentPortfolio());
+			CapitalEntity capital = capitalOp.computeCapital(user.getUser(), financialDataPerAssetMap, user.getPortfolio());
 			user.setCapital(capital);
 			if(user.getCapital() != null) {
 				System.out.println("Computed capital for user: " + user.getUser().getId());
@@ -105,20 +105,20 @@ public class SchedulingOperator extends AbstractOperator {
 			if(!user.getStrategy().isEmpty() &&
 					(user.getStrategy().get(0).getDate().equals(LocalDate.now()) ||
 					 user.getStrategy().get(0).getDate().equals(LocalDate.now().minus(Period.ofDays(1))))) {
-				boolean recreated = portfolioOp.createUserPortfolio(user, assetsMap, financialDataPerAssetMap);
+				boolean recreated = portfolioOp.createUserPortfolio(user, assetsPerClassMap, financialDataPerAssetMap);
 				if(recreated) {
 					System.out.println("Re-created portfolio for user: " + user.getUser().getId());
 				}
 				continue;
 			}
-			currentPortfolio = portfolioOp.computeUserPortfolio(user.getUser(), user.getCurrentPortfolio(), financialDataPerAssetMap);
-			user.setCurrentPortfolio(currentPortfolio);
-			if(user.getCurrentPortfolio() == null) {
+			currentPortfolio = portfolioOp.computeUserPortfolio(user, financialDataPerAssetMap);
+			user.setPortfolio(currentPortfolio);
+			if(user.getPortfolio() == null) {
 				System.out.println("There was an error for user: " + user.getUser().getId());
 				continue;
 			}
 			System.out.println("Computed portfolio for user: " + user.getUser().getId());
-			boolean rebalanced = this.rebalancingOp.rebalancePortfolio(assetsMap, financialDataPerAssetMap, user.getUser(), user.getCurrentPortfolio(), user.getCapital(), user.getStrategy());
+			boolean rebalanced = this.rebalancingOp.rebalancePortfolio(assetsPerClassMap, financialDataPerAssetMap, user.getUser(), user.getPortfolio(), user.getCapital(), user.getStrategy());
 			if(rebalanced) {
 				System.out.println("Re-balanced portfolio for user: " + user.getUser().getId());
 			}

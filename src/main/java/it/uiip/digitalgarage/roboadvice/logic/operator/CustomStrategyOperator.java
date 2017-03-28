@@ -21,13 +21,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomStrategyOperator extends AbstractOperator{
 
-	@CacheEvict(value = {"activeStrategy", "strategies", "currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo", "advice"}, allEntries = true)
+	@CacheEvict(value = {"activeStrategy", "strategies", "portfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo", "advice"}, allEntries = true)
     public boolean setCustomStrategy(CustomStrategyDTO request, Authentication auth) {
     	UserEntity user = this.userRep.findByEmail(auth.getName());
     	return this.setCustomStrategy(request, user);
     }
 
-	@CacheEvict(value = {"activeStrategy", "strategies", "currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo", "advice"}, allEntries = true)
+	@CacheEvict(value = {"activeStrategy", "strategies", "portfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo", "advice"}, allEntries = true)
     public boolean setCustomStrategy(CustomStrategyDTO request, UserEntity user) {
 		if(user == null){
 			return false;

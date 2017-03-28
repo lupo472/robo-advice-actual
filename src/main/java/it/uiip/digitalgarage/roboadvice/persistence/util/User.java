@@ -9,7 +9,9 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * This class represents an Object used in some operators to exchange informations about the user.
+ * This class represents an Object used in some operators to exchange informations about the user
+ * with UserEntity user, List<PortfolioEntity> portfolio, List<CustomStrategyEntity> strategy
+ * and CapitalEntity capital.
  *
  * @author Cristian Laurini
  */
@@ -17,7 +19,7 @@ public @Data class User {
 
 	private UserEntity user;
 
-	private List<PortfolioEntity> currentPortfolio;
+	private List<PortfolioEntity> portfolio;
 
 	private List<CustomStrategyEntity> strategy;
 
