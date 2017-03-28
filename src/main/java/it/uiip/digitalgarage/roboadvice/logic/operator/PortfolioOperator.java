@@ -2,6 +2,7 @@ package it.uiip.digitalgarage.roboadvice.logic.operator;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.*;
 import it.uiip.digitalgarage.roboadvice.persistence.util.Mapper;
+import it.uiip.digitalgarage.roboadvice.persistence.util.User;
 import it.uiip.digitalgarage.roboadvice.service.dto.*;
 
 import java.math.BigDecimal;
@@ -77,19 +78,18 @@ public class PortfolioOperator extends AbstractOperator {
 	}
 
 	@CacheEvict(value = {"activeStrategy", "strategies", "currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo", "advice"}, allEntries = true)
-    public boolean createUserPortfolio(UserEntity user, List<CustomStrategyEntity> strategyEntity, CapitalEntity capital,
-									   Map<Long, List<AssetEntity>> mapAssets, Map<Long, FinancialDataEntity> mapFD) {
-		if(strategyEntity.isEmpty()) {
+    public boolean createUserPortfolio(User user, Map<Long, List<AssetEntity>> mapAssets, Map<Long, FinancialDataEntity> mapFD) {
+		if(user.getStrategy().isEmpty()) {
 			return false;
 		}
-    	if(capital == null) {
+    	if(user.getCapital() == null) {
     		return false;
     	}
-    	BigDecimal amount = capital.getAmount();
-    	for (CustomStrategyEntity strategy : strategyEntity) {
+    	BigDecimal amount = user.getCapital().getAmount();
+    	for (CustomStrategyEntity strategy : user.getStrategy()) {
 			BigDecimal amountPerClass = amount.divide(new BigDecimal(100.00), 8, RoundingMode.HALF_UP).multiply(strategy.getPercentage());
 			AssetClassEntity assetClass = strategy.getAssetClass();
-			this.savePortfolioForAssetClass(assetClass, user, amountPerClass, mapAssets, mapFD);
+			this.savePortfolioForAssetClass(assetClass, user.getUser(), amountPerClass, mapAssets, mapFD);
 		}
     	return true;
     }

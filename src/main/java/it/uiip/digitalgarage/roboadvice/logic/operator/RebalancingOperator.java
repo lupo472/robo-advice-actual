@@ -13,11 +13,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class contains methods to rebalance the Portfolios.
+ *
+ * @author Cristian Laurini
+ */
 @Service
 public class RebalancingOperator extends AbstractOperator {
 
+
 	public List<PortfolioEntity> rebalance(UserEntity user, List<PortfolioEntity> currentPortfolio, List<CustomStrategyEntity> strategy,
-	  									   Map<Long, FinancialDataEntity> financialDataMap) {
+	  									   Map<Long, FinancialDataEntity> financialDataPerAssetMap) {
 		List<AssetEntity> assets = this.assetRep.findAll();
 		Map<Long, List<AssetEntity>> assetsPerClassMap = Mapper.getMapAssets(assets);
 		BigDecimal capital = new BigDecimal(0);
@@ -31,13 +37,13 @@ public class RebalancingOperator extends AbstractOperator {
 		Map<Long, BigDecimal> capitalPerClassMap = new HashMap<>();
 		toRebalance = isToRebalance(capital, portfolio, strategyMap, toRebalance, differencePerClassMap, capitalPerClassMap);
 		if(toRebalance) {
-			currentPortfolio = this.rebalance(assetsPerClassMap, financialDataMap, currentPortfolio, capital, differencePerClassMap, capitalPerClassMap);
+			currentPortfolio = this.rebalance(assetsPerClassMap, financialDataPerAssetMap, currentPortfolio, capital, differencePerClassMap, capitalPerClassMap);
 		}
 		return currentPortfolio;
 	}
 
 	@CacheEvict(value = {"activeStrategy", "strategies", "currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo", "advice"}, allEntries = true)
-	public boolean rebalancePortfolio(Map<Long, List<AssetEntity>> assetsPerClassMap, Map<Long, FinancialDataEntity> financialDataMap,
+	public boolean rebalancePortfolio(Map<Long, List<AssetEntity>> assetsPerClassMap, Map<Long, FinancialDataEntity> financialDataPerAssetMap,
 									  UserEntity user, List<PortfolioEntity> currentPortfolio, CapitalEntity capital,
 									  List<CustomStrategyEntity> strategy) {
 		PortfolioDTO portfolio = createPortfolioDTO(user, currentPortfolio, capital.getAmount());
@@ -47,7 +53,7 @@ public class RebalancingOperator extends AbstractOperator {
 		Map<Long, BigDecimal> capitalPerClassMap = new HashMap<>();
 		toRebalance = isToRebalance(capital.getAmount(), portfolio, strategyMap, toRebalance, differencePerClassMap, capitalPerClassMap);
 		if(toRebalance) {
-			currentPortfolio = this.rebalance(assetsPerClassMap, financialDataMap, currentPortfolio, capital.getAmount(), differencePerClassMap, capitalPerClassMap);
+			currentPortfolio = this.rebalance(assetsPerClassMap, financialDataPerAssetMap, currentPortfolio, capital.getAmount(), differencePerClassMap, capitalPerClassMap);
 			this.portfolioRep.save(currentPortfolio);
 		}
 		return toRebalance;

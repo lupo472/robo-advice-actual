@@ -8,6 +8,7 @@ import java.util.Map;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.*;
 import it.uiip.digitalgarage.roboadvice.persistence.util.Mapper;
+import it.uiip.digitalgarage.roboadvice.persistence.util.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -66,51 +67,60 @@ public class SchedulingOperator extends AbstractOperator {
 	}
 
 	private void userComputation(List<UserEntity> users, Map<Long, List<AssetEntity>> assetsMap, Map<Long, FinancialDataEntity> financialDataPerAssetMap) {
-		for (UserEntity user : users) {
-			List<PortfolioEntity> currentPortfolio = this.portfolioRep.findByUserAndDate(user, user.getLastUpdate());
-			if(currentPortfolio.isEmpty()) {
-				List<CustomStrategyEntity> strategy = this.customStrategyRep.findByUserAndActive(user, true);
-				CapitalEntity currentCapital = this.capitalRep.findByUserAndDate(user, user.getLastUpdate());
-				boolean created = portfolioOp.createUserPortfolio(user, strategy, currentCapital, assetsMap, financialDataPerAssetMap);
+		for (UserEntity userEntity : users) {
+			User user = new User();
+			user.setUser(userEntity);
+			List<PortfolioEntity> currentPortfolio = this.portfolioRep.findByUserAndDate(user.getUser(), user.getUser().getLastUpdate());
+			user.setCurrentPortfolio(currentPortfolio);
+			if(user.getCurrentPortfolio().isEmpty()) {
+				List<CustomStrategyEntity> strategy = this.customStrategyRep.findByUserAndActive(user.getUser(), true);
+				user.setStrategy(strategy);
+				CapitalEntity currentCapital = this.capitalRep.findByUserAndDate(user.getUser(), user.getUser().getLastUpdate());
+				user.setCapital(currentCapital);
+				boolean created = portfolioOp.createUserPortfolio(user, assetsMap, financialDataPerAssetMap);
 				if(created) {
-					System.out.println("Created portfolio for user: " + user.getId());
-					user.setLastUpdate(LocalDate.now());
+					System.out.println("Created portfolio for user: " + user.getUser().getId());
+					user.getUser().setLastUpdate(LocalDate.now());
 					CapitalEntity capital = new CapitalEntity();
-					capital.setAmount(currentCapital.getAmount());
-					capital.setUser(currentCapital.getUser());
+					capital.setAmount(user.getCapital().getAmount());
+					capital.setUser(user.getUser());
 					capital.setDate(LocalDate.now());
-					capitalRep.save(capital);
-					userRep.save(user);
+					user.setCapital(capital);
+					capitalRep.save(user.getCapital());
+					userRep.save(user.getUser());
 				}
 				continue;
 			}
-			if(user.getLastUpdate().isEqual(LocalDate.now())) {
-				System.out.println("Skipped computation for user: " + user.getId());
+			if(user.getUser().getLastUpdate().isEqual(LocalDate.now())) {
+				System.out.println("Skipped computation for user: " + user.getUser().getId());
 				continue;
 			}
-			CapitalEntity capital = capitalOp.computeCapital(user, financialDataPerAssetMap, currentPortfolio);
-			if(capital != null) {
-				System.out.println("Computed capital for user: " + user.getId());
+			CapitalEntity capital = capitalOp.computeCapital(user.getUser(), financialDataPerAssetMap, user.getCurrentPortfolio());
+			user.setCapital(capital);
+			if(user.getCapital() != null) {
+				System.out.println("Computed capital for user: " + user.getUser().getId());
 			}
-			List<CustomStrategyEntity> strategy = this.customStrategyRep.findByUserAndActive(user, true);
-			if(!strategy.isEmpty() &&
-					(strategy.get(0).getDate().equals(LocalDate.now()) ||
-					 strategy.get(0).getDate().equals(LocalDate.now().minus(Period.ofDays(1))))) {
-				boolean recreated = portfolioOp.createUserPortfolio(user, strategy, capital, assetsMap, financialDataPerAssetMap);
+			List<CustomStrategyEntity> strategy = this.customStrategyRep.findByUserAndActive(user.getUser(), true);
+			user.setStrategy(strategy);
+			if(!user.getStrategy().isEmpty() &&
+					(user.getStrategy().get(0).getDate().equals(LocalDate.now()) ||
+					 user.getStrategy().get(0).getDate().equals(LocalDate.now().minus(Period.ofDays(1))))) {
+				boolean recreated = portfolioOp.createUserPortfolio(user, assetsMap, financialDataPerAssetMap);
 				if(recreated) {
-					System.out.println("Re-created portfolio for user: " + user.getId());
+					System.out.println("Re-created portfolio for user: " + user.getUser().getId());
 				}
 				continue;
 			}
-			currentPortfolio = portfolioOp.computeUserPortfolio(user, currentPortfolio, financialDataPerAssetMap);
-			if(currentPortfolio == null) {
-				System.out.println("There was an error for user: " + user.getId());
+			currentPortfolio = portfolioOp.computeUserPortfolio(user.getUser(), user.getCurrentPortfolio(), financialDataPerAssetMap);
+			user.setCurrentPortfolio(currentPortfolio);
+			if(user.getCurrentPortfolio() == null) {
+				System.out.println("There was an error for user: " + user.getUser().getId());
 				continue;
 			}
-			System.out.println("Computed portfolio for user: " + user.getId());
-			boolean rebalanced = this.rebalancingOp.rebalancePortfolio(assetsMap, financialDataPerAssetMap, user, currentPortfolio, capital, strategy);
+			System.out.println("Computed portfolio for user: " + user.getUser().getId());
+			boolean rebalanced = this.rebalancingOp.rebalancePortfolio(assetsMap, financialDataPerAssetMap, user.getUser(), user.getCurrentPortfolio(), user.getCapital(), user.getStrategy());
 			if(rebalanced) {
-				System.out.println("Re-balanced portfolio for user: " + user.getId());
+				System.out.println("Re-balanced portfolio for user: " + user.getUser().getId());
 			}
 		}
 	}
