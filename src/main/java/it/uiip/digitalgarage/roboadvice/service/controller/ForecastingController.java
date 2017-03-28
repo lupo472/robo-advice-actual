@@ -39,9 +39,12 @@ public class ForecastingController extends AbstractController {
 	@RequestMapping("/getAdvice")
 	@ResponseBody
 	public GenericResponse<?> getAdvice(@Valid @RequestBody PeriodDTO period, Authentication auth) {
+		if(this.capitalOp.getCurrentCapital(auth) == null) {
+			return new GenericResponse<String>(0, ControllerConstants.ANY_CAPITAL);
+		}
 		DefaultStrategyDTO defaultStrategyDTO = this.adviceOp.getAdvice(period, auth);
 		if(defaultStrategyDTO == null) {
-			return new GenericResponse<String>(0, "Your current strategy is ok"); //TODO Change message
+			return new GenericResponse<String>(0, ControllerConstants.STRATEGY_OK);
 		}
 		return new GenericResponse<DefaultStrategyDTO>(1, defaultStrategyDTO);
 	}

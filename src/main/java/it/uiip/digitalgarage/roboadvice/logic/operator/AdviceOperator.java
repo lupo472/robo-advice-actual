@@ -24,7 +24,6 @@ public class AdviceOperator extends AbstractOperator {
     /*
      * Performances for this method are not good
      * TODO: improve if necessary
-     * TODO: check errors if the user doesn't have capital
      */
     @Cacheable("advice")
     public DefaultStrategyDTO getAdvice(PeriodDTO period, Authentication auth) {
