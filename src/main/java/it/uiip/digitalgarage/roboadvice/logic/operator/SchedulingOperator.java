@@ -95,7 +95,7 @@ public class SchedulingOperator extends AbstractOperator {
 				System.out.println("Skipped computation for user: " + user.getUser().getId());
 				continue;
 			}
-			CapitalEntity capital = capitalOp.computeCapital(user.getUser(), financialDataPerAssetMap, user.getPortfolio());
+			CapitalEntity capital = capitalOp.computeCapital(user, financialDataPerAssetMap);
 			user.setCapital(capital);
 			if(user.getCapital() != null) {
 				System.out.println("Computed capital for user: " + user.getUser().getId());
@@ -118,7 +118,7 @@ public class SchedulingOperator extends AbstractOperator {
 				continue;
 			}
 			System.out.println("Computed portfolio for user: " + user.getUser().getId());
-			boolean rebalanced = this.rebalancingOp.rebalancePortfolio(assetsPerClassMap, financialDataPerAssetMap, user.getUser(), user.getPortfolio(), user.getCapital(), user.getStrategy());
+			boolean rebalanced = this.rebalancingOp.rebalancePortfolio(user, assetsPerClassMap, financialDataPerAssetMap);
 			if(rebalanced) {
 				System.out.println("Re-balanced portfolio for user: " + user.getUser().getId());
 			}

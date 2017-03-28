@@ -29,7 +29,8 @@ public class PortfolioOperator extends AbstractOperator {
 	 * This method allows to retrieve the current portfolio for the logged user.
 	 *
 	 * @param auth	Authentication is used to retrieve the logged user.
-	 * @return		PortfolioDTO represents the current portfolio.
+	 * @return		PortfolioDTO that represents the current portfolio or null if the users
+	 * 				doesn't have a portfolio.
 	 */
 	@Cacheable("portfolio")
     public PortfolioDTO getCurrentPortfolio(Authentication auth) {
@@ -41,7 +42,8 @@ public class PortfolioOperator extends AbstractOperator {
 	 * This method allows to retrieve the current portfolio for the selected user.
 	 *
 	 * @param user	UserEntity is the user for which retrieve the current portfolio.
-	 * @return		PortfolioDTO represents the current portfolio.
+	 * @return		PortfolioDTO that represents the current portfolio or null if the users
+	 * 				doesn't have a portfolio.
 	 */
 	@Cacheable("portfolio")
 	public PortfolioDTO getCurrentPortfolio(UserEntity user) {
@@ -64,7 +66,8 @@ public class PortfolioOperator extends AbstractOperator {
 	 *
 	 * @param period	PeriodDTO is the number of days to retrieve.
 	 * @param auth		Authentication is used to retrieve the logged user.
-	 * @return			List of PortfolioDTOs.
+	 * @return			List of PortfolioDTOs or null if the user doesn't have any portfolio
+	 * 					in the selected period.
 	 */
 	@Cacheable("portfolioHistory")
     public List<PortfolioDTO> getPortfolioForPeriod(PeriodDTO period, Authentication auth){

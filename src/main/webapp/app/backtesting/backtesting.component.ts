@@ -24,6 +24,7 @@ export class BacktestingComponent implements OnInit {
   public max: number = 100;
 
   public selected:any[] = [];
+  public percentage:any[] = [];
   public assetclasses:AssetClass[] = [];
 
   public sum:number = 0;
@@ -42,6 +43,8 @@ export class BacktestingComponent implements OnInit {
       let assetClassStrategy = new AssetClassStrategy(this.selected[index], item.id, item.name);
       this.list.push(assetClassStrategy);
     });
+
+    this.percentage = this.selected;
 
     this.selected = [];
 
