@@ -22,7 +22,6 @@ export class HistoryChartComponent implements OnInit {
   constructor(private StrategyService: StrategyService) {
     this.maxdate = new Date();
     this.startdate = new Date();
-    console.log("today" + this.maxdate);
     this.startdate.setDate(this.startdate.getDate() - this.period);
   }
 
@@ -42,8 +41,7 @@ export class HistoryChartComponent implements OnInit {
 
   getStrategies(res) {
     if (res) {
-      console.log("res#########", res);
-      //this.render=false;
+      console.log("RES: ", res);
       this.options=res;
       this.changeChart();
     }
