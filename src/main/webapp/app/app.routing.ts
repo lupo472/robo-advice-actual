@@ -4,12 +4,17 @@ import { Routes, RouterModule } from '@angular/router';
 // Layouts
 import { FullLayoutComponent } from './layouts/full-layout.component';
 import { SimpleLayoutComponent }  from './layouts/simple-layout.component';
-import {DetailMarketValueChartComponent} from "./edit/detail-market-value-chart/detail-market-value-chart.component";
+import {SplashComponent} from "./splash/splash.component";
 
 export const routes: Routes = [
   {
     path: '',
     redirectTo: 'pages/login',
+    pathMatch: 'full',
+  },
+  {
+    path: 'splash',
+    component: SplashComponent,
     pathMatch: 'full',
   },
   {
