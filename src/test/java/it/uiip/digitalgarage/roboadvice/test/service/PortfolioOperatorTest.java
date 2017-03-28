@@ -31,8 +31,6 @@ import java.util.Map;
 @SpringBootTest(classes = RoboadviceApplication.class)
 public class PortfolioOperatorTest {
 
-	//TODO modified method, re-implement test
-
 	@InjectMocks
 	@Autowired
 	private PortfolioOperator portfolioOp;
