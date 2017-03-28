@@ -20,7 +20,7 @@ import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 public class DefaultStrategyController extends AbstractController {
 
 	/**
-	 * This method allow to get all the DefaultStrategies
+	 * This method allows to get all the DefaultStrategies
 	 * The related API is <b>/getDefaultStrategySet</b>
 	 *
 	 * @return 	GenericResponse with response 1 and a List of DefaultStrategyDTO.

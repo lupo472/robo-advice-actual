@@ -21,7 +21,7 @@ import java.util.List;
 public class BacktestingController extends AbstractController {
 
 	/**
-	 * This method allow to get the Backtesting.
+	 * This method allows to get the Backtesting.
 	 * The related API is <b>/getBacktesting</b>
 	 *
 	 * @param request 	BacktestingDTO contains the capital, the period and the strategy.
@@ -44,7 +44,7 @@ public class BacktestingController extends AbstractController {
 	}
 
 	/**
-	 * This method allow to get the minimum date for the computation of the Backtesting.
+	 * This method allows to get the minimum date for the computation of the Backtesting.
 	 * The related API is <b>/getMinimumBacktestingDate</b>
 	 *
 	 * @param request 	CustomStrategyDTO contains the selected strategy.

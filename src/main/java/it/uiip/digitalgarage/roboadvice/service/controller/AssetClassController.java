@@ -20,7 +20,7 @@ import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 public class AssetClassController extends AbstractController {
 
 	/**
-	 * This method allow to get all the Asset Classes.
+	 * This method allows to get all the Asset Classes.
 	 * The related API is <b>/getAssetClassSet</b>
 	 *
 	 * @return 	GenericResponse with response 1 and a List of AssetClassDTOs.

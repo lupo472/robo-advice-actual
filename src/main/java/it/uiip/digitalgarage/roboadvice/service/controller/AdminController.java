@@ -22,7 +22,7 @@ public class AdminController extends AbstractController {
 	private static String password = "5167477de388c8f1564f46d332567cf0d41fc77436dba7434d5bd25b18be2e77";
 
 	/**
-	 * This method allow to force the nightly computation of the system.
+	 * This method allows to force the nightly computation of the system.
 	 * The related API is <b>/scheduleTask</b>
 	 *
 	 * @param 	request 	PasswordDTO containing the admin password
@@ -40,7 +40,7 @@ public class AdminController extends AbstractController {
 	}
 
 	/**
-	 * This method allow to force the updating the financial data.
+	 * This method allows to force the updating the financial data.
 	 * The related API is <b>/updateFinancialDataSet</b>
 	 *
 	 * @param 	request 	PasswordDTO containing the admin password
@@ -58,7 +58,7 @@ public class AdminController extends AbstractController {
 	}
 
 	/**
-	 * This method allow to force the initialization the financial data.
+	 * This method allows to force the initialization the financial data.
 	 * The related API is <b>/initializeFinancialDataSet</b>
 	 *
 	 * @param 	request 	PasswordDTO containing the admin password

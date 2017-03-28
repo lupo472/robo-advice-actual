@@ -29,7 +29,7 @@ import java.util.List;
 public class CapitalController extends AbstractController {
 
 	/**
-	 * This method allow to add a capital for the logged user.
+	 * This method allows to add a capital for the logged user.
 	 * The related API is <b>/addCapital</b>
 	 *
 	 * @param capital	CapitalRequestDTO contains the amount of capital to add.
@@ -48,7 +48,7 @@ public class CapitalController extends AbstractController {
 	}
 
 	/**
-	 * This method allow to get the current capital for the logged user.
+	 * This method allows to get the current capital for the logged user.
 	 * The related API is <b>/getCurrentCapital</b>
 	 *
 	 * @param auth	Authentication for the security.
@@ -67,7 +67,7 @@ public class CapitalController extends AbstractController {
 	}
 
 	/**
-	 * This method allow to get history of the capital for the logged user.
+	 * This method allows to get history of the capital for the logged user.
 	 * The related API is <b>/getCapitalForPeriod</b>
 	 *
 	 * @param request	PeriodDTO contains the number of days requested.

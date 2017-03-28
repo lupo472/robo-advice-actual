@@ -27,7 +27,7 @@ import javax.validation.Valid;
 public class CustomStrategyController extends AbstractController {
 
 	/**
-	 * This method allow to set a Custom Strategy for the logged user.
+	 * This method allows to set a Custom Strategy for the logged user.
 	 * The related API is <b>/setCustomStrategy</b>
 	 *
 	 * @param request	CustomStrategyDTO contains a List of AssetClassStrategyDTO that represent each Asset Class
@@ -47,7 +47,7 @@ public class CustomStrategyController extends AbstractController {
     }
 
 	/**
-	 * This method allow to get the active Custom Strategy for the logged user.
+	 * This method allows to get the active Custom Strategy for the logged user.
 	 * The related API is <b>/getActiveStrategy</b>
 	 *
 	 * @param auth	Authentication for the security.
@@ -65,7 +65,7 @@ public class CustomStrategyController extends AbstractController {
     }
 
 	/**
-	 * This method allow to get the history of the Custom Strategies for the logged user.
+	 * This method allows to get the history of the Custom Strategies for the logged user.
 	 * The related API is <b>/getCustomStrategyHistory</b>
 	 *
 	 * @param period	PeriodDTO contains the number of days requested.
