@@ -5,8 +5,8 @@ import {StrategyService} from "../../services/strategy.service";
 
 @Component({
   selector: 'app-strategy-graph',
-  templateUrl: './strategy-graph.component.html',
-  styleUrls: ['./strategy-graph.component.scss'],
+  templateUrl: './strategy-graph.component.html'
+
 
 })
 export class StrategyGraphComponent implements OnInit {
@@ -17,7 +17,20 @@ export class StrategyGraphComponent implements OnInit {
   constructor(private _z: NgZone,private StrategyService:StrategyService) { }
 
   ngOnInit() {
+
       this.strategy.createChart();
+
+/*    this.StrategyService.getActiveStrategy().subscribe(res => this.getStrategy(res));
+  }
+
+  getStrategy(data) {
+
+    if(data) {
+      let t = data.getChartData();
+      this.labels = t.labels;
+      this.datasets = t.datasets;
+      this.colors = t.colors;*/
+
 
     if (this.strategy instanceof DefaultStrategy) {
       this.name = "Got Advice!";

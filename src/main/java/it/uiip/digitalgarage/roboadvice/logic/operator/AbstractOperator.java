@@ -12,6 +12,11 @@ import it.uiip.digitalgarage.roboadvice.persistence.repository.DefaultStrategyRe
 import it.uiip.digitalgarage.roboadvice.persistence.repository.FinancialDataRepository;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.UserRepository;
 
+/**
+ * This class is just a container of properties.
+ *
+ * @author Cristian Laurini
+ */
 public abstract class AbstractOperator {
 	
 	@Autowired

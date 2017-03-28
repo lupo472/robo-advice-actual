@@ -11,9 +11,20 @@ import it.uiip.digitalgarage.roboadvice.service.dto.AssetClassStrategyDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyResponseDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CustomStrategyDTO;
 
+/**
+ * This class offers methods to convert a List of CustomStrategyEntities in a CustomStrategyDTO and vice-versa.
+ *
+ * @author Cristian Laurini
+ */
 @Component
 public class CustomStrategyWrapper {
 
+	/**
+	 * This method unwraps a single CustomStrategyDTO in a List of CustomStrategyEntities.
+	 *
+	 * @param dto	CustomStrategyDTO is the dto to unwrap.
+	 * @return		List of CustomStrategyEntites is the result of the unwrapping.
+	 */
 	public List<CustomStrategyEntity> unwrapToEntity(CustomStrategyDTO dto) {
 		List<CustomStrategyEntity> entityList = new ArrayList<>();
 		for (AssetClassStrategyDTO element : dto.getList()) {
@@ -27,7 +38,13 @@ public class CustomStrategyWrapper {
 		}
 		return entityList;
 	}
-	
+
+	/**
+	 * This method wraps a List of CustomStrategyEntities in a single CustomStrategyDTO.
+	 *
+	 * @param entityList	List of CustomStrategyEntities is the list of entities to wrap.
+	 * @return				CustomStrategyDTO is the result of the wrapping.
+	 */
 	public CustomStrategyResponseDTO wrapToDTO(List<CustomStrategyEntity> entityList) {
 		CustomStrategyResponseDTO dto = new CustomStrategyResponseDTO();
 		dto.setActive(entityList.get(0).isActive());

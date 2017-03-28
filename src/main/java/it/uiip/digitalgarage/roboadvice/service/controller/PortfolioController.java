@@ -9,10 +9,24 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+/**
+ * This class contains the Rest-APIs related to the Portfolio.
+ *
+ * @author Cristian Laurini
+ * @author Luca Antilici
+ */
 @CrossOrigin("*")
 @RestController
 public class PortfolioController extends AbstractController {
 
+	/**
+	 * This method allows to get the current Portfolio for the logged user.
+	 * The related API is <b>/getPortfolio</b>
+	 *
+	 * @param auth	Authentication for the security.
+	 * @return		GenericResponse with response 0 and a message if the portfolio of the user is empty,
+	 * 				or response 1 and the PortfolioDTO representing the current Portfolio of the user.
+	 */
     @RequestMapping("/getCurrentPortfolio")
     @ResponseBody
     public GenericResponse<?> getCurrentPortfolio(Authentication auth) {
@@ -22,8 +36,17 @@ public class PortfolioController extends AbstractController {
     	}
         return new GenericResponse<PortfolioDTO>(1, result);
     }
-    
-    @RequestMapping("/getPortfolioForPeriod")
+
+	/**
+	 * This method allows to get the history of the Portfolio of the logged user.
+	 * The related API is <b>/getPortfolioForPeriod</b>
+	 *
+	 * @param request	PeriodDTO contains the number of days requested.
+	 * @param auth		Authentication for the security.
+	 * @return			GenericResponse with response 0 and a message if the portfolio of the user is empty,
+	 * 					or response 1 and a List of PortfolioDTOs.
+	 */
+	@RequestMapping("/getPortfolioForPeriod")
     @ResponseBody
     public GenericResponse<?> getPortfolioForPeriod(@Valid @RequestBody PeriodDTO request, Authentication auth) {
         List<PortfolioDTO> result = this.portfolioOp.getPortfolioForPeriod(request, auth);
@@ -32,33 +55,5 @@ public class PortfolioController extends AbstractController {
         }
         return new GenericResponse<List<PortfolioDTO>>(1, result);
     }
-
-/************************************************************************************************
- * 										Test Method												*
- * **********************************************************************************************
- *   @RequestMapping("/createUserPortfolio")                                                    *
- *   @ResponseBody                                                                              *
- *   public GenericResponse<?> createUserPortfolio(Authentication auth) {                       *
- *       boolean done = this.portfolioOp.createUserPortfolio(auth);                             *
- *   	if(done) {                                                                              *
- *   		return new GenericResponse<String>(1, ControllerConstants.DONE);                    *
- *   	}                                                                                       *
- *   	return new GenericResponse<String>(0, ControllerConstants.PROBLEM);                     *
- *   }                                                                                          *
- ************************************************************************************************/
-
-/************************************************************************************************
- * 										Test Method												*
- ************************************************************************************************
- *   @RequestMapping("/computeUserPortfolio")                                                   *
- *   @ResponseBody                                                                              *
- *   public GenericResponse<?> computeUserPortfolio(Authentication auth) {                      *
- *   	boolean done = this.portfolioOp.computeUserPortfolio(auth);                             *
- *   	if(done) {                                                                              *
- *   		return new GenericResponse<String>(1, ControllerConstants.DONE);                    *
- *   	}                                                                                       *
- *   	return new GenericResponse<String>(0, ControllerConstants.PROBLEM);                     *
- *   }                                                                                          *
- ************************************************************************************************/                                                                                                          
 
 }

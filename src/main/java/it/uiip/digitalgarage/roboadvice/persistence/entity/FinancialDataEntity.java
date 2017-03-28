@@ -16,6 +16,12 @@ import javax.persistence.Table;
 
 import lombok.Data;
 
+/**
+ * Entity that represents the financial_data table on the database with Long id, AssetEntity asset,
+ * BigDecimal value and LocalDate date.
+ *
+ * @author Cristian Laurini
+ */
 @Entity
 @Table(name = "financial_data", indexes = {@Index(name = "IDX1", columnList = "id_asset, date")})
 public @Data class FinancialDataEntity implements Comparable<FinancialDataEntity> {

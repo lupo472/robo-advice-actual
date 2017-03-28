@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 import it.uiip.digitalgarage.roboadvice.logic.operator.PortfolioOperator;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.*;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.*;
+import it.uiip.digitalgarage.roboadvice.persistence.util.User;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -30,8 +31,6 @@ import java.util.Map;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = RoboadviceApplication.class)
 public class PortfolioOperatorTest {
-
-	//TODO modified method, re-implement test
 
 	@InjectMocks
 	@Autowired
@@ -194,14 +193,22 @@ public class PortfolioOperatorTest {
 		when(financialDataRep.findByAssetAndDate(assetEntity1,assetEntity1.getLastUpdate())).thenReturn(financialDataEntity1);
 		when(financialDataRep.findByAssetAndDate(assetEntity2,assetEntity2.getLastUpdate())).thenReturn(financialDataEntity2);
 		when(portfolioRep.findByUserAndAssetAndDate(user, assetEntity1, LocalDate.now())).thenReturn(portfolioEntity);
-		boolean response = portfolioOp.createUserPortfolio(user, customStrategyEntityList, capitalEntity, mapAssets, mapFD);
+		User u = new User();
+		u.setUser(user);
+		u.setStrategy(customStrategyEntityList);
+		u.setCapital(capitalEntity);
+		boolean response = portfolioOp.createUserPortfolio(u, mapAssets, mapFD);
 		verify(portfolioRep).save(portfolioEntity);
 		assertTrue(response);
 	}
 
 	@Test
-	public void createUserPortfolioFailNullLastUpdate() {
-		boolean response = portfolioOp.createUserPortfolio(user, customStrategyEntityList, null, mapAssets, mapFD);
+	public void createUserPortfolioFailNullCapital() {
+		User u = new User();
+		u.setUser(user);
+		u.setStrategy(customStrategyEntityList);
+		u.setCapital(null);
+		boolean response = portfolioOp.createUserPortfolio(u, mapAssets, mapFD);
 		assertFalse(response);
 	}
 
@@ -213,9 +220,14 @@ public class PortfolioOperatorTest {
 		capitalEntity.setAmount(new BigDecimal(1236.34));
 		capitalEntity.setDate(LocalDate.now().minusDays(1));
 		List<CustomStrategyEntity> customStrategyEntityList = new ArrayList<>();
+
+		User u = new User();
+		u.setUser(user);
+		u.setCapital(capitalEntity);
+		u.setStrategy(customStrategyEntityList);
 		when(capitalRep.findByUserAndDate(user, user.getLastUpdate())).thenReturn(capitalEntity);
 		when(customStrategyRep.findByUserAndActive(user, true)).thenReturn(customStrategyEntityList);
-		boolean response = portfolioOp.createUserPortfolio(user, customStrategyEntityList, capitalEntity, mapAssets, mapFD );
+		boolean response = portfolioOp.createUserPortfolio(u, mapAssets, mapFD );
 		assertFalse(response);
 	}
 
@@ -238,10 +250,14 @@ public class PortfolioOperatorTest {
 		savedPortfolio2.setValue(new BigDecimal("575.470040999999947193202842754545747653129535559791412767556562091186833640676923096179962158203125"));
 		savedPortfolio2.setDate(LocalDate.now());
 
+		User u = new User();
+		u.setUser(user);
+		u.setPortfolio(oldPortfolio);
+
 		when(portfolioRep.findByUserAndDate(user, user.getLastUpdate())).thenReturn(oldPortfolio);
 		when(financialDataRep.findByAssetAndDate(assetEntity1,assetEntity1.getLastUpdate())).thenReturn(financialDataEntity1);
 		when(financialDataRep.findByAssetAndDate(assetEntity2,assetEntity2.getLastUpdate())).thenReturn(financialDataEntity2);
-		List<PortfolioEntity> response = portfolioOp.computeUserPortfolio(user, oldPortfolio, mapFD);
+		List<PortfolioEntity> response = portfolioOp.computeUserPortfolio(u, mapFD);
 		verify(portfolioRep).save(savedPortfolio);
 		verify(portfolioRep).save(savedPortfolio2);
 		assertEquals(savedPortfolio,response.get(0));
@@ -250,10 +266,13 @@ public class PortfolioOperatorTest {
 
 	@Test
 	public void computeUserPortfolioEmptyFinancialData() {
+		User u = new User();
+		u.setUser(user);
+		u.setPortfolio(oldPortfolio);
 		when(portfolioRep.findByUserAndDate(user, user.getLastUpdate())).thenReturn(oldPortfolio);
 		when(financialDataRep.findByAssetAndDate(assetEntity1,assetEntity1.getLastUpdate())).thenReturn(financialDataEntity1);
 		when(financialDataRep.findByAssetAndDate(assetEntity2,assetEntity2.getLastUpdate())).thenReturn(financialDataEntity2);
-		List<PortfolioEntity> response = portfolioOp.computeUserPortfolio(user, oldPortfolio, new HashMap<Long, FinancialDataEntity>());
+		List<PortfolioEntity> response = portfolioOp.computeUserPortfolio(u, new HashMap<Long, FinancialDataEntity>());
 		assertNull(response);
 	}
 	

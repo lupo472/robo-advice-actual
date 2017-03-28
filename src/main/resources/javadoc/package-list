@@ -1,0 +1,15 @@
+it.uiip.digitalgarage.roboadvice
+it.uiip.digitalgarage.roboadvice.config
+it.uiip.digitalgarage.roboadvice.logic.converter
+it.uiip.digitalgarage.roboadvice.logic.operator
+it.uiip.digitalgarage.roboadvice.logic.wrapper
+it.uiip.digitalgarage.roboadvice.persistence.entity
+it.uiip.digitalgarage.roboadvice.persistence.quandl
+it.uiip.digitalgarage.roboadvice.persistence.repository
+it.uiip.digitalgarage.roboadvice.persistence.util
+it.uiip.digitalgarage.roboadvice.service.controller
+it.uiip.digitalgarage.roboadvice.service.dto
+it.uiip.digitalgarage.roboadvice.service.util
+it.uiip.digitalgarage.roboadvice.test
+it.uiip.digitalgarage.roboadvice.test.controller
+it.uiip.digitalgarage.roboadvice.test.service

@@ -1,7 +1,11 @@
-<!--<p-calendar [(ngModel)]="startdate" [showIcon]="true" [maxDate]="maxdate" (ngModelChange)="refreshData($event)"></p-calendar>-->
-
-<div class="card">
+<div class="card hidden-sm-down">
     <div class="card-block">
+        <div class="row">
+            <div class="col col-8 col-sm-6 col-md-8">
+                <h4 class="card-title ">Strategies History</h4>
+            </div>
+        </div>
     <amCharts *ngIf="render" [id]="id" [options]="options" [style.width.%]="100" [style.height.px]="500"></amCharts>
+    </div>
 </div>
 

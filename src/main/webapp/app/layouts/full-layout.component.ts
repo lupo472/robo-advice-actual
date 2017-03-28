@@ -63,9 +63,6 @@ export class FullLayoutComponent implements OnInit {
     public capitalLabels: Array<any>;
 
     assignCapitalData(res) {
-
-        console.log("getCapitalForPeriod", res);
-
         if (res.response == 1) {
 
             let data:Array<number> = [];

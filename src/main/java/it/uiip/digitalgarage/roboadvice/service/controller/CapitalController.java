@@ -18,10 +18,25 @@ import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 
 import java.util.List;
 
+/**
+ * This class contains the Rest-APIs related to the Capital.
+ *
+ * @author Cristian Laurini
+ * @author Luca Antilici
+ */
 @CrossOrigin("*")
 @RestController
 public class CapitalController extends AbstractController {
-	
+
+	/**
+	 * This method allows to add a capital for the logged user.
+	 * The related API is <b>/addCapital</b>
+	 *
+	 * @param capital	CapitalRequestDTO contains the amount of capital to add.
+	 * @param auth		Authentication for the security.
+	 * @return			GenericResponse with response 0 if some problem occurs, or 1 instead,
+	 * 					with the related message.
+	 */
 	@RequestMapping("/addCapital")
     @ResponseBody
 	public GenericResponse<?> addCapital(@Valid @RequestBody CapitalRequestDTO capital, Authentication auth) {
@@ -31,7 +46,16 @@ public class CapitalController extends AbstractController {
 		}
 		return new GenericResponse<String>(0, ControllerConstants.PROBLEM);
 	}
-	
+
+	/**
+	 * This method allows to get the current capital for the logged user.
+	 * The related API is <b>/getCurrentCapital</b>
+	 *
+	 * @param auth	Authentication for the security.
+	 * @return		GenericResponse with response 0 and a message if the user doesn't have any capital,
+	 * 				or response 1 and CapitalDTO that contains the amount of money of the user and
+	 * 				the related date.
+	 */
 	@RequestMapping("/getCurrentCapital")
     @ResponseBody
 	public GenericResponse<?> getCurrentCapital(Authentication auth) {
@@ -42,6 +66,16 @@ public class CapitalController extends AbstractController {
 		return new GenericResponse<CapitalDTO>(1, result);
 	}
 
+	/**
+	 * This method allows to get history of the capital for the logged user.
+	 * The related API is <b>/getCapitalForPeriod</b>
+	 *
+	 * @param request	PeriodDTO contains the number of days requested.
+	 * @param auth		Authentication for the security.
+	 * @return			GenericResponse with response 0 and a message if the user doesn't have any capital,
+	 * 					or response 1 and a List of CapitalDTOs containing the amount of money and the
+	 * 					related date.
+	 */
 	@RequestMapping("/getCapitalForPeriod")
 	@ResponseBody
 	public GenericResponse<?> getCapitalForPeriod(@Valid @RequestBody PeriodDTO request, Authentication auth) {
@@ -51,19 +85,5 @@ public class CapitalController extends AbstractController {
 		}
 		return new GenericResponse<List<CapitalDTO>>(1, result);
 	}
-	
-/************************************************************************************************
- * 										Test Method												*
- * ******************************************************************************************** *	
- *  @RequestMapping("/computeCapital")															*
- *	@ResponseBody																				*
- *	public GenericResponse<?> computeCapital(@Valid @RequestBody UserRegisteredDTO user){		*
- *		boolean done = this.capitalOp.computeCapital(user);										*
- *		if(!done) {																				*
- *			return new GenericResponse<String>(0, ControllerConstants.PROBLEM);					*	
- *		}																						*
- *		return new GenericResponse<String>(1, ControllerConstants.DONE);						*
- *	}																							*
- ************************************************************************************************/
-	
+
 }

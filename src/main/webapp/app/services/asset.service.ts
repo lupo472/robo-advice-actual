@@ -19,6 +19,7 @@ import 'rxjs/add/observable/throw';
 export class AssetService {
   private portfolio:any;
   private backtesting: any;
+  private forecasting: any;
   private data:any = {};
   assetClassStrategies:AssetClassStrategies;
   assetClassStrategies2:AssetClassStrategies;
@@ -34,19 +35,18 @@ export class AssetService {
   }
 
   getDefaultAssetClass(){
-
-    this.getAssetClassSet();
-
+    return this.AppService.getAssetClassSet().map(res => this.mapAssetClass(res));
+  }
+  mapAssetClass(res){
+    this.assetClassSet = res;
     return this.assetClassSet;
   }
 
   //REMAPPING ASSET CLASS
   getAssetClassSet() {
     return this.AppService.getAssetClassSet().map(res => this.assignAssetClass(res));
-    //return this.AppService.getFinancialDataSetForAssetClass(id,period).map(res => this.assignFinancialData(res));
   }
   assignAssetClass(res) {
-    this.assetClassSet = res;
     this.assetClassStrategies = new AssetClassStrategies();
     console.log("assetclass",this.assetClassStrategies);
     this.assetClassStrategies.createAssetClassStrategies(res);
@@ -55,6 +55,7 @@ export class AssetService {
     console.log("assetclass2",this.assetClassStrategies2);
     //this.assetClassStrategies2.createAssetClassStrategies(res);
     console.log("ASSETCLASSSTRATEGIES2",this.assetClassStrategies2.getAssetClassStrategies());
+
     return this.assetClassStrategies;
   }
 
@@ -84,21 +85,31 @@ export class AssetService {
   mapPortfolio(res){
     if (res.response == 1) {
       this.portfolio = new Portfolio(res.data);
-      this.data = this.portfolio.getData();
     }
 
-    return {response: res.response, data: this.data}
+    return {response: res.response, data: this.portfolio.getData()}
   }
 
   getBacktesting(list, period){
+    console.log("LIST SENT",list);
     return this.AppService.getBacktesting(list, period, this.capital).map(res => this.mapBacktesting(res));
   }
   mapBacktesting(res){
     if (res.response == 1) {
       this.backtesting = new Portfolio(res.data);
-      this.data = this.backtesting.getData();
     }
 
-    return {response: res.response, data: this.data}
+    return {response: res.response, data: this.backtesting.getData()}
+  }
+
+  getForecasting(period){
+    return this.AppService.getDemo(period).map(res => this.mapForecasting(res));
+  }
+  mapForecasting(res){
+    if (res.response == 1) {
+      this.forecasting = new Portfolio(res.data);
+    }
+
+    return {response: res.response, data: this.forecasting.getData()}
   }
 }

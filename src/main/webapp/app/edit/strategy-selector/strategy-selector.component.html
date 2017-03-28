@@ -21,8 +21,7 @@
 			<canvas *ngIf="!custom" baseChart class="chart" [data]="strategy.arrayPercentages"
 				[labels]="strategy.arrayLabels"
 				[options]="strategyOptions" [colors]="strategy.arrayColors"
-				[legend]="strategyLegend" [chartType]="strategyType"
-				(chartHover)="chartHovered($event)"></canvas>
+				[legend]="strategyLegend" [chartType]="strategyType"></canvas>
 
 		</div>
 	</div>

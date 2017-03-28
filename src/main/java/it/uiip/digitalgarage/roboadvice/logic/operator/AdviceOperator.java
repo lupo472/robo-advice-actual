@@ -1,6 +1,7 @@
 package it.uiip.digitalgarage.roboadvice.logic.operator;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.*;
+import it.uiip.digitalgarage.roboadvice.persistence.util.User;
 import it.uiip.digitalgarage.roboadvice.service.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -12,6 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class manages the computation for giving an Advice.
+ *
+ * @author Cristian Laurini
+ * @author Luca Antilici
+ */
 @Service
 public class AdviceOperator extends AbstractOperator {
 
@@ -21,33 +28,39 @@ public class AdviceOperator extends AbstractOperator {
     @Autowired
     private DefaultStrategyOperator defaultStrategyOp;
 
-    /*
-     * Performances for this method are not good
-     * TODO: improve if necessary
-     * TODO: check errors if the user doesn't have capital
-     */
+	/**
+	 * This method returns an adviced strategy for the user.
+	 * Performances for this method are not excellent, but it is not a problem for the whole system.
+	 *
+	 * @param period	PeriodDTO is the number of days to retrieve.
+	 * @param auth		Authentication is used to retrieve the logged user.
+	 * @return			DefaultStrategyDTO if some defaultStrategy is better than the current strategy
+	 * 					of the logged user or null instead.
+	 */
     @Cacheable("advice")
     public DefaultStrategyDTO getAdvice(PeriodDTO period, Authentication auth) {
-        UserEntity user = this.userRep.findByEmail(auth.getName());
-        List<PortfolioDTO> currentStrategyPortfolio = this.forecastingOp.getDemo(period, auth);
+        UserEntity userEntity = this.userRep.findByEmail(auth.getName());
+        List<PortfolioDTO> currentStrategyDemo = this.forecastingOp.getDemo(period, auth);
         BigDecimal finalCapital = new BigDecimal(0);
-        if(currentStrategyPortfolio != null) {
-            int lastElementIndex = currentStrategyPortfolio.size() - 1;
-            finalCapital = this.portfolioSum(currentStrategyPortfolio.get(lastElementIndex));
+        if(currentStrategyDemo != null) {
+            int lastElementIndex = currentStrategyDemo.size() - 1;
+            finalCapital = this.portfolioSum(currentStrategyDemo.get(lastElementIndex));
         }
-        List<DefaultStrategyDTO> getDefaultStrategySet = this.defaultStrategyOp.getDefaultStrategySet();
+        List<DefaultStrategyDTO> defaultStrategyList = this.defaultStrategyOp.getDefaultStrategySet();
         DefaultStrategyDTO result = null;
-        for(DefaultStrategyDTO defaultStrategy : getDefaultStrategySet) {
-            CustomStrategyDTO customStrategyDTO = new CustomStrategyDTO();
-            customStrategyDTO.setList(defaultStrategy.getList());
-            List<CustomStrategyEntity> strategyList = this.customStrategyWrap.unwrapToEntity(customStrategyDTO);
-            List<PortfolioDTO> defaultStrategyPortfolio = this.forecastingOp.getDemo(strategyList, period, user);
-            if(defaultStrategyPortfolio != null) {
-                int lastElementIndex = defaultStrategyPortfolio.size() - 1;
-                BigDecimal defaultStrategyCapital = this.portfolioSum(defaultStrategyPortfolio.get(lastElementIndex));
-                if(defaultStrategyCapital.doubleValue() > finalCapital.doubleValue()) {
-                    result = defaultStrategy;
-                }
+		User user = new User();
+		user.setUser(userEntity);
+        for(DefaultStrategyDTO defaultStrategy : defaultStrategyList) {
+            CustomStrategyDTO customStrategy = new CustomStrategyDTO();
+            customStrategy.setList(defaultStrategy.getList());
+            List<CustomStrategyEntity> strategyList = this.customStrategyWrap.unwrapToEntity(customStrategy);
+			user.setStrategy(strategyList);
+            List<PortfolioDTO> defaultStrategyDemo = this.forecastingOp.getDemo(user, period);
+            int lastElementIndex = defaultStrategyDemo.size() - 1;
+            BigDecimal defaultStrategyCapital = this.portfolioSum(defaultStrategyDemo.get(lastElementIndex));
+            if(defaultStrategyCapital.doubleValue() > finalCapital.doubleValue()) {
+                finalCapital = defaultStrategyCapital;
+            	result = defaultStrategy;
             }
         }
         return result;

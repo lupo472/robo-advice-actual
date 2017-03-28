@@ -5,6 +5,11 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 import it.uiip.digitalgarage.roboadvice.RoboadviceApplication;
 
+/**
+ * This class initialize the Spring Servlet.
+ *
+ * @author Luca Antilici
+ */
 public class ServletInitializer extends SpringBootServletInitializer {
 
 	@Override
