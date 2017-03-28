@@ -26,10 +26,6 @@ import java.time.LocalDate;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
-/**
- * Created by Luca on 22/03/2017.
- */
-
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = RoboadviceApplication.class)
 public class UserControllerTest {

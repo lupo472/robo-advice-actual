@@ -3,6 +3,11 @@ package it.uiip.digitalgarage.roboadvice.service.controller;
 import it.uiip.digitalgarage.roboadvice.logic.operator.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+/**
+ * This class is just a container of properties.
+ *
+ * @author Cristian Laurini
+ */
 public abstract class AbstractController {
 
 	@Autowired

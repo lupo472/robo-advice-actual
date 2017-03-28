@@ -270,7 +270,6 @@ public class CapitalOperatorTest {
         capitals.add(sathurdayCapital);
         capitals.add(fridayCapital);
 
-        //TODO search another type of faking the date
         when(capitalRep.findByUser(user)).thenReturn(capitals);
         List<CapitalDTO> opResponse = capitalOp.getCapitalPeriod(periodDTO, auth);
         assertEquals(3, opResponse.size());

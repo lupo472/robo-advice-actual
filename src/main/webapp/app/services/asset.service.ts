@@ -33,22 +33,20 @@ export class AssetService {
   }
 
   getDefaultAssetClass(){
-
-    this.getAssetClassSet();
-
+    return this.AppService.getAssetClassSet().map(res => this.mapAssetClass(res));
+  }
+  mapAssetClass(res){
+    this.assetClassSet = res;
     return this.assetClassSet;
   }
 
   //REMAPPING ASSET CLASS
   getAssetClassSet() {
     return this.AppService.getAssetClassSet().map(res => this.assignAssetClass(res));
-    //return this.AppService.getFinancialDataSetForAssetClass(id,period).map(res => this.assignFinancialData(res));
   }
   assignAssetClass(res) {
-    this.assetClassSet = res;
     this.assetClassStrategies = new AssetClassStrategies();
     this.assetClassStrategies.createAssetClassStrategies(res);
-    console.log("ASSETCLASSSTRATEGIES",this.assetClassStrategies.getAssetClassStrategies());
     return this.assetClassStrategies;
   }
 
@@ -78,21 +76,23 @@ export class AssetService {
   mapPortfolio(res){
     if (res.response == 1) {
       this.portfolio = new Portfolio(res.data);
-      this.data = this.portfolio.getData();
     }
 
-    return {response: res.response, data: this.data}
+    return {response: res.response, data: this.portfolio.getData()}
   }
 
   getBacktesting(list, period){
+    console.log("LIST SENT",list);
     return this.AppService.getBacktesting(list, period, this.capital).map(res => this.mapBacktesting(res));
   }
   mapBacktesting(res){
+    console.log("LIST RECEIVED",res);
+    this.backtesting = {};
+
     if (res.response == 1) {
       this.backtesting = new Portfolio(res.data);
-      this.data = this.backtesting.getData();
     }
 
-    return {response: res.response, data: this.data}
+    return {response: res.response, data: this.backtesting.getData()}
   }
 }

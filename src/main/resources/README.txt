@@ -107,4 +107,12 @@
 *		Response	[response(1), data(List<FinancialData>)]	    														*
 *		Note:   FinancialData contains the AssetClass and a list of FinancialDataElement {data, value}						*
 *																															*
+********************************************* ForecastController ************************************************************
+*                                                                                                                           *
+* * getAdvice                                                                                                               *
+*       Header      [token]                                                                                                 *
+*       Body        [Period  [period}]                                                                                      *
+*       Response    [response(0/1), data(String/DefaultStrategyDTO)]                                                        *
+*       Note:                                                                                                               *
+*                                                                                                                           *
 *****************************************************************************************************************************

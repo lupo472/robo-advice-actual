@@ -5,6 +5,11 @@ import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 
+/**
+ * DTO with int period (min 0)
+ *
+ * @author Cristian Laurini
+ */
 public @Data class PeriodDTO {
 
 	@NotNull

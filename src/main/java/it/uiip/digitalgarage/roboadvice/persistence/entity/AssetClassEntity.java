@@ -9,6 +9,11 @@ import javax.persistence.Table;
 
 import lombok.Data;
 
+/**
+ * Entity that represents the asset_class table on the database with Long id and String name.
+ *
+ * @author Cristian Laurini
+ */
 @Entity
 @Table(name = "asset_class")
 public @Data class AssetClassEntity {

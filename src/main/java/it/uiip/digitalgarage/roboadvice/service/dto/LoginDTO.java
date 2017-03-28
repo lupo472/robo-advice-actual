@@ -4,6 +4,11 @@ import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 
+/**
+ * DTO with String email and String token.
+ *
+ * @author Cristian Laurini
+ */
 public @Data class LoginDTO {
 
 	@NotNull

@@ -3,8 +3,7 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-strategy-graph',
-  templateUrl: './strategy-graph.component.html',
-  styleUrls: ['./strategy-graph.component.scss']
+  templateUrl: './strategy-graph.component.html'
 })
 export class StrategyGraphComponent implements OnInit {
 
@@ -22,7 +21,7 @@ export class StrategyGraphComponent implements OnInit {
   }
 
   getStrategy(data) {
-  console.log("aaaaaa",data);
+
     if(data) {
       let t = data.getChartData();
       this.labels = t.labels;
