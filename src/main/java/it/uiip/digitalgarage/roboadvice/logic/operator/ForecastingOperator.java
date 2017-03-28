@@ -2,6 +2,7 @@ package it.uiip.digitalgarage.roboadvice.logic.operator;
 
 import it.uiip.digitalgarage.roboadvice.persistence.entity.*;
 import it.uiip.digitalgarage.roboadvice.persistence.util.Mapper;
+import it.uiip.digitalgarage.roboadvice.persistence.util.User;
 import it.uiip.digitalgarage.roboadvice.persistence.util.Value;
 import it.uiip.digitalgarage.roboadvice.service.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +39,13 @@ public class ForecastingOperator extends AbstractOperator {
 	}
 
 	@Cacheable("demo")
-	public List<PortfolioDTO> getDemo(List<CustomStrategyEntity> strategyList, PeriodDTO period, UserEntity user) {
-		CapitalEntity capital = this.capitalRep.findByUserAndDate(user, user.getLastUpdate());
-		if(strategyList.isEmpty() || capital == null) {
+	public List<PortfolioDTO> getDemo(List<CustomStrategyEntity> strategyList, PeriodDTO period, UserEntity userEntity) {
+		CapitalEntity capital = this.capitalRep.findByUserAndDate(userEntity, userEntity.getLastUpdate());
+		User user = new User();
+		user.setUser(userEntity);
+		user.setStrategy(strategyList);
+		user.setCapital(capital);
+		if(user.getStrategy().isEmpty() || user.getCapital() == null) {
 			return null;
 		}
 		try {
@@ -56,6 +61,7 @@ public class ForecastingOperator extends AbstractOperator {
 				List<PortfolioEntity> portfolioListPerClass = createStartingPortfolio(strategy, capitalPerClass, assets, assetForecastPerDateMap);
 				currentPortfolio.addAll(portfolioListPerClass);
 			}
+			user.setPortfolio(currentPortfolio);
 			PortfolioDTO portfolio = getPortfolioDTO(capital.getAmount(), currentPortfolio);
 			List<PortfolioDTO> result = new ArrayList<>();
 			result.add(portfolio);
@@ -88,7 +94,7 @@ public class ForecastingOperator extends AbstractOperator {
 					break;
 				}
 				Map<Long, FinancialDataEntity> financialDataMap = Mapper.getMapFinancialData(financialDataList);
-				currentPortfolio = this.rebalancingOp.rebalance(user, currentPortfolio, strategyList, financialDataMap);
+				currentPortfolio = this.rebalancingOp.rebalance(user, financialDataMap);
 				portfolio = getPortfolioDTO(total, currentPortfolio);
 				result.add(portfolio);
 			}
