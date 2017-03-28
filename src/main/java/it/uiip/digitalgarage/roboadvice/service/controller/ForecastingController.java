@@ -81,5 +81,5 @@ public class ForecastingController extends AbstractController {
 		}
 		return new GenericResponse<DefaultStrategyDTO>(1, defaultStrategyDTO);
 	}
-	
+
 }
