@@ -11,9 +11,10 @@ import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.FinancialDataEntity;
 
 /**
- * This interface offers methods to retrieve data from the financial_data table in the database.
+ * This interface offers methods to retrieve data from the financial data table in the database.
  *
  * @author Cristian Laurini
+ * @author Luca Antilici
  */
 @Repository
 @Transactional
