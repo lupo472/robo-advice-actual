@@ -45,27 +45,82 @@ public interface PortfolioRepository extends PagingAndSortingRepository<Portfoli
 	 * This method allows to retrieve the sum of values for each set of portfolios of the specified user
 	 * grouped by date.
 	 *
-	 * @param user	UserEntity is the user for wich
-	 * @return
+	 * @param user	UserEntity is the user for which you get the values.
+	 * @return		List of Value.
 	 */
 	@Query(value = SUM_VALUES)
 	public List<Value> sumValues(UserEntity user);
 
+	/**
+	 * This method allows to retrieve the sum of values for each set of portfolios of the specified user
+	 * in a specific date.
+	 *
+	 * @param user	UserEntity is the user for which you get the value.
+	 * @param date	LocalDate is the date for which you get the value.
+	 * @return		Value that has BigDecimal value and LocalDate date.
+	 */
 	@Query(value = SUM_VALUES_DATE)
 	public Value sumValues(UserEntity user, LocalDate date);
 
+	/**
+	 * This method allows to retrieve the sum of values for each set of portfolios of the specified user
+	 * and the specified asset class grouped by date.
+	 *
+	 * @param assetClass	AssetClassEntity is the assetClass for wich you get the values.
+	 * @param user			UserEntity is the user for which you get the values.
+	 * @return				List of Value.
+	 */
 	@Query(value = SUM_VALUES_ASSET_CLASS)
 	public List<Value> sumValuesForAssetClass(AssetClassEntity assetClass, UserEntity user);
-	
+
+	/**
+	 * This method allows to retrieve the sum of values for each set of portfolios of the specified user
+	 * and the specified asset class in a specific date.
+	 *
+	 * @param assetClass	AssetClassEntity is the assetClass for wich you get the value.
+	 * @param user			UserEntity is the user for which you get the value.
+	 * @param date			LocalDate is the date for which you get the value.
+	 * @return				Value that has BigDecimal value and LocalDate date.
+	 */
 	@Query(value = SUM_VALUES_ASSET_CLASS_DATE)
 	public Value sumValuesForAssetClass(AssetClassEntity assetClass, UserEntity user, LocalDate date);
-	
+
+	/**
+	 * This method allows to retrieve all the portfolios for a specific user.
+	 *
+	 * @param user	UserEntity is the user for which you want to retrieve the portfolios.
+	 * @return		List of PortfolioEntities.
+	 */
 	public List<PortfolioEntity> findByUser(UserEntity user);
-    
+
+	/**
+	 * This method allows to retrieve all the portfolios for a specific user in the selected date.
+	 *
+	 * @param user	UserEntity is the user for which you want to retrieve the portfolios.
+	 * @param date	LocalDate is the date for which you want to retrieve the portfolios.
+	 * @return		List of PortfolioEntities.
+	 */
     public List<PortfolioEntity> findByUserAndDate(UserEntity user, LocalDate date);
-	
+
+	/**
+	 * This method allows to retrieve all the portfolios for a specific user in selected period of time
+	 * between initialDate and finalDate.
+	 *
+	 * @param user			UserEntity is the user for which you want to retrieve the portfolios.
+	 * @param finalDate		LocalDate is the last date of the desired period.
+	 * @param initialDate	LocalDate is the starting date of the desired period.
+	 * @return				List of PortfolioEntities.
+	 */
 	public List<PortfolioEntity> findByUserAndDateBetween(UserEntity user, LocalDate finalDate, LocalDate initialDate);
-  
+
+	/**
+	 * This method allows to retrieve the portfolio for a specific user and an asset in the selected date.
+	 *
+	 * @param user		UserEntity is the user for which you want to retrieve the portfolio.
+	 * @param asset		AssetEntity is the asset for which you want to retrieve the portfolio.
+	 * @param date		LocalDate is the date for which you want to retrieve the portfolio.
+	 * @return			PortfolioEntity.
+	 */
 	public PortfolioEntity findByUserAndAssetAndDate(UserEntity user, AssetEntity asset, LocalDate date);
     
 }

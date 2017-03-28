@@ -4,6 +4,7 @@ import { Cookie } from 'ng2-cookies';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+
 import 'rxjs/add/operator/catch';
 import {GenericResponse} from "../model/generic-response";
 import {AssetClass} from "../model/asset-class";

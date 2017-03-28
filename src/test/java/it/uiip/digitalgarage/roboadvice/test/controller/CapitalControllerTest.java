@@ -8,7 +8,9 @@ import it.uiip.digitalgarage.roboadvice.persistence.repository.FinancialDataRepo
 import it.uiip.digitalgarage.roboadvice.persistence.repository.PortfolioRepository;
 import it.uiip.digitalgarage.roboadvice.persistence.repository.UserRepository;
 import it.uiip.digitalgarage.roboadvice.service.controller.CapitalController;
+import it.uiip.digitalgarage.roboadvice.service.dto.CapitalDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.CapitalRequestDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.PeriodDTO;
 import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 import org.junit.AfterClass;
@@ -168,5 +170,70 @@ public class CapitalControllerTest {
 
     }
 
+    @Test
+    public void getCapitalPeriodOneDayBackwardTodaySunday() {
+        PeriodDTO periodDTO = new PeriodDTO();
+        periodDTO.setPeriod(2);
 
+        LocalDate sunday = LocalDate.parse("2017-03-26");
+        LocalDate sathurday = LocalDate.parse("2017-03-25");
+        CapitalEntity sundayCapital = new CapitalEntity();
+        sundayCapital.setId(1L);
+        sundayCapital.setUser(user);
+        sundayCapital.setAmount(new BigDecimal(10456.5643));
+        sundayCapital.setDate(sunday);
+        CapitalEntity sathurdayCapital = new CapitalEntity();
+        sathurdayCapital.setId(2L);
+        sathurdayCapital.setUser(user);
+        sathurdayCapital.setAmount(new BigDecimal(10456.5643));
+        sathurdayCapital.setDate(sathurday);
+
+        List<CapitalEntity> capitals = new ArrayList<>();
+        capitals.add(sundayCapital);
+        capitals.add(sathurdayCapital);
+
+        //TODO search another type of faking the date
+        when(capitalRep.findByUserAndDateBetween(user,LocalDate.now().minusDays(1), LocalDate.now())).thenReturn(capitals);
+        List<CapitalDTO> opResponse = capitalOp.getCapitalPeriod(periodDTO, auth);
+        assertEquals(2, opResponse.size());
+
+    }
+
+
+    @Test
+    public void getCapitalPeriodZeroPeriodTodaySunday() {
+        PeriodDTO periodDTO = new PeriodDTO();
+        periodDTO.setPeriod(0);
+
+        LocalDate sunday = LocalDate.parse("2017-03-26");
+        LocalDate sathurday = LocalDate.parse("2017-03-25");
+        LocalDate friday = LocalDate.parse("2017-03-24");
+
+        CapitalEntity sundayCapital = new CapitalEntity();
+        sundayCapital.setId(1L);
+        sundayCapital.setUser(user);
+        sundayCapital.setAmount(new BigDecimal(10456.5643));
+        sundayCapital.setDate(sunday);
+        CapitalEntity sathurdayCapital = new CapitalEntity();
+        sathurdayCapital.setId(2L);
+        sathurdayCapital.setUser(user);
+        sathurdayCapital.setAmount(new BigDecimal(10456.5643));
+        sathurdayCapital.setDate(sathurday);
+        CapitalEntity fridayCapital = new CapitalEntity();
+        fridayCapital.setId(3L);
+        fridayCapital.setUser(user);
+        fridayCapital.setAmount(new BigDecimal(10056.12));
+        fridayCapital.setDate(friday);
+
+        List<CapitalEntity> capitals = new ArrayList<>();
+        capitals.add(sundayCapital);
+        capitals.add(sathurdayCapital);
+        capitals.add(fridayCapital);
+
+        when(capitalRep.findByUser(user)).thenReturn(capitals);
+        GenericResponse<List<CapitalDTO>> ctrlResponse = (GenericResponse<List<CapitalDTO>>) capitalCtrl.getCapitalForPeriod(periodDTO, auth);
+        assertEquals(1, ctrlResponse.getResponse());
+        assertEquals(3, ctrlResponse.getData().size());
+
+    }
 }

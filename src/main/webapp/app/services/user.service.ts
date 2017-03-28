@@ -44,7 +44,7 @@ export class UserService {
   //INITIAL REGISTER CAPITAL
   addCapital() {
     console.log("ADDING CAPITAL");
-     //this.AppService.addCapital(this.capital).subscribe();
+     this.AppService.addCapital(this.capital).subscribe();
   }
   addActiveStrategy(){
 

@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.DefaultStrategyEntity;
 
 /**
- * This interface offers methods to retrieve data from the default_strategy table in the database.
+ * This interface offers methods to retrieve data from the default strategy table in the database.
  *
  * @author Cristian Laurini
  */
@@ -17,6 +17,11 @@ import it.uiip.digitalgarage.roboadvice.persistence.entity.DefaultStrategyEntity
 @Transactional
 public interface DefaultStrategyRepository extends PagingAndSortingRepository<DefaultStrategyEntity, Long> {
 
+	/**
+	 * This method allows to retrieve all the default strategies.
+	 *
+	 * @return	List of DefaultStrategyEntities.
+	 */
 	public List<DefaultStrategyEntity> findAll();
 	
 }
