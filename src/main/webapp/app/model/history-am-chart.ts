@@ -16,8 +16,7 @@ export class HistoryAmChart {
 
         labels.forEach((label,i)=>{
             portfolio.labels.forEach((labelPortfolio,j)=>{
-                if(label===labelPortfolio){
-                    console.log("portfolio.datasets[0].data[j]",portfolio.datasets[0].data[j]);
+                if(label===labelPortfolio && portfolio.datasets[0].data[j]){
                     this.trendLabels[i]={};
                     this.trendLabels[i].startvalue=(portfolio.datasets[0].data[j]);
                     if(i!==0){
@@ -25,7 +24,7 @@ export class HistoryAmChart {
                     }
                 }
             });
-            if(i+1===labels.length){ //case of the last strategy that is analyzed
+            if(i+1===labels.length && this.trendLabels[i]){ //case of the last strategy that is analyzed
                 console.log("strategie terminate:",i+1);
                 this.trendLabels[i].endvalue=(portfolio.datasets[0].data[portfolio.datasets[0].data.length-1]);
             }
@@ -117,11 +116,11 @@ export class HistoryAmChart {
             "startDuration": 1,
             "backgroundAlpha": 1,
             "backgroundColor": "#ffffff",
-            "legend": {
-                "horizontalGap": 10,
-                "useGraphSettings": true,
-                "markerSize": 10
-            },
+            // "legend": {
+            //     "horizontalGap": 10,
+            //     "useGraphSettings": true,
+            //     "markerSize": 10
+            // },
             "dataProvider": this.chartData,
             "valueAxes": [ {
                 "stackType": "100%",
