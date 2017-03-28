@@ -1,6 +1,6 @@
-<app-strategy-graph *ngIf="renderActive" [strategy]="activeStrategy"></app-strategy-graph>
+<app-strategy-graph *ngIf="renderActive" (sendStrategy)="receiveStrategy($event)" [strategy]="activeStrategy"></app-strategy-graph>
 <!--<button [disabled]="!renderAdvice" (click)="showAdvice()">tap me</button>-->
-<app-strategy-graph #advice *ngIf="renderAdvice" [strategy]="adviceStrategy"></app-strategy-graph>
+<app-strategy-graph #advice *ngIf="renderAdvice" (sendStrategy)="receiveStrategy($event)" [strategy]="adviceStrategy"></app-strategy-graph>
         <!--<div class="h3 text-primary" *ngIf="!render">Select a Strategy</div>-->
 
 

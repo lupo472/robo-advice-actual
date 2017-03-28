@@ -94,7 +94,6 @@ export class EditComponent implements OnInit, AfterViewInit, OnDestroy {
         this.childModal.show();
     }
     ngOnDestroy(){
-        console.log("onDestroy");
     }
     createStrategy(): void {
         this.StrategyService.createStrategy().subscribe(

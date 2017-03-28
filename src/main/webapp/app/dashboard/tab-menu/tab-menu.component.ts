@@ -1,4 +1,4 @@
-import { Component, OnInit,Input,trigger,ViewChild,
+import { Component, OnInit,Input,trigger,ViewChild,NgZone,
   state,
   style,
   animate,
@@ -34,7 +34,7 @@ export class TabMenuComponent implements OnInit {
   adviceState = "inactive";
   @ViewChild('chartGraph') public mystrategy;
   @ViewChild('advice') public advice;
-  constructor(private StrategyService:StrategyService) { }
+  constructor(private _z: NgZone,private StrategyService:StrategyService) { }
 
   ngOnInit() {
     this.StrategyService.getActiveStrategy().subscribe(activeStrategy => this.getActiveStrategy(activeStrategy));
@@ -56,7 +56,12 @@ export class TabMenuComponent implements OnInit {
     this.adviceState = "active";
   }
   receiveStrategy(strategy) {
-    console.log("receiveStrategy",strategy);
+    this._z.run(() => {
+      this.activeStrategy.setStrategyArray(strategy.getStrategyArray());
+      this.activeStrategy.resetArray();
+      this.activeStrategy.createChart();
+      console.log("ffffffffff",this.activeStrategy);
+    });
   }
 
 

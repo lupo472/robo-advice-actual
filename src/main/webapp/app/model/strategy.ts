@@ -28,7 +28,6 @@ export class Strategy {
     }
 
     setStrategyArray(strategyArray: AssetClassStrategy[]): void {
-
         this.list = strategyArray;
     }
     //Add an asset class to the list
@@ -85,5 +84,6 @@ export class Strategy {
     }
     resetStrategy(){
         this.list = [];
+
     }
 }

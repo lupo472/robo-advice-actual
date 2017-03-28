@@ -8,7 +8,7 @@ export class DefaultStrategy extends Strategy implements IDefaultStrategy {
 
     constructor() {
         super();
-        this.list = [];
+        //this.list = [];
     }
     setName(name: string): void {
         this.name = name;
