@@ -32,6 +32,10 @@ export const routes: Routes = [
         loadChildren: './backtesting/backtesting.module#BacktestingModule',
       },
       {
+        path: 'forecasting',
+        loadChildren: './forecasting/forecasting.module#ForecastingModule',
+      },
+      {
         path: 'components',
         loadChildren: './components/components.module#ComponentsModule'
       },

@@ -30,7 +30,6 @@ export class PortfolioGraphComponent implements OnInit {
 
         currentlabels.forEach((item, index) => {
             let date = new Date(item);
-            console.log(date);
             if(date > this.startdate){
                 dataselect.datasets.push(currentdatasets[index]);
                 dataselect.labels.push(currentlabels[index]);

@@ -72,6 +72,8 @@ export class BacktestingComponent implements OnInit {
       }
     });
 
-    this.start = this.sum == 100;
+    if(this.sum == 100){
+     this.createGraph();
+    }
   }
 }

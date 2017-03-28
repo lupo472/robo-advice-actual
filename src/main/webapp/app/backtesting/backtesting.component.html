@@ -1,17 +1,20 @@
 <div class="animated fadeIn">
-    <div class="col-12">
-        <p-progressBar [value]="sum"></p-progressBar>
-            <div class="row">
+    <div class="row">
 
-                <div class="col-3" *ngFor="let assetclass of assetclasses; let i = index">
-                    <div class="text-capitalize">{{assetclass.name}}</div>
-                    <input type="number" [(ngModel)]="selected[i]" class="form-control" (ngModelChange)="updateSum()">
+        <div class="col-3" *ngFor="let assetclass of assetclasses; let i = index">
+            <div class="card">
+                <div class="card-block text-center">
+                    <div class="text-capitalize font-weight-bold">{{assetclass.name}}</div>
+                    <input type="number" [(ngModel)]="selected[i]" class="form-control"
+                           (ngModelChange)="updateSum()">
                 </div>
             </div>
-            <button (click)="createGraph()" class="btn btn-primary px-2" [disabled]="!start">Try!</button>
-
-        <app-portfolio-graph #backtestingGraph [data]="data" [render]="render"></app-portfolio-graph>
-
+        </div>
     </div>
+
+    <p-progressBar [value]="sum" [style.width]="50"></p-progressBar>
+
+    <app-portfolio-graph #backtestingGraph [data]="data" [render]="render"></app-portfolio-graph>
+
 
 </div>
