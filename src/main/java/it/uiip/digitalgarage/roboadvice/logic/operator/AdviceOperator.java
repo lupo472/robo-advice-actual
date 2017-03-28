@@ -41,12 +41,11 @@ public class AdviceOperator extends AbstractOperator {
             customStrategyDTO.setList(defaultStrategy.getList());
             List<CustomStrategyEntity> strategyList = this.customStrategyWrap.unwrapToEntity(customStrategyDTO);
             List<PortfolioDTO> defaultStrategyPortfolio = this.forecastingOp.getDemo(strategyList, period, user);
-            if(defaultStrategyPortfolio != null) {
-                int lastElementIndex = defaultStrategyPortfolio.size() - 1;
-                BigDecimal defaultStrategyCapital = this.portfolioSum(defaultStrategyPortfolio.get(lastElementIndex));
-                if(defaultStrategyCapital.doubleValue() > finalCapital.doubleValue()) {
-                    result = defaultStrategy;
-                }
+            int lastElementIndex = defaultStrategyPortfolio.size() - 1;
+            BigDecimal defaultStrategyCapital = this.portfolioSum(defaultStrategyPortfolio.get(lastElementIndex));
+            if(defaultStrategyCapital.doubleValue() > finalCapital.doubleValue()) {
+                finalCapital = defaultStrategyCapital;
+            	result = defaultStrategy;
             }
         }
         return result;
