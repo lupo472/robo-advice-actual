@@ -3,12 +3,12 @@
     <div class="row">
       <div class="col-sm-10">
         <h4 class="card-title mb-0">My Strategy</h4>
-        <div class="small text-muted">from {{date}}</div>
+        <div class="small text-muted"></div>
       </div>
      
       <!--/.col-->
     </div>
-    <div class="chart-wrapper" *ngIf="render">
+    <div *ngIf="render">
       <canvas baseChart class="chart" [datasets]="datasets" [labels]="labels" [colors]="colors"
       			[options]="strategyOptions"
               [chartType]="pieChartType" (chartHover)="chartHovered($event)"

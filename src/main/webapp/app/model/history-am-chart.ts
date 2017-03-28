@@ -93,7 +93,7 @@ export class HistoryAmChart {
 
         for(let i=0;i<this.strategies.dataclass.length;i++){
             let singlegraph={
-                "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]%</b></span>",
+                "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'><b>[[value]]%</b></span>",
                 "fillAlphas": 0.8,
                 "labelText": "[[percents]]%",
                 "lineAlpha": 0.3,
