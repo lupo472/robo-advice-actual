@@ -21,7 +21,7 @@ public class PortfolioController extends AbstractController {
 
 	/**
 	 * This method allows to get the current Portfolio for the logged user.
-	 * The related API is <b>/getCurrentPortfolio</b>
+	 * The related API is <b>/getPortfolio</b>
 	 *
 	 * @param auth	Authentication for the security.
 	 * @return		GenericResponse with response 0 and a message if the portfolio of the user is empty,

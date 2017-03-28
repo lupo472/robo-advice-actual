@@ -14,7 +14,7 @@ public class QuandlOperator extends AbstractOperator {
 
 	private QuandlDBManager quandlDBManager = new QuandlDBManager();
 
-	@CacheEvict(value = {"activeStrategy", "strategies", "currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo", "advice"}, allEntries = true)
+	@CacheEvict(value = {"activeStrategy", "strategies", "portfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo", "advice"}, allEntries = true)
 	public void updateFinancialDataSet() {
 		List<AssetEntity> assets = (List<AssetEntity>) this.assetRep.findAll();
 		for (AssetEntity asset : assets) {
@@ -23,7 +23,7 @@ public class QuandlOperator extends AbstractOperator {
 		}
 	}
 
-	@CacheEvict(value = {"activeStrategy", "strategies", "currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo", "advice"}, allEntries = true)
+	@CacheEvict(value = {"activeStrategy", "strategies", "portfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo", "advice"}, allEntries = true)
 	public void initializeFinancialDataSet() {
 		List<AssetEntity> assets = (List<AssetEntity>) this.assetRep.findAll();
 		for (AssetEntity asset : assets) {

@@ -58,13 +58,13 @@ public class CapitalOperator extends AbstractOperator {
 		return response;
 	}
 
-	@CacheEvict(value = {"activeStrategy", "strategies", "currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo", "advice"}, allEntries = true)
+	@CacheEvict(value = {"activeStrategy", "strategies", "portfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo", "advice"}, allEntries = true)
 	public boolean addCapital(CapitalRequestDTO capital, Authentication auth) {
 		UserEntity user = this.userRep.findByEmail(auth.getName());
 		return this.addCapital(capital, user);
 	}
 
-	@CacheEvict(value = {"activeStrategy", "strategies", "currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo", "advice"}, allEntries = true)
+	@CacheEvict(value = {"activeStrategy", "strategies", "portfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo", "advice"}, allEntries = true)
 	public boolean addCapital(CapitalRequestDTO capital, UserEntity user) {
 		CapitalEntity entity = this.capitalConv.convertToEntity(capital);
 		if(user == null) {
@@ -89,10 +89,10 @@ public class CapitalOperator extends AbstractOperator {
 		return true;
 	}
 
-	@CacheEvict(value = {"activeStrategy", "strategies", "currentPortfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo", "advice"}, allEntries = true)
+	@CacheEvict(value = {"activeStrategy", "strategies", "portfolio", "portfolioHistory", "currentCapital", "capitalHistory", "backtesting", "forecast", "demo", "advice"}, allEntries = true)
 	public CapitalEntity computeCapital(UserEntity user, Map<Long, FinancialDataEntity> map, List<PortfolioEntity> currentPortfolio) {
 		CapitalEntity capital = new CapitalEntity();
-		BigDecimal amount = portfolioOp.evaluatePortfolio(user, map, currentPortfolio);
+		BigDecimal amount = portfolioOp.evaluatePortfolio(map, currentPortfolio);
 		if(amount == null) {
 			return null;
 		}
