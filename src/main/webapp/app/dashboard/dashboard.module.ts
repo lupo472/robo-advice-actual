@@ -11,7 +11,7 @@ import { AmChartsModule } from "amcharts3-angular2";
 
 
 import { StrategyGraphComponent } from './strategy-graph/strategy-graph.component';
-import { StrategyClassesGraphComponent } from './strategy-classes-graph/strategy-classes-graph.component';
+import { PortfolioGraphComponent } from './portfolio-graph/portfolio-graph.component';
 import { HystoryStrategyComponent } from './hystory-strategy/hystory-strategy.component';
 import {CalendarModule} from 'primeng/primeng';
 import { HistoryChartComponent } from './history-chart/history-chart.component';
@@ -35,12 +35,12 @@ import {SharedModuleModule} from "../shared/shared-module/shared-module.module";
   declarations: [
     DashboardComponent,
     StrategyGraphComponent,
-    StrategyClassesGraphComponent,
+    PortfolioGraphComponent,
     HystoryStrategyComponent,
     HistoryChartComponent
   ],
   exports: [
-    StrategyClassesGraphComponent
+    PortfolioGraphComponent
   ]
 })
 export class DashboardModule { }

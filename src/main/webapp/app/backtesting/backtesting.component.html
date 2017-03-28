@@ -1,17 +1,16 @@
 <div class="animated fadeIn">
     <div class="col-12">
-        <bs-progress [max]="max">
-            <bar *ngFor="let percentage of selected" [value]="percentage" [type]="'success'">
-                <span *ngIf="percentage > 0">{{percentage}}%</span>
-            </bar>
-        </bs-progress>
-        <div class="row">
-            <div class="col-3" *ngFor="let assetclass of assetclasses; let i = index">
-                <div class="text-capitalize">{{assetclass.name}}</div>
-                <input [(ngModel)]="selected[i]" class="form-control">
+        <p-progressBar [value]="sum"></p-progressBar>
+            <div class="row">
+
+                <div class="col-3" *ngFor="let assetclass of assetclasses; let i = index">
+                    <div class="text-capitalize">{{assetclass.name}}</div>
+                    <input type="number" [(ngModel)]="selected[i]" class="form-control" (ngModelChange)="updateSum()">
+                </div>
             </div>
-        </div>
-        <app-strategy-classes-graph [data]="data" [render]="render"></app-strategy-classes-graph>
+            <button (click)="createGraph()" class="btn btn-primary px-2" [disabled]="!start">Try!</button>
+
+        <app-portfolio-graph #backtestingGraph [data]="data" [render]="render"></app-portfolio-graph>
 
     </div>
 
