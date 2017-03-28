@@ -10,6 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.AssetEntity;
 import it.uiip.digitalgarage.roboadvice.persistence.entity.FinancialDataEntity;
 
+/**
+ * This interface offers methods to retrieve data from the financial_data table in the database.
+ *
+ * @author Cristian Laurini
+ */
 @Repository
 @Transactional
 public interface FinancialDataRepository extends PagingAndSortingRepository<FinancialDataEntity, Long> {
