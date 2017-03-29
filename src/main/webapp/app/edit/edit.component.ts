@@ -64,11 +64,15 @@ export class EditComponent implements OnInit, AfterViewInit, OnDestroy {
             (error) => console.log(this.errorMessage = <any>error));
         this.StrategyService.getActiveStrategy().subscribe();
     }
+    ngAfterViewInit() {
+        // viewChild is set after the view has been initialized
+        this.childModal.show();
+    }
     //ASSIGN FINANCIAL DATA
     getFinancialData(res) {
         this.financialDataSet = res;
         this.AssetService.getAssetClassSet().subscribe(
-            (res) => this.getAssetClass(res),
+            (resp) => this.getAssetClass(resp),
             (error) => console.log(this.errorMessage = <any>error));
     }
     //ASSIGN ASSET CLASS
@@ -80,6 +84,12 @@ export class EditComponent implements OnInit, AfterViewInit, OnDestroy {
     //ASSIGN STRATEGIES
     getStrategy(res): void {
         this.strategies = res.getStrategies();
+        if (this.StrategyService.strategySended != undefined){
+            let list = this.StrategyService.strategySended.getDefaultStartegy();
+            this.assetClassStrategies = list;
+            this.StrategyService.strategies.setCurrentStrategy(this.StrategyService.strategySended);
+            this.isDisabled = false;
+        }
         this.AssetService.getFinancialDataSet(1000,"big").subscribe((res => this.getFinancialDataModal(res)));
         this.AssetService.getForecast(90,"big").subscribe(res=>this.assignForecast(res));
     }
@@ -90,12 +100,8 @@ export class EditComponent implements OnInit, AfterViewInit, OnDestroy {
     assignForecast(res){
         this.forecastDataSetAmChart = res;
     }
-    ngAfterViewInit() {
-        // viewChild is set after the view has been initialized
-        this.childModal.show();
-    }
     ngOnDestroy(){
-        console.log("onDestroy");
+        this.StrategyService.resetStrategySended();
     }
     createStrategy(): void {
         this.StrategyService.createStrategy().subscribe(

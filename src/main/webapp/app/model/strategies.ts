@@ -44,7 +44,6 @@ export class Strategies {
 
     setCurrentStrategy(strategy: Strategy) {
         this.currentStrategy = strategy;
-        console.log("DEFAULTSTRATEGY", this.currentStrategy);
     }
 
     getCurrentStrategy(): Strategy {

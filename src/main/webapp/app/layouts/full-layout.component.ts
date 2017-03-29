@@ -28,6 +28,7 @@ export class FullLayoutComponent implements OnInit {
         //this.StrategyService.getActiveStrategy().subscribe();
     }
 
+
     public isLoaded: boolean = false;
     public disabled: boolean = false;
     public status: {isopen: boolean} = {isopen: false};
@@ -78,7 +79,7 @@ export class FullLayoutComponent implements OnInit {
             this.capital = data[data.length-1];
 
             this.isLoaded = true;
-        } else {
+        } else if (res.response == 0) {
             this.UserService.addCapital();
             this.capital = this.defaultCapital;
         }

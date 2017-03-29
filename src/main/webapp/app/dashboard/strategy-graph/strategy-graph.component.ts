@@ -1,23 +1,26 @@
-import { StrategyService } from '../../services/strategy.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input,Output,EventEmitter,NgZone} from '@angular/core';
+import {Strategy} from "../../model/strategy";
+import {DefaultStrategy} from "../../model/default-strategy";
+import {StrategyService} from "../../services/strategy.service";
 
 @Component({
   selector: 'app-strategy-graph',
   templateUrl: './strategy-graph.component.html'
+
+
 })
 export class StrategyGraphComponent implements OnInit {
-
-  constructor(private StrategyService: StrategyService) { }
-
-  public labels: Array<string> = [];
-  public datasets: Array<number> = [];
-  public date: string;
-  public colors:Array<any> = [];
-
-  public render: boolean = false;
+  @Input() strategy: Strategy;
+  @Output() sendStrategy = new EventEmitter();
+  isAdvice = false;
+  name:string;
+  constructor(private _z: NgZone,private StrategyService:StrategyService) { }
 
   ngOnInit() {
-    this.StrategyService.getActiveStrategy().subscribe(res => this.getStrategy(res));
+
+      this.strategy.createChart();
+
+/*    this.StrategyService.getActiveStrategy().subscribe(res => this.getStrategy(res));
   }
 
   getStrategy(data) {
@@ -26,35 +29,22 @@ export class StrategyGraphComponent implements OnInit {
       let t = data.getChartData();
       this.labels = t.labels;
       this.datasets = t.datasets;
-      this.colors = t.colors;
+      this.colors = t.colors;*/
 
-      this.render = true;
+
+    if (this.strategy instanceof DefaultStrategy) {
+      this.name = "Got Advice!";
+    } else {
+      this.name = "MyStrategy";
+      this.isAdvice = true;
     }
   }
+  changeToStrategy(){
 
-  //convert Hex to RGBA
-  public convertHex(hex: string, opacity: number) {
-    hex = hex.replace('#', '');
-    let r = parseInt(hex.substring(0, 2), 16);
-    let g = parseInt(hex.substring(2, 4), 16);
-    let b = parseInt(hex.substring(4, 6), 16);
-
-    let rgba = 'rgba(' + r + ',' + g + ',' + b + ',' + opacity / 100 + ')';
-    return rgba;
+   /* this.StrategyService.changeToAdviceStrategy(this.strategy).subscribe(res => console.log(res));*/
+    this.sendStrategy.emit(this.strategy);
   }
-
-  // events
-  public chartClicked(e: any): void {
-    console.log(e);
-  }
-
-  public chartHovered(e: any): void {
-    console.log(e);
-  }
-
-
-  // Pie
-
+  //GENERAL SETTINGS
   public strategyOptions: any = {
     maintainAspectRatio: false,
     cutoutPercentage: 20,
@@ -62,6 +52,7 @@ export class StrategyGraphComponent implements OnInit {
       display: false
     }
   };
-  public pieChartType: string = 'doughnut';
+  //GRAPH TYPE
+  public strategyType: string = 'pie';
 
 }

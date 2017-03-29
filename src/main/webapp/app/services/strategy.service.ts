@@ -23,7 +23,9 @@ export class StrategyService {
   dataHistory:any=[];
   period:number = 30;
   activeStrategy:Strategy;
+  adviceStrategy:DefaultStrategy;
   list:AssetClassStrategy[];
+  strategySended:DefaultStrategy;
   public myActiveStrategyChart:MyActiveStrategyAmChart;
 
   constructor(private AppService:AppService, private AssetService:AssetService) {
@@ -33,6 +35,9 @@ export class StrategyService {
     let currentStrategy = this.strategies.getCurrentStrategy();
     return this.AppService.setCustomStrategy(currentStrategy.sendStrategy()).map(res => {return res});
   }
+  changeToAdviceStrategy(currentStrategy){
+    return this.AppService.setCustomStrategy(currentStrategy.sendStrategy()).map(res => {return res});
+  }
   // STRATEGY JSON REMAPPING
   getDefaultStrategySet() {
     return this.AppService.getDefaultStrategySet().map(defaultStrategies => this.assignStrategy(defaultStrategies));
@@ -40,7 +45,8 @@ export class StrategyService {
   assignStrategy(defaultStrategies) {
     this.strategies = new Strategies();
     this.strategies.createStrategies(defaultStrategies);
-    this.customStrategy = new CustomStrategy(this.AssetService.assetClassStrategies.getAssetClassStrategies());
+    let assetClasses = this.AssetService.assetClassStrategies.getAssetClassStrategies();
+    this.customStrategy = new CustomStrategy(assetClasses);
     this.customStrategy.createStrategyList();
     if (this.activeStrategy != undefined) {
       this.customStrategy.setStrategyArray(this.activeStrategy.getStrategyArray());
@@ -48,6 +54,17 @@ export class StrategyService {
     }
     this.strategies.addStrategy(this.customStrategy);
     return this.strategies;
+  }
+  getAdvice(period){
+    return this.AppService.getAdvice(period).map(strategyAdvice => this.assignStrategyAdvice(strategyAdvice));
+  }
+  assignStrategyAdvice(strategyAdvice){
+    if (strategyAdvice.response == 1) {
+      this.adviceStrategy = new DefaultStrategy();
+      this.adviceStrategy.setDefaultStrategy(strategyAdvice.data);
+      return this.adviceStrategy;
+    } else if (strategyAdvice.response == 0) {
+    }
   }
 
   /***************************TESTING CHART HISTORY VERSION 2*****************************************/
@@ -74,6 +91,16 @@ export class StrategyService {
   refreshHistory(startdate){
     let portfolio=this.AssetService.getPortfolio().getData();
     return this.historyStrategies.createHistoryChartOptions(this.dataHistory,startdate,portfolio);
+  }
+  setDefaultStrategySended(strategy){
+    this.strategySended = new DefaultStrategy;
+    this.strategySended = strategy;
+  }
+  getDefaultStrategySended(){
+    return this.strategySended;
+  }
+  resetStrategySended(){
+    this.strategySended = undefined;
   }
 
 

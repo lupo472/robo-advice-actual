@@ -13,7 +13,7 @@ export class ForecastingComponent implements OnInit {
 
   constructor(private AssetService:AssetService) { }
 
-  private period:number = 30;
+  private period:number = 180;
 
   public data:any = {};
 
