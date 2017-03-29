@@ -11,7 +11,8 @@ import { DetailMarketValuesChart } from '../model/detail-market-values-chart';
 
 
 @Component({
-    templateUrl: 'edit.component.html'
+    templateUrl: 'edit.component.html',
+    styleUrls: ['./edit.component.scss']
 })
 
 export class EditComponent implements OnInit, AfterViewInit, OnDestroy {

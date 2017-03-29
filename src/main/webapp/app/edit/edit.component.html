@@ -53,12 +53,13 @@
     <!-- GRAPH ROW -->
 </div>
 <div id="graphBig">
-        <div [hidden]="market">
-            <p *ngIf="renderForecasting" [style.font-family]="'Inconsolata'">FORECASTING 90 DAYS</p>
-            <p *ngIf="renderMarket" [style.font-family]="'Inconsolata'">MARKET VALUE 3 YEARS</p>
+        <div [hidden]="market" class="margTop">
+            <p *ngIf="renderForecasting" class="fontStyle" >FORECASTING 90 DAYS</p>
+            <p *ngIf="renderMarket" class="fontStyle">MARKET VALUE 3 YEARS</p>
             <app-detail-market-value-chart #chartGraph [detailOptions]="detailOptions"></app-detail-market-value-chart>
         </div>
 </div>
+
 
 
     <!-- MODAL ROW -->

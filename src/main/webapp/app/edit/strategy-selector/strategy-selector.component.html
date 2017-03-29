@@ -13,12 +13,12 @@
 			</div> -->
 
 <div class="card">
-	<button class="btn btn-strategy" [ngClass]="{active : selected}" (click)="selected = !selected">
+	<button class="btn btn-strategy" [ngClass]="{active : selected}" (click)="selected = !selected; clicked=!clicked">
 	<div class="card-block text-center pad0">
-		<div class="text-uppercase font-weight-bold">{{strategy.name}}</div>
+		<div class="text-uppercase font-weight-bold"><p class="wrapperTxt">{{strategy.name}}</p></div>
 		<div class="chart-wrapper">
-			<i *ngIf="custom" class="fa fa-pencil-square-o fa-5x"></i>
-			<canvas *ngIf="!custom" baseChart class="chart" [data]="strategy.arrayPercentages"
+			<!--<i *ngIf="custom && clicked " class="fa fa-pencil-square-o fa-5x"></i>-->
+			<canvas *ngIf="!custom || !clicked" baseChart class="chart" [data]="strategy.arrayPercentages"
 			[labels]="strategy.arrayLabels"
 				[options]="strategyOptions" [colors]="strategy.arrayColors"
 				[legend]="strategyLegend" [chartType]="strategyType"></canvas>

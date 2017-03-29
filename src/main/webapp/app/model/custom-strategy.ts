@@ -13,7 +13,7 @@ export class CustomStrategy extends Strategy {
     //Initialize custom list of assetClassStrategies with the ones got from backend
     this.customList = customList;
     //this.createStrategyList();
-    this.name = "Select your strategy";
+    this.name = "Customize";
     this.list = [];
     this.sumPercentage = 0;
     this.maxPercentage = 100;

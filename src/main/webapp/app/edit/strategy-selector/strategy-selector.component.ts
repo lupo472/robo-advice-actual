@@ -19,6 +19,7 @@ export class StrategySelectorComponent implements OnInit {
     @Input() selected;
     @Input() strategy: Strategy;
     custom = false;
+    clicked= true;
 
     constructor() {}
     ngOnInit() {
