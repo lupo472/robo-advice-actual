@@ -63,6 +63,10 @@ export class EditComponent implements OnInit, AfterViewInit, OnDestroy {
             (error) => console.log(this.errorMessage = <any>error));
         this.StrategyService.getActiveStrategy().subscribe();
     }
+    ngAfterViewInit() {
+        // viewChild is set after the view has been initialized
+        this.childModal.show();
+    }
     //ASSIGN FINANCIAL DATA
     getFinancialData(res) {
         this.financialDataSet = res;
@@ -88,10 +92,6 @@ export class EditComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     assignForecast(res){
         this.forecastDataSetAmChart = res;
-    }
-    ngAfterViewInit() {
-        // viewChild is set after the view has been initialized
-        this.childModal.show();
     }
     ngOnDestroy(){
         console.log("onDestroy");

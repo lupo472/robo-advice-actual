@@ -9,6 +9,7 @@ export class PortfolioGraphComponent implements OnInit {
 
     @Input() data;
     @Input() render;
+    @Input() graph;
     @ViewChild(BaseChartDirective) chart: BaseChartDirective;
 
     constructor() { }
@@ -34,11 +35,20 @@ export class PortfolioGraphComponent implements OnInit {
 
         currentlabels.forEach((item, index) => {
             let date = new Date(item);
-            if(date > this.startdate){
-                if(i == 0){
-                    i = index;
+            if(this.graph=="future"){
+                if(date < this.startdate){
+                    if(i == 0){
+                        i = index;
+                    }
+                    dataselect.labels.push(currentlabels[index]);
                 }
-                dataselect.labels.push(currentlabels[index]);
+            }else{
+                if (date > this.startdate) {
+                    if (i == 0) {
+                        i = index;
+                    }
+                    dataselect.labels.push(currentlabels[index]);
+                }
             }
         });
 

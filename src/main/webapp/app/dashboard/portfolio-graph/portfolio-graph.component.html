@@ -58,10 +58,13 @@
         <div class="row">
             <div class="col-5">
                 <h4 class="card-title mb-0">Asset Classes</h4>
-                <div class="small text-muted">Last {{period}} Days</div>
+                <div class="small text-muted">{{startdate | date:'dd MMM yyyy'}}</div>
             </div>
-            <div class="btn-group float-right">
+            <div class="btn-group float-right" *ngIf="graph == 'past'">
                 <p-calendar [(ngModel)]="startdate" [maxDate]="today" [showIcon]="true" [placeholder]="'Start Date'" dateFormat="dd MM yy" (onSelect)="setPeriod()"></p-calendar>
+            </div>
+            <div class="btn-group float-right" *ngIf="graph == 'future'">
+                <p-calendar [(ngModel)]="startdate" [minDate]="today" [showIcon]="true" [placeholder]="'Start Date'" dateFormat="dd MM yy" (onSelect)="setPeriod()"></p-calendar>
             </div>
             <!--/.col-->
         </div>

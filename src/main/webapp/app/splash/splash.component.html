@@ -1,4 +1,5 @@
-<!--<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+<!--
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
     &lt;!&ndash; Brand and toggle get grouped for better mobile display &ndash;&gt;
     <div class="navbar-header">
@@ -27,82 +28,212 @@
     &lt;!&ndash; /.navbar-collapse &ndash;&gt;
   </div>
   &lt;!&ndash; /.container &ndash;&gt;
-</nav>-->
+</nav>
+-->
 
-<!-- Image Background Page Header -->
-<!-- Note: The background image is set within the business-casual.css file. -->
-<header class="business-header">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-12">
-        <h1 class="tagline">Business Name or Tagline</h1>
-      </div>
+<div class="col-12">
+    <div class="card card-primary card-inverse">
+        <h1 class="text-center">Welcome to the financial Jungle!</h1>
     </div>
-  </div>
-</header>
+</div>
+
+<div class="container">
+    <div class="col-12 hidden-lg-up">
+        <div class="row">
+            <div class="col-6">
+                <img src="assets/img/animals/turtle.jpg" class="d-block img-fluid" height="600px" alt="logo">
+            </div>
+            <div class="col-6">
+                <img src="assets/img/animals/giraffe.jpg" class="d-block img-fluid" height="600px" alt="logo">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <img src="assets/img/animals/eagle.jpg" class="d-block img-fluid" height="600px" alt="logo">
+            </div>
+            <div class="col-6">
+                <img src="assets/img/animals/leopard.jpg" class="d-block img-fluid" height="600px" alt="logo">
+            </div>
+        </div>
+        <div class="col-12">
+            <img src="assets/img/animals/lion.jpg" class="d-block img-fluid" height="600px" alt="logo">
+        </div>
+    </div>
+
+    <div class="col-12 hidden-md-down">
+        <carousel [interval]=false [activeSlide]="false">
+            <slide>
+
+                <div class="col-12">
+                    <img src="assets/img/animals/turtle.jpg" class="d-block img-fluid" alt="turtle">
+                    <div class="carousel-caption">
+                        <div class="card-block special-card">
+                            <div class="h4 font-weight-bold">Turtle</div>
+                            <div>No need to hurry, slow incomes in a safe way!</div>
+                            <hr>
+                            <div>Your Strategy:</div>
+                            <div class="h3">Bonds</div>
+                        </div>
+                    </div>
+                </div>
+
+            </slide>
+            <slide>
+
+                <div class="col-12">
+
+                    <img src="assets/img/animals/giraffe.jpg" class="d-block img-fluid" alt="giraffe">
+                    <div class="carousel-caption">
+                        <div class="card-block special-card">
+                            <div class="h4 font-weight-bold">Giraffe</div>
+                            <div>Keep safe incomes but crane your neck to some risk</div>
+                            <hr>
+                            <div>Your Strategy:</div>
+                            <div class="h3">Income</div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </slide>
+            <slide>
+
+                <div class="col-12">
+
+                    <img src="assets/img/animals/eagle.jpg" class="d-block img-fluid" alt="eagle">
+                    <div class="carousel-caption">
+                        <div class="card-block special-card">
+                            <div class="h4 font-weight-bold">Eagle</div>
+                            <div>Balance your flight but keep an eagle eye on risky investments</div>
+                            <hr>
+                            <div>Your Strategy:</div>
+                            <div class="h3">Balanced</div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </slide>
+            <slide>
+
+                <div class="col-12">
+                    <img src="assets/img/animals/leopard.jpg" class="d-block img-fluid" alt="leopard">
+                    <div class="carousel-caption">
+                        <div class="card-block special-card">
+                            <div class="h4 font-weight-bold">Leopard</div>
+                            <div>Climbing the trees is not easy but it can be a good point of view</div>
+                            <hr>
+                            <div>Your Strategy:</div>
+                            <div class="h3">Growth</div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </slide>
+            <slide>
+
+
+                <div class="col-12">
+                    <img src="assets/img/animals/lion.jpg" class="d-block img-fluid" alt="lion">
+                    <div class="carousel-caption">
+                        <div class="card-block special-card">
+                            <div class="h4 font-weight-bold">Lion</div>
+                            <div>Be the king of the forest is not easy but gives you a big power</div>
+                            <hr>
+                            <div>Your Strategy:</div>
+                            <div class="h3">Stocks</div>
+                        </div>
+                    </div>
+                </div>
+
+            </slide>
+        </carousel>
+    </div>
+</div>
+
 
 <!-- Page Content -->
 <div class="container">
 
-  <hr>
+    <hr>
 
-  <div class="row">
-    <div class="col-sm-8">
-      <h2>What We Do</h2>
-      <p>Introduce the visitor to the business using clear, informative text. Use well-targeted keywords within your sentences to make sure search engines can find the business.</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et molestiae similique eligendi reiciendis sunt distinctio odit? Quia, neque, ipsa, adipisci quisquam ullam deserunt accusantium illo iste exercitationem nemo voluptates asperiores.</p>
-      <p>
-        <a class="btn btn-default btn-lg" href="#">Call to Action &raquo;</a>
-      </p>
-    </div>
-    <div class="col-sm-4">
-      <h2>Contact Us</h2>
-      <address>
-        <strong>Start Bootstrap</strong>
-        <br>3481 Melrose Place
-        <br>Beverly Hills, CA 90210
-        <br>
-      </address>
-      <address>
-        <abbr title="Phone">P:</abbr>(123) 456-7890
-        <br>
-        <abbr title="Email">E:</abbr> <a href="mailto:#">name@example.com</a>
-      </address>
-    </div>
-  </div>
-  <!-- /.row -->
-
-  <hr>
-
-  <div class="row">
-    <div class="col-sm-4">
-      <img class="img-circle img-responsive img-center" src="http://placehold.it/300x300" alt="">
-      <h2>Marketing Box #1</h2>
-      <p>These marketing boxes are a great place to put some information. These can contain summaries of what the company does, promotional information, or anything else that is relevant to the company. These will usually be below-the-fold.</p>
-    </div>
-    <div class="col-sm-4">
-      <img class="img-circle img-responsive img-center" src="http://placehold.it/300x300" alt="">
-      <h2>Marketing Box #2</h2>
-      <p>The images are set to be circular and responsive. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.</p>
-    </div>
-    <div class="col-sm-4">
-      <img class="img-circle img-responsive img-center" src="http://placehold.it/300x300" alt="">
-      <h2>Marketing Box #3</h2>
-      <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.</p>
-    </div>
-  </div>
-  <!-- /.row -->
-
-  <hr>
-
-  <!-- Footer -->
-  <footer>
     <div class="row">
-      <div class="col-lg-12">
-        <p>Copyright &copy; Your Website 2014</p>
-      </div>
+        <div class="col-sm-12 col-md-4">
+            <a [routerLink]="['/pages/login'] " href="#">
+                <div class="card card-warning card-inverse">
+                    <div class="card-block">
+                        <div class="h3 text-center font-weight-bold">Get Started</div>
+                    </div>
+                </div>
+            </a>
+            <div class="card card-success card-inverse">
+                <div class="card-block">
+                    <h2>RoboAdvice</h2>
+                    <address>
+                        <strong>A smart solution to invest</strong>
+                        <br>Thanks to RoboAdvice you can invest your money according to the risk you are ready to face.
+                        <br>If you are an expert user you can create your own strategy helped by our tools.
+                    </address>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-8">
+            <div class="card card-info card-inverse">
+                <div class="card-block">
+                    <h2>What We Do</h2>
+                    <p>Do you feel brave or you think is better to be safe?</p>
+                    <p>Choose your animal and get ready to invest!</p>
+                    <p>Our WebApp gives to every user important tools to manage the investments:</p>
+                    <ol>
+                        <li>Dinamically edit your investing strategy according to the risk</li>
+                        <li>Daily check your portfolio and see how it has improved</li>
+                        <li>Test if a strategy would have been better if choosed in past</li>
+                        <li>Forecast your portfolio thanks to machine learning and neural networks</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- /.row -->
-  </footer>
+
+    <!--<hr>
+
+    <div class="row">
+        <div class="col-sm-4">
+            <img class="img-circle img-responsive img-center" src="http://placehold.it/300x300" alt="">
+            <h2>Marketing Box #1</h2>
+            <p>These marketing boxes are a great place to put some information. These can contain summaries of what the
+                company does, promotional information, or anything else that is relevant to the company. These will
+                usually be below-the-fold.</p>
+        </div>
+        <div class="col-sm-4">
+            <img class="img-circle img-responsive img-center" src="http://placehold.it/300x300" alt="">
+            <h2>Marketing Box #2</h2>
+            <p>The images are set to be circular and responsive. Fusce dapibus, tellus ac cursus commodo, tortor mauris
+                condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis
+                euismod. Donec sed odio dui.</p>
+        </div>
+        <div class="col-sm-4">
+            <img class="img-circle img-responsive img-center" src="http://placehold.it/300x300" alt="">
+            <h2>Marketing Box #3</h2>
+            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris
+                condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis
+                euismod. Donec sed odio dui.</p>
+        </div>
+    </div>
+    &lt;!&ndash; /.row &ndash;&gt;
+-->
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="row">
+            <div class="col-lg-12">
+                <p>Inglourious Basterds &copy; Digital Garage 2017</p>
+            </div>
+        </div>
+        <!-- /.row -->
+    </footer>
 
 </div>

@@ -7,6 +7,8 @@ import { DropdownModule } from 'ng2-bootstrap/dropdown';
 import { AlertModule } from 'ng2-bootstrap/alert';
 import { TabsModule } from 'ng2-bootstrap/tabs';
 import { ProgressbarModule } from 'ng2-bootstrap/progressbar';
+import { CarouselModule } from 'ng2-bootstrap';
+
 import { NAV_DROPDOWN_DIRECTIVES } from './shared/nav-dropdown.directive';
 import { Cookie } from 'ng2-cookies';
 
@@ -44,7 +46,8 @@ import { SplashComponent } from './splash/splash.component';
       ProgressbarModule.forRoot(),
     ChartsModule,
     HttpModule,
-    AlertModule
+    AlertModule,
+      CarouselModule
   ],
   exports:[
     AmChartsModule
