@@ -8,6 +8,8 @@ import it.uiip.digitalgarage.roboadvice.persistence.util.Value;
 import it.uiip.digitalgarage.roboadvice.service.controller.PortfolioController;
 import it.uiip.digitalgarage.roboadvice.service.dto.PeriodDTO;
 import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioDTO;
+import it.uiip.digitalgarage.roboadvice.service.dto.PortfolioElementDTO;
+import it.uiip.digitalgarage.roboadvice.service.util.ControllerConstants;
 import it.uiip.digitalgarage.roboadvice.service.util.GenericResponse;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -25,6 +27,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.test.context.junit4.SpringRunner;
+import sun.net.www.content.text.Generic;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -184,4 +187,40 @@ public class PortfolioControllerTest {
         assertEquals(2, ctrlResponse.getData().size());
     }
 
+    @Test
+    public void getCurrentPortfolioSuccess() {
+        List<PortfolioEntity> currentPortfolio = new ArrayList<>();
+        currentPortfolio.add(oldPortfolio.get(0));
+        currentPortfolio.add(oldPortfolio.get(1));
+
+        PortfolioElementDTO portfolioElementDTO1 = new PortfolioElementDTO();
+        portfolioElementDTO1.setId(oldPortfolio.get(0).getId());
+        portfolioElementDTO1.setValue(new BigDecimal("451.5000"));
+
+        List<PortfolioElementDTO> portfolioElementDTOList = new ArrayList<>();
+        portfolioElementDTOList.add(portfolioElementDTO1);
+
+        PortfolioDTO portfolioDTO = new PortfolioDTO();
+        portfolioDTO.setList(portfolioElementDTOList);
+        portfolioDTO.setDate(oldPortfolio.get(0).getDate().toString());
+
+        Value value = new Value(oldPortfolio.get(0).getDate(), new BigDecimal(451.5000));
+
+        when(portfolioRep.findByUserAndDate(user, user.getLastUpdate())).thenReturn(currentPortfolio);
+        when(portfolioRep.sumValuesForAssetClass(oldPortfolio.get(0).getAssetClass(), user, user.getLastUpdate())).thenReturn(value);
+        when(portfolioRep.sumValues(user, user.getLastUpdate())).thenReturn(value);
+        GenericResponse<PortfolioDTO> ctrlResponse = (GenericResponse<PortfolioDTO>) portfolioCl.getCurrentPortfolio(auth);
+        verify(portfolioRep).findByUserAndDate(user, user.getLastUpdate());
+        assertEquals(1, ctrlResponse.getResponse());
+        assertEquals(portfolioDTO, ctrlResponse.getData());
+    }
+
+    @Test
+    public void getCurrentPortfolioNullPortfolio() {
+        when(portfolioRep.findByUserAndDate(user, user.getLastUpdate())).thenReturn(new ArrayList<PortfolioEntity>());
+        GenericResponse<String> ctrlResponse = (GenericResponse<String>) portfolioCl.getCurrentPortfolio(auth);
+        verify(portfolioRep).findByUserAndDate(user, user.getLastUpdate());
+        assertEquals(0, ctrlResponse.getResponse());
+        assertEquals(ControllerConstants.EMPTY_PORTFOLIO, ctrlResponse.getData());
+    }
 }
