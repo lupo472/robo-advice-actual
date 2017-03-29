@@ -34,7 +34,10 @@ public class FinancialDataController extends AbstractController {
 	@RequestMapping("/getFinancialDataSet")
 	@ResponseBody
 	public GenericResponse<?> getFinancialDataSet(@Valid @RequestBody PeriodDTO period) {
+		Long start = System.currentTimeMillis();
 		List<FinancialDataDTO> result = this.financialDataOp.getFinancialDataSet(period.getPeriod());
+		Long end = System.currentTimeMillis();
+		System.out.println("GetFinancialDataSet in " + (end - start) + " ms");
 		if(result == null) {
 			return new GenericResponse<String>(0, ControllerConstants.PROBLEM);
 		}

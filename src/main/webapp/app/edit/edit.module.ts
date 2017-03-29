@@ -11,8 +11,8 @@ import { HttpModule,JsonpModule } from '@angular/http';
 import {SliderModule} from 'primeng/primeng';
 import {AccordionModule} from 'primeng/primeng';     //accordion and accordion tab
 import { FormsModule } from '@angular/forms'
-import { StrategySelectorComponent } from './strategy-selector/strategy-selector.component';
 import {SharedModuleModule} from "../shared/shared-module/shared-module.module";
+import {StrategySelectorComponent} from "./strategy-selector/strategy-selector.component";
 @NgModule({
   imports: [
     EditRoutingModule,

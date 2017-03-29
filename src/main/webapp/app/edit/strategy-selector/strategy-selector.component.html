@@ -14,12 +14,12 @@
 
 <div class="card">
 	<button class="btn btn-strategy" [ngClass]="{active : selected}" (click)="selected = !selected">
-	<div class="card-block text-center">
+	<div class="card-block text-center pad0">
 		<div class="text-uppercase font-weight-bold">{{strategy.name}}</div>
 		<div class="chart-wrapper">
 			<i *ngIf="custom" class="fa fa-pencil-square-o fa-5x"></i>
 			<canvas *ngIf="!custom" baseChart class="chart" [data]="strategy.arrayPercentages"
-			[labels]="strategy.arrayLabels"
+				[labels]="strategy.arrayLabels"
 				[options]="strategyOptions" [colors]="strategy.arrayColors"
 				[legend]="strategyLegend" [chartType]="strategyType"></canvas>
 

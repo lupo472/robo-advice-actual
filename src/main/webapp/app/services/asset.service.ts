@@ -22,6 +22,7 @@ export class AssetService {
   private forecasting: any;
   private data:any = {};
   assetClassStrategies:AssetClassStrategies;
+  assetClassStrategies2:AssetClassStrategies;
   financialDataSet:FinancialDataSet;
   forecastDataSet:FinancialDataSet;
   private capital = 10000;
@@ -47,7 +48,14 @@ export class AssetService {
   }
   assignAssetClass(res) {
     this.assetClassStrategies = new AssetClassStrategies();
+    console.log("assetclass",this.assetClassStrategies);
     this.assetClassStrategies.createAssetClassStrategies(res);
+    console.log("ASSETCLASSSTRATEGIES",this.assetClassStrategies.getAssetClassStrategies());
+    this.assetClassStrategies2 = new AssetClassStrategies();
+    console.log("assetclass2",this.assetClassStrategies2);
+    //this.assetClassStrategies2.createAssetClassStrategies(res);
+    console.log("ASSETCLASSSTRATEGIES2",this.assetClassStrategies2.getAssetClassStrategies());
+
     return this.assetClassStrategies;
   }
 

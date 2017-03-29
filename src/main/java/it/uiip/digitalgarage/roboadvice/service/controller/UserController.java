@@ -34,7 +34,10 @@ public class UserController extends AbstractController {
 	@RequestMapping("/registerUser")
 	@ResponseBody
 	public GenericResponse<?> registerUser(@Valid @RequestBody UserDTO user) {
+		Long start = System.currentTimeMillis();
 		boolean done = this.userOp.registerUser(user);
+		Long end = System.currentTimeMillis();
+		System.out.println("RegisterUser in " + (end - start) + " ms");
 		if(done) {
 			return new GenericResponse<String>(1, ControllerConstants.DONE);
 		}
@@ -52,10 +55,13 @@ public class UserController extends AbstractController {
 	@RequestMapping("/loginUser")
 	@ResponseBody
 	public GenericResponse<?> loginUser(@Valid @RequestBody UserDTO user) {
+		Long start = System.currentTimeMillis();
 		if(!this.userOp.isRegistered(user.getEmail())) {
 			return new GenericResponse<String>(0, ControllerConstants.EMAIL_NOT_REGISTERED);
 		}
 		LoginDTO login = this.userOp.loginUser(user);
+		Long end = System.currentTimeMillis();
+		System.out.println("LoginUser in " + (end - start) + " ms");
 		if(login == null) {
 			return new GenericResponse<String>(0, ControllerConstants.WRONG_PASSWORD);
 		}

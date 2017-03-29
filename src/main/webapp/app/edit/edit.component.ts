@@ -71,7 +71,7 @@ export class EditComponent implements OnInit, AfterViewInit, OnDestroy {
     getFinancialData(res) {
         this.financialDataSet = res;
         this.AssetService.getAssetClassSet().subscribe(
-            (res) => this.getAssetClass(res),
+            (resp) => this.getAssetClass(resp),
             (error) => console.log(this.errorMessage = <any>error));
     }
     //ASSIGN ASSET CLASS
@@ -94,7 +94,6 @@ export class EditComponent implements OnInit, AfterViewInit, OnDestroy {
         this.forecastDataSetAmChart = res;
     }
     ngOnDestroy(){
-        console.log("onDestroy");
     }
     createStrategy(): void {
         this.StrategyService.createStrategy().subscribe(

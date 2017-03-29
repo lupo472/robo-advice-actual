@@ -1,25 +1,49 @@
 <div class="animated fadeIn">
     <div class="row">
+
+        <!--<div class="col-8">
+            <app-strategy-classes-graph [data]="data" [render]="render"></app-strategy-classes-graph>
+            <app-history-chart></app-history-chart>
+        </div>
+
+        <div class="col-4">
+
+            <div class="col-12">
+                <app-tab-menu></app-tab-menu>-->
+
+
         <div class="col col-sm-8">
-            <app-portfolio-graph #portfolioGraph [data]="data" [render]="render" [graph]="'past'" ></app-portfolio-graph>
+
+            <app-portfolio-graph #portfolioGraph [data]="data" [render]="render" [graph]="'past'"></app-portfolio-graph>
+            <app-history-chart></app-history-chart>
+
         </div>
 
         <div class="col col-sm-4">
+            <div class="col-12">
+                <app-tab-menu></app-tab-menu>
 
-            <app-strategy-graph></app-strategy-graph>
-            <!--<app-detail-market-value-chart *ngIf="render" #chartTest2 [detailOptions]="options"></app-detail-market-value-chart>-->
+
+                <!--<app-strategy-graph></app-strategy-graph>-->
+                <!--<app-detail-market-value-chart *ngIf="render" #chartTest2 [detailOptions]="options"></app-detail-market-value-chart>-->
+
+            </div>
 
         </div>
+
+        <!--<div clas="row">
+            <div class="col-8">
+    =======
+        <div clas="row">
+            <div class="col col-8 col-sm-12  col-md-8">
+    >>>>>>> c9d234129384f16467fc5ff989114b7f28691354
+                <app-history-chart></app-history-chart>
+            </div>
+        </div>-->
+
+        <!-- <div>
+             <app-detail-market-value-chart *ngIf="render" #chartTest2 [detailOptions]="options"></app-detail-market-value-chart>
+         </div>-->
+
     </div>
-    <div clas="row">
-        <div class="col col-8 col-sm-12  col-md-8">
-            <app-history-chart></app-history-chart>
-        </div>
-    </div>
-
-   <!-- <div>
-        <app-detail-market-value-chart *ngIf="render" #chartTest2 [detailOptions]="options"></app-detail-market-value-chart>
-    </div>-->
-
-
 </div>

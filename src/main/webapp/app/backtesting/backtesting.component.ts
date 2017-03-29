@@ -5,7 +5,8 @@ import { AssetClass } from "../model/asset-class";
 import {mockAssetClassStrategy} from "../mocks/asset-class-strategy-mock";
 
 @Component({
-  templateUrl: 'backtesting.component.html'
+  templateUrl: 'backtesting.component.html',
+  styleUrls: ['./backtesting.component.scss']
 })
 export class BacktestingComponent implements OnInit {
 

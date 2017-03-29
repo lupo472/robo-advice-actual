@@ -12,7 +12,6 @@ export class CustomStrategy extends Strategy {
     super();
     //Initialize custom list of assetClassStrategies with the ones got from backend
     this.customList = customList;
-    //this.createStrategyList();
     this.name = "Select your strategy";
     this.list = [];
     this.sumPercentage = 0;
@@ -41,6 +40,7 @@ export class CustomStrategy extends Strategy {
     });
     this.list = array;
     console.log("this.list",this.list);
+    console.log("this.customlist",this.customList);
     this.populateMap();
   }
   /*
@@ -49,7 +49,12 @@ export class CustomStrategy extends Strategy {
    *   which contains all the assets class with value 0
    */
   private updateStrategyList() : void {
-    this.createStrategyList();
+    let array = this.customList;
+    this.list.forEach((item)=>{
+      array[item.getId()-1] = item;
+    });
+    this.list = array;
+    //this.createStrategyList();
     this.updateMap();
   }
   //Update list with only the values in the map
@@ -64,7 +69,7 @@ export class CustomStrategy extends Strategy {
   }
   //Populate Map for the first time
   private populateMap() : void {
-    this.customList.forEach((item)=> {
+    this.list.forEach((item)=> {
       this.assetClassStrategiesMap.set(item.getId(),
           new AssetClassStrategy(item.getPercentage(),item.getId(),item.getName()));
     });

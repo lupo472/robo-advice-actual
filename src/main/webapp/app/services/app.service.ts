@@ -4,7 +4,6 @@ import { Cookie } from 'ng2-cookies';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
-
 import 'rxjs/add/operator/catch';
 import {GenericResponse} from "../model/generic-response";
 import {AssetClass} from "../model/asset-class";
@@ -171,6 +170,17 @@ export class AppService {
     return this.http.post(AppConfig.url + 'getActiveStrategy', {}, this.opts)
       .map(response => response.json());
   }
+  getAdvice(period) {
+    this.headers = new Headers();
+    this.headers.append('Authorization',Cookie.get('token'));
+    //this.headers.append('Access-Control-Allow-Credentials','true');
+    //this.headers.append('Content-Type','application/json;charset=UTF-8');
+    this.opts = new RequestOptions();
+    this.opts.headers = this.headers;
+    return this.http.post(AppConfig.url + 'getAdvice', {period:period}, this.opts)
+        .map(response => response.json());
+  }
+
 
   getHistoryStrategies() {
     this.headers = new Headers();
