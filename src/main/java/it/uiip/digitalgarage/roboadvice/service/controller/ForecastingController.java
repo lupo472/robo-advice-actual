@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -33,7 +34,10 @@ public class ForecastingController extends AbstractController {
 	@RequestMapping("/getForecast")
 	@ResponseBody
 	public GenericResponse<?> getForecast(@Valid @RequestBody PeriodDTO period) {
+		Long start = System.currentTimeMillis();
 		List<FinancialDataDTO> result = this.forecastingOp.getForecast(period);
+		Long end = System.currentTimeMillis();
+		System.out.println("GetForecast in " + (end - start) + " ms");
 		if(result == null) {
 			return new GenericResponse<String>(0, ControllerConstants.PROBLEM);
 		}
@@ -52,7 +56,10 @@ public class ForecastingController extends AbstractController {
 	@RequestMapping("/getDemo")
 	@ResponseBody
 	public GenericResponse<?> getDemo(@Valid @RequestBody PeriodDTO period, Authentication auth) {
+		Long start = System.currentTimeMillis();
 		List<PortfolioDTO> result = this.forecastingOp.getDemo(period, auth);
+		Long end = System.currentTimeMillis();
+		System.out.println("GetDemo in " + (end - start) + " ms");
 		if(result == null) {
 			return new GenericResponse<String>(0, ControllerConstants.PROBLEM);
 		}
@@ -72,10 +79,13 @@ public class ForecastingController extends AbstractController {
 	@RequestMapping("/getAdvice")
 	@ResponseBody
 	public GenericResponse<?> getAdvice(@Valid @RequestBody PeriodDTO period, Authentication auth) {
+		Long start = System.currentTimeMillis();
 		if(this.capitalOp.getCurrentCapital(auth) == null) {
 			return new GenericResponse<String>(0, ControllerConstants.ANY_CAPITAL);
 		}
 		DefaultStrategyDTO defaultStrategyDTO = this.adviceOp.getAdvice(period, auth);
+		Long end = System.currentTimeMillis();
+		System.out.println("GetAdvice in " + (end - start) + " ms");
 		if(defaultStrategyDTO == null) {
 			return new GenericResponse<String>(0, ControllerConstants.STRATEGY_OK);
 		}

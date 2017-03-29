@@ -30,7 +30,10 @@ public class PortfolioController extends AbstractController {
     @RequestMapping("/getCurrentPortfolio")
     @ResponseBody
     public GenericResponse<?> getCurrentPortfolio(Authentication auth) {
-        PortfolioDTO result = this.portfolioOp.getCurrentPortfolio(auth);
+        Long start = System.currentTimeMillis();
+    	PortfolioDTO result = this.portfolioOp.getCurrentPortfolio(auth);
+		Long end = System.currentTimeMillis();
+		System.out.println("GetCurrentPortfolio in " + (end - start) + " ms");
         if(result == null) {
     		return new GenericResponse<String>(0, ControllerConstants.EMPTY_PORTFOLIO);
     	}
@@ -49,7 +52,10 @@ public class PortfolioController extends AbstractController {
 	@RequestMapping("/getPortfolioForPeriod")
     @ResponseBody
     public GenericResponse<?> getPortfolioForPeriod(@Valid @RequestBody PeriodDTO request, Authentication auth) {
-        List<PortfolioDTO> result = this.portfolioOp.getPortfolioForPeriod(request, auth);
+        Long start = System.currentTimeMillis();
+		List<PortfolioDTO> result = this.portfolioOp.getPortfolioForPeriod(request, auth);
+		Long end = System.currentTimeMillis();
+		System.out.println("GetPortfolioForPeriod in " + (end - start) + " ms");
         if(result == null) {
             return new GenericResponse<String>(0, ControllerConstants.EMPTY_PORTFOLIO);
         }

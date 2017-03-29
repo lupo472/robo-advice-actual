@@ -39,7 +39,10 @@ public class CustomStrategyController extends AbstractController {
 	@RequestMapping("/setCustomStrategy")
 	@ResponseBody
     public GenericResponse<?> setCustomStrategy(@Valid @RequestBody CustomStrategyDTO request, Authentication auth){
+		Long start = System.currentTimeMillis();
 		boolean response = this.customStrategyOp.setCustomStrategy(request, auth);
+		Long end = System.currentTimeMillis();
+		System.out.println("SetCustomStrategy in " + (end - start) + " ms");
 		if(!response){
 			return new GenericResponse<String>(0, ControllerConstants.PROBLEM);
 		}
@@ -57,7 +60,10 @@ public class CustomStrategyController extends AbstractController {
 	@RequestMapping("/getActiveStrategy")
     @ResponseBody
     public GenericResponse<?> getActiveStrategy(Authentication auth){
-    	CustomStrategyResponseDTO result = this.customStrategyOp.getActiveStrategy(auth);
+    	Long start = System.currentTimeMillis();
+		CustomStrategyResponseDTO result = this.customStrategyOp.getActiveStrategy(auth);
+		Long end = System.currentTimeMillis();
+		System.out.println("GetActiveStrategy in " + (end - start) + " ms");
     	if(result == null) {
     		return new GenericResponse<String>(0, ControllerConstants.ANY_ACTIVE_STRATEGY);
     	}
@@ -77,7 +83,10 @@ public class CustomStrategyController extends AbstractController {
 	@RequestMapping("/getCustomStrategyHistory")
     @ResponseBody
     public GenericResponse<?> getCustomStrategyHistory(@RequestBody @Valid PeriodDTO period, Authentication auth) {
-    	List<CustomStrategyResponseDTO> result = this.customStrategyOp.getCustomStrategySet(auth, period.getPeriod());
+    	Long start = System.currentTimeMillis();
+		List<CustomStrategyResponseDTO> result = this.customStrategyOp.getCustomStrategySet(auth, period.getPeriod());
+		Long end = System.currentTimeMillis();
+		System.out.println("GetCustomStrategyHistory in " + (end - start) + " ms");
     	if(result.isEmpty()) {
     		return new GenericResponse<String>(0, ControllerConstants.ANY_STRATEGY_IN_PERIOD);
     	}

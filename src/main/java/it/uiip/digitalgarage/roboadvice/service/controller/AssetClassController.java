@@ -28,7 +28,10 @@ public class AssetClassController extends AbstractController {
 	@RequestMapping("/getAssetClassSet")
 	@ResponseBody
 	public GenericResponse<?> getAssetClassSet() {
+		Long start = System.currentTimeMillis();
 		List<AssetClassDTO> result = this.assetClassOp.getAssetClassSet();
+		Long end = System.currentTimeMillis();
+		System.out.println("GetAssetClassSet in " + (end - start) + " ms");
 		return new GenericResponse<List<AssetClassDTO>>(1, result);
 	}
 	

@@ -36,7 +36,7 @@ public class BacktestingController extends AbstractController {
 		Long start = System.currentTimeMillis();
 		List<PortfolioDTO> result = this.backtestingOp.getBacktesting(request, auth);
 		Long end = System.currentTimeMillis();
-		System.out.println((end - start) + " ms");
+		System.out.println("GetBacktesting in " + (end - start) + " ms");
 		if (result == null) {
 			return new GenericResponse<String>(0, ControllerConstants.NOT_APPLICABLE);
 		}
@@ -53,7 +53,10 @@ public class BacktestingController extends AbstractController {
 	@RequestMapping("/getMinimumBacktestingDate")
 	@ResponseBody
 	public GenericResponse<?> getMinimumBacktestingDate(@Valid @RequestBody CustomStrategyDTO request) {
+		Long start = System.currentTimeMillis();
 		String date = this.backtestingOp.getMinimumBacktestingDate(request);
+		Long end = System.currentTimeMillis();
+		System.out.println("GeMinimumBacktestingDate in " + (end - start) + " ms");
 		return new GenericResponse<String>(1, date);
 	}
 
