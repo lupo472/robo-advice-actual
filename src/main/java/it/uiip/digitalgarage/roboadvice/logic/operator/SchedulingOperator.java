@@ -48,7 +48,7 @@ public class SchedulingOperator extends AbstractOperator {
 	@Scheduled(cron = "0 0 10 * * *")
 	public void scheduleTask() {
 		Long start = System.currentTimeMillis();
-		quandlOp.updateFinancialDataSet();
+//		quandlOp.updateFinancialDataSet();
 		Long quandl = System.currentTimeMillis();
 		List<UserEntity> users = userOp.getAllUsers();
 		List<AssetEntity> assets = this.assetRep.findAll();
@@ -99,7 +99,7 @@ public class SchedulingOperator extends AbstractOperator {
 			}
 			CapitalEntity capital = capitalOp.computeCapital(user, financialDataPerAssetMap);
 			user.setCapital(capital);
-			if(user.getCapital() != null) {
+			if(capital != null) {
 				System.out.println("Computed capital for user: " + user.getUser().getId());
 			}
 			List<CustomStrategyEntity> strategy = this.customStrategyRep.findByUserAndActive(user.getUser(), true);
