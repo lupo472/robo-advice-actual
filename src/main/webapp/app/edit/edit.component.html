@@ -1,9 +1,10 @@
 <div class="animated fadeIn">
 
+
     <!-- STRATEGIES ROW -->
     <div class="row">
 
-        <div class="col-sm-6 col-md-4 col-lg-2" *ngFor="let strategy of strategies; let i = index">
+        <div class="col col-6 col-sm-4 col-md-4 col-lg-2" *ngFor="let strategy of strategies; let i = index">
 
             <app-strategy-selector [selected]="selected[i]"
                                    [strategy]="strategy" [id]="i"
@@ -17,7 +18,7 @@
     <!-- ASSET CLASS ROW -->
     <div class="row">
 
-        <div class="col-sm-12 col-md-6 col-lg-3" *ngFor="let assets of assetClassStrategies; let i = index;">
+        <div class="col col-12 col-sm-12 col-md-6 col-lg-3" *ngFor="let assets of assetClassStrategies; let i = index;">
 
             <app-card-asset-class #appCard [value]="assets.name"
                                   [isCustom]="isCustom" [id]="assets.id"

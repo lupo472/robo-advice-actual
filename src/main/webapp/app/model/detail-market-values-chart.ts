@@ -9,7 +9,7 @@ export class DetailMarketValuesChart {
             "marginRight": 40,
             "marginLeft": 40,
             "autoMarginOffset": 20,
-            "mouseWheelZoomEnabled": true,
+            "mouseWheelZoomEnabled": false,
             "dataDateFormat": "YYYY-MM-DD",
             "valueAxes": [{
                 "id": "v1",

@@ -50,8 +50,9 @@ export class HistoryAmChart {
                 }
             });
             this.createTrendLabelHistory(labels,portfolio);
+            console.log("TRENDLABELS",this.trendLabels);
         }
-        console.log("TRENDLABELS LENGTH",+this.trendLabels.length);
+        console.log("TRENDLABELS LENGTH",this.trendLabels.length);
         data.forEach((strategy,i) => {
             StringStrategy="";
             let beginning = new Date(strategy.date);
@@ -67,7 +68,8 @@ export class HistoryAmChart {
                     }
                     else diffString = "$"+diff.toFixed(2);
 
-                    StringStrategy='{"category": "'+strategy.date+' ('+diffString+')",';
+                    StringStrategy='{"category": "'+strategy.date+'",';
+                    //StringStrategy='{"category": "'+strategy.date+' ('+diffString+')",';
                 }else{
                     StringStrategy='{"category": "'+strategy.date+'",';
                 }

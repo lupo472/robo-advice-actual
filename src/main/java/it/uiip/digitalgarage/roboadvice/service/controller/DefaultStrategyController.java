@@ -28,6 +28,9 @@ public class DefaultStrategyController extends AbstractController {
 	@RequestMapping("/getDefaultStrategySet")
 	@ResponseBody
 	public GenericResponse<?> getDefaultStrategySet() {
+		Long start = System.currentTimeMillis();
+		Long end = System.currentTimeMillis();
+		System.out.println("GetDefaultStrategySet in " + (end - start) + " ms");
 		List<DefaultStrategyDTO> assets = this.defaultStrategyOp.getDefaultStrategySet();
 		return new GenericResponse<List<DefaultStrategyDTO>>(1, assets);
 	}

@@ -17,6 +17,7 @@ import it.uiip.digitalgarage.roboadvice.service.util.HashFunction;
  * This class contains methods to allow registration and login of an user or to get the list of users.
  *
  * @author Cristian Laurini
+ * @author Luca Antilici
  */
 @Service
 public class UserOperator extends AbstractOperator {

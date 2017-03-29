@@ -89,44 +89,44 @@ public class AdviceOperatorTest {
 
     @Test
     public void getAdviceCurrentStrategyBestTest() {
-        PeriodDTO period = new PeriodDTO();
-        period.setPeriod(2);
-
-        PortfolioElementDTO portfolioElementBonds1 = new PortfolioElementDTO();
-        portfolioElementBonds1.setName("bonds");
-        portfolioElementBonds1.setValue(new BigDecimal(1234));
-        portfolioElementBonds1.setPercentage(new BigDecimal(95));
-        PortfolioElementDTO portfolioElementCommodities1 = new PortfolioElementDTO();
-        portfolioElementCommodities1.setName("commodities");
-        portfolioElementCommodities1.setValue(new BigDecimal(124));
-        portfolioElementCommodities1.setPercentage(new BigDecimal(5));
-        List<PortfolioElementDTO> portfolioElementListToday = new ArrayList<>();
-        portfolioElementListToday.add(portfolioElementBonds1);
-        portfolioElementListToday.add(portfolioElementCommodities1);
-        PortfolioDTO portfolioDTOToday = new PortfolioDTO();
-        portfolioDTOToday.setList(portfolioElementListToday);
-        portfolioDTOToday.setDate(LocalDate.now().toString());
-
-        PortfolioElementDTO portfolioElementBonds2 = new PortfolioElementDTO();
-        portfolioElementBonds2.setName("bonds");
-        portfolioElementBonds2.setValue(new BigDecimal(1210));
-        portfolioElementBonds2.setPercentage(new BigDecimal(95));
-        PortfolioElementDTO portfolioElementCommodities2 = new PortfolioElementDTO();
-        portfolioElementCommodities2.setName("commodities");
-        portfolioElementCommodities2.setValue(new BigDecimal(178));
-        portfolioElementCommodities2.setPercentage(new BigDecimal(5));
-        List<PortfolioElementDTO> portfolioElementListTomorrow = new ArrayList<>();
-        portfolioElementListTomorrow.add(portfolioElementBonds1);
-        portfolioElementListTomorrow.add(portfolioElementCommodities1);
-        PortfolioDTO portfolioDTOTomorrow = new PortfolioDTO();
-        portfolioDTOTomorrow.setList(portfolioElementListTomorrow);
-        portfolioDTOTomorrow.setDate(LocalDate.now().plusDays(1).toString());
-
-
-        List<PortfolioDTO> currentStrategyPortfolio = new ArrayList<>();
-        currentStrategyPortfolio.add(portfolioDTOToday);
-        currentStrategyPortfolio.add(portfolioDTOTomorrow);
-        doReturn(currentStrategyPortfolio).when(forecastingOp).getDemo(period, auth);
+//        PeriodDTO period = new PeriodDTO();
+//        period.setPeriod(2);
+//
+//        PortfolioElementDTO portfolioElementBonds1 = new PortfolioElementDTO();
+//        portfolioElementBonds1.setName("bonds");
+//        portfolioElementBonds1.setValue(new BigDecimal(1234));
+//        portfolioElementBonds1.setPercentage(new BigDecimal(95));
+//        PortfolioElementDTO portfolioElementCommodities1 = new PortfolioElementDTO();
+//        portfolioElementCommodities1.setName("commodities");
+//        portfolioElementCommodities1.setValue(new BigDecimal(124));
+//        portfolioElementCommodities1.setPercentage(new BigDecimal(5));
+//        List<PortfolioElementDTO> portfolioElementListToday = new ArrayList<>();
+//        portfolioElementListToday.add(portfolioElementBonds1);
+//        portfolioElementListToday.add(portfolioElementCommodities1);
+//        PortfolioDTO portfolioDTOToday = new PortfolioDTO();
+//        portfolioDTOToday.setList(portfolioElementListToday);
+//        portfolioDTOToday.setDate(LocalDate.now().toString());
+//
+//        PortfolioElementDTO portfolioElementBonds2 = new PortfolioElementDTO();
+//        portfolioElementBonds2.setName("bonds");
+//        portfolioElementBonds2.setValue(new BigDecimal(1210));
+//        portfolioElementBonds2.setPercentage(new BigDecimal(95));
+//        PortfolioElementDTO portfolioElementCommodities2 = new PortfolioElementDTO();
+//        portfolioElementCommodities2.setName("commodities");
+//        portfolioElementCommodities2.setValue(new BigDecimal(178));
+//        portfolioElementCommodities2.setPercentage(new BigDecimal(5));
+//        List<PortfolioElementDTO> portfolioElementListTomorrow = new ArrayList<>();
+//        portfolioElementListTomorrow.add(portfolioElementBonds1);
+//        portfolioElementListTomorrow.add(portfolioElementCommodities1);
+//        PortfolioDTO portfolioDTOTomorrow = new PortfolioDTO();
+//        portfolioDTOTomorrow.setList(portfolioElementListTomorrow);
+//        portfolioDTOTomorrow.setDate(LocalDate.now().plusDays(1).toString());
+//
+//        List<PortfolioDTO> currentStrategyPortfolio = new ArrayList<>();
+//        currentStrategyPortfolio.add(portfolioDTOToday);
+//        currentStrategyPortfolio.add(portfolioDTOTomorrow);
+//
+//        doReturn(currentStrategyPortfolio).when(forecastingOp).getDemo(period, auth);
     }
 
 }

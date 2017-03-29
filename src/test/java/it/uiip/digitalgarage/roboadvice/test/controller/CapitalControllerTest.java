@@ -235,4 +235,32 @@ public class CapitalControllerTest {
         assertEquals(3, ctrlResponse.getData().size());
 
     }
+
+    @Test
+    public void getCurrentCapitalSuccess() {
+        CapitalEntity capitalEntity = new CapitalEntity();
+        capitalEntity.setId(4L);
+        capitalEntity.setUser(user);
+        capitalEntity.setDate(user.getLastUpdate());
+        capitalEntity.setAmount(new BigDecimal(12332.2342));
+
+        CapitalDTO capitalDTO = new CapitalDTO();
+        capitalDTO.setDate(user.getLastUpdate().toString());
+        capitalDTO.setAmount(new BigDecimal(12332.2342));
+
+        when(capitalRep.findByUserAndDate(user, user.getLastUpdate())).thenReturn(capitalEntity);
+        GenericResponse<CapitalEntity> ctrlResponse = (GenericResponse<CapitalEntity>) capitalCtrl.getCurrentCapital(auth);
+        verify(capitalRep).findByUserAndDate(user, user.getLastUpdate());
+        assertEquals(1, ctrlResponse.getResponse());
+        assertEquals(capitalDTO, ctrlResponse.getData());
+    }
+
+    @Test
+    public void getCurrentCapitalCapitalNotPresent() {
+        when(capitalRep.findByUserAndDate(user, user.getLastUpdate())).thenReturn(null);
+        GenericResponse<CapitalEntity> ctrlResponse = (GenericResponse<CapitalEntity>) capitalCtrl.getCurrentCapital(auth);
+        verify(capitalRep).findByUserAndDate(user, user.getLastUpdate());
+        assertEquals(0, ctrlResponse.getResponse());
+        assertEquals(ControllerConstants.ANY_CAPITAL, ctrlResponse.getData());
+    }
 }

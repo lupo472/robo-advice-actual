@@ -40,7 +40,10 @@ public class CapitalController extends AbstractController {
 	@RequestMapping("/addCapital")
     @ResponseBody
 	public GenericResponse<?> addCapital(@Valid @RequestBody CapitalRequestDTO capital, Authentication auth) {
+		Long start = System.currentTimeMillis();
 		boolean done = this.capitalOp.addCapital(capital, auth);
+		Long end = System.currentTimeMillis();
+		System.out.println("AddCapital in " + (end - start) + " ms");
 		if(done) {
 			return new GenericResponse<String>(1, ControllerConstants.DONE);
 		}
@@ -59,7 +62,10 @@ public class CapitalController extends AbstractController {
 	@RequestMapping("/getCurrentCapital")
     @ResponseBody
 	public GenericResponse<?> getCurrentCapital(Authentication auth) {
+		Long start = System.currentTimeMillis();
 		CapitalDTO result = this.capitalOp.getCurrentCapital(auth);
+		Long end = System.currentTimeMillis();
+		System.out.println("GetCurrentCapital in " + (end - start) + " ms");
 		if(result == null) {
 			return new GenericResponse<String>(0, ControllerConstants.ANY_CAPITAL);
 		}
@@ -79,7 +85,10 @@ public class CapitalController extends AbstractController {
 	@RequestMapping("/getCapitalForPeriod")
 	@ResponseBody
 	public GenericResponse<?> getCapitalForPeriod(@Valid @RequestBody PeriodDTO request, Authentication auth) {
+		Long start = System.currentTimeMillis();
 		List<CapitalDTO> result = this.capitalOp.getCapitalPeriod(request, auth);
+		Long end = System.currentTimeMillis();
+		System.out.println("GetCapitalForPeriod in " + (end - start) + " ms");
 		if(result == null) {
 			return new GenericResponse<String>(0, ControllerConstants.ANY_CAPITAL);
 		}
