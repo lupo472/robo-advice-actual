@@ -13,7 +13,7 @@
 		</div>
 
 		<div class="h5 float-left text-capitalize mb-0">
-			{{value}}<div class="small">1 year</div>
+			{{value}}<div class="small hidden-sm-down">1 year</div>
 			<!--<label></label>
 			<div class="btn-group float-right" dropdown>
 				<button type="button"
@@ -33,8 +33,8 @@
 		</div>
 
 	</div>
-	 <div  class="chart-wrapper px-1" style="height:100px">
-					<canvas baseChart class="chart" [datasets]="financialData.lineChartData"
+	 <div  class="chart-wrapper px-1 mobHeight" style="height:100px">
+					<canvas baseChart class="chart hidden-sm-down" [datasets]="financialData.lineChartData"
 						[labels]="financialData.lineChartLabels" [options]="financialData.lineChartOptions"
 						[colors]="financialData.lineChartColours" [legend]="financialData.lineChartLegend"
 						[chartType]="financialData.lineChartType" (chartHover)="chartHovered($event)"
