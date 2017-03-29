@@ -79,6 +79,12 @@ export class EditComponent implements OnInit, AfterViewInit, OnDestroy {
     //ASSIGN STRATEGIES
     getStrategy(res): void {
         this.strategies = res.getStrategies();
+        if (this.StrategyService.strategySended != undefined){
+            let list = this.StrategyService.strategySended.getDefaultStartegy();
+            this.assetClassStrategies = list;
+            this.StrategyService.strategies.setCurrentStrategy(this.StrategyService.strategySended);
+            this.isDisabled = false;
+        }
         this.AssetService.getFinancialDataSet(1000,"big").subscribe((res => this.getFinancialDataModal(res)));
         this.AssetService.getForecast(90,"big").subscribe(res=>this.assignForecast(res));
     }
@@ -94,6 +100,7 @@ export class EditComponent implements OnInit, AfterViewInit, OnDestroy {
         this.childModal.show();
     }
     ngOnDestroy(){
+        this.StrategyService.resetStrategySended();
     }
     createStrategy(): void {
         this.StrategyService.createStrategy().subscribe(

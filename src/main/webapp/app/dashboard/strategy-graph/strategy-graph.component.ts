@@ -40,7 +40,8 @@ export class StrategyGraphComponent implements OnInit {
     }
   }
   changeToStrategy(){
-    this.StrategyService.changeToAdviceStrategy(this.strategy).subscribe(res => console.log(res));
+
+   /* this.StrategyService.changeToAdviceStrategy(this.strategy).subscribe(res => console.log(res));*/
     this.sendStrategy.emit(this.strategy);
   }
   //GENERAL SETTINGS
