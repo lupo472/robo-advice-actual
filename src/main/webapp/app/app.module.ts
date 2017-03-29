@@ -32,6 +32,7 @@ import { AppService } from './services/app.service';
 import { UserService } from './services/user.service';
 import { AssetService } from './services/asset.service';
 import { AmChartsModule } from "amcharts3-angular2";
+import { SplashComponent } from './splash/splash.component';
 
 
 @NgModule({
@@ -55,7 +56,8 @@ import { AmChartsModule } from "amcharts3-angular2";
     NAV_DROPDOWN_DIRECTIVES,
     BreadcrumbsComponent,
     SIDEBAR_TOGGLE_DIRECTIVES,
-    AsideToggleDirective
+    AsideToggleDirective,
+    SplashComponent
 
   ],
   providers: [
