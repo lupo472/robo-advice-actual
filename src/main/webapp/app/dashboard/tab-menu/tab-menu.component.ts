@@ -56,12 +56,14 @@ export class TabMenuComponent implements OnInit {
     this.adviceState = "active";
   }
   receiveStrategy(strategy) {
-    this._z.run(() => {
+    console.log("",strategy);
+    this.StrategyService.setDefaultStrategySended(strategy);
+    /*this._z.run(() => {
       this.activeStrategy.setStrategyArray(strategy.getStrategyArray());
       this.activeStrategy.resetArray();
       this.activeStrategy.createChart();
       console.log("ffffffffff",this.activeStrategy);
-    });
+    });*/
   }
 
 

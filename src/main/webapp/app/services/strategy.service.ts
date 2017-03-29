@@ -25,6 +25,7 @@ export class StrategyService {
   activeStrategy:Strategy;
   adviceStrategy:DefaultStrategy;
   list:AssetClassStrategy[];
+  strategySended:DefaultStrategy;
   public myActiveStrategyChart:MyActiveStrategyAmChart;
 
   constructor(private AppService:AppService, private AssetService:AssetService) {
@@ -90,6 +91,16 @@ export class StrategyService {
   refreshHistory(startdate){
     let portfolio=this.AssetService.getPortfolio().getData();
     return this.historyStrategies.createHistoryChartOptions(this.dataHistory,startdate,portfolio);
+  }
+  setDefaultStrategySended(strategy){
+    this.strategySended = new DefaultStrategy;
+    this.strategySended = strategy;
+  }
+  getDefaultStrategySended(){
+    return this.strategySended;
+  }
+  resetStrategySended(){
+    this.strategySended = undefined;
   }
 
 
