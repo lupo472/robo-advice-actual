@@ -86,7 +86,9 @@ public class SchedulingOperator extends AbstractOperator {
 					capital.setUser(user.getUser());
 					capital.setDate(LocalDate.now());
 					user.setCapital(capital);
-					capitalRep.save(user.getCapital());
+					if(capitalRep.findByUserAndDate(user.getUser(), LocalDate.now()) == null) {
+						capitalRep.save(user.getCapital());
+					}
 					userRep.save(user.getUser());
 				}
 				continue;
