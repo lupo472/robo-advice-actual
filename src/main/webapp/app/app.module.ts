@@ -36,10 +36,6 @@ import { UserService } from './services/user.service';
 import { AssetService } from './services/asset.service';
 import { AmChartsModule } from "amcharts3-angular2";
 
-import { SplashComponent } from './splash/splash.component';
-
-
-
 @NgModule({
   imports: [
     BrowserModule,
@@ -62,8 +58,7 @@ import { SplashComponent } from './splash/splash.component';
     NAV_DROPDOWN_DIRECTIVES,
     BreadcrumbsComponent,
     SIDEBAR_TOGGLE_DIRECTIVES,
-    AsideToggleDirective,
-    SplashComponent
+    AsideToggleDirective
 
   ],
   providers: [

@@ -145,17 +145,12 @@ header.navbar .navbar-nav{
   .mAuto {
     margin: auto;
   }
-  .special-card {
-    /* create a custom class so you
-       do not run into specificity issues
-       against bootstraps styles
-       which tends to work better than using !important
-       (future you will thank you later)*/
-
-    background-color: rgba(0, 0, 0, 0.4);
-
-  }
 }
 
+.special-card {
+
+  background-color: rgba(0, 0, 0, 0.4);
+
+}
 
 

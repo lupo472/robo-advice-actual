@@ -24,7 +24,8 @@
                 </div>
 
                 <a class="dropdown-item" href="#"><i class="fa fa-user"></i>Profile</a>
-                <a class="dropdown-item" [routerLink]="['/edit'] " href="#"><i class="fa fa-pie-chart"></i>Strategy</a>
+                <a class="dropdown-item" [routerLink]="['/edit'] " href="#"><i class="fa fa-pie-chart"></i> Edit Strategy</a>
+                <a class="dropdown-item" [routerLink]="['/dashboard'] " href="#"><i class="fa fa-line-chart"></i> Dashboard</a>
                 <a class="dropdown-item" [routerLink]="['/backtesting'] " href="#"><i class="fa fa-history"></i>Backtesting</a>
                 <a class="dropdown-item" [routerLink]="['/forecasting'] " href="#"><i class="fa fa-forward"></i>Forecasting</a>
                 <a class="dropdown-item" [routerLink]="['/pages/login'] " href="#" (click)="logout()"><i
@@ -52,7 +53,7 @@
 </header>
 
 <div class="app-body">
-    <div class="sidebar">
+    <!--<div class="sidebar">
         <nav class="sidebar-nav">
             <ul class="nav">
                 <li class="nav-item"><a class="nav-link"
@@ -136,7 +137,7 @@
 
             </ul>
         </nav>
-    </div>
+    </div>-->
 
     <!-- Main content -->
     <main class="main"> <!-- Breadcrumb -->
@@ -165,7 +166,7 @@
         </div>
         <!-- /.conainer-fluid --> </main>
 
-    <aside class="aside-menu">
+    <!--<aside class="aside-menu">
         <tabset>
             <tab>
                 <template tabHeading><i
@@ -527,7 +528,7 @@
                 </div>
             </tab>
         </tabset>
-    </aside>
+    </aside>-->
 </div>
 
 <footer class="app-footer">
